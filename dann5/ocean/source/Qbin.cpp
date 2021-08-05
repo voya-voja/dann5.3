@@ -115,7 +115,7 @@ Qassign<Qbin> Qbin::operator^=(const Qexpr<Qbin>& right)
 	return assign;
 }
 
-Qexpr<Qbin> Qbin::operator~()
+Qexpr<Qbin> Qbin::operator~() const
 {
 	Qbin inverted(noqbs(), "~" + Qdef::id());
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
@@ -148,6 +148,28 @@ Qexpr<Qbin> Qbin::operator&(const Qexpr<Qbin>& right) const
 	return expr;
 }
 
+Qexpr<Qbin> Qbin::nand(const Qbin& right) const
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NandQT::cMark);
+	pOp->inputs({ clone(), right.clone() });
+	Qbin out(pOp->outId());
+	pOp->output(out.clone());
+
+	Qexpr<Qbin> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qbin> Qbin::nand(const Qexpr<Qbin>& right) const
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NandQT::cMark);
+	pOp->inputs({ clone(), right.rootDef() });
+	Qbin out(pOp->outId());
+	pOp->output(out.clone());
+
+	Qexpr<Qbin> expr(pOp);
+	return expr;
+}
+
 Qexpr<Qbin> Qbin::operator|(const Qbin& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(OrQT::cMark);
@@ -162,6 +184,28 @@ Qexpr<Qbin> Qbin::operator|(const Qbin& right) const
 Qexpr<Qbin> Qbin::operator|(const Qexpr<Qbin>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(OrQT::cMark);
+	pOp->inputs({ clone(), right.rootDef() });
+	Qbin out(pOp->outId());
+	pOp->output(out.clone());
+
+	Qexpr<Qbin> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qbin> Qbin::nor(const Qbin& right) const
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NorQT::cMark);
+	pOp->inputs({ clone(), right.clone() });
+	Qbin out(pOp->outId());
+	pOp->output(out.clone());
+
+	Qexpr<Qbin> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qbin> Qbin::nor(const Qexpr<Qbin>& right) const
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NorQT::cMark);
 	pOp->inputs({ clone(), right.rootDef() });
 	Qbin out(pOp->outId());
 	pOp->output(out.clone());

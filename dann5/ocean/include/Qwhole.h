@@ -125,16 +125,16 @@ namespace dann5 {
 			// the expression is 'x' + 'y'
 			Qexpr<Qwhole> operator+(const Qwhole& right) const;
 
-			// instantiate Q expression with and logic, e.g. for Qwhole ids 'x' and 'y'
-			// the expression is 'x' + 'y'
+			// instantiate Q expression with add logic, e.g. for Qwhole id 'x' and [right]
+			// object the expression is 'x' + [right]
 			Qexpr<Qwhole> operator+(const Qexpr<Qwhole>& right) const;
 
 			// instantiate Q expression with or logic, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' * 'y'
 			Qexpr<Qwhole> operator*(const Qwhole& right) const;
 
-			// instantiate Q expression with or logic, e.g. for Qwhole ids 'x' and 'y'
-			// the expression is 'x' * 'y'
+			// instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right]
+			// object the expression is 'x' * [right]
 			Qexpr<Qwhole> operator*(const Qexpr<Qwhole>& right) const;
 
 		protected:
