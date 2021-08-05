@@ -1,0 +1,347 @@
+// dllmain.cpp : Defines the entry point for the DLL application.
+/*
+#include "pch.h"
+
+BOOL APIENTRY DllMain( HMODULE hModule,
+                       DWORD  ul_reason_for_call,
+                       LPVOID lpReserved
+                     )
+{
+    switch (ul_reason_for_call)
+    {
+    case DLL_PROCESS_ATTACH:
+    case DLL_THREAD_ATTACH:
+    case DLL_THREAD_DETACH:
+    case DLL_PROCESS_DETACH:
+        break;
+    }
+    return TRUE;
+}
+*/
+
+// pybind11 — Seamless operability between C++11 and Python
+// https://pybind11.readthedocs.io/en/stable/index.html
+//
+#include <pybind11/pybind11.h>
+
+#include <Qubo.h>
+#include <Qwhole.h>
+
+#include <Qassign.h>
+#include <Qsolver.h>
+
+#include <Qstatement.h>
+
+#include <pybind11/stl.h>
+#include <pybind11/operators.h>
+//#include <pybind11/eigen.h>
+//#include <pybind11/embed.h>
+
+using namespace dann5::ocean;
+
+#define VERSION_INFO "2.0.0"
+
+namespace py = pybind11;
+
+PYBIND11_MODULE(d5o, m) {
+	m.doc() = R"pbdoc(
+        d5o plugin
+        -----------------------
+
+        .. currentmodule:: d5o
+
+        .. autosummary::
+           :toctree: _generate
+
+			Qubo
+			QuboTable
+			Qwhole
+			Qdef
+			Qexpression
+			Qvar
+			Qequation
+    )pbdoc";
+
+	// without instantiating py::class<QuboTable>
+	py::class_<Qubo>(m, "Qubo", R"pbdoc( a Qubo model dictionary)pbdoc");
+
+	py::class_<Qanalyzer>(m, "Qanalyzer", R"pbdoc(A Qubo analyzer.)pbdoc")
+		.def(py::init<const Qubo&>())
+		.def("nodes", &Qanalyzer::nodes)
+		.def("branches", &Qanalyzer::branches)
+		.def("nodesNo", &Qanalyzer::nodesNo)
+		.def("branchesNo", &Qanalyzer::branchesNo);
+
+	py::class_<QuboTable>(m, "QuboTable", R"pbdoc(A Qubo table abstraction)pbdoc")
+		//		.def(py::init<>())
+		//		.def("qubo", &QuboTable::qubo)
+		.def("qubo", (Qubo(QuboTable::*)() const) & QuboTable::qubo, "Default Qubo qubo")
+		.def("qubo", (Qubo(QuboTable::*)(const QuboTable::IoPorts&, bool) const) & QuboTable::qubo, "Qubo qubo with the input list of arguments");
+
+	// specify C++ class->baseclass specialization
+	py::class_<EqQT, QuboTable>(m, "EqQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<NeqQT, QuboTable>(m, "NeqQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<LtQT, QuboTable>(m, "LtQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<LeQT, QuboTable>(m, "LeQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<GtQT, QuboTable>(m, "GtQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<GeQT, QuboTable>(m, "GeQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<AndQT, QuboTable>(m, "AndQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<NandQT, QuboTable>(m, "NandQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<OrQT, QuboTable>(m, "OrQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<NorQT, QuboTable>(m, "NorQubo")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<NotLeftOrRightQT, QuboTable>(m, "NotLeftOrRightQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<DwNotLeftOrRightQT, QuboTable>(m, "DwNotLeftOrRightQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<NxorQT, QuboTable>(m, "NxorQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	py::class_<XorQT, QuboTable>(m, "XorQT")
+		.def(py::init<>());
+
+	// specify C++ class->baseclass specialization
+	m.def("Adder05QT", []() { return XorQT(); }, R"pbdoc( Same as XorQubo, i.e. it is a typedef of XorQubo.)pbdoc");
+
+	// specify C++ class->baseclass specialization
+	py::class_<AdderQT, QuboTable>(m, "AdderQT")
+		.def(py::init<>());
+/*
+	py::class_<Qwhole>(m, "Qwhole",
+		R"pbdoc( Quantum bit is in superposition state for any value except 0 and 1)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qwhole&>())
+		.def(py::init<Index>())
+		.def(py::init<long>())
+		.def("nobs", &Qwhole::noqbs)
+	//	.def("value", &Qwhole::value)
+		.def("resize", &Qwhole::resize)
+	//	.def("assign", &Qwhole::operator=)
+	//	.def("push", &Qwhole::operator<<)
+		.def(-py::self)
+		.def(py::self & py::self)
+		.def(py::self &= py::self)
+		.def(py::self | py::self)
+		.def(py::self |= py::self)
+		.def(py::self ^ py::self)
+		.def(py::self ^= py::self)
+		.def(py::self + py::self)
+		.def(py::self += py::self)
+		.def(py::self * py::self)
+		.def(py::self *= py::self);
+
+	py::class_<Qdef>(m, "Qdef",
+		R"pbdoc( Quantum definition of a definition defines Q bit definition names in a vector)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qdef&>())
+		.def(py::init<Index>())
+		.def(py::init<Index, const std::string&>())
+		.def("nobs", &Qdef::noqbs)
+		.def(py::self + py::self)
+		.def(py::self * py::self);
+
+	py::class_<Qexpression>(m, "Qexpression",
+		R"pbdoc( Quantum expression of arithmetic Q operations with Q defined symbols as operands)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qexpression&>())
+		.def(py::init<const Qdef&>())
+		.def("nobs", &Qexpression::noqbs)
+		.def(py::self + py::self)
+		.def(py::self += py::self)
+		//	.def(py::self + Qdef())
+		//	.def(py::self += Qdef())
+		.def(py::self* py::self)
+		.def(py::self *= py::self);
+	//	.def(py::self * Qdef())
+	//	.def(py::self *= Qdef());
+
+	py::class_<Qstatement>(m, "Qstatement")
+		//		.def(py::init<>())
+		//		.def(py::init<const Qstatement&>())
+		//		.def(py::init<Index>())
+		//		.def(py::init<const Qexpression&, const Qvars&>())
+		.def("nobs", &Qstatement::noqbs)
+		//.def("expression", static_cast<const Qexpression & (Qstatement::*)() const>(&Qstatement::expression), "return const Qexpression&")
+		.def("expression", static_cast<Qexpression& (Qstatement::*)()>(&Qstatement::expression), "return Qexpression&");
+		//.def("arguments", static_cast<const Qvars & (Qstatement::*)() const>(&Qstatement::arguments), "return const Qvars&")
+		//.def("arguments", static_cast<Qvars & (Qstatement::*)()>(&Qstatement::arguments), "return Qvars&");
+*/
+/*
+	py::class_<Qequation, Qstatement>(m, "Qequation",
+		R"pbdoc( Quantum equation is a coupling of result Q variable via Q expression with Qvar arguments
+			Default constructor creates Q equation witout a result Q variable so the result definition is an empty string
+				fx = Qeqation()
+
+			Overloaded constructors: create Q equation with a given Q variable as an expected result,
+				r = Qvar(4, "R"), e.g. result variable with definition name "R" and 4 Q bits in superposition state
+				fR = Qeauation(r), e.g. a Q eauation with a result defined and without expression and arguments 
+
+			Overloaded constructors with 3 arguments: result Q variable, resulting Q expression and corresponding
+				Q variables as arguments of the expression:
+				e = Qvar("e", 8), e.g. result variable "e" is set to a value 8 (b1000)
+				args = [Qvar(3, "a"), Qvar(4, "b")], e.g. there are 2 arguments of the equation
+				xPrsn = args[0].definition() + args[1].definition(), e.g. the equation expresion is "a + b"
+				fe = Qequation(e, xPrsn, args), e.g. the equation contains the result, its expression and 
+												corresponding arguemnts
+ 
+			Copy constructor: creates a quantum variable with a same name and value as right object:
+				myEquation = Qequation(...)
+				...
+				aCopy = Qequation(myEquation)
+
+			assignment(Qequation right) - an assignment operator returns a reference of this Q equation with Q result,
+				expression and arguments same as in right Qequation
+				a = Qvar(2, "a"), e.g. Q variable named a with 2 bits in superposition state
+				b = Qvar("b", 2), e.g. Q variable named b with value of 2
+				c = Qvar(3, "c"), e.g. Q variable named c with 3 bits in superposition state
+				e = Qvar("e", 6), e.g. Q variable named e with value of 6
+				anE = Qequation(e), e.g. a Q equation with result variable e
+				anE.assignment( a * b * c ), e.g. to anE equation assign multiplication of a,b and c variable
+
+			Addition operator returns a new Qequation object with added Q variable to this Q equation
+				fx = anE + a, e.g. where existing Qequation anE and variable a, create a new Qequation fx
+
+			Addition operator returns a new Qequation object resulting from addition of this and right Q equations
+				fy = fx + anE, e.g. where fy adds results, expressions and arguments of existing equations fx and anE
+
+			Addition operator returns a reference to this Qequation object with added Q variable
+				fy += b, .e.g. where b is existing Q varaible, and fy is an existing Qequation
+
+			Addition operator returns a reference to this Qequation object with added right Q equation
+				fy += anE, .e.g. where both fy and anE are existing Qequation's
+
+			Multiplication operator returns a new Qequation object with multiplied Q variable with this Q equation
+				fx = anE * a, e.g. where existing Qequation anE and variable a, create a new Qequation fx
+
+			Multiplication operator returns a new Qequation object resulting from multiplication of this and right Q equations
+				fy = fx * anE, e.g. where fy multiplies results and expressions, 
+									and adds arguments of existing equations fx and anE
+
+			Multiplication operator returns a reference to this Qequation object with multiplied Q variable
+				fy *= b, .e.g. where b is existing Q varaible, and fy is an existing Qequation
+
+			Multiplication operator returns a reference to this Qequation object with multiplied right Q equation
+				fy *= anE, .e.g. where both fy and anE are existing Qequation's
+
+			size() - returns a number of bit level expressions in this Q equation
+
+			result() - returns a constant reference to the result of this Q equation
+
+			expression() - returns a constant reference to the expression of this Q equation
+
+			arguments() - returns a constant reference to the expression arguments of this Q equation
+
+			qubo(bool finalized) - Returns a qubo representation of this Q equation, 
+				if not finalized, returns a full qubo definition representation of this Q equation
+				if finalized, returns an expression that replaces symbols with values of
+				Qbits in deterministic states for all the Q variables, i.e. result and expression arguments
+
+			add(Sample& sample) Add a sample with a node list defined by qubo() of this Q equation
+				A Semple is defined as a dictionary (map) of definition nodes and their values.
+				The node names are defined by qubo() for each Q equation
+
+			set(Samples& samples) - Set a sample list with a node list defined by qubo() of this Q equation
+				the combination of node values should be different for each sample
+
+			solutions() - for existing samples, returns a string representation of all solutions of this Q euation
+
+			toString(bool decomposed) - Returns a string representation of this Q equation, 
+				if not decomposed, returns an equation line per each Qbit level
+				if decomposed, returns a line per Qbit operational expression
+
+		)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qequation&>())
+		.def(py::init<const Qvar&>())
+		.def(py::init<const Qvar&, const Qexpression&, const Qvars&>())
+		.def("solutions", &Qequation::solutions)
+		.def("add", &Qequation::add)
+		.def("set", &Qequation::set)
+		//		.def("toString", &Qequation::toString) 		//	virtual string toString(bool decomposed = false, Index level = Eigen::Infinity) const;
+		.def("toString", static_cast<string(Qequation::*)() const>(&Qequation::toString), "return string representation")
+		.def("toString", static_cast<string(Qequation::*)(bool) const>(&Qequation::toString), "overload: return string with decomposed representation")
+		.def("toString", static_cast<string(Qequation::*)(bool, Index) const>(&Qequation::toString), "overload: return string with decomposed representation of a specified Qbit level")
+		.def("result", &Qequation::result)
+		//		.def("qubo", &Qequation::qubo)
+		.def("qubo", static_cast<Qubo(Qequation::*)() const>(&Qequation::qubo), "return finalized qubo representation")
+		.def("qubo", static_cast<Qubo(Qequation::*)(bool) const>(&Qequation::qubo), "overload: return qubo representation")
+		.def("qubo", static_cast<Qubo(Qequation::*)(bool, Index) const>(&Qequation::qubo), "overload: return qubo representation of a specified Qbit level")
+		.def("assign", static_cast<Qequation & (Qequation::*)(const Qequation&)>(&Qequation::operator=), "assign Qequation")
+		.def("assign", static_cast<Qequation & (Qequation::*)(const Qvar&)>(&Qequation::operator=), "assign Qequation")
+		.def(py::self & py::self)
+		.def(py::self &= py::self)
+		.def(py::self & Qvar())
+		.def(py::self &= Qvar())
+		.def("nand", static_cast<Qequation(Qequation::*)(const Qequation&) const>(&Qequation::nand), "operator ~&")
+		.def("nandMutable", static_cast<Qequation & (Qequation::*)(const Qequation&)>(&Qequation::nandMutable), "operator ~&=")
+		.def("nand", static_cast<Qequation(Qequation::*)(const Qvar&) const>(&Qequation::nand), "operator ~&")
+		.def("nandMutable", static_cast<Qequation & (Qequation::*)(const Qvar&)>(&Qequation::nandMutable), "operator ~&=")
+		.def(py::self | py::self)
+		.def(py::self |= py::self)
+		.def(py::self | Qvar())
+		.def(py::self |= Qvar())
+		.def("nor", static_cast<Qequation(Qequation::*)(const Qequation&) const>(&Qequation::nor), "operator ~|")
+		.def("norMutable", static_cast<Qequation & (Qequation::*)(const Qequation&)>(&Qequation::norMutable), "operator ~|=")
+		.def("nor", static_cast<Qequation(Qequation::*)(const Qvar&) const>(&Qequation::nor), "operator ~|")
+		.def("norMutable", static_cast<Qequation & (Qequation::*)(const Qvar&)>(&Qequation::norMutable), "operator ~|=")
+		.def(py::self ^ py::self)
+		.def(py::self ^= py::self)
+		.def(py::self ^ Qvar())
+		.def(py::self ^= Qvar())
+		.def(py::self + py::self)
+		.def(py::self += py::self)
+		.def(py::self + Qvar())
+		.def(py::self += Qvar())
+		.def(py::self * py::self)
+		.def(py::self *= py::self)
+		.def(py::self * Qvar())
+		.def(py::self *= Qvar());
+*/
+	// specify C++ class->baseclass specialization
+	py::class_<Qsolver>(m, "Qsolver")
+		.def(py::init<const Qubo&>())
+		.def(py::init<const Qubo&, bool>())
+		.def("solution", &Qsolver::solution);
+
+#ifdef VERSION_INFO
+	m.attr("__version__") = VERSION_INFO;
+#else
+	m.attr("__version__") = "dev";
+#endif
+}
+
+
