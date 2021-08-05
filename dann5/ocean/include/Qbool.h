@@ -21,6 +21,10 @@ namespace dann5 {
 			static const Qvalue cTrue	= 'T'; // value 84
 			static const Qvalue cFalse	= 'F'; // value 71
 
+			// Default constructor initializes Q bit with an empty id and supperposition
+			// value
+			Qbool() : Qcell(""), Qtype(), mValue(gSuperposition) {};
+
 			// Initialize Q bool with a given id and supperposition value
 			Qbool(const string& id) : Qtype(), Qcell(id), mValue(gSuperposition) {};
 
@@ -38,17 +42,17 @@ namespace dann5 {
 			operator Qvalue() { return mValue; };
 			operator const Qvalue() const { return mValue; };
 
-			// set the new value of this Q bit
+			// set the new value of this Q boolean
 			virtual void value(Qvalue v);
 
-			// constant and non-constant get a value of this Q bit
+			// constant and non-constant get a value of this Q boolean
 			virtual Qvalue value() const;
 			virtual Qvalue value();
 
 			// Return a Qdef's shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbool(*this)); };
 
-			// Returns the number of Q bits that the Q binary holds
+			// Returns the number of Q booleans that the Q binary holds
 			virtual std::size_t noqbs() const noexcept { return 1; };
 
 
@@ -68,7 +72,7 @@ namespace dann5 {
 			Qbool& operator=(const Qbool& right);
 
 			// assignment of an Q expression creates a Q bool assignment where this 
-			// Q bit is an assignee
+			// Q boolean is an assignee
 			Qassign<Qbool> operator=(const Qexpr<Qbool>& right);
 
 			/*** Compound Assignments ***/
@@ -95,23 +99,27 @@ namespace dann5 {
 			/*** Logical ***/
 			// instantiate Q expression with inversion logic, e.g. for Qbool with id 'x'
 			// the expression is '!x' != 'x'
-			Qexpr<Qbool> operator not() const;
+			Qexpr<Qbool> operator !() const;
 
 			// instantiate Q expression with and logic, e.g. for Qbool ids 'x' and 'y'
 			// the expression is 'x' && 'y'
-			Qexpr<Qbool> operator and(const Qbool& right) const;
-
-			// instantiate Q expression with or logic, e.g. for Qbool ids 'x' and 'y'
-			// the expression is 'x' || 'y'
-			Qexpr<Qbool> operator or(const Qbool& right) const;
+			Qexpr<Qbool> operator &(const Qbool& right) const;
+			Qexpr<Qbool> operator and(const Qbool& right) const { return (*this) & right; };
 
 			// instantiate Q expression with and logic, e.g. for Qbool id 'x' and [right]
 			// object the expression is 'x' && [right]
-			Qexpr<Qbool> operator and(const Qexpr<Qbool>& right) const;
+			Qexpr<Qbool> operator &(const Qexpr<Qbool>& right) const;
+			Qexpr<Qbool> operator and(const Qexpr<Qbool>& right) const { return (*this) & right; };
+
+			// instantiate Q expression with or logic, e.g. for Qbool ids 'x' and 'y'
+			// the expression is 'x' || 'y'
+			Qexpr<Qbool> operator |(const Qbool& right) const;
+			Qexpr<Qbool> operator or(const Qbool& right) const { return (*this) | right; };
 
 			// instantiate Q expression with or logic, e.g. for Qbool id 'x' and [right]
 			// object the expression is 'x' || [right]
-			Qexpr<Qbool> operator or(const Qexpr<Qbool>& right) const;
+			Qexpr<Qbool> operator |(const Qexpr<Qbool>& right) const;
+			Qexpr<Qbool> operator or(const Qexpr<Qbool>& right) const { return (*this) | right; };
 
 			/*** Comparison ***/
 
@@ -119,9 +127,18 @@ namespace dann5 {
 			// the expression is 'x' == 'y'
 			Qexpr<Qbool> operator==(const Qbool& right) const;
 
+			// instantiate Q expression with comparison, e.g. for arguments
+			// 'x' and [right] the expression is 'x' == [right root]			
+			Qexpr<Qbool> operator==(const Qexpr<Qbool>& right) const;
+
 			// instantiate Q expression with comparison, e.g. for Qbool ids 'x' and 'y'
 			// the expression is 'x' != 'y'
 			Qexpr<Qbool> operator!=(const Qbool& right) const;
+
+
+			// instantiate Q expression with comparison, e.g. for arguments
+			// 'x' and [right] the expression is 'x' != [right root]			
+			Qexpr<Qbool> operator!=(const Qexpr<Qbool>& right) const;
 
 		protected:
 		private:

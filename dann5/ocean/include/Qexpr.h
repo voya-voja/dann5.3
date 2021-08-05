@@ -112,9 +112,9 @@ namespace dann5 {
 				return Qexpression::Sp(new Qexpr<Q_Type>(*this));
 			};
 
-			/*** Bitwise ***/
+			/*** Bitwise + Logical ***/
 
-			// instantiate Q expression with inversion logic, e.g. for Qbin with id 'x'
+			// instantiate Q expression with inversion logic, e.g. for Qbit with id 'x'
 			// the logic is '~x' != 'x'
 			Qexpr<Q_Type>& operator~()
 			{
@@ -127,6 +127,16 @@ namespace dann5 {
 
 				root(pOp);
 				return(*this);
+			}
+			
+			// instantiate Q expression with inversion logic, e.g. for Qbool with id 'x'
+			// the expression is '!x' != 'x'
+			Qexpr<Q_Type> operator !() const
+			{
+				Q_Type inverted("!" + rootDef()->toString());
+
+				Qexpr<Q_Type> expr = inverted != (*this);
+				return expr;
 			}
 
 			// Update Q expression with and logic, e.g. for an argument with id 'x' the
@@ -383,69 +393,6 @@ namespace dann5 {
 				Qexpr<Qbool> expr(pOp);
 				return expr;
 			};
-
-			/*** Logical ***/
-			// instantiate Q expression with inversion logic, e.g. for Qbool with id 'x'
-			// the expression is '!x' != 'x'
-			Qexpr<Q_Type> operator not() const
-			{
-				Q_Type inverted("!" + rootDef()->toString());
-
-				Qexpr<Q_Type> expr = inverted != (*this);
-				return expr;
-			}
-
-			// instantiate Q expression with and logic, e.g. for Qbool ids 'x' and 'y'
-			// the expression is 'x' && 'y'
-			Qexpr<Q_Type> operator and(const Q_Type& right) const
-			{
-				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(AndQT::cMark);
-				pOp->inputs({ as_const(*this).rootDef(), right.clone() });
-				Q_Type out(pOp->outId());
-				pOp->output(out.clone());
-
-				Qexpr<Q_Type> expr(pOp);
-				return expr;
-			}
-
-			// instantiate Q expression with or logic, e.g. for Qbool ids 'x' and 'y'
-			// the expression is 'x' || 'y'
-			Qexpr<Q_Type> operator or(const Q_Type& right) const
-			{
-				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(OrQT::cMark);
-				pOp->inputs({ as_const(*this).rootDef(), right.clone() });
-				Q_Type out(pOp->outId());
-				pOp->output(out.clone());
-
-				Qexpr<Q_Type> expr(pOp);
-				return expr;
-			}
-
-			// instantiate Q expression with and logic, e.g. for Qbool id 'x' and [right]
-			// object the expression is 'x' && [right]
-			Qexpr<Q_Type> operator and(const Qexpr<Q_Type>& right) const
-			{
-				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(AndQT::cMark);
-				pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
-				Q_Type out(pOp->outId());
-				pOp->output(out.clone());
-
-				Qexpr<Q_Type> expr(pOp);
-				return expr;
-			}
-
-			// instantiate Q expression with or logic, e.g. for Qbool id 'x' and [right]
-			// object the expression is 'x' || [right]
-			Qexpr<Q_Type> operator or(const Qexpr<Q_Type>& right) const
-			{
-				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(OrQT::cMark);
-				pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
-				Q_Type out(pOp->outId());
-				pOp->output(out.clone());
-
-				Qexpr<Q_Type> expr(pOp);
-				return expr;
-			}
 
 			/*** Arithmetic ***/
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 

@@ -245,6 +245,7 @@ Qexpr<Qbool> Qbit::operator!=(const Qexpr<Qbit>& right) const {
 	Qexpr<Qbool> expr(pOp);
 	return expr;
 }
+
 Qexpr<Qbool> Qbit::operator>(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GtQT::cMark);
