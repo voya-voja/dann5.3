@@ -11,6 +11,7 @@
 #include <Qbin.h>
 #include <Qwhole.h>
 
+#include <Qexpr.h>
 #include <Qassign.h>
 #include <Qsolver.h>
 
@@ -130,23 +131,48 @@ PYBIND11_MODULE(d5o, m) {
 	py::class_<AdderQT, QuboTable>(m, "AdderQT")
 		.def(py::init<>());
 
-/*
+/*--- Qexpr.h definitions ---*/
 	py::class_<Qexpression>(m, "Qexpression",
 		R"pbdoc( Quantum expression of arithmetic Q operations with Q defined symbols as operands)pbdoc")
-		.def(py::init<>())
-		.def(py::init<const Qexpression&>())
-		.def(py::init<const Qdef&>())
-		.def("nobs", &Qexpression::noqbs)
-		.def(py::self + py::self)
-		.def(py::self += py::self)
-		//	.def(py::self + Qdef())
-		//	.def(py::self += Qdef())
-		.def(py::self * py::self)
-		.def(py::self *= py::self);
-	//	.def(py::self * Qdef())
-	//	.def(py::self *= Qdef());
-*/
+		.def("root", static_cast<Qop& (Qexpression::*)()>(&Qexpression::root), "returns a reference to the Q expression root Q operaton")
+		.def("rootDef", static_cast<Qdef& (Qexpression::*)()>(&Qexpression::rootDef), "returns a reference to the Q expression root Q definition")
 
+		.def("noqbs", &Qexpression::noqbs, "Returns the number of Q bits that the Q expression holds")
+
+		.def("qubo", &Qexpression::qubo, 
+			"Returns a qubo representation of this Q expression, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
+
+		.def("toString", &Qexpression::toString, "returns string presentation of this Q expression object")
+
+		.def("solutions", static_cast<void (Qexpression::*)(const Qsolver::Samples&)>(&Qexpression::solutions), 
+			"Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
+		.def("solutions", static_cast<string(Qexpression::*)() const>(&Qexpression::solutions), "For existing samples, returns a string with all solutions of this Q expression")
+
+		.def("solve", static_cast<string(Qexpression::*)()>(&Qexpression::solve), "Solve this Q expression and return a string with all solutions");
+
+/*--- Qassign.h definitions ---*/
+	py::class_<Qassignment>(m, "Qassignment",
+		R"pbdoc( Quantum assignment of an expression to a result)pbdoc")
+		.def("assign", &Qassignment::assign, "Assign a Q expression to Q defintion assignee. Use without inputs to remove (one or boath) Q assignment members")
+
+		.def("assignee", static_cast<const Qdef::Sp& (Qassignment::*)() const>(&Qassignment::assignee), "returns a reference to the Q assignee")
+		.def("assignee", static_cast<void (Qassignment::*)(const Qdef::Sp&)>(&Qassignment::assignee), "set a Q definition pointer to a new assignee")
+
+		.def("expression", static_cast<const Qexpression::Sp& (Qassignment::*)() const>(&Qassignment::expression), "returns a reference to the assignment's Q expression")
+		.def("expression", static_cast<void (Qassignment::*)(const Qexpression::Sp&)>(&Qassignment::expression), "set assignment's new Q expression")
+
+		.def("noqbs", &Qassignment::noqbs, "Returns the number of Q bits that the Q assignment holds")
+
+		.def("qubo", &Qassignment::qubo,
+			"Returns a qubo representation of this Q assignment, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
+
+		.def("toString", &Qassignment::toString, "returns string presentation of this Q assignment object")
+
+		.def("solutions", static_cast<void (Qassignment::*)(const Qsolver::Samples&)>(&Qassignment::solutions),
+			"Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
+		.def("solutions", static_cast<string(Qassignment::*)() const>(&Qassignment::solutions), "For existing samples, returns a string with all solutions of this Q expression")
+
+		.def("solve", static_cast<string(Qassignment::*)()>(&Qassignment::solve), "Solve this Q assignment and return a string with all solutions");
 /*--- Qbit.h definitions ---*/
 	py::class_<Qbit>(m, "Qbit",
 		R"pbdoc( Quantum bit is in superposition state for any value except 0 and 1)pbdoc")

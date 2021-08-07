@@ -42,7 +42,7 @@ namespace dann5 {
 			// set a pointer to a new root Q definition of this expression
 			void root(const Qop::Sp& pRoot) { mpRoot = pRoot; };
 
-			// returns a pointer to the Q expression root Q definition
+			// returns a reference to the Q expression root Q definition
 			Qdef& rootDef() { return *dynamic_pointer_cast<Qdef>(mpRoot); };
 
 			// return a root shared-pointer

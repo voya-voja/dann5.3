@@ -56,7 +56,7 @@ namespace dann5 {
 			// returns a pointer to the Q expression
 			const Qexpression::Sp& expression() const { return mpExpr; };
 
-			// set a Q definition pointer to a new assignee
+			// set assignment's new Q expression
 			void expression(const Qexpression::Sp& pExpr);
 
 			// Returns the number of Q bits that the Q assignment holds
