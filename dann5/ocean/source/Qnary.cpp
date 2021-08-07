@@ -103,23 +103,30 @@ size_t Qnary::count(Qvalue value) const
 
 string Qnary::toString(bool decomposed, size_t bitLevel) const
 {
+	string valueStr = "";
+	size_t size = noqbs();
 	if (decomposed)
 	{
 		if (bitLevel < noqbs())
 			return mCells[bitLevel]->toString(decomposed);
 		else
-			return "0";
-	}
-	string valueStr = "0";
-	size_t size = noqbs();
-	if (!all(0))
-	{
-		valueStr = cUnknownSign;
-		Bits value = (*this);
-		if (value != cUnknown)
 		{
-			valueStr = value.to_string();
-			valueStr = valueStr.substr(value.size() - size);
+			for(size_t at = 0; at < size; at++)
+				valueStr += mCells[at]->toString(decomposed) + ";";
+		}
+	}
+	else
+	{
+		valueStr = "0";
+		if (!all(0))
+		{
+			valueStr = cUnknownSign;
+			Bits value = (*this);
+			if (value != cUnknown)
+			{
+				valueStr = value.to_string();
+				valueStr = valueStr.substr(value.size() - size);
+			}
 		}
 	}
 	string id = Qdef::toString(decomposed);

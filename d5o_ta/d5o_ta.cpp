@@ -2,6 +2,9 @@
 //
 
 #include <iostream>
+#include <Qbit.h>
+#include <Qbool.h>
+#include <Qbin.h>
 #include <Qwhole.h>
 #include <Qassign.h>
 
@@ -9,6 +12,18 @@
 
 using namespace std;
 using namespace dann5::ocean;
+
+void basic_types()
+{
+    Qbit a0("0a", 1);
+    cout << a0.toString() << " " << a0.toString(false, 0) << " " << a0.toString(true) << " " << a0.toString(true, 0) << endl;
+
+    Qbool b("boolean", Qbool::cTrue);
+    cout << b.toString() << " " << b.toString(false, 0) << " " << b.toString(true) << " " << b.toString(true, 0) << endl;
+
+    Qbin a(3, "a");
+    cout << a.toString() << " " << a.toString(false, 0) << " " << a.toString(true) << " " << a.toString(true, 0) << endl;
+}
 
 void testAddition()
 {
@@ -37,6 +52,9 @@ void testMultiplication()
 
 int main()
 {
+
+    basic_types();
+/*
     const clock_t begin_time = clock();
     testAddition();
     clock_t addition_end_time = clock();
@@ -44,7 +62,7 @@ int main()
     testMultiplication();
     clock_t multiplication_end_time = clock();
     cout << endl << "Running time: " << to_string(float(multiplication_end_time - addition_end_time) / CLOCKS_PER_SEC) << "s";
-
+*/
     return 0;
 }
 
