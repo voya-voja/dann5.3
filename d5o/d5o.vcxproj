@@ -128,13 +128,13 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/Lib/site-packages/pybind11/include;../../../../AppData/Local/Continuum/anaconda3/envs/ocean2/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/Lib/site-packages/pybind11/include;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>../../../../AppData/Local/Continuum/anaconda3/envs/ocean2/libs/Python37.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/libs/Python38.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,7 +147,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/Lib/site-packages/pybind11/include;../../../../AppData/Local/Continuum/anaconda3/envs/ocean2/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/Lib/site-packages/pybind11/include;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,7 +155,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>../../../../AppData/Local/Continuum/anaconda3/envs/ocean2/libs/Python37.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/libs/Python38.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
