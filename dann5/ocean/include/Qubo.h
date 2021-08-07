@@ -37,7 +37,7 @@ namespace dann5{
 		typedef unsigned char Qvalue;
 
 		// Quantum default superposition value, 
-		// though any value except 0 and 1 will be considered superposition
+		// though any Q bit value except 0 and 1 will be considered superposition
 		static const Qvalue gSuperposition = 'S'; // value 83
 
 		// an array of Quantum values

@@ -61,6 +61,8 @@ PYBIND11_MODULE(d5o, m) {
 	// specify C++ class->baseclass specialization
 	m.def("Qvalue", []() { return unsigned char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S}.)pbdoc");
 
+	m.def("Superposition", []() { return gSuperposition; }, R"pbdoc(Quantum default superposition value, though any Q bit value except 0 and 1 will be considered superposition.)pbdoc");
+
 	py::class_<Qvalues>(m, "Qvalues", R"pbdoc(An array of Quantum values)pbdoc");
 
 	py::class_<QuboTable>(m, "QuboTable", R"pbdoc(A Qubo table abstraction)pbdoc")
@@ -173,6 +175,7 @@ PYBIND11_MODULE(d5o, m) {
 		.def("solutions", static_cast<string(Qassignment::*)() const>(&Qassignment::solutions), "For existing samples, returns a string with all solutions of this Q expression")
 
 		.def("solve", static_cast<string(Qassignment::*)()>(&Qassignment::solve), "Solve this Q assignment and return a string with all solutions");
+
 /*--- Qbit.h definitions ---*/
 	py::class_<Qbit>(m, "Qbit",
 		R"pbdoc( Quantum bit is in superposition state for any value except 0 and 1)pbdoc")
@@ -244,9 +247,14 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' <= 'y'")
 		.def(py::self >= Qexpr<Qbit>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' <= [right root]");
 
+	py::class_<Qbits>(m, "Qbits", R"pbdoc(Quantum vector of Q cell references)pbdoc");
+
+
 /*--- Qbool.h definitions ---*/
 		py::class_<Qbool>(m, "Qbool",
 			R"pbdoc( Quantum boolean is in superposition state for any value except 'F' and 'T')pbdoc")
+			.def("True", []() { return Qbool::cTrue; })
+			.def("False", []() { return Qbool::cFalse; })
 
 			.def(py::init<const Qbool&>())
 			.def(py::init<const string&>())
@@ -291,6 +299,9 @@ PYBIND11_MODULE(d5o, m) {
 
 			.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qbool ids 'x' and 'y' the expression is 'x' != 'y'")
 			.def(py::self != Qexpr<Qbool>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
+
+/*--- Qnary.h definitions ---*/
+		py::class_<Bits>(m, "Bits", R"pbdoc(coresponds to a bitset of the same size and unsigned long long (64 bits))pbdoc");
 
 /*--- Qbin.h definitions ---*/
 	py::class_<Qbin>(m, "Qbin",
