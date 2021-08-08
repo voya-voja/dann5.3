@@ -12,8 +12,15 @@ print(a0.toString(False, 0xffffffffffffffff),
       a0.toString(True, 0xffffffffffffffff),
       a0.toString(True, 0))
 
+b = d5o.Qbool("boolean", d5o.Qbool.true())
+print(b.toString(False, 0xffffffffffffffff), 
+      b.toString(False, 0),
+      b.toString(True, 0xffffffffffffffff),
+      b.toString(True, 0))
+
 a = d5o.Qbin(3, "a")
-print(a.toString(False, 0xffffffffffffffff))
-print(a.toString(False, 0))
-print(a.toString(True, 0xffffffffffffffff))
-print(a.toString(True, 0))
+print(a.toString(False, 0xffffffffffffffff), 
+      a.toString(False, 0),
+      a.toString(True, 0xffffffffffffffff),
+      a.toString(True, 0))
+

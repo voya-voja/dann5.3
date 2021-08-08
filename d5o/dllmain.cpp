@@ -253,8 +253,8 @@ PYBIND11_MODULE(d5o, m) {
 /*--- Qbool.h definitions ---*/
 		py::class_<Qbool>(m, "Qbool",
 			R"pbdoc( Quantum boolean is in superposition state for any value except 'F' and 'T')pbdoc")
-			.def("True", []() { return Qbool::cTrue; })
-			.def("False", []() { return Qbool::cFalse; })
+			.def("true", []() { return Qbool::cTrue; })
+			.def("false", []() { return Qbool::cFalse; })
 
 			.def(py::init<const Qbool&>())
 			.def(py::init<const string&>())
@@ -302,6 +302,9 @@ PYBIND11_MODULE(d5o, m) {
 
 /*--- Qnary.h definitions ---*/
 		py::class_<Bits>(m, "Bits", R"pbdoc(coresponds to a bitset of the same size and unsigned long long (64 bits))pbdoc");
+
+		m.def("Unknown", []() { return Qnary::cUnknown; }, R"pbdoc(Any binary container or number is unknown, if any of its Q bits is in superposition state.)pbdoc");
+
 
 /*--- Qbin.h definitions ---*/
 	py::class_<Qbin>(m, "Qbin",
