@@ -24,3 +24,8 @@ print(a.toString(False, 0xffffffffffffffff),
       a.toString(True, 0xffffffffffffffff),
       a.toString(True, 0))
 
+x = d5o.Qwhole("x", d5o.Bits(33))
+print(x.toString(False, 0xffffffffffffffff), 
+      x.toString(False, 0),
+      x.toString(True, 0xffffffffffffffff),
+      x.toString(True, 0))

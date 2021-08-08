@@ -301,7 +301,9 @@ PYBIND11_MODULE(d5o, m) {
 			.def(py::self != Qexpr<Qbool>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
 
 /*--- Qnary.h definitions ---*/
-		py::class_<Bits>(m, "Bits", R"pbdoc(coresponds to a bitset of the same size and unsigned long long (64 bits))pbdoc");
+		py::class_<Bits>(m, "Bits", R"pbdoc(coresponds to a bitset of the same size and unsigned long long (64 bits))pbdoc")
+			.def(py::init<>())
+			.def(py::init<unsigned long long>());
 
 		m.def("Unknown", []() { return Qnary::cUnknown; }, R"pbdoc(Any binary container or number is unknown, if any of its Q bits is in superposition state.)pbdoc");
 

@@ -23,6 +23,9 @@ void basic_types()
 
     Qbin a(3, "a");
     cout << a.toString() << " " << a.toString(false, 0) << " " << a.toString(true) << " " << a.toString(true, 0) << endl;
+
+    Qwhole x("a", 33);
+    cout << x.toString() << " " << x.toString(false, 0) << " " << x.toString(true) << " " << x.toString(true, 0) << endl;
 }
 
 void testAddition()
