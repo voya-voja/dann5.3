@@ -57,13 +57,13 @@ namespace dann5 {
 			// if not finalized, returns a full qubo definition representation
 			// if finalized, returns an expression that replaces symbols with values of
 			// Q bits in deterministic states
-			virtual Qubo qubo(bool finalized = true, size_t forBit = ULLONG_MAX) const;
+			virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const;
 
 			// Return a string representation of this Q expression
 			// when decomposed is true, shows bit-level expressions per line
 			// when decomposed and forBit specified, shows a decomposed expression only
 			// for that bit level
-			string toString(bool decomposed = false, size_t forBit = ULLONG_MAX) const;
+			string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 
 			// Set a sample set with a node list defined by qubo() of this Q expression
 			// the combination of node values should be different for each sample
@@ -118,17 +118,34 @@ namespace dann5 {
 			// the logic is '~x' != 'x'
 			Qexpr<Q_Type>& operator~()
 			{
-				Qdef::Sp pOut = root().output();
-				Q_Type inverted(pOut->noqbs(), "~" + pOut->id());
+				Qdef::Sp pOut = root()->output();
+				Qdef::Sp pInverted = pOut->clone();
+				pInverted->id("~" + pOut->id());
 				Qdef::Sp pRoot = as_const(*this).rootDef();
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 				pOp->inputs({ pRoot });
-				pOp->output(inverted.clone());
+				pOp->output(pInverted->clone());
 
 				root(pOp);
 				return(*this);
 			}
-			
+
+			// instantiate Q expression with inversion logic, e.g. for Qbit with id 'x'
+			// the logic is '~x' != 'x'
+			Qexpr<Q_Type> operator~() const
+			{
+				Qdef::Sp pOut = root()->output();
+				Qdef::Sp pInverted = pOut->clone();
+				pInverted->id("~" + pOut->id());
+				Qdef::Sp pRoot = as_const(*this).rootDef();
+				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
+				pOp->inputs({ pRoot });
+				pOp->output(pInverted->clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
+			}
+
 			// instantiate Q expression with inversion logic, e.g. for Qbool with id 'x'
 			// the expression is '!x' != 'x'
 			Qexpr<Q_Type> operator !() const
@@ -151,6 +168,18 @@ namespace dann5 {
 				return(*this);
 			};
 
+			// Update Q expression with and logic, e.g. for an argument with id 'x' the
+			// expression root points to QandOp with [previous root] & 'x'
+			Qexpr<Q_Type> operator&(const Q_Type& right) const {
+				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(AndQT::cMark);
+				pOp->inputs({ as_const(*this).rootDef(), right.clone() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
+			};
+
 			// Update Q expression with and logic, e.g. for an argument [right] the
 			// expression root points to QandOp with [previous root] & [right root]
 			Qexpr<Q_Type>& operator&(const Qexpr<Q_Type>& right) {
@@ -161,6 +190,18 @@ namespace dann5 {
 
 				root(pOp);
 				return(*this);
+			};
+
+			// Update Q expression with and logic, e.g. for an argument [right] the
+			// expression root points to QandOp with [previous root] & [right root]
+			Qexpr<Q_Type> operator&(const Qexpr<Q_Type>& right) const {
+				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(AndQT::cMark);
+				pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
 			};
 
 			// Update Q expression with and logic, e.g. for an argument with id 'x' the
@@ -199,6 +240,18 @@ namespace dann5 {
 				return(*this);
 			};
 
+			// Update Q expression with or logic, e.g. for an argument with id 'x' the 
+			// expression root points to QorOp with [previous root] | 'x'
+			Qexpr<Q_Type> operator|(const Q_Type& right) const {
+				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(OrQT::cMark);
+				pOp->inputs({ as_const(*this).rootDef(), right.clone() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
+			};
+
 			// Update Q expression with or logic, e.g. for an argument [right] the
 			// expression root points to QorOp with [previous root] | [right root]
 			Qexpr<Q_Type>& operator|(const Qexpr<Q_Type>& right) {
@@ -209,6 +262,18 @@ namespace dann5 {
 
 				root(pOp);
 				return(*this);
+			};
+
+			// Update Q expression with or logic, e.g. for an argument [right] the
+			// expression root points to QorOp with [previous root] | [right root]
+			Qexpr<Q_Type> operator|(const Qexpr<Q_Type>& right) const {
+				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(OrQT::cMark);
+				pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
 			};
 
 			// Update Q expression with or logic, e.g. for an argument with id 'x' the 
@@ -247,6 +312,18 @@ namespace dann5 {
 				return(*this);
 			};
 
+			// Update Q expression with xor logic, e.g. for an argument with id 'x' the 
+			// expression root points to QxorOp with [previous root] ^ 'x'
+			Qexpr<Q_Type> operator^(const Q_Type& right) const {
+				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
+				pOp->inputs({ as_const(*this).rootDef(), right.clone() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
+			};
+
 			// Update Q expression with xor logic, e.g. for an argument [right] the
 			// expression root points to QxorOp with [previous root] ^ [right root]
 			Qexpr<Q_Type>& operator^(const Qexpr<Q_Type>& right) {
@@ -257,6 +334,18 @@ namespace dann5 {
 
 				root(pOp);
 				return(*this);
+			};
+
+			// Update Q expression with xor logic, e.g. for an argument [right] the
+			// expression root points to QxorOp with [previous root] ^ [right root]
+			Qexpr<Q_Type> operator^(const Qexpr<Q_Type>& right) const {
+				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
+				pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
 			};
 
 			/*** Comparison ***/
@@ -385,7 +474,7 @@ namespace dann5 {
 
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to QleOp with [previous root] <= [right root]
-			Qexpr<Qbool>& operator<=(const Qexpr<Q_Type>& right) const {
+			Qexpr<Qbool> operator<=(const Qexpr<Q_Type>& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LeQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.rootDef());

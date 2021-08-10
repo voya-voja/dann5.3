@@ -33,7 +33,7 @@ void QnaryOp::append(Qdef::Sp argument)
 Qdef::Sp QnaryOp::output(size_t forBit) const
 {
 	Qdef::Sp pOut = Qop::output(forBit);
-	if (forBit != ULLONG_MAX)
+	if (forBit != cAllBits)
 	{
 		Qnary::Sp pNaryOutput = dynamic_pointer_cast<Qnary>(pOut);
 		if (pNaryOutput != nullptr)
@@ -44,7 +44,7 @@ Qdef::Sp QnaryOp::output(size_t forBit) const
 
 void QnaryOp::output(const Qdef::Sp& pOut, size_t forBit)
 {
-	if (forBit == ULLONG_MAX)
+	if (forBit == cAllBits)
 	{
 		Qop::output(pOut, forBit);
 		Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(pOut);
@@ -76,7 +76,7 @@ string QnaryOp::toString(bool decomposed, size_t forBit) const
 {
 	const Qcells& logic = cells();
 	if (!decomposed) return Qop::toString(decomposed, forBit);
-	if (forBit != ULLONG_MAX) return logic[forBit]->toString(decomposed, forBit);
+	if (forBit != cAllBits) return logic[forBit]->toString(decomposed, forBit);
 
 	size_t size = noqbs();
 	string rStr("");
@@ -90,7 +90,7 @@ string QnaryOp::toString(bool decomposed, size_t forBit) const
 Qubo QnaryOp::qubo(bool finalized, size_t forBit) const
 {
 	const Qcells& logic = cells();
-	if (forBit != ULLONG_MAX)
+	if (forBit != cAllBits)
 	{
 		Qop::Sp pCellOp = dynamic_pointer_cast<Qop>(logic[forBit]);
 		if (pCellOp != nullptr)

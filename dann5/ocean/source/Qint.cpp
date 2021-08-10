@@ -32,7 +32,7 @@ Qint::operator long long()
 
 Qint::operator const long long() const
 {
-	if (any(gSuperposition))
+	if (any(cSuperposition))
 		return Qint::cUnknown;
 	Bits bits = (*this);
 	size_t iSize = noqbs();
@@ -56,9 +56,9 @@ void Qint::resize(size_t size, Qvalue value)
 		Qbin::resize(size);
 }
 
-string Qint::toString(bool decomposed, size_t bitLevel) const
+string Qint::toString(bool decomposed, size_t forBit) const
 {
-	if (decomposed) return Qnary::toString(decomposed, bitLevel);
+	if (decomposed) return Qnary::toString(decomposed, forBit);
 	string vStr = Qnary::cUnknownSign;
 	if (!any())
 	{

@@ -23,16 +23,16 @@ namespace dann5 {
 
 			// Default constructor initializes Q bit with an empty id and supperposition
 			// value
-			Qbool() : Qcell(""), Qtype(), mValue(gSuperposition) {};
+			Qbool() : Qcell(""), Qtype(), mValue(cSuperposition) {};
 
 			// Initialize Q bool with a given id and supperposition value
-			Qbool(const string& id) : Qtype(), Qcell(id), mValue(gSuperposition) {};
+			Qbool(const string& id) : Qtype(), Qcell(id), mValue(cSuperposition) {};
 
 			// Initialize Q bool with a given id and value. If value is different from 'T' or 'F', 
 			// Qbool into superposition state, i.e. value 'S'
 			Qbool(const string& id, Qvalue value) : Qtype(), Qcell(id), mValue(value)
 			{
-				if (value != cTrue && value != cFalse) mValue = gSuperposition;
+				if (value != cTrue && value != cFalse) mValue = cSuperposition;
 			};
 
 			// copy constructor
@@ -58,7 +58,7 @@ namespace dann5 {
 
 			// return string presentation of this Qoperand
 			virtual string toString(bool decomposed = false,
-									size_t bitLevel = ULLONG_MAX) const;
+									size_t forBit = cAllBits) const;
 
 			// Override to set solution values from the sample set for this deffinition
 			virtual void solutions(const Qsolver::Samples& samples);

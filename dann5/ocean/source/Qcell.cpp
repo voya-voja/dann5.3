@@ -7,7 +7,7 @@ string Qcell::solution(size_t sampleId) const
 {
 	string sStr = id() + "/";
 	Qvalue v = value();
-	if (v == gSuperposition)
+	if (v == cSuperposition)
 		v = mSolutions[sampleId];
 	if (v > 1)
 		sStr.append(1, v);
@@ -21,7 +21,7 @@ string Qcell::solution(size_t sampleId) const
 Qvalue Qcell::solutionValue(size_t sampleId) const 
 {
 	Qvalue v = value();
-	if (v == gSuperposition)
+	if (v == cSuperposition)
 		v = mSolutions[sampleId];
 	return v;
 }

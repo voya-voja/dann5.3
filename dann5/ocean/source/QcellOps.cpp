@@ -13,11 +13,11 @@ void QcellOp::inputs(const Qdefs& ins)
 {
 	Qop::inputs(ins);
 	Qvalue v = value();
-	if (v != gSuperposition)
+	if (v != cSuperposition)
 	{
 		Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
 		Qvalue outV =pOut->value();
-		if (outV == gSuperposition && v != outV && pOut->id()[0] == '_')
+		if (outV == cSuperposition && v != outV && pOut->id()[0] == '_')
 			pOut->value(v);
 	}
 }
@@ -25,10 +25,10 @@ void QcellOp::inputs(const Qdefs& ins)
 void QcellOp::output(const Qdef::Sp& pOut, size_t forBit)
 {
 	Qvalue v = value();
-	if (v != gSuperposition)
+	if (v != cSuperposition)
 	{
 		Qvalue outV = dynamic_pointer_cast<Qcell>(pOut)->value();
-		if (outV != gSuperposition && v != outV)
+		if (outV != cSuperposition && v != outV)
 			throw logic_error("Error: output '" + pOut->toString()
 				+ "' is out of sync with operation '" + Qop::toString() + "'!");
 	}
@@ -51,14 +51,14 @@ Qvalue QcellOp::value() const
 		if (pIn != nullptr)
 		{
 			Qvalue v = pIn->value();
-			if (v == gSuperposition)
-				return(gSuperposition);
+			if (v == cSuperposition)
+				return(cSuperposition);
 			values.push_back(v);
 		}
 	}
 	if(values.size() > 0)
 		return(calculate(values));
-	return(gSuperposition);
+	return(cSuperposition);
 }
 
 Qvalue QcellOp::value()
@@ -281,8 +281,8 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 		Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(mpAddition->Qop::output(forBit));	
 		string cStr = "";
 		Qvalue v = pOut->value();
-		if (v != gSuperposition) cStr = to_string(v);
-		else cStr.append(1, gSuperposition);
+		if (v != cSuperposition) cStr = to_string(v);
+		else cStr.append(1, cSuperposition);
 		cStr = "\n" + Qop::output()->toString(decomposed, forBit) + " = "
 				+ AdderQT::Carry::Symbol(pOut->id() + "/" + cStr + "/");
 		return cStr;

@@ -52,14 +52,14 @@ namespace dann5 {
 
 			string outId() const { return "_" + identifier() + Qop::Id(identifier()); };
 
-			virtual Qdef::Sp output(size_t forBit = ULLONG_MAX) const;
+			virtual Qdef::Sp output(size_t forBit = cAllBits) const;
 
 			// override output setter to sync its behaviour to specific Q operation
 			// when forBit is not specified, sets a new output and if it is Qnary
 			// resizes output to be same as operations noqbs
 			// when forBit is specified, updates that bit cell in the output,
 			// if output is Qnary and pOut is Qcell
-			virtual void output(const Qdef::Sp& pOut, size_t forBit = ULLONG_MAX);
+			virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits);
 
 			// Return Q operation outputs, by default has one ouput
 			virtual Qdefs outputs() const { return Qdefs({ Qop::output() }); };
@@ -74,10 +74,10 @@ namespace dann5 {
 			virtual std::size_t noqbs() const noexcept;
 
 			// convert operation expration into a string
-			virtual string toString(bool decomposed = false, size_t forBit = ULLONG_MAX) const;
+			virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 
 			// return Qubo presentation of this Q operation
-			virtual Qubo qubo(bool finalized = true, size_t forBit = ULLONG_MAX) const;
+			virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const;
 
 			// Override to set solution values from the sample set for this deffinition
 			virtual void solutions(const Qsolver::Samples& samples);

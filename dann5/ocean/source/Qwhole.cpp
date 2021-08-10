@@ -13,7 +13,7 @@ Qwhole::operator unsigned long long()
 
 Qwhole::operator const unsigned long long() const
 {
-	if (any(gSuperposition))
+	if (any(cSuperposition))
 		return Qwhole::cUnknown;
 	unsigned long long ull = 0;
 	size_t at = 0;
@@ -25,9 +25,9 @@ Qwhole::operator const unsigned long long() const
 	return(ull);
 }
 
-string Qwhole::toString(bool decomposed, size_t bitLevel) const
+string Qwhole::toString(bool decomposed, size_t forBit) const
 {
-	if (decomposed) return Qnary::toString(decomposed, bitLevel);
+	if (decomposed) return Qnary::toString(decomposed, forBit);
 	string vStr = Qnary::cUnknownSign;
 	if(!any())
 	{
@@ -80,7 +80,7 @@ Qwhole& Qwhole::operator+=(const Qwhole& right)
 		Qvalue t(tQbits[at]), r(at < rSize ? rQbits[at] : 0);
 		superposition = (t > 1) || (r > 1);
 		if (superposition)
-			tQbits[at].value(Qbit::gSuperposition);
+			tQbits[at].value(Qbit::cSuperposition);
 		else
 		{
 			carry += t + r;
@@ -125,11 +125,11 @@ Qwhole& Qwhole::operator*=(const Qwhole& right)
 		for (Index atD = 0; atD < diagonal.rows() && !superpositon; atD++)
 		{
 			QcellVector qb = diagonal(atD);
-			superpositon = qb->value() == Qcell::gSuperposition;
+			superpositon = qb->value() == Qcell::cSuperposition;
 			carry += qb;
 		}
 		if (superpositon)
-			qbits[at]->value(Qcell::gSuperposition);
+			qbits[at]->value(Qcell::cSuperposition);
 		else
 		{
 			qbits[at]->value(carry % 2);
@@ -138,7 +138,7 @@ Qwhole& Qwhole::operator*=(const Qwhole& right)
 		--atDiagonal;
 	}
 	if (superpositon)
-		qbits[last].value(Qbit::gSuperposition);
+		qbits[last].value(Qbit::cSuperposition);
 	else
 		qbits[last].value(carry);
 */	return *this;

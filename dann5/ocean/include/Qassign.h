@@ -66,13 +66,13 @@ namespace dann5 {
 			// if not finalized, returns a full qubo definition representation
 			// if finalized, returns an expression that replaces symbols with values of
 			// Q bits in deterministic states
-			virtual Qubo qubo(bool finalized = true, size_t forBit = ULLONG_MAX) const;
+			virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const;
 
 			// Return a string representation of this Q expression
 			// when decomposed is true, shows bit-level expressions per line
 			// when decomposed and forBit specified, shows a decomposed expression only
 			// for that bit level
-			string toString(bool decomposed = false, size_t forBit = ULLONG_MAX) const;
+			string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 
 			// Set a sample set with a node list defined by qubo() of this Q assignment
 			// the combination of node values should be different for each sample

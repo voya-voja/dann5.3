@@ -14,8 +14,8 @@ using namespace Eigen;
 namespace dann5 {
 	namespace ocean {
 
-		// An std::vector containing a list of Q values
-		typedef vector <Qvalue> Qvalues;
+		// A constant indicating all Q bits should be processed
+		static const size_t cAllBits = ULLONG_MAX;
 
 		// A supertype for all definitions in dann5 Quantum library
 		class Qdef
@@ -51,7 +51,7 @@ namespace dann5 {
 
 			// return string presentation of this Qoperand
 			virtual string toString(bool decomposed = false, 
-									size_t bitLevel = ULLONG_MAX) const
+									size_t forBit = cAllBits) const
 			{ 
 				return mID; 
 			};

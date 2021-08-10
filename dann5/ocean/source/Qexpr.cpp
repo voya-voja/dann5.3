@@ -13,7 +13,7 @@ using namespace dann5::ocean;
 
 Qubo Qexpression::qubo(bool finalized, size_t forBit) const
 {
-	if (forBit != ULLONG_MAX) return mpRoot->qubo(finalized, forBit);
+	if (forBit != cAllBits) return mpRoot->qubo(finalized, forBit);
 
 	size_t size = mpRoot->noqbs();
 	Qubo aQubo;
@@ -27,7 +27,7 @@ Qubo Qexpression::qubo(bool finalized, size_t forBit) const
 string Qexpression::toString(bool decomposed, size_t forBit) const
 {
 	if (!decomposed) return mpRoot->toString(decomposed, forBit);
-	if (forBit != ULLONG_MAX) return mpRoot->toString(decomposed, forBit);
+	if (forBit != cAllBits) return mpRoot->toString(decomposed, forBit);
 
 	size_t size = mpRoot->noqbs();
 	string tStr = "";

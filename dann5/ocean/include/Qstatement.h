@@ -59,12 +59,12 @@ namespace dann5 {
 			// if not finalized, returns a full qubo definition representation
 			// if finalized, returns an expression that replaces symbols with values of
 			// Qbits in deterministic states for all the Q variables, i.e. expression arguments
-			virtual Qubo qubo(bool finalized = true, Index level = ULLONG_MAX) const;
+			virtual Qubo qubo(bool finalized = true, Index level = cAllBits) const;
 
 			// Returns a string representation of this Q statement, 
 			// if not decomposed, returns an statement line per Qbit level
 			// if decomposed, returns a line per Qbit operational expression
-			virtual string toString(bool decomposed = false, size_t level = ULLONG_MAX) const {
+			virtual string toString(bool decomposed = false, size_t level = cAllBits) const {
 				return mpExpression->toString(decomposed, level);
 			};
 

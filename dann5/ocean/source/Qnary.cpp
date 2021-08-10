@@ -101,14 +101,14 @@ size_t Qnary::count(Qvalue value) const
 	return count;
 }
 
-string Qnary::toString(bool decomposed, size_t bitLevel) const
+string Qnary::toString(bool decomposed, size_t forBit) const
 {
 	string valueStr = "";
 	size_t size = noqbs();
 	if (decomposed)
 	{
-		if (bitLevel < noqbs())
-			return mCells[bitLevel]->toString(decomposed);
+		if (forBit < noqbs())
+			return mCells[forBit]->toString(decomposed);
 		else
 		{
 			for(size_t at = 0; at < size; at++)

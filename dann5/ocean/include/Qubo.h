@@ -38,7 +38,7 @@ namespace dann5{
 
 		// Quantum default superposition value, 
 		// though any Q bit value except 0 and 1 will be considered superposition
-		static const Qvalue gSuperposition = 'S'; // value 83
+		static const Qvalue cSuperposition = 'S'; // value 83
 
 		// an array of Quantum values
 		typedef vector<Qvalue> Qvalues;
@@ -54,7 +54,7 @@ namespace dann5{
 				string name;
 				Qvalue value;
 
-				IoPort() : name(""), value(gSuperposition) {};
+				IoPort() : name(""), value(cSuperposition) {};
 				IoPort(string n, Qvalue v) : name(n), value(v) {};
 			};
 

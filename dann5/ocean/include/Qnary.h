@@ -75,11 +75,11 @@ namespace dann5 {
 			// storage space takes place.
 			virtual void resize(size_t size, Qvalue value = 0);
 
-			// Return a Q nary string representation when bitLevel is ULLONG_MAX. 
+			// Return a Q nary string representation when forBit is cAllBits. 
 			// Otherwise, return a string representation of a Q cell at the specified 
-			// bitLevel
+			// forBit
 			virtual string toString(bool decomposed = false,
-								size_t bitLevel = ULLONG_MAX) const;
+								size_t forBit = cAllBits) const;
 
 			// Override to set solution values from the sample set for this deffinition
 			virtual void solutions(const Qsolver::Samples& samples);
@@ -99,13 +99,13 @@ namespace dann5 {
 
 			// Checks if all, any or none of the bits are set to a value
 			// by default the functions will check for supperposition state
-			bool all(Qvalue value = gSuperposition) const;
-			bool any(Qvalue value = gSuperposition) const;
-			bool none(Qvalue value = gSuperposition) const;
+			bool all(Qvalue value = cSuperposition) const;
+			bool any(Qvalue value = cSuperposition) const;
+			bool none(Qvalue value = cSuperposition) const;
 
 			// Returns the number of bits that are set to a value
 			// by default the functions will check for supperposition state
-			size_t count(Qvalue value = gSuperposition) const;
+			size_t count(Qvalue value = cSuperposition) const;
 
 			//Performs binary shift left and binary shift right. 
 			// 1 - 2) Performs binary shift left with zeroes shifted in.

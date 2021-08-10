@@ -45,7 +45,7 @@ namespace dann5 {
 			QcellMatrix x(const Qdefs& args) const;
 
 			// Return x Q expression by adding elements of Q bit definition matrix
-			// digonal for a given bitLevel. 
+			// digonal for a given forBit. 
 			void sumDiagonal(const QcellMatrix& matrix);
 
 		private:

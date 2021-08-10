@@ -11,7 +11,7 @@ void Qbool::value(Qvalue v)
 	else if (v == 0 || v == cFalse)
 		mValue = cFalse;
 	else
-		mValue = gSuperposition;
+		mValue = cSuperposition;
 }
 
 Qvalue Qbool::value() const 
@@ -28,7 +28,7 @@ Qvalue Qbool::value()
 	return as_const(*this).value(); 
 }
 
-string Qbool::toString(bool decomposed, size_t bitLevel) const
+string Qbool::toString(bool decomposed, size_t forBit) const
 {
 	string id = Qdef::toString(decomposed);
 	string valueStr = "";
@@ -38,7 +38,7 @@ string Qbool::toString(bool decomposed, size_t bitLevel) const
 
 void Qbool::solutions(const Qsolver::Samples& samples)
 {
-	if (value() != gSuperposition) return;
+	if (value() != cSuperposition) return;
 
 	Qvalues& sltns = Qcell::solutionValues();
 	string identity = id();
@@ -54,7 +54,7 @@ void Qbool::solutions(const Qsolver::Samples& samples)
 
 string Qbool::solution(size_t sampleId) const
 {
-	if (mValue == gSuperposition) 
+	if (mValue == cSuperposition) 
 		return Qcell::solution(sampleId);
 	else
 	{
@@ -80,8 +80,8 @@ Qassign<Qbool> Qbool::operator=(const Qexpr<Qbool>& right)
 
 Qbool& Qbool::operator&=(const Qbool& right)
 {
-	if (mValue == gSuperposition || right.mValue == gSuperposition)
-		mValue = gSuperposition;
+	if (mValue == cSuperposition || right.mValue == cSuperposition)
+		mValue = cSuperposition;
 	else if (mValue == cTrue && right.mValue == cTrue)
 		mValue = cTrue;
 	else
@@ -99,8 +99,8 @@ Qassign<Qbool> Qbool::operator&=(const Qexpr<Qbool>& right)
 
 Qbool& Qbool::operator|=(const Qbool& right)
 {
-	if (mValue == gSuperposition || right.mValue == gSuperposition)
-		mValue = gSuperposition;
+	if (mValue == cSuperposition || right.mValue == cSuperposition)
+		mValue = cSuperposition;
 	else if (mValue == cTrue || right.mValue == cTrue)
 		mValue = cTrue;
 	else
@@ -117,8 +117,8 @@ Qassign<Qbool> Qbool::operator|=(const Qexpr<Qbool>& right)
 
 Qbool& Qbool::operator^=(const Qbool& right)
 {
-	if (mValue == gSuperposition || right.mValue == gSuperposition)
-		mValue = gSuperposition;
+	if (mValue == cSuperposition || right.mValue == cSuperposition)
+		mValue = cSuperposition;
 	else if (mValue == right.mValue)
 		mValue = cTrue;
 	else

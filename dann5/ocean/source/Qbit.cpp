@@ -5,18 +5,18 @@
 
 using namespace dann5::ocean;
 
-string Qbit::toString(bool decomposed, size_t bitLevel) const
+string Qbit::toString(bool decomposed, size_t forBit) const
 {
 	string id = Qdef::toString(decomposed);
 	string valueStr = "";
-	if (mValue != gSuperposition) valueStr = to_string(mValue);
-	else valueStr.append(1, gSuperposition);
+	if (mValue != cSuperposition) valueStr = to_string(mValue);
+	else valueStr.append(1, cSuperposition);
 	return id + "/" + valueStr + "/";
 }
 
 void Qbit::solutions(const Qsolver::Samples& samples)
 {
-	if (value() != gSuperposition) return;
+	if (value() != cSuperposition) return;
 
 	Qvalues& sltns = Qcell::solutionValues();
 	string identity = id();
@@ -41,8 +41,8 @@ Qassign<Qbit> Qbit::operator=(const Qexpr<Qbit>& right)
 
 Qbit& Qbit::operator&=(const Qbit& right)
 {
-	if (mValue == gSuperposition || right.mValue == gSuperposition)
-		mValue = gSuperposition;
+	if (mValue == cSuperposition || right.mValue == cSuperposition)
+		mValue = cSuperposition;
 	else
 		mValue &= right.mValue;
 	return(*this);
@@ -57,8 +57,8 @@ Qassign<Qbit> Qbit::operator&=(const Qexpr<Qbit>& right)
 
 Qbit& Qbit::operator|=(const Qbit& right)
 {
-	if (mValue == gSuperposition || right.mValue == gSuperposition)
-		mValue = gSuperposition;
+	if (mValue == cSuperposition || right.mValue == cSuperposition)
+		mValue = cSuperposition;
 	else
 		mValue |= right.mValue;
 	return(*this);
@@ -73,8 +73,8 @@ Qassign<Qbit> Qbit::operator|=(const Qexpr<Qbit>& right)
 
 Qbit& Qbit::operator^=(const Qbit& right)
 {
-	if (mValue == gSuperposition || right.mValue == gSuperposition)
-		mValue = gSuperposition;
+	if (mValue == cSuperposition || right.mValue == cSuperposition)
+		mValue = cSuperposition;
 	else
 		mValue ^= right.mValue;
 	return(*this);

@@ -61,7 +61,7 @@ PYBIND11_MODULE(d5o, m) {
 	// specify C++ class->baseclass specialization
 	m.def("Qvalue", []() { return unsigned char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S}.)pbdoc");
 
-	m.def("Superposition", []() { return gSuperposition; }, R"pbdoc(Quantum default superposition value, though any Q bit value except 0 and 1 will be considered superposition.)pbdoc");
+	m.def("Superposition", []() { return cSuperposition; }, R"pbdoc(Quantum default superposition value, though any Q bit value except 0 and 1 will be considered superposition.)pbdoc");
 
 	py::class_<Qvalues>(m, "Qvalues", R"pbdoc(An array of Quantum values)pbdoc");
 
@@ -143,14 +143,62 @@ PYBIND11_MODULE(d5o, m) {
 
 		.def("qubo", &Qexpression::qubo, 
 			"Returns a qubo representation of this Q expression, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
+		.def("qubo", [](Qexpression& o, bool finalized) { return o.qubo(finalized); })
+		.def("qubo", [](Qexpression& o) { return o.qubo(); })
 
 		.def("toString", &Qexpression::toString, "returns string presentation of this Q expression object")
+		.def("toString", [](Qexpression& o, bool decomposed) { return o.toString(decomposed); })
+		.def("toString", [](Qexpression& o) { return o.toString(); })
 
 		.def("solutions", static_cast<void (Qexpression::*)(const Qsolver::Samples&)>(&Qexpression::solutions), 
 			"Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
 		.def("solutions", static_cast<string(Qexpression::*)() const>(&Qexpression::solutions), "For existing samples, returns a string with all solutions of this Q expression")
 
 		.def("solve", static_cast<string(Qexpression::*)()>(&Qexpression::solve), "Solve this Q expression and return a string with all solutions");
+
+	py::class_<Qexpr<Qbit>, Qexpression>(m, "QbitExpression", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qop::Sp&>())
+		.def(py::init<const Qexpr<Qbit>&>())
+
+		/*** Bitwise ***/
+		.def(~py::self, "instantiate Q bit expression with inversion logic, e.g. for Qbit with id 'x' the expression is '~x' != 'x'")
+
+		.def(py::self & py::self, "instantiate Q expression with and logic, e.g. for Qbit ids 'x' and 'y' the expression is 'x' & 'y'")
+		.def(py::self & Qbit(), "instantiate Q expression with and logic, e.g. for Qbit id 'x' and [right] object the expression is 'x' & [right]")
+
+		.def("nand", static_cast<Qexpr<Qbit>&(Qexpr<Qbit>::*)(const Qbit&)>(&Qexpr<Qbit>::nand), "instantiate Q expression with nand logic, e.g. for Qbit ids 'x' and 'y' the expression is ~('x' & 'y')")
+		.def("nand", static_cast<Qexpr<Qbit>&(Qexpr<Qbit>::*)(const Qexpr<Qbit>&)>(&Qexpr<Qbit>::nand), "instantiate Q expression with nand logic, e.g. for Qbit id 'x' and [right] object the expression is ~('x' & [right])")
+
+		.def(py::self | py::self, "instantiate Q expression with or logic, e.g. for Qbit ids 'x' and 'y' the expression is 'x' | 'y'")
+		.def(py::self | Qbit(), "instantiate Q expression with or logic, e.g. for Qbit id 'x' and [right] object the expression is 'x' | [right]")
+
+		.def("nor", static_cast<Qexpr<Qbit>&(Qexpr<Qbit>::*)(const Qbit&) >(&Qexpr<Qbit>::nor), "instantiate Q expression with nor logic, e.g. for Qbit ids 'x' and 'y' the expression is ~('x' | 'y')")
+		.def("nor", static_cast<Qexpr<Qbit>&(Qexpr<Qbit>::*)(const Qexpr<Qbit>&) >(&Qexpr<Qbit>::nor), "instantiate Q expression with nor logic, e.g. for Qbit id 'x' and [right] object the expression is ~('x' | [right])")
+
+
+		.def(py::self^ py::self, "instantiate Q expression with xor logic, e.g. for Qbit ids 'x' and 'y' the expression is 'x' ^ 'y'")
+		.def(py::self^ Qbit(), "instantiate Q expression with xor logic, e.g. for Qbit id 'x' and [right] object the expression is 'x' ^ [right]")
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qbit(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qbit(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]")
+
+		.def(py::self > py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' > 'y'")
+		.def(py::self > Qbit(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' > [right root]")
+
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' >= 'y'")
+		.def(py::self >= Qbit(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' >= [right root]")
+
+		.def(py::self < py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' < 'y'")
+		.def(py::self >= Qbit(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' < [right root]")
+
+		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' <= 'y'")
+		.def(py::self >= Qbit(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' <= [right root]");
+
 
 /*--- Qassign.h definitions ---*/
 	py::class_<Qassignment>(m, "Qassignment",
@@ -167,8 +215,12 @@ PYBIND11_MODULE(d5o, m) {
 
 		.def("qubo", &Qassignment::qubo,
 			"Returns a qubo representation of this Q assignment, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
+		.def("qubo", [](Qassignment& o, bool finalized) { return o.qubo(finalized); })
+		.def("qubo", [](Qassignment& o) { return o.qubo(); })
 
 		.def("toString", &Qassignment::toString, "returns string presentation of this Q assignment object")
+		.def("toString", [](Qassignment& o, bool decomposed) { return o.toString(decomposed); })
+		.def("toString", [](Qassignment& o) { return o.toString(); })
 
 		.def("solutions", static_cast<void (Qassignment::*)(const Qsolver::Samples&)>(&Qassignment::solutions),
 			"Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
@@ -176,6 +228,26 @@ PYBIND11_MODULE(d5o, m) {
 
 		.def("solve", static_cast<string(Qassignment::*)()>(&Qassignment::solve), "Solve this Q assignment and return a string with all solutions");
 
+	py::class_<Qassign<Qbit>, Qassignment>(m, "QbitAssignment", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qbit&>())
+		.def(py::init<const Qbit&, const Qexpr<Qbit>&>())
+		.def(py::init<const Qassign<Qbit>&>());
+
+/*--- Qdef.h definitions---*/
+	m.def("AllBits", []() { return cAllBits; }, R"pbdoc(A constant indicating all Q bits should be processed.)pbdoc");
+
+/*
+	py::class_<Qdef>(m, "Qdef",
+		R"pbdoc( Quantum definition of a definition defines Q bit definition names in a vector)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qdef&>())
+		.def(py::init<Index>())
+		.def(py::init<Index, const std::string&>())
+		.def("nobs", &Qdef::noqbs)
+		.def(py::self + py::self)
+		.def(py::self * py::self);
+*/
 /*--- Qbit.h definitions ---*/
 	py::class_<Qbit>(m, "Qbit",
 		R"pbdoc( Quantum bit is in superposition state for any value except 0 and 1)pbdoc")
@@ -191,6 +263,9 @@ PYBIND11_MODULE(d5o, m) {
 		.def("value", static_cast<Qvalue(Qbit::*)() const>(&Qbit::value), "const get Qvalue")
 
 		.def("toString", &Qbit::toString, "returns string presentation of this Q bit object")
+		.def("toString", [](Qbit& o, bool decomposed) { return o.toString(decomposed); })
+		.def("toString", [](Qbit& o) { return o.toString(); })
+
 		.def("solutions", &Qbit::solutions, "returns solutions for this object")
 		.def("solution", &Qbit::solution, "returns a solution for this object identified by id")
 
@@ -265,6 +340,9 @@ PYBIND11_MODULE(d5o, m) {
 			.def("value", static_cast<Qvalue(Qbool::*)() const>(&Qbool::value), "const get Qvalue")
 
 			.def("toString", &Qbool::toString, "returns string presentation of this Q bit object")
+			.def("toString", [](Qbool& o, bool decomposed) { return o.toString(decomposed); })
+			.def("toString", [](Qbool& o) { return o.toString(); })
+
 			.def("solutions", &Qbool::solutions, "returns solutions for this object")
 			.def("solution", &Qbool::solution, "returns a solution for this object identified by id")
 
@@ -305,12 +383,12 @@ PYBIND11_MODULE(d5o, m) {
 			.def(py::init<>())
 			.def(py::init<unsigned long long>());
 
-		m.def("Unknown", []() { return Qnary::cUnknown; }, R"pbdoc(Any binary container or number is unknown, if any of its Q bits is in superposition state.)pbdoc");
-
-
 /*--- Qbin.h definitions ---*/
 	py::class_<Qbin>(m, "Qbin",
 		R"pbdoc( Quantum binary is in unknown state, if any of its quantum bits is in superposition state)pbdoc")
+
+		.def("Unknown", []() { return Qnary::cUnknown; }, R"pbdoc(Any binary container or number is unknown, if any of its Q bits is in superposition state.)pbdoc")
+
 		.def(py::init<>())
 		.def(py::init<const Qbin&>())
 		.def(py::init<const string&>())
@@ -326,6 +404,9 @@ PYBIND11_MODULE(d5o, m) {
 		.def("value", static_cast<const Bits(Qbin::*)() const>(&Qbin::operator const Bits), "get Bits value")
 
 		.def("toString", &Qbin::toString, "returns string presentation of this Q bin object")
+		.def("toString", [](Qbin& o, bool decomposed) { return o.toString(decomposed); })
+		.def("toString", [](Qbin& o) { return o.toString(); })
+
 		.def("solutions", &Qbin::solutions, "returns solutions for this object")
 		.def("solution", &Qbin::solution, "returns a solution for this object identified by id")
 
@@ -369,8 +450,12 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::self != Qexpr<Qbin>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
 
 
+/*--- Qwhole.h definitions ---*/
 	py::class_<Qwhole, Qbin>(m, "Qwhole",
 		R"pbdoc( Quantum whole is in unknown state, if any of its quantum bits is in superposition state)pbdoc")
+
+		.def("Unknown", []() { return Qwhole::cUnknown; }, R"pbdoc(Qwhole is unknown, if any of its Q bits is in superposition state.)pbdoc")
+
 		.def(py::init<const Qwhole&>())
 		.def(py::init<const string&>())
 		.def(py::init<size_t, const string&>())
@@ -382,6 +467,9 @@ PYBIND11_MODULE(d5o, m) {
 		.def("value", static_cast<const unsigned long long (Qbin::*)() const>(&Qwhole::operator const unsigned long long), "get unsigned long long value")
 
 		.def("toString", &Qwhole::toString, "returns string presentation of this Q whole object")
+		.def("toString", [](Qwhole& o, bool decomposed) { return o.toString(decomposed); })
+		.def("toString", [](Qwhole& o) { return o.toString(); })
+
 		.def("solution", &Qwhole::solution, "returns a solution for this object identified by id")
 
 
@@ -429,16 +517,6 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::self + Qexpr<Qwhole>(), "instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' * [right]");
 
 /*
-	py::class_<Qdef>(m, "Qdef",
-		R"pbdoc( Quantum definition of a definition defines Q bit definition names in a vector)pbdoc")
-		.def(py::init<>())
-		.def(py::init<const Qdef&>())
-		.def(py::init<Index>())
-		.def(py::init<Index, const std::string&>())
-		.def("nobs", &Qdef::noqbs)
-		.def(py::self + py::self)
-		.def(py::self * py::self);
-
 	py::class_<Qstatement>(m, "Qstatement")
 		//		.def(py::init<>())
 		//		.def(py::init<const Qstatement&>())
@@ -581,8 +659,18 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::self * Qvar())
 		.def(py::self *= Qvar());
 */
+/*--- Qsolver.h definitions ---*/
+	py::class_<Qanalyzer>(m, "Qanalyzer")
+		.def(py::init<const Qubo&>())
+
+		.def("nodes", &Qanalyzer::nodes)
+		.def("branches", &Qanalyzer::branches)
+		.def("nodesNo", &Qanalyzer::nodesNo)
+		.def("branchesNo", &Qanalyzer::branchesNo)
+		.def("qubo", &Qanalyzer::qubo);
+
 	// specify C++ class->baseclass specialization
-	py::class_<Qsolver>(m, "Qsolver")
+	py::class_<Qsolver, Qanalyzer>(m, "Qsolver")
 		.def(py::init<const Qubo&>())
 		.def(py::init<const Qubo&, bool>())
 		.def("solution", &Qsolver::solution);

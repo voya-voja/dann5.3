@@ -26,16 +26,16 @@ namespace dann5 {
 
 			// Default constructor initializes Q bit with an empty id and supperposition
 			// value
-			Qbit() : Qcell(""), Qtype(), mValue(gSuperposition) {};
+			Qbit() : Qcell(""), Qtype(), mValue(cSuperposition) {};
 
 			// Initialize Q bit with a given id and supperposition value
-			Qbit(const string& id) : Qcell(id), Qtype(), mValue(gSuperposition) {};
+			Qbit(const string& id) : Qcell(id), Qtype(), mValue(cSuperposition) {};
 
 			// Initialize Q bit with a given id and value. If value is different  from 0 or 1, 
 			// Qbit into superposition state
 			Qbit(const string& id, Qvalue value) : Qcell(id), Qtype(), mValue(value)
 			{
-				if (value > 1) mValue = gSuperposition;
+				if (value > 1) mValue = cSuperposition;
 			};
 
 			// copy constructor
@@ -50,7 +50,7 @@ namespace dann5 {
 
 			// return string presentation of this Qoperand
 			virtual string toString(bool decomposed = false,
-									size_t bitLevel = ULLONG_MAX) const;
+									size_t forBit = cAllBits) const;
 
 			// Return a Q def shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbit(*this)); };

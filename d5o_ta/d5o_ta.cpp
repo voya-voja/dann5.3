@@ -28,6 +28,19 @@ void basic_types()
     cout << x.toString() << " " << x.toString(false, 0) << " " << x.toString(true) << " " << x.toString(true, 0) << endl;
 }
 
+void qbit_test()
+{
+    Qbit a0("0a", 1), a1("1a"), a2("2a", 5), ar("ar",0);
+    Qassign<Qbit> qbitAssign = ar = a0 & a1 | a2;
+    cout << endl << qbitAssign << endl << endl << qbitAssign.toString(true) << endl;
+    cout << endl << "*** Logic Qubo ***" << endl << qbitAssign.qubo(false) << endl 
+        << endl << "*** Reduced discrete values Qubo ***" << endl << qbitAssign.qubo() << endl;
+    Qanalyzer analyze(qbitAssign.qubo());
+    cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
+    qbitAssign.solve();
+    cout << endl << qbitAssign.solutions();
+}
+
 void testAddition()
 {
     std::cout << "Dann5.ocean Tests Qwhole!\n";
@@ -57,6 +70,7 @@ int main()
 {
 
     basic_types();
+    qbit_test();
 /*
     const clock_t begin_time = clock();
     testAddition();

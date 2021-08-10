@@ -51,14 +51,14 @@ namespace dann5 {
 			// noInputs() method
 			virtual void append(Qdef::Sp argument);
 
-			virtual Qdef::Sp output(size_t forBit = ULLONG_MAX) const;
-			virtual void output(const Qdef::Sp& out, size_t forBit = ULLONG_MAX);
+			virtual Qdef::Sp output(size_t forBit = cAllBits) const;
+			virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
 			// convert operation expration into a string
-			virtual string toString(bool decomposed = false, size_t forBit = ULLONG_MAX) const;
+			virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 
 			// return Qubo presentation of this Q operation
-			virtual Qubo qubo(bool finalized = true, size_t forBit = ULLONG_MAX) const;
+			virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const;
 
 			// Override to set solution values from the sample set for this deffinition
 			virtual void solutions(const Qsolver::Samples& samples);

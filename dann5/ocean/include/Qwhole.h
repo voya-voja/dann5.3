@@ -48,11 +48,11 @@ namespace dann5 {
 			operator unsigned long long();
 			operator const unsigned long long() const;
 
-			// Return a Q whole representation when bitLevel is ULLONG_MAX. 
+			// Return a Q whole representation when forBit is cAllBits. 
 			// Otherwise, return a string representation of a Q cell at the specified 
-			// bitLevel
+			// forBit
 			virtual string toString(bool decomposed = false,
-							size_t bitLevel = ULLONG_MAX) const;
+							size_t forBit = cAllBits) const;
 
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;

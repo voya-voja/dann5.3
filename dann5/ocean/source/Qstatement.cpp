@@ -154,7 +154,7 @@ Qstatement::Reduct::~Reduct()
 
 void Qstatement::Reduct::init()
 {
-	// capture reductions for arguments with values different from gSuperposition (i.e. 0 or 1)
+	// capture reductions for arguments with values different from cSuperposition (i.e. 0 or 1)
 	for (auto atArg = mStatement.arguments().cbegin(); atArg != mStatement.arguments().cend(); atArg++)
 	{
 		for (Index at = 0; at < (*atArg).definition().nobs(); at++)
@@ -184,18 +184,18 @@ Qkey Qstatement::Reduct::operator() (const Qkey& original, bool finalized) const
 		{
 			// The 2nd half of a key of a quadratic element should be updated with replacement definition
 			Reduction correct2nd = (*found2ndAt).second;
-			if (!finalized || (correct1st.second == Qbit::gSuperposition && correct2nd.second == Qbit::gSuperposition))
+			if (!finalized || (correct1st.second == Qbit::cSuperposition && correct2nd.second == Qbit::cSuperposition))
 			{
 				// Always just replace 1st and 2nd symbols without applying condition
 				// or replace 1st and 2nd symbols in binaryquadratic element when condition values are not defined (not 0 or 1)
 				key = Qkey(correct1st.first, correct2nd.first);
 			}
-			else if (correct1st.second == Qbit::gSuperposition && correct2nd.second == 1)
+			else if (correct1st.second == Qbit::cSuperposition && correct2nd.second == 1)
 			{
 				// otherwise replace with a linear element using 1st replacement when its condition value is 1
 				key = Qkey(correct1st.first, correct1st.first);
 			}
-			else if (correct1st.second == 1 && correct2nd.second == Qbit::gSuperposition)
+			else if (correct1st.second == 1 && correct2nd.second == Qbit::cSuperposition)
 			{
 				// otherwise replace with a linear element using 2nd replacement when its condition value is 1
 				key = Qkey(correct2nd.first, correct2nd.first);
@@ -209,7 +209,7 @@ Qkey Qstatement::Reduct::operator() (const Qkey& original, bool finalized) const
 		else
 		{
 			// Just 1st half of a key of a quadratic element should be updated with replacement definition
-			if (!finalized || correct1st.second == Qbit::gSuperposition)
+			if (!finalized || correct1st.second == Qbit::cSuperposition)
 			{
 				// Always just replace 1st definition without applying condition
 				// or replace 1st definition in binaryquadratic element when condition value is not defined (not 0 or 1)
@@ -231,7 +231,7 @@ Qkey Qstatement::Reduct::operator() (const Qkey& original, bool finalized) const
 	{
 		// Just 2st half of a key of a quadratic element should be updated with replacement definition
 		Reduction reduction = (*found2ndAt).second;
-		if (!finalized || reduction.second == Qbit::gSuperposition)
+		if (!finalized || reduction.second == Qbit::cSuperposition)
 		{
 			key = Qkey(original.first, reduction.first);
 		}

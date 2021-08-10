@@ -44,7 +44,7 @@ namespace dann5 {
 			// Q addition object and return a shared pointer to a newlly created Q addition
 			// object
 			virtual Qcell::Sp opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight,
-									size_t bitLevel, Qaddition::Carry::Sp& pCarry, 
+									size_t forBit, Qaddition::Carry::Sp& pCarry, 
 									bool assignOutput) const;
 
 		private:

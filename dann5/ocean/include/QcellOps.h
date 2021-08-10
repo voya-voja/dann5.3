@@ -32,7 +32,7 @@ namespace dann5 {
 			virtual void inputs(const Qdefs&);
 
 			// overrides output setter to sync its value and value of this operation
-			virtual void output(const Qdef::Sp& out, size_t forBit = ULLONG_MAX);
+			virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
 			// Returns the largest number of Q bits of all its inputs
 			virtual std::size_t noqbs() const noexcept { return Qop::noqbs(); };
@@ -43,7 +43,7 @@ namespace dann5 {
 			virtual Qvalue value();
 
 			// convert Quantum cell operation expration into a string as any other operation
-			virtual string toString(bool decomposed = false, size_t forBit = ULLONG_MAX) const {
+			virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const {
 				return Qop::toString(decomposed, forBit);
 			};
 
@@ -79,12 +79,12 @@ namespace dann5 {
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new QnullCellOp(*this)); };
 
 			// return an empty Qubo presentation of Q null cell operation
-			virtual Qubo qubo(bool finalized = true, size_t forBit = ULLONG_MAX) const {
+			virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const {
 				return Qubo();
 			};
 
 		protected:
-			virtual Qvalue calculate(const Qvalues& values) const { return gSuperposition; };
+			virtual Qvalue calculate(const Qvalues& values) const { return cSuperposition; };
 
 		private:
 		};
@@ -106,7 +106,7 @@ namespace dann5 {
 			~Qoperator() {};
 
 			// convert Quantum operator expration into a string
-			virtual string toString(bool decomposed = false, size_t forBit = ULLONG_MAX) const;
+			virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 
 		protected:
 
@@ -309,7 +309,7 @@ namespace dann5 {
 			~Qcell2OutOp() {};
 
 			// overrides output setter to add 2nd output
-			virtual void output(const Qdef::Sp& out, size_t forBit = ULLONG_MAX);
+			virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
 			// Return Q addition result and carry outputs
 			virtual Qdefs outputs() const;
@@ -419,7 +419,7 @@ namespace dann5 {
 				~Carry();
 
 				// overrides output setter to set its output pointer
-				virtual void output(const Qdef::Sp& pOut, size_t forBit = ULLONG_MAX) {
+				virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits) {
 					Qop::output(pOut);
 				};
 
@@ -427,11 +427,11 @@ namespace dann5 {
 				virtual Qdef::Sp clone() const { return Qdef::Sp(new Carry(*this)); };
 
 				// Return a string representation of Q carry operand
-				virtual string toString(bool decomposed = false, size_t atBit = ULLONG_MAX) const;
+				virtual string toString(bool decomposed = false, size_t atBit = cAllBits) const;
 
 				// return emty Qubo as carry is a special output of addition and not
 				// solvable Q operation
-				virtual Qubo qubo(bool finalized = true, size_t forBit = ULLONG_MAX) const { 
+				virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const { 
 					return Qubo(); 
 				};
 
@@ -463,7 +463,7 @@ namespace dann5 {
 			virtual void inputs(const Qdefs&);
 
 			// overrides output setter to add carry output
-			virtual void output(const Qdef::Sp& out, size_t forBit = ULLONG_MAX);
+			virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
 			// Return Q addition result and carry outputs
 			virtual Qdefs outputs() const;

@@ -73,7 +73,7 @@ void Qop::append(Qdef::Sp argument)
 
 Qdef::Sp Qop::output(size_t forBit) const
 {
-	if(forBit == ULLONG_MAX) return mpOutput;
+	if(forBit == cAllBits) return mpOutput;
 
 	Qnary::Sp pNary = dynamic_pointer_cast<Qnary>(mpOutput);
 	if(pNary == nullptr) return mpOutput;
@@ -82,14 +82,14 @@ Qdef::Sp Qop::output(size_t forBit) const
 
 void Qop::output(const Qdef::Sp& pOut, size_t forBit)
 {
-	if (forBit == ULLONG_MAX)
+	if (forBit == cAllBits)
 	{
 		mpOutput = pOut;
 		Qnary::Sp pNary = dynamic_pointer_cast<Qnary>(mpOutput);
 		size_t size = noqbs();
 		if (pNary != nullptr && size != pNary->noqbs())
 		{
-			pNary->resize(size, gSuperposition);
+			pNary->resize(size, cSuperposition);
 		}
 	}
 	else
