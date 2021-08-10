@@ -123,42 +123,60 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 
 Qvalue Qeq::calculate(const Qvalues& values) const
 {
-	return(Qvalue(values[0] == dynamic_pointer_cast<Qcell>(Qop::output())->value()));
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
+	if (pOut == nullptr || pOut->value() == cSuperposition)
+		return(cSuperposition);
+	return(Qvalue(values[0] == pOut->value()));
 }
 
 /*** Q ne operation ***/
 
 Qvalue Qneq::calculate(const Qvalues& values) const
 {
-	return(Qvalue(values[0] != dynamic_pointer_cast<Qcell>(Qop::output())->value()));
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
+	if (pOut == nullptr || pOut->value() == cSuperposition)
+		return(cSuperposition);
+	return(Qvalue(values[0] != pOut->value()));
 }
 
 /*** Q lt operation ***/
 
 Qvalue Qlt::calculate(const Qvalues& values) const
 {
-	return(Qvalue(values[0] < values[1]));
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
+	if (pOut == nullptr || pOut->value() == cSuperposition)
+		return(cSuperposition);
+	return(Qvalue(values[0] < pOut->value()));
 }
 
 /*** Q le operation ***/
 
 Qvalue Qle::calculate(const Qvalues& values) const
 {
-	return(Qvalue(values[0] <= dynamic_pointer_cast<Qcell>(Qop::output())->value()));
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
+	if (pOut == nullptr || pOut->value() == cSuperposition)
+		return(cSuperposition);
+	return(Qvalue(values[0] <= pOut->value()));
 }
 
 /*** Q gt operation ***/
 
 Qvalue Qgt::calculate(const Qvalues& values) const
 {
-	return(Qvalue(values[0] > dynamic_pointer_cast<Qcell>(Qop::output())->value()));
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
+	if (pOut == nullptr || pOut->value() == cSuperposition)
+		return(cSuperposition);
+	return(Qvalue(values[0] > pOut->value()));
 }
 
 /*** Q ge operation ***/
 
 Qvalue Qge::calculate(const Qvalues& values) const
 {
-	return(Qvalue(values[0] >= dynamic_pointer_cast<Qcell>(Qop::output())->value()));
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
+	if (pOut == nullptr || pOut->value() == cSuperposition)
+		return(cSuperposition);
+	return(Qvalue(values[0] >= pOut->value()));
 }
 
 /*** Q and operation ***/
