@@ -199,6 +199,26 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qbit ids 'x' and 'y' the expression is 'x' <= 'y'")
 		.def(py::self >= Qbit(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' <= [right root]");
 
+	py::class_<Qexpr<Qbool>, Qexpression>(m, "QboolExpression", R"pbdoc( Instantiation of quantum boolean expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qop::Sp&>())
+		.def(py::init<const Qexpr<Qbool>&>())
+
+		/*** Logical ***/
+		.def(!py::self, "instantiate Q boolean expression with inversion logic, e.g. for Qbool with id 'x' the expression is '~x' != 'x'")
+
+		.def(py::self & py::self, "instantiate Q expression with and logic, e.g. for Qbool ids 'x' and 'y' the expression is 'x' & 'y'")
+		.def(py::self & Qbool(), "instantiate Q expression with and logic, e.g. for Qbool id 'x' and [right] object the expression is 'x' & [right]")
+
+		.def(py::self | py::self, "instantiate Q expression with or logic, e.g. for Qbool ids 'x' and 'y' the expression is 'x' | 'y'")
+		.def(py::self | Qbool(), "instantiate Q expression with or logic, e.g. for Qbool id 'x' and [right] object the expression is 'x' | [right]")
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbool ids 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qbool(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qbool ids 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qbool(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
 
 /*--- Qassign.h definitions ---*/
 	py::class_<Qassignment>(m, "Qassignment",
@@ -233,6 +253,12 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::init<const Qbit&>())
 		.def(py::init<const Qbit&, const Qexpr<Qbit>&>())
 		.def(py::init<const Qassign<Qbit>&>());
+
+	py::class_<Qassign<Qbool>, Qassignment>(m, "QboolAssignment", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qbool&>())
+		.def(py::init<const Qbool&, const Qexpr<Qbool>&>())
+		.def(py::init<const Qassign<Qbool>&>());
 
 /*--- Qdef.h definitions---*/
 	m.def("AllBits", []() { return cAllBits; }, R"pbdoc(A constant indicating all Q bits should be processed.)pbdoc");
@@ -361,7 +387,7 @@ PYBIND11_MODULE(d5o, m) {
 			.def(py::self ^= py::self, "change value of this object as result of xor operation between this and right Q bit")
 			//		.def(py::self ^= Qexpr<Qbool>(), "'xor assignment' of an Q expression creates a following Q bit assignment [this] = [this] ^ [right]")
 
-					/*** Logical ***/
+			/*** Logical ***/
 			.def(!py::self, "instantiate Q boolean expression with inversion logic, e.g. for Qbool with id 'x' the expression is '!x' != 'x'")
 
 			.def(py::self& py::self, "instantiate Q expression with and logic, e.g. for Qbool ids 'x' and 'y' the expression is 'x' && 'y'")
