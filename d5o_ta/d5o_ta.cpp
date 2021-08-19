@@ -54,6 +54,19 @@ void qbool_test()
     cout << endl << qboolAssign.solutions();
 }
 
+void qbin_test()
+{
+    Qbin bn0(3,"bn0"), bn1(3,"bn1"), bn2("bn2", 6), bn3(3,"bn3"), bn4(3,"bn4"), bnr("bnr", 0b011);
+    Qassign<Qbin> qbinAssign = bnr = ((bn3 != bn4) & (bn2 == bn0)) | bn1;
+    cout << endl << qbinAssign << endl << endl << qbinAssign.toString(true) << endl;
+    cout << endl << "*** Logic Qubo ***" << endl << qbinAssign.qubo(false) << endl
+        << endl << "*** Reduced discrete values Qubo ***" << endl << qbinAssign.qubo() << endl;
+    Qanalyzer analyze(qbinAssign.qubo());
+    cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
+    qbinAssign.solve();
+    cout << endl << qbinAssign.solutions();
+}
+
 void testAddition()
 {
     std::cout << "Dann5.ocean Tests Qwhole!\n";
@@ -87,6 +100,7 @@ int main()
     basic_types();
     qbit_test();
     qbool_test();
+    qbin_test();
     /*
     const clock_t begin_time = clock();
     testAddition();
