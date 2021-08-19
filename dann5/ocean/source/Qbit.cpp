@@ -208,115 +208,115 @@ Qexpr<Qbit> Qbit::operator^(const Qexpr<Qbit>& right) const
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator==(const Qbit& right) const
+Qexpr<Qbit> Qbit::operator==(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator==(const Qexpr<Qbit>& right) const {
+Qexpr<Qbit> Qbit::operator==(const Qexpr<Qbit>& right) const {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator!=(const Qbit& right) const
+Qexpr<Qbit> Qbit::operator!=(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator!=(const Qexpr<Qbit>& right) const {
+Qexpr<Qbit> Qbit::operator!=(const Qexpr<Qbit>& right) const {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator>(const Qbit& right) const
+Qexpr<Qbit> Qbit::operator>(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GtQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator>(const Qexpr<Qbit>& right) const {
+Qexpr<Qbit> Qbit::operator>(const Qexpr<Qbit>& right) const {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GtQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
-Qexpr<Qbool> Qbit::operator>=(const Qbit& right) const
+Qexpr<Qbit> Qbit::operator>=(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GeQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator>=(const Qexpr<Qbit>& right) const {
+Qexpr<Qbit> Qbit::operator>=(const Qexpr<Qbit>& right) const {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GeQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator<(const Qbit& right) const
+Qexpr<Qbit> Qbit::operator<(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LtQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator<(const Qexpr<Qbit>& right) const {
+Qexpr<Qbit> Qbit::operator<(const Qexpr<Qbit>& right) const {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LtQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator<=(const Qbit& right) const
+Qexpr<Qbit> Qbit::operator<=(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LeQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbit::operator<=(const Qexpr<Qbit>& right) const {
+Qexpr<Qbit> Qbit::operator<=(const Qexpr<Qbit>& right) const {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LeQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbit> expr(pOp);
 	return expr;
 }

@@ -123,19 +123,19 @@ namespace dann5 {
 			/*** Comparison ***/
 			// instantiate Q expression with comparison, e.g. for Qbin ids 'x' and 'y'
 			// the expression is 'x' == 'y'
-			Qexpr<Qbool> operator==(const Qbin& right) const;
+			Qexpr<Qbin> operator==(const Qbin& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbin ids 'x' and 'y'
 			// the expression is 'x' == 'y'
-			Qexpr<Qbool> operator==(const Qexpr<Qbin>& right) const;
+			Qexpr<Qbin> operator==(const Qexpr<Qbin>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbin ids 'x' and 'y'
 			// the expression is 'x' != 'y'
-			Qexpr<Qbool> operator!=(const Qbin& right) const;
+			Qexpr<Qbin> operator!=(const Qbin& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbin ids 'x' and 'y'
 			// the expression is 'x' != 'y'
-			Qexpr<Qbool> operator!=(const Qexpr<Qbin>& right) const;
+			Qexpr<Qbin> operator!=(const Qexpr<Qbin>& right) const;
 
 		protected:
 		private:

@@ -143,51 +143,51 @@ namespace dann5 {
 			/*** Comparison ***/
 			// instantiate Q expression with comparison, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' == 'y'
-			Qexpr<Qbool> operator==(const Qbit& right) const;
+			Qexpr<Qbit> operator==(const Qbit& right) const;
 
 			// instantiate Q expression with comparison, e.g. for arguments
 			// 'x' and [right] the expression is 'x' == [right root]			
-			Qexpr<Qbool> operator==(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator==(const Qexpr<Qbit>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' != 'y'
-			Qexpr<Qbool> operator!=(const Qbit& right) const;
+			Qexpr<Qbit> operator!=(const Qbit& right) const;
 
 			// instantiate Q expression with comparison, e.g. for arguments
 			// 'x' and [right] the expression is 'x' != [right root]			
-			Qexpr<Qbool> operator!=(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator!=(const Qexpr<Qbit>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' > 'y'
-			Qexpr<Qbool> operator>(const Qbit& right) const;
+			Qexpr<Qbit> operator>(const Qbit& right) const;
 
 			// instantiate Q expression with comparison, e.g. for arguments
 			// 'x' and [right] the expression is 'x' > [right root]			
-			Qexpr<Qbool> operator>(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator>(const Qexpr<Qbit>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' >= 'y'
-			Qexpr<Qbool> operator>=(const Qbit& right) const;
+			Qexpr<Qbit> operator>=(const Qbit& right) const;
 
 			// instantiate Q expression with comparison, e.g. for arguments
 			// 'x' and [right] the expression is 'x' >= [right root]			
-			Qexpr<Qbool> operator>=(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator>=(const Qexpr<Qbit>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' < 'y'
-			Qexpr<Qbool> operator<(const Qbit& right) const;
+			Qexpr<Qbit> operator<(const Qbit& right) const;
 
 			// instantiate Q expression with comparison, e.g. for arguments
 			// 'x' and [right] the expression is 'x' < [right root]			
-			Qexpr<Qbool> operator<(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator<(const Qexpr<Qbit>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' <= 'y'
-			Qexpr<Qbool> operator<=(const Qbit& right) const;
+			Qexpr<Qbit> operator<=(const Qbit& right) const;
 
 			// instantiate Q expression with comparison, e.g. for arguments
 			// 'x' and [right] the expression is 'x' <= [right root]			
-			Qexpr<Qbool> operator<=(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator<=(const Qexpr<Qbit>& right) const;
 
 		protected:
 		private:

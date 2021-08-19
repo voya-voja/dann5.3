@@ -236,42 +236,42 @@ Qexpr<Qbin> Qbin::operator^(const Qexpr<Qbin>& right) const
 	return expr;
 }
 
-Qexpr<Qbool> Qbin::operator==(const Qbin& right) const
+Qexpr<Qbin> Qbin::operator==(const Qbin& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbin::operator==(const Qexpr<Qbin>& right) const
+Qexpr<Qbin> Qbin::operator==(const Qexpr<Qbin>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbin::operator!=(const Qbin& right) const
+Qexpr<Qbin> Qbin::operator!=(const Qbin& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qbool> Qbin::operator!=(const Qexpr<Qbin>& right) const
+Qexpr<Qbin> Qbin::operator!=(const Qexpr<Qbin>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.rootDef());
 
-	Qexpr<Qbool> expr(pOp);
+	Qexpr<Qbin> expr(pOp);
 	return expr;
 }

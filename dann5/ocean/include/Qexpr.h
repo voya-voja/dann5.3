@@ -13,8 +13,6 @@ using namespace std;
 namespace dann5 {
 	namespace ocean {
 
-		class Qbool;
-
 		// A Quantum expression
 		class Qexpression
 		{
@@ -351,135 +349,133 @@ namespace dann5 {
 			/*** Comparison ***/
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
 			// expression root points to QeqOp with [previous root] == 'x'
-			Qexpr<Qbool> operator==(const Q_Type& right) const {
+			Qexpr<Q_Type> operator==(const Q_Type& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.clone());
-				Q_Type out(pOp->outId());
-				pOp->output(out.clone());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to QeqOp with [previous root] == [right root]
-			Qexpr<Qbool> operator==(const Qexpr<Q_Type>& right) const {
+			Qexpr<Q_Type> operator==(const Qexpr<Q_Type>& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.rootDef());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
 			// expression root points to QneqOp with [previous root] != 'x'
-			Qexpr<Qbool> operator!=(const Q_Type& right) const {
+			Qexpr<Q_Type> operator!=(const Q_Type& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.clone());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to QneqOp with [previous root] != [right root]
-			Qexpr<Qbool> operator!=(const Qexpr<Q_Type>& right) const {
+			Qexpr<Q_Type> operator!=(const Qexpr<Q_Type>& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.rootDef());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
 			// expression root points to QgtOp with [previous root] > 'x'
-			Qexpr<Qbool> operator>(const Q_Type& right) const {
+			Qexpr<Q_Type> operator>(const Q_Type& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GtQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.clone());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to QgtOp with [previous root] > [right root]
-			Qexpr<Qbool> operator>(const Qexpr<Q_Type>& right) const {
+			Qexpr<Q_Type> operator>(const Qexpr<Q_Type>& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GtQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.rootDef());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
 			// expression root points to QgeOp with [previous root] >= 'x'
-			Qexpr<Qbool> operator>=(const Q_Type& right) const {
+			Qexpr<Q_Type> operator>=(const Q_Type& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GeQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.clone());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to QgeOp with [previous root] >= [right root]
-			Qexpr<Qbool> operator>=(const Qexpr<Q_Type>& right) const {
+			Qexpr<Q_Type> operator>=(const Qexpr<Q_Type>& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GeQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.rootDef());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
 			// expression root points to QltOp with [previous root] < 'x'
-			Qexpr<Qbool> operator<(const Q_Type& right) const {
+			Qexpr<Q_Type> operator<(const Q_Type& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LtQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.clone());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to QltOp with [previous root] < [right root]
-			Qexpr<Qbool> operator<(const Qexpr<Q_Type>& right) const {
+			Qexpr<Q_Type> operator<(const Qexpr<Q_Type>& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LtQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.rootDef());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
 			// expression root points to QleOp with [previous root] <= 'x'
-			Qexpr<Qbool> operator<=(const Q_Type& right) const {
+			Qexpr<Q_Type> operator<=(const Q_Type& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LeQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.clone());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to QleOp with [previous root] <= [right root]
-			Qexpr<Qbool> operator<=(const Qexpr<Q_Type>& right) const {
+			Qexpr<Q_Type> operator<=(const Qexpr<Q_Type>& right) const {
 				QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LeQT::cMark);
 				pOp->inputs({ as_const(*this).rootDef() });
 				pOp->output(right.rootDef());
 
-				Qexpr<Qbool> expr(pOp);
+				Qexpr<Q_Type> expr(pOp);
 				return expr;
 			};
 

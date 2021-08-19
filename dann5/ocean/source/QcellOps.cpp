@@ -16,9 +16,12 @@ void QcellOp::inputs(const Qdefs& ins)
 	if (v != cSuperposition)
 	{
 		Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
-		Qvalue outV =pOut->value();
-		if (outV == cSuperposition && v != outV && pOut->id()[0] == '_')
-			pOut->value(v);
+		if (pOut != nullptr)
+		{
+			Qvalue outV = pOut->value();
+			if (outV == cSuperposition && v != outV && pOut->id()[0] == '_')
+				pOut->value(v);
+		}
 	}
 }
 
@@ -27,10 +30,13 @@ void QcellOp::output(const Qdef::Sp& pOut, size_t forBit)
 	Qvalue v = value();
 	if (v != cSuperposition)
 	{
-		Qvalue outV = dynamic_pointer_cast<Qcell>(pOut)->value();
-		if (outV != cSuperposition && v != outV)
-			throw logic_error("Error: output '" + pOut->toString()
-				+ "' is out of sync with operation '" + Qop::toString() + "'!");
+		Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
+		if (pCellOut != nullptr)
+		{
+			Qvalue outV = pCellOut->value();
+			if (outV == cSuperposition && v != outV && pCellOut->id()[0] == '_')
+				pCellOut->value(v);
+		}
 	}
 	Qop::output(pOut, forBit);
 }
@@ -80,7 +86,8 @@ string QcellOp::solution(size_t sampleId) const
 
 string Qoperator::toString(bool decomposed, size_t forBit) const
 {
-	string str("?"), rest("");
+	string str("?"), rest(""), rStr("");
+	if (!decomposed) rStr += "(";
 	Qdef::Sp pIn = Qop::inputs()[0];
 	if (pIn != nullptr)
 	{
@@ -96,8 +103,7 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 			}
 		}
 	}
-	string rStr = str;
-	rStr += " " + identifier() + " ";
+	rStr += str + " " + identifier() + " ";
 	Qdef::Sp pOut = Qop::output();
 	if (pOut != nullptr)
 	{
@@ -116,6 +122,8 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 	}
 	if (decomposed)
 		rStr = "\n" + rStr + rest;
+	else
+		rStr += ")";
 	return rStr;
 }
 

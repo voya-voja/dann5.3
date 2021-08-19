@@ -30,8 +30,8 @@ void basic_types()
 
 void qbit_test()
 {
-    Qbit a0("0a", 1), a1("1a"), a2("2a", 5), ar("ar",0);
-    Qassign<Qbit> qbitAssign = ar = a0 & a1 | a2;
+    Qbit a0("0a", 1), a1("1a"), a2("2a", 5), a3("3a", 0), a4("4a"), ar("ar",1);
+    Qassign<Qbit> qbitAssign = ar = (a0 & a1) | ((a2 ^ a3) == a4);
     cout << endl << qbitAssign << endl << endl << qbitAssign.toString(true) << endl;
     cout << endl << "*** Logic Qubo ***" << endl << qbitAssign.qubo(false) << endl 
         << endl << "*** Reduced discrete values Qubo ***" << endl << qbitAssign.qubo() << endl;
@@ -43,9 +43,8 @@ void qbit_test()
 
 void qbool_test()
 {
-    Qbit a0("0a", 1), a1("1a");
-    Qbool b0("0b", Qbool::cTrue), b1("1b", 'F'), b2("2b", 33), br("br");
-    Qassign<Qbool> qboolAssign = br = a0 != a1 & b2 == b0 | b1;
+    Qbool b0("0b"), b1("1b", 'F'), b2("2b", 33), b3("3b"), b4("4b"), br("br", Qbool::cTrue);
+    Qassign<Qbool> qboolAssign = br = ((b3 != b4) & (b2 == b0)) | b1;
     cout << endl << qboolAssign << endl << endl << qboolAssign.toString(true) << endl;
     cout << endl << "*** Logic Qubo ***" << endl << qboolAssign.qubo(false) << endl
         << endl << "*** Reduced discrete values Qubo ***" << endl << qboolAssign.qubo() << endl;
@@ -82,7 +81,9 @@ void testMultiplication()
 
 int main()
 {
-
+    string answer;
+    cout << "should I start?";
+    cin >> answer;
     basic_types();
     qbit_test();
     qbool_test();

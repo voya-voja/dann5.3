@@ -4,7 +4,7 @@ Created on Sat Aug  7 17:48:12 2021
 
 @author: Nebojsa.Vojinovic
 """
-import dann5.d5o as d5o
+import dann5.d5o_d as d5o
 from DwaveSolvers import DwaveSolvers
 
 def basic_types():
@@ -28,8 +28,10 @@ def qbit_test(solvers):
     a0 = d5o.Qbit("0a", 1) 
     a1 = d5o.Qbit("1a")
     a2 = d5o.Qbit("2a", 5)
+    a3 = d5o.Qbit("3a", 0)
+    a4 = d5o.Qbit("4a")
     ar = d5o.Qbit("ar",1)
-    qAssign = ar.assign(a0 & a1 | a2)
+    qAssign = ar.assign((a0 & a1) | ((a2 ^ a3) == a4))
     print("\n {} \n\n {}\n".format(qAssign.toString(), 
                                    qAssign.toString(True)))
     qubo = qAssign.qubo()
@@ -51,13 +53,13 @@ def qbit_test(solvers):
 
 
 def qbool_test(solvers):
-    a0 = d5o.Qbit("0a", 1)
-    a1 = d5o.Qbit("1a")
-    b0 = d5o.Qbool("0b", d5o.Qbool.true())
+    b0 = d5o.Qbool("0b")
     b1 = d5o.Qbool("1b", d5o.Qbool.false())
     b2 = d5o.Qbool("2b", 33)
-    br = d5o.Qbool("br");
-    qAssign = br.assign((a0 != a1) & b2 == b0 | b1)
+    b3 = d5o.Qbool("3b")
+    b4 = d5o.Qbool("4b")
+    br = d5o.Qbool("br", d5o.Qbool.true());
+    qAssign = br.assign(((b3 != b4) & (b2 == b0)) | b1)
     print("\n {} \n\n {}\n".format(qAssign.toString(), 
                                    qAssign.toString(True)))
     qubo = qAssign.qubo()

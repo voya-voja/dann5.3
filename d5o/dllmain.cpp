@@ -28,8 +28,12 @@ using namespace dann5::ocean;
 
 namespace py = pybind11;
 
-
+#ifdef _DEBUG
+PYBIND11_MODULE(d5o_d, m) {
+#else
 PYBIND11_MODULE(d5o, m) {
+#endif
+
 	m.doc() = R"pbdoc(
         d5o plugin
         -----------------------
