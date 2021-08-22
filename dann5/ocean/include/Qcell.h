@@ -28,6 +28,9 @@ namespace dann5 {
 			// copy constructor
 			Qcell(const Qcell& right) : Qdef(right) {};
 
+			// Returns the number of Q bits that the Q binary holds
+			virtual std::size_t noqbs() const noexcept { return 1; };
+
 			// type conversion operator
 			operator const Qvalue() const { return value(); };
 			operator const Qvalue() { return value(); };

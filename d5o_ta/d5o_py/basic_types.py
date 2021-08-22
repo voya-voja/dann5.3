@@ -81,14 +81,13 @@ def qbool_test(solvers):
 
 
 def qbin_test(solvers):
-    bn0 = d5o.Qbin(3, "bn0")
+    bn0 = d5o.Qbin("bn0", d5o.Bits(0o03))
     bn1 = d5o.Qbin(3, "bn1")
-    bn2 = d5o.Qbin("bn2", d5o.Bits(6))
-    bn3 = d5o.Qbin(3, "bn3")
-    bn4 = d5o.Qbin(3, "bn4")
-    bnr = d5o.Qbin("bnr", d5o.Bits(0b011))
-    qExpr = bn3 & bn4
-    qAssign = bnr.assign(((bn3 != bn4) & (bn2 == bn0)) | bn1)
+    bn2 = d5o.Qbin(4, "bn2")
+    bn3 = d5o.Qbin("bn3", d5o.Bits(0b110))
+    bn4 = d5o.Qbin(2, "bn4")
+    bnr = d5o.Qbin("bnr", d5o.Bits(0x5))
+    qAssign = bnr.assign(((bn0 & bn1) | ((bn2 ^ bn3) == bn4)))
     print("\n {} \n\n {}\n".format(qAssign.toString(), 
                                    qAssign.toString(True)))
     qubo = qAssign.qubo()

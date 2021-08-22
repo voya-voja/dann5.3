@@ -55,9 +55,6 @@ namespace dann5 {
 			// Return a Q def shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbit(*this)); };
 
-			// Returns the number of Q bits that the Q binary holds
-			virtual std::size_t noqbs() const noexcept { return 1; };
-
 			// Override to set solution values from the sample set for this deffinition
 			virtual void solutions(const Qsolver::Samples& samples);
 

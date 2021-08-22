@@ -52,10 +52,6 @@ namespace dann5 {
 			// Return a Qdef's shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbool(*this)); };
 
-			// Returns the number of Q booleans that the Q binary holds
-			virtual std::size_t noqbs() const noexcept { return 1; };
-
-
 			// return string presentation of this Qoperand
 			virtual string toString(bool decomposed = false,
 									size_t forBit = cAllBits) const;

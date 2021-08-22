@@ -56,8 +56,8 @@ void qbool_test()
 
 void qbin_test()
 {
-    Qbin bn0(3,"bn0"), bn1(3,"bn1"), bn2("bn2", 6), bn3(3,"bn3"), bn4(3,"bn4"), bnr("bnr", 0b011);
-    Qassign<Qbin> qbinAssign = bnr = ((bn3 != bn4) & (bn2 == bn0)) | bn1;
+    Qbin bn0("bn0", 03), bn1(3, "bn1"), bn2(4,"bn2"), bn3("bn3", 0b110), bn4(2, "bn4"), bnr("bnr", 0x5);
+    Qassign<Qbin> qbinAssign = bnr = (bn0 & bn1) | ((bn2 ^ bn3) == bn4);
     cout << endl << qbinAssign << endl << endl << qbinAssign.toString(true) << endl;
     cout << endl << "*** Logic Qubo ***" << endl << qbinAssign.qubo(false) << endl
         << endl << "*** Reduced discrete values Qubo ***" << endl << qbinAssign.qubo() << endl;
@@ -67,7 +67,7 @@ void qbin_test()
     cout << endl << qbinAssign.solutions();
 }
 
-void testAddition()
+void qwhole_testAddition()
 {
     std::cout << "Dann5.ocean Tests Qwhole!\n";
     Qwhole a(4, "a"), b(2, "b"), c(2, "c"), d(1, "d"), A("A", 21), _1("1_", 1);
@@ -101,11 +101,11 @@ int main()
     qbit_test();
     qbool_test();
     qbin_test();
-    /*
     const clock_t begin_time = clock();
-    testAddition();
+    qwhole_testAddition();
     clock_t addition_end_time = clock();
     cout << endl << "Running time: " << to_string(float(addition_end_time - begin_time) / CLOCKS_PER_SEC) << "s";
+    /*
     testMultiplication();
     clock_t multiplication_end_time = clock();
     cout << endl << "Running time: " << to_string(float(multiplication_end_time - addition_end_time) / CLOCKS_PER_SEC) << "s";

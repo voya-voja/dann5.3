@@ -94,8 +94,8 @@ namespace dann5 {
 			// Accesses the Q bit at position pos. The first version returns the value 
 			// of the Q bit, the second version returns a reference to a Q bit object 
 			// that allows modification of the value.
-			Qcell::Sp operator[](size_t pos) const { return mCells[pos]; };
-			Qcell& operator[](size_t pos) { return *mCells[pos]; };
+			Qcell::Sp operator[](size_t pos) const noexcept;
+			Qcell& operator[](size_t pos);
 
 			// Checks if all, any or none of the bits are set to a value
 			// by default the functions will check for supperposition state
@@ -134,6 +134,24 @@ namespace dann5 {
 			void cells(const Qcells& value) { mCells = value; };
 
 		private:
+			class Value0cell : public Qcell
+			{
+			public:
+				Value0cell(const string& id) : Qcell(id) {};
+				Value0cell(const Value0cell& right) : Qcell(right) {};
+
+				virtual void value(Qvalue v) {};
+				virtual Qvalue value() const { return 0; };
+				virtual Qvalue value() { return 0; };
+
+				virtual void solutions(const Qsolver::Samples& samples) {};
+
+				virtual Qdef::Sp clone() const { return Qdef::Sp(new Value0cell(*this)); };
+
+			protected:
+			private:
+			};
+
 			Qcells mCells;
 		};
 	};

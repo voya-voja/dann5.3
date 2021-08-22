@@ -130,7 +130,7 @@ string Qnary::toString(bool decomposed, size_t forBit) const
 		}
 	}
 	string id = Qdef::toString(decomposed);
-	return id + "/" + to_string(size) + ":" + valueStr + "/";
+	return id + "/" + to_string(size) + "b" + valueStr + "/";
 }
 
 void Qnary::solutions(const Qsolver::Samples& samples)
@@ -152,6 +152,21 @@ string Qnary::solution(size_t sampleId) const
 	valueStr = valueStr.substr(value.size() - size);
 	string id = Qdef::toString();
 	return id + "/" + to_string(size) + ":" + valueStr + "/";
+}
+
+Qcell::Sp Qnary::operator[](size_t pos) const noexcept
+{
+	if (pos >= mCells.size())
+		return Qcell::Sp(new Value0cell(Qdef::id() + to_string(pos)));
+	return mCells[pos]; 
+}
+
+Qcell& Qnary::operator[](size_t pos) 
+{ 
+	if (pos >= mCells.size())
+		throw invalid_argument("Position " + to_string(pos) + 
+			" is out of range for " + toString());
+	return *mCells[pos];
 }
 
 Qnary::Sp Qnary::operator<<(size_t pos) const
