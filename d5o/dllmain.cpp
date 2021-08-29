@@ -224,8 +224,7 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qbool ids 'x' and 'y' the expression is 'x' != 'y'")
 		.def(py::self != Qbool(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
 
-
-	py::class_<Qexpr<Qbin>, Qexpression>(m, "QbinExpression", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
+	py::class_<Qexpr<Qbin>, Qexpression>(m, "QbinExpression", R"pbdoc( Instantiation of quantum binary expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qop::Sp&>())
 		.def(py::init<const Qexpr<Qbin>&>())
@@ -255,6 +254,38 @@ PYBIND11_MODULE(d5o, m) {
 
 		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qbin ids 'x' and 'y' the expression is 'x' != 'y'")
 		.def(py::self != Qbin(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
+
+	py::class_<Qexpr<Qwhole>, Qexpression>(m, "QwholeExpression", R"pbdoc( Instantiation of quantum whole expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qop::Sp&>())
+		.def(py::init<const Qexpr<Qwhole>&>())
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]")
+
+		.def(py::self > py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' > 'y'")
+		.def(py::self > Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' > [right root]")
+
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' >= 'y'")
+		.def(py::self >= Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' >= [right root]")
+
+		.def(py::self < py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' < 'y'")
+		.def(py::self >= Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' < [right root]")
+
+		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' <= 'y'")
+		.def(py::self >= Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' <= [right root]")
+
+		/*** Arithmetic ***/
+		.def(py::self + py::self, "instantiate Q expression with and logic, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' + 'y'")
+		.def(py::self + Qwhole(), "instantiate Q expression with and logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' + [right]")
+
+		.def(py::self * py::self, "instantiate Q expression with or logic, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' * 'y'")
+		.def(py::self * Qwhole(), "instantiate Q expression with or logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' * [right]");
+
 
 /*--- Qassign.h definitions ---*/
 	py::class_<Qassignment>(m, "Qassignment",
@@ -290,17 +321,23 @@ PYBIND11_MODULE(d5o, m) {
 		.def(py::init<const Qbit&, const Qexpr<Qbit>&>())
 		.def(py::init<const Qassign<Qbit>&>());
 
-	py::class_<Qassign<Qbool>, Qassignment>(m, "QboolAssignment", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
+	py::class_<Qassign<Qbool>, Qassignment>(m, "QboolAssignment", R"pbdoc( Instantiation of quantum bool expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qbool&>())
 		.def(py::init<const Qbool&, const Qexpr<Qbool>&>())
 		.def(py::init<const Qassign<Qbool>&>());
 
-	py::class_<Qassign<Qbin>, Qassignment>(m, "QbinAssignment", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
+	py::class_<Qassign<Qbin>, Qassignment>(m, "QbinAssignment", R"pbdoc( Instantiation of quantum bin expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qbin&>())
 		.def(py::init<const Qbin&, const Qexpr<Qbin>&>())
 		.def(py::init<const Qassign<Qbin>&>());
+
+	py::class_<Qassign<Qwhole>, Qassignment>(m, "QwholeAssignment", R"pbdoc( Instantiation of quantum whole expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qwhole&>())
+		.def(py::init<const Qwhole&, const Qexpr<Qwhole>&>())
+		.def(py::init<const Qassign<Qwhole>&>());
 
 
 /*--- Qdef.h definitions---*/
@@ -523,67 +560,68 @@ PYBIND11_MODULE(d5o, m) {
 	py::class_<Qwhole, Qbin>(m, "Qwhole",
 		R"pbdoc( Quantum whole is in unknown state, if any of its quantum bits is in superposition state)pbdoc")
 
-		.def("Unknown", []() { return Qwhole::cUnknown; }, R"pbdoc(Qwhole is unknown, if any of its Q bits is in superposition state.)pbdoc")
+			.def("Unknown", []() { return Qwhole::cUnknown; }, R"pbdoc(Qwhole is unknown, if any of its Q bits is in superposition state.)pbdoc")
 
-		.def(py::init<const Qwhole&>())
-		.def(py::init<const string&>())
-		.def(py::init<size_t, const string&>())
-		.def(py::init<const string&, const Qbits&>())
-		.def(py::init<const string&, const Bits&>())
-		.def(py::init<const string&, const Bits&, bool>())
+			.def(py::init<>())
+			.def(py::init<const Qwhole&>())
+			.def(py::init<const string&>())
+			.def(py::init<size_t, const string&>())
+			.def(py::init<const string&, const Qbits&>())
+			.def(py::init<const string&, unsigned long long>())
+			.def(py::init<const string&, const Bits&, bool>())
 
-		.def("value", static_cast<unsigned long long (Qbin::*)()>(&Qwhole::operator unsigned long long), "get unsigned long long value")
-		.def("value", static_cast<const unsigned long long (Qbin::*)() const>(&Qwhole::operator const unsigned long long), "get unsigned long long value")
+			.def("value", static_cast<unsigned long long (Qbin::*)()>(&Qwhole::operator unsigned long long), "get unsigned long long value")
+			.def("value", static_cast<const unsigned long long (Qbin::*)() const>(&Qwhole::operator const unsigned long long), "get unsigned long long value")
 
-		.def("toString", &Qwhole::toString, "returns string presentation of this Q whole object")
-		.def("toString", [](Qwhole& o, bool decomposed) { return o.toString(decomposed); })
-		.def("toString", [](Qwhole& o) { return o.toString(); })
+			.def("toString", &Qwhole::toString, "returns string presentation of this Q whole object")
+			.def("toString", [](Qwhole& o, bool decomposed) { return o.toString(decomposed); })
+			.def("toString", [](Qwhole& o) { return o.toString(); })
 
-		.def("solution", &Qwhole::solution, "returns a solution for this object identified by id")
+			.def("solution", &Qwhole::solution, "returns a solution for this object identified by id")
 
 
-		/*** Assignments ***/
-		.def("assign", static_cast<Qwhole& (Qwhole::*)(const Qwhole&)>(&Qwhole::operator=), "assigns a value of right Q whole to this Q bin")
-		.def("assign", static_cast<Qassign<Qwhole>(Qwhole::*)(const Qexpr<Qwhole>&)>(&Qwhole::operator=), "assignment of an Q expression creates a Q whole assignment where this Q bin is an assignee")
+			/*** Assignments ***/
+			.def("assign", static_cast<Qwhole& (Qwhole::*)(const Qwhole&)>(&Qwhole::operator=), "assigns a value of right Q whole to this Q bin")
+			.def("assign", static_cast<Qassign<Qwhole>(Qwhole::*)(const Qexpr<Qwhole>&)>(&Qwhole::operator=), "assignment of an Q expression creates a Q whole assignment where this Q bin is an assignee")
 
-		/*** Compound Assignments ***/
-		.def(py::self += py::self, "change value of this object as result of add operation between this and right Q whole")
-		.def(py::self += Qexpr<Qwhole>(), "'add assignment' of an Q expression creates a following Q whole assignment [this] = [this] + [right]")
+			/*** Compound Assignments ***/
+			.def(py::self += py::self, "change value of this object as result of add operation between this and right Q whole")
+			.def(py::self += Qexpr<Qwhole>(), "'add assignment' of an Q expression creates a following Q whole assignment [this] = [this] + [right]")
 
-		.def(py::self *= py::self, "change value of this object as result of multiply operation between this and right Q whole")
-		.def(py::self *= Qexpr<Qwhole>(), "'multiply assignment' of an Q expression creates a following Q whole assignment [this] = [this] * [right]")
+			.def(py::self *= py::self, "change value of this object as result of multiply operation between this and right Q whole")
+			.def(py::self *= Qexpr<Qwhole>(), "'multiply assignment' of an Q expression creates a following Q whole assignment [this] = [this] * [right]")
 
-		.def(py::self -= py::self, "change value of this object as result of subtract operation between this and right Q whole")
+			.def(py::self -= py::self, "change value of this object as result of subtract operation between this and right Q whole")
 
-		.def(py::self /= py::self, "change value of this object as result of divide operation between this and right Q whole")
+			.def(py::self /= py::self, "change value of this object as result of divide operation between this and right Q whole")
 
 
 	/*** Comparison ***/
 		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' == 'y'")
-//		.def(py::self == Qexpr<Qbit>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
+//		.def(py::self == Qexpr<Qwhole>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
 
 		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' != 'y'")
-//		.def(py::self != Qexpr<Qbit>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]")
+//		.def(py::self != Qexpr<Qwhole>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]")
 
 		.def(py::self > py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' > 'y'")
-//		.def(py::self > Qexpr<Qbit>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' > [right root]")
+//		.def(py::self > Qexpr<Qwhole>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' > [right root]")
 
 		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' >= 'y'")
-//		.def(py::self >= Qexpr<Qbit>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' >= [right root]")
+//		.def(py::self >= Qexpr<Qwhole>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' >= [right root]")
 
 		.def(py::self < py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' < 'y'")
-//		.def(py::self >= Qexpr<Qbit>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' < [right root]")
+//		.def(py::self >= Qexpr<Qwhole>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' < [right root]")
 
 		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' <= 'y'")
-//		.def(py::self >= Qexpr<Qbit>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' <= [right root]")
+//		.def(py::self >= Qexpr<Qwhole>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' <= [right root]")
 
 	/*** Arithmetic ***/
 
 		.def(py::self + py::self, "instantiate Q expression with and logic, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' + 'y'")
 		.def(py::self + Qexpr<Qwhole>(), "instantiate Q expression with add logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' + [right]")
 
-		.def(py::self + py::self, "instantiate Q expression with multiply logic, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' * 'y'")
-		.def(py::self + Qexpr<Qwhole>(), "instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' * [right]");
+		.def(py::self * py::self, "instantiate Q expression with multiply logic, e.g. for Qwhole ids 'x' and 'y' the expression is 'x' * 'y'")
+		.def(py::self * Qexpr<Qwhole>(), "instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' * [right]");
 
 /*
 	py::class_<Qstatement>(m, "Qstatement")

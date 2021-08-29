@@ -67,11 +67,11 @@ void qbin_test()
     cout << endl << qbinAssign.solutions();
 }
 
-void qwhole_testAddition()
+void qwholeAdd_test()
 {
     std::cout << "Dann5.ocean Tests Qwhole!\n";
     Qwhole a(4, "a"), b(2, "b"), c(2, "c"), d(1, "d"), A("A", 21), _1("1_", 1);
-    Qassign<Qwhole> aA = A = a + b + c + _1;// + d;
+    Qassign<Qwhole> aA = A = a + b + c + d + _1;// 
     cout << endl << aA << endl << endl << aA.toString(true) << endl;
     cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
     Qanalyzer analyzeA(aA.qubo());
@@ -80,10 +80,10 @@ void qwhole_testAddition()
     cout << endl << aA.solutions();
 }
 
-void testMultiplication()
-{
-    Qwhole M("M", 21), p(3, "p"), q(2, "q"), r(2, "r"); // for M = 5, 9 , 14, 17, 21  multiplization is incorrect for (3b x 3b), but correct for (4b x 2b)
-    Qassign<Qwhole> mM = M = p * q * r;
+void qwholeX_test()
+{   
+    Qwhole M("M", 18), p(3, "p"), q(3, "q"), r("r", 3);
+    Qassign<Qwhole> mM = M = p * q;// *r;
     cout << endl << mM << endl << endl << mM.toString(true) << endl;
     cout << endl << "*** Qubo ***" << endl << mM.qubo(false) << endl << mM.qubo() << endl;
     Qanalyzer analyzeM(mM.qubo());
@@ -102,14 +102,14 @@ int main()
     qbool_test();
     qbin_test();
     const clock_t begin_time = clock();
-    qwhole_testAddition();
+    qwholeAdd_test();
     clock_t addition_end_time = clock();
     cout << endl << "Running time: " << to_string(float(addition_end_time - begin_time) / CLOCKS_PER_SEC) << "s";
-    /*
-    testMultiplication();
+    
+    qwholeX_test();
     clock_t multiplication_end_time = clock();
     cout << endl << "Running time: " << to_string(float(multiplication_end_time - addition_end_time) / CLOCKS_PER_SEC) << "s";
-*/
+
     return 0;
 }
 

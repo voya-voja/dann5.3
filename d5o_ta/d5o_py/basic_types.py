@@ -20,11 +20,12 @@ def basic_types():
     print(a.toString(), a.toString(False, 0),
           a.toString(True), a.toString(True, 0))
     
-    x = d5o.Qwhole("x", d5o.Bits(33))
+    x = d5o.Qwhole("x", 33)
     print(x.toString(), x.toString(False, 0),
           x.toString(True), x.toString(True, 0))
 
 def qbit_test(solvers):
+    print("\n\n==== qbit_test() =====")
     a0 = d5o.Qbit("0a", 1) 
     a1 = d5o.Qbit("1a")
     a2 = d5o.Qbit("2a", 5)
@@ -53,6 +54,7 @@ def qbit_test(solvers):
 
 
 def qbool_test(solvers):
+    print("\n\n==== qbool_test() =====")
     b0 = d5o.Qbool("0b")
     b1 = d5o.Qbool("1b", d5o.Qbool.false())
     b2 = d5o.Qbool("2b", 33)
@@ -81,6 +83,7 @@ def qbool_test(solvers):
 
 
 def qbin_test(solvers):
+    print("\n\n==== qbin_test() =====")
     bn0 = d5o.Qbin("bn0", d5o.Bits(0o03))
     bn1 = d5o.Qbin(3, "bn1")
     bn2 = d5o.Qbin(4, "bn2")
@@ -108,12 +111,70 @@ def qbin_test(solvers):
 #    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
 
 
+def qwholeAdd_test(solvers):
+    print("\n\n==== qwholeAdd_test() =====")
+    a = d5o.Qwhole(4,"a")
+    b = d5o.Qwhole(2, "b")
+    c = d5o.Qwhole(2, "c")
+    d = d5o.Qwhole(1,"d")
+    A = d5o.Qwhole("A", 21)
+    _1 = d5o.Qwhole("1", 1)
+    aA = A.assign(a + b + c + d + _1)
+    print("\n {} \n\n {}\n".format(aA.toString(), 
+                                   aA.toString(True)))
+    qubo = aA.qubo()
+    print("\n--- Logic Qubo --- {} \n\n --- Reduced discrete values Qubo --- {}\n".format(
+        aA.qubo(False), qubo))
+    analyze = d5o.Qanalyzer(aA.qubo(True, d5o.AllBits()))
+    print("# of nodes: {}\t# of branches: {}".format(
+        analyze.nodesNo(), analyze.branchesNo()))
+    aA.solve()
+    print("d5o simulation solutions: \n{}\n".format(aA.solutions()))
+    
+    samples = solvers.solve('Exact', qubo)
+    aA.solutions(samples)
+    print("Dwave simulation solutions: \n{}\n".format(aA.solutions()))
+
+#    samples = solvers.solve('Advantage', qubo)
+#    qAssign.solutions(samples)
+#    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
+
+
+def qwholeX_test(solvers):
+    print("\n\n==== qwholeAdd_test() =====")
+    p = d5o.Qwhole(3,"p")
+    q = d5o.Qwhole(3, "q")
+    r = d5o.Qwhole("r", 3)
+    M = d5o.Qwhole("M", 18)
+    mM = M.assign(p * q)
+    print("\n {} \n\n {}\n".format(mM.toString(), 
+                                   mM.toString(True)))
+    qubo = mM.qubo()
+    print("\n--- Logic Qubo --- {} \n\n --- Reduced discrete values Qubo --- {}\n".format(
+        mM.qubo(False), qubo))
+    analyze = d5o.Qanalyzer(mM.qubo(True, d5o.AllBits()))
+    print("# of nodes: {}\t# of branches: {}".format(
+        analyze.nodesNo(), analyze.branchesNo()))
+    mM.solve()
+    print("d5o simulation solutions: \n{}\n".format(mM.solutions()))
+    
+    samples = solvers.solve('Exact', qubo)
+    mM.solutions(samples)
+    print("Dwave simulation solutions: \n{}\n".format(mM.solutions()))
+
+#    samples = solvers.solve('Advantage', qubo)
+#    qAssign.solutions(samples)
+#    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
+
+
 def main():
     basic_types()
     solvers = DwaveSolvers(5000, 5)
     qbit_test(solvers)
     qbool_test(solvers)
     qbin_test(solvers)
+    qwholeAdd_test(solvers)
+    qwholeX_test(solvers)
 
 if __name__ == "__main__":
     main()

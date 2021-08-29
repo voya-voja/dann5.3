@@ -492,6 +492,18 @@ namespace dann5 {
 				return(*this);
 			};
 
+			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
+			// expression root points to Qadder with [previous root] + 'x'
+			Qexpr<Q_Type> operator+(const Q_Type& right) const {
+				QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create("+");
+				pOp->inputs({ as_const(*this).rootDef(), right.clone() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
+			};
+
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to Qadder with [previous root] ^ [right root]
 			Qexpr<Q_Type>& operator+(const Qexpr<Q_Type>& right) {
@@ -502,6 +514,18 @@ namespace dann5 {
 
 				root(pOp);
 				return(*this);
+			};
+
+			// Update Q expression with comparison, e.g. for an argument [right] the
+			// expression root points to Qadder with [previous root] ^ [right root]
+			Qexpr<Q_Type> operator+(const Qexpr<Q_Type>& right) const {
+				QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create("+");
+				pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
 			};
 
 			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
@@ -516,6 +540,18 @@ namespace dann5 {
 				return(*this);
 			};
 
+			// Update Q expression with comparison, e.g. for an argument with id 'x' the 
+			// expression root points to Qmultiply with [previous root] * 'x'
+			Qexpr<Q_Type> operator*(const Q_Type& right) const {
+				QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create("*");
+				pOp->inputs({ as_const(*this).rootDef(), right.clone() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
+			};
+
 			// Update Q expression with comparison, e.g. for an argument [right] the
 			// expression root points to Qmultiply with [previous root] * [right root]
 			Qexpr<Q_Type>& operator*(const Qexpr<Q_Type>& right) {
@@ -526,6 +562,18 @@ namespace dann5 {
 
 				root(pOp);
 				return(*this);
+			};
+
+			// Update Q expression with comparison, e.g. for an argument [right] the
+			// expression root points to Qmultiply with [previous root] * [right root]
+			Qexpr<Q_Type> operator*(const Qexpr<Q_Type>& right) const {
+				QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create("*");
+				pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
+				Q_Type out(pOp->outId());
+				pOp->output(out.clone());
+
+				Qexpr<Q_Type> expr(pOp);
+				return(expr);
 			};
 		};
 	};

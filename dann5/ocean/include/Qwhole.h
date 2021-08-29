@@ -28,6 +28,9 @@ namespace dann5 {
 			// Qwhole unknown string representation is "(U)"
 			static const string cUnknownSign;
 
+			// Default constructor initializes Q whole an empty binary
+			Qwhole() :Qbin() {};
+
 			// Initialize Q whole with a given id and byte size 0 value
 			Qwhole(const string& id) : Qbin(id) {};
 
@@ -36,6 +39,9 @@ namespace dann5 {
 
 			// Initialize Q whole with a given id and value as a Qbit vector
 			Qwhole(const string& id, const Qbits& value) : Qbin(id, value) {};
+
+			// Initialize Q whole with a given id and value as a Qbit vector
+			Qwhole(const string& id, unsigned long long value) : Qbin(id, value) {};
 
 			// Initialize Q whole with a given id and a deterministic value as a bitset
 			// by default it will trim leading 0, unless asis is true
