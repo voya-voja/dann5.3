@@ -36,57 +36,61 @@ QcellMatrix Qmultiply::x(const Qdefs& args) const
 
 void Qmultiply::sumDiagonal(const QcellMatrix& matrix)
 {
-	// resize this vector to a # of diagonals + 1 of xMatrix
+	// resize X cells to a # of diagonals + 1 = # of rows + # of cols of xMatrix
 	Index size = matrix.rows() + matrix.cols();
 	Qcells& xCells = cells();
 	xCells.resize(size);
-	Index last = size - 1;
 
-	// Value of 0 Q bit is the sum of right-most diagonal
+	// The right-most diagonal corresponding to 0 Qcell value has 1 element and
+	// the offset = # of cols -1
 	Index diagonalOffset = matrix.cols() - 1;
-
-	// add functional object to add diagonal vectors' bit symbols
-	Qaddition::Sp pAddition = nullptr;
-	for (Index at = 0; at < last; at++)
+	// a stack of carry Q cells to be carried to sum of next Q cell
+	Qdefs carryStack;	
+	for (Index at = 0; at < size; at++)
 	{
+		// all of inputs to be summed up for at Q cell. 
+		// It is initialized with carry Q cells, if any
+		Qdefs ins(carryStack);
+		carryStack.clear();	// reset carryStack to accumulate any carry Q cells
+
+		// starting with right-most diagonal and inputs for at Q cell sum
 		QcellMatrix diagonal = matrix.diagonal(diagonalOffset - at);
 		Index nDiagElmns = diagonal.rows();
 		for (Index atD = 0; atD < nDiagElmns; atD++)
 		{
-			if (atD == 0)
+			ins.push_back(diagonal(atD));
+		}
+
+		// a Q addition to be used to sum up inputs for at Q cell
+		Qaddition::Sp pAddition = nullptr;
+		while (!ins.empty())
+		{
+			// initialize addition-inputs, with no more than 3 inputs
+			size_t noElements = 0;
+			Qdefs addIns;
+			if (pAddition != nullptr)
+				addIns.push_back(pAddition);
+			while (!ins.empty() && ((noElements < 2 && pAddition != nullptr) || noElements++ < 3 ))
 			{
-				xCells[at] = diagonal(atD);
+				addIns.push_back(ins.back());
+				ins.pop_back();
 			}
+
+			if (addIns.size() == 1)
+				xCells[at] = dynamic_pointer_cast<Qcell>(addIns[0]);
 			else
-			{
-				if (pAddition == nullptr)
-				{	// if there is no previous addition use Qxor
+			{	// create addition object according to # of addition-inputs
+				if (addIns.size() == 2)
 					pAddition = dynamic_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(XorQT::cMark));
-					pAddition->inputs({ xCells[at], diagonal(atD) });
-				}
 				else
-				{	// add any carry-forward operand using Qadder
-					Qaddition::Carry::Sp pCarry = as_const(*pAddition).carry();
 					pAddition = dynamic_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(AdderQT::cMark));
-					pAddition->inputs({ xCells[at], diagonal(atD), pCarry });
-				}
+				pAddition->inputs(addIns);
 				Qbit out(pAddition->outId());
 				pAddition->output(out.clone());
+				// stack carry-forward Q cell
+				carryStack.push_back(as_const(*pAddition).carry());
 				xCells[at] = pAddition;
 			}
 		}
-	}
-	if (pAddition != nullptr)
-	{	// add a previous carry Q bit to the 'last - 1' cell
-		Qaddition::Carry::Sp pCarry = as_const(*pAddition).carry();
-		pAddition = dynamic_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(XorQT::cMark));
-		pAddition->inputs({ xCells[last - 1], pCarry });
-		xCells[last - 1] = pAddition;
-		// last Q bit of result is a carry Q bit of previous addition
-		xCells[last] = as_const(*pAddition).carry();
-	}
-	else
-	{
-		xCells.resize(last);
 	}
 }
