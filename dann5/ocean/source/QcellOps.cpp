@@ -72,15 +72,21 @@ Qvalue QcellOp::value()
 	return(as_const(*this).value());
 }
 
-void QcellOp::solutions(const Qsolver::Samples& samples)
+void QcellOp::add(const Qsolver::Samples& samples)
 {
-	Qop::solutions(samples);
+	Qop::add(samples);
 }
 
 string QcellOp::solution(size_t sampleId) const
 {
 	return Qop::solution(sampleId);
 }
+
+void QcellOp::clearSolutions()
+{
+	Qop::clearSolutions();
+}
+
 
 /*** Q operator ***/
 

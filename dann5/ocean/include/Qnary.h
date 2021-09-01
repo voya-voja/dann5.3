@@ -82,10 +82,13 @@ namespace dann5 {
 								size_t forBit = cAllBits) const;
 
 			// Override to set solution values from the sample set for this deffinition
-			virtual void solutions(const Qsolver::Samples& samples);
+			virtual void add(const Qsolver::Samples& samples);
 
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
+
+			// Clear all solution samples
+			virtual void clearSolutions();
 
 			void set(const Qcell::Sp& pCell, size_t forBit) {
 				mCells[forBit] = pCell;
@@ -144,9 +147,12 @@ namespace dann5 {
 				virtual Qvalue value() const { return 0; };
 				virtual Qvalue value() { return 0; };
 
-				virtual void solutions(const Qsolver::Samples& samples) {};
+				virtual void add(const Qsolver::Samples& samples) {};
 
 				virtual Qdef::Sp clone() const { return Qdef::Sp(new Value0cell(*this)); };
+
+				// Clear all solution samples
+				virtual void clearSolutions() {};
 
 			protected:
 			private:

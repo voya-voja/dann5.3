@@ -82,14 +82,30 @@ void qwholeAdd_test()
 
 void qwholeX_test()
 {   
-    Qwhole M("M", 18), p(3, "p"), q(3, "q"), r("r", 3);
-    Qassign<Qwhole> mM = M = p * q;// *r;
+    Qwhole M("M", 49), p(3, "p"), q(3, "q"), r(1, "r");
+    Qassign<Qwhole> mM = M = p * q *r;
     cout << endl << mM << endl << endl << mM.toString(true) << endl;
     cout << endl << "*** Qubo ***" << endl << mM.qubo(false) << endl << mM.qubo() << endl;
     Qanalyzer analyzeM(mM.qubo());
     cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
     mM.solve();
     cout << endl << mM.solutions();
+    Qsolver solver(mM.qubo());
+    Qsolver::Samples solutions = solver.solution();
+    mM.add(solutions);
+    cout << endl << mM.solutions();
+}
+
+
+void qwholeXlarge_test()
+{
+    Qwhole M("M", 132560640), p(16, "p"), q(8, "q"), r(8, "r");
+    Qassign<Qwhole> mM = M = p * q * r;
+    cout << endl << mM << endl;
+    Qanalyzer analyzeM(mM.qubo());
+    cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
+//    mM.solve();
+//    cout << endl << mM.solutions();
 }
 
 int main()
@@ -105,11 +121,12 @@ int main()
     qwholeAdd_test();
     clock_t addition_end_time = clock();
     cout << endl << "Running time: " << to_string(float(addition_end_time - begin_time) / CLOCKS_PER_SEC) << "s";
-    
+
     qwholeX_test();
     clock_t multiplication_end_time = clock();
     cout << endl << "Running time: " << to_string(float(multiplication_end_time - addition_end_time) / CLOCKS_PER_SEC) << "s";
 
+//    qwholeXlarge_test();
     return 0;
 }
 

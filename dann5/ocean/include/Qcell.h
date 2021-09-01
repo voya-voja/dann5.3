@@ -45,6 +45,9 @@ namespace dann5 {
 
 			Qvalue solutionValue(size_t sampleId) const;
 
+			// Clear all solution samples
+			virtual void clearSolutions();
+
 		protected:
 			Qvalues& solutionValues() { return mSolutions; };
 

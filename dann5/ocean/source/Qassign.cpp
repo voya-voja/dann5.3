@@ -65,9 +65,9 @@ string Qassignment::toString(bool decomposed, size_t forBit) const
 	return sAssignment;
 }
 
-void Qassignment::solutions(const Qsolver::Samples& samples) 
+void Qassignment::add(const Qsolver::Samples& samples) 
 { 
-	mpExpr->solutions(samples);
+	mpExpr->add(samples);
 }
 
 string Qassignment::solutions() const
@@ -79,6 +79,12 @@ string Qassignment::solve()
 {
 	return mpExpr->solve() + "\n";
 }
+
+void Qassignment::clearSolutions()
+{
+	mpExpr->clearSolutions();
+}
+
 
 ostream& dann5::ocean::operator<<(std::ostream& out, const Qassignment& statement)
 {

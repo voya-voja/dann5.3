@@ -48,10 +48,13 @@ namespace dann5 {
 			};
 
 			// Override to set solution values from the sample set for this deffinition
-			virtual void solutions(const Qsolver::Samples& samples);
+			virtual void add(const Qsolver::Samples& samples);
 
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
+
+			// Clear all solution samples
+			virtual void clearSolutions();
 
 		protected:
 			virtual Qvalue calculate(const Qvalues& values) const = 0;

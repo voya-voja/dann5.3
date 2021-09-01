@@ -17,6 +17,10 @@ string Qcell::solution(size_t sampleId) const
 	return sStr;
 }
 
+void Qcell::clearSolutions()
+{
+	mSolutions.clear();
+}
 
 Qvalue Qcell::solutionValue(size_t sampleId) const 
 {

@@ -151,7 +151,6 @@
     <ClCompile Include="..\dann5\ocean\source\Qbool.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qcell.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QcellOps.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\Qequation.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qexpr.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qint.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qmultiply.cpp" />
@@ -159,7 +158,6 @@
     <ClCompile Include="..\dann5\ocean\source\QnaryOp.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qop.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qsolver.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\Qstatement.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />
@@ -177,7 +175,6 @@
     <ClInclude Include="..\dann5\ocean\include\Qcell.h" />
     <ClInclude Include="..\dann5\ocean\include\QcellOps.h" />
     <ClInclude Include="..\dann5\ocean\include\Qdef.h" />
-    <ClInclude Include="..\dann5\ocean\include\Qequation.h" />
     <ClInclude Include="..\dann5\ocean\include\Qexpr.h" />
     <ClInclude Include="..\dann5\ocean\include\Qint.h" />
     <ClInclude Include="..\dann5\ocean\include\Qmultiply.h" />
@@ -185,7 +182,6 @@
     <ClInclude Include="..\dann5\ocean\include\QnaryOp.h" />
     <ClInclude Include="..\dann5\ocean\include\Qop.h" />
     <ClInclude Include="..\dann5\ocean\include\Qsolver.h" />
-    <ClInclude Include="..\dann5\ocean\include\Qstatement.h" />
     <ClInclude Include="..\dann5\ocean\include\Qtype.h" />
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h" />

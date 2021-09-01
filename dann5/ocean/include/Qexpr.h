@@ -65,7 +65,7 @@ namespace dann5 {
 
 			// Set a sample set with a node list defined by qubo() of this Q expression
 			// the combination of node values should be different for each sample
-			virtual void solutions(const Qsolver::Samples& samples);
+			virtual void add(const Qsolver::Samples& samples);
 
 			// For existing samples, returns a string with all solutions of 
 			// this Q expression
@@ -73,6 +73,9 @@ namespace dann5 {
 
 			// Solve this Q expression and return a string with all solutions
 			virtual string solve() ;
+
+			// Clear all solution samples
+			virtual void clearSolutions();
 
 			// Send a string representation of a Q expression into an output stream
 			friend std::ostream& operator << (std::ostream&, const Qexpression&);

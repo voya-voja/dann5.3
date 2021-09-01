@@ -57,9 +57,6 @@
     <ClCompile Include="..\dann5\ocean\source\QcellOps.cpp">
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\Qequation.cpp">
-      <Filter>Source Files\dann5\ocean</Filter>
-    </ClCompile>
     <ClCompile Include="..\dann5\ocean\source\Qexpr.cpp">
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
@@ -79,9 +76,6 @@
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
     <ClCompile Include="..\dann5\ocean\source\Qsolver.cpp">
-      <Filter>Source Files\dann5\ocean</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\Qstatement.cpp">
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp">
@@ -125,9 +119,6 @@
     <ClInclude Include="..\dann5\ocean\include\Qdef.h">
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
-    <ClInclude Include="..\dann5\ocean\include\Qequation.h">
-      <Filter>Header Files\dann5\ocean</Filter>
-    </ClInclude>
     <ClInclude Include="..\dann5\ocean\include\Qexpr.h">
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
@@ -147,9 +138,6 @@
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
     <ClInclude Include="..\dann5\ocean\include\Qsolver.h">
-      <Filter>Header Files\dann5\ocean</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dann5\ocean\include\Qstatement.h">
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
     <ClInclude Include="..\dann5\ocean\include\Qtype.h">

@@ -36,7 +36,7 @@ string Qbool::toString(bool decomposed, size_t forBit) const
 	return id + "/" + valueStr + "/";
 }
 
-void Qbool::solutions(const Qsolver::Samples& samples)
+void Qbool::add(const Qsolver::Samples& samples)
 {
 	if (value() != cSuperposition) return;
 

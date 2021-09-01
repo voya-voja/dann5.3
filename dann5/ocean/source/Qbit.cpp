@@ -14,7 +14,7 @@ string Qbit::toString(bool decomposed, size_t forBit) const
 	return id + "/" + valueStr + "/";
 }
 
-void Qbit::solutions(const Qsolver::Samples& samples)
+void Qbit::add(const Qsolver::Samples& samples)
 {
 	if (value() != cSuperposition) return;
 

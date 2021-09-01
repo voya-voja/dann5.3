@@ -111,12 +111,17 @@ Qubo QnaryOp::qubo(bool finalized, size_t forBit) const
 	return aQubo;
 }
 
-void QnaryOp::solutions(const Qsolver::Samples& samples)
+void QnaryOp::add(const Qsolver::Samples& samples)
 {
-	Qop::solutions(samples);
+	Qop::add(samples);
 }
 
 string QnaryOp::solution(size_t sampleId) const
 {
 	return Qop::solution(sampleId);
+}
+
+void QnaryOp::clearSolutions()
+{
+	Qop::clearSolutions();
 }

@@ -83,7 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName).cp38-win_amd64</TargetName>
+    <TargetName>$(ProjectName)2.cp38-win_amd64</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -181,7 +181,6 @@
     <ClInclude Include="..\dann5\ocean\include\QnaryOp.h" />
     <ClInclude Include="..\dann5\ocean\include\Qop.h" />
     <ClInclude Include="..\dann5\ocean\include\Qsolver.h" />
-    <ClInclude Include="..\dann5\ocean\include\Qstatement.h" />
     <ClInclude Include="..\dann5\ocean\include\Qtype.h" />
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h" />
@@ -204,7 +203,6 @@
     <ClCompile Include="..\dann5\ocean\source\QnaryOp.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qop.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qsolver.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\Qstatement.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />

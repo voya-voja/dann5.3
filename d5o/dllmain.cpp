@@ -31,7 +31,7 @@ namespace py = pybind11;
 #ifdef _DEBUG
 PYBIND11_MODULE(d5o_d, m) {
 #else
-PYBIND11_MODULE(d5o, m) {
+PYBIND11_MODULE(d5o2, m) {
 #endif
 
 	m.doc() = R"pbdoc(
@@ -145,7 +145,7 @@ PYBIND11_MODULE(d5o, m) {
 
 		.def("noqbs", &Qexpression::noqbs, "Returns the number of Q bits that the Q expression holds")
 
-		.def("qubo", &Qexpression::qubo, 
+		.def("qubo", &Qexpression::qubo,
 			"Returns a qubo representation of this Q expression, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
 		.def("qubo", [](Qexpression& o, bool finalized) { return o.qubo(finalized); })
 		.def("qubo", [](Qexpression& o) { return o.qubo(); })
@@ -154,11 +154,10 @@ PYBIND11_MODULE(d5o, m) {
 		.def("toString", [](Qexpression& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qexpression& o) { return o.toString(); })
 
-		.def("solutions", static_cast<void (Qexpression::*)(const Qsolver::Samples&)>(&Qexpression::solutions), 
-			"Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
-		.def("solutions", static_cast<string(Qexpression::*)() const>(&Qexpression::solutions), "For existing samples, returns a string with all solutions of this Q expression")
-
-		.def("solve", static_cast<string(Qexpression::*)()>(&Qexpression::solve), "Solve this Q expression and return a string with all solutions");
+		.def("add", &Qexpression::add, "Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
+		.def("solutions", &Qexpression::solutions, "For existing samples, returns a string with all solutions of this Q expression")
+		.def("solve", &Qexpression::solve, "Solve this Q expression and return a string with all solutions")
+		.def("clearSolutions", &Qexpression::clearSolutions, "Clear all solution samples");
 
 	py::class_<Qexpr<Qbit>, Qexpression>(m, "QbitExpression", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
 		.def(py::init<>())
@@ -309,11 +308,10 @@ PYBIND11_MODULE(d5o, m) {
 		.def("toString", [](Qassignment& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qassignment& o) { return o.toString(); })
 
-		.def("solutions", static_cast<void (Qassignment::*)(const Qsolver::Samples&)>(&Qassignment::solutions),
-			"Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
-		.def("solutions", static_cast<string(Qassignment::*)() const>(&Qassignment::solutions), "For existing samples, returns a string with all solutions of this Q expression")
-
-		.def("solve", static_cast<string(Qassignment::*)()>(&Qassignment::solve), "Solve this Q assignment and return a string with all solutions");
+		.def("add", &Qassignment::add, "Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
+		.def("solutions", &Qassignment::solutions, "For existing samples, returns a string with all solutions of this Q assignment")
+		.def("solve", &Qassignment::solve, "Solve this Q assignment and return a string with all solutions")
+		.def("clearSolutions", &Qassignment::clearSolutions, "Clear all solution samples");
 
 	py::class_<Qassign<Qbit>, Qassignment>(m, "QbitAssignment", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
 		.def(py::init<>())
@@ -372,7 +370,7 @@ PYBIND11_MODULE(d5o, m) {
 		.def("toString", [](Qbit& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qbit& o) { return o.toString(); })
 
-		.def("solutions", &Qbit::solutions, "returns solutions for this object")
+		.def("add", &Qbit::add, "returns solutions for this object")
 		.def("solution", &Qbit::solution, "returns a solution for this object identified by id")
 
 	/*** Assignments ***/
@@ -449,7 +447,7 @@ PYBIND11_MODULE(d5o, m) {
 			.def("toString", [](Qbool& o, bool decomposed) { return o.toString(decomposed); })
 			.def("toString", [](Qbool& o) { return o.toString(); })
 
-			.def("solutions", &Qbool::solutions, "returns solutions for this object")
+			.def("add", &Qbool::add, "returns solutions for this object")
 			.def("solution", &Qbool::solution, "returns a solution for this object identified by id")
 
 			/*** Assignments ***/
@@ -513,7 +511,7 @@ PYBIND11_MODULE(d5o, m) {
 		.def("toString", [](Qbin& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qbin& o) { return o.toString(); })
 
-		.def("solutions", &Qbin::solutions, "returns solutions for this object")
+		.def("add", &Qbin::add, "returns solutions for this object")
 		.def("solution", &Qbin::solution, "returns a solution for this object identified by id")
 
 		/*** Assignments ***/

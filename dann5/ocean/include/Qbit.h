@@ -56,7 +56,7 @@ namespace dann5 {
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbit(*this)); };
 
 			// Override to set solution values from the sample set for this deffinition
-			virtual void solutions(const Qsolver::Samples& samples);
+			virtual void add(const Qsolver::Samples& samples);
 
 			/*** Assignments ***/
 			// assignment operator changes the identity and value of this object to be

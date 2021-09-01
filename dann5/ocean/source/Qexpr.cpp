@@ -38,10 +38,10 @@ string Qexpression::toString(bool decomposed, size_t forBit) const
 	return tStr;
 }
 
-void Qexpression::solutions(const Qsolver::Samples& samples)
+void Qexpression::add(const Qsolver::Samples& samples)
 {
-	mSolutions = samples;
-	root().solutions(samples);
+	mSolutions.insert(mSolutions.end(), samples.begin(), samples.end());
+	root().add(samples);
 }
 
 string Qexpression::solutions() const
@@ -55,14 +55,21 @@ string Qexpression::solutions() const
 	return asStr;
 }
 
-
 string Qexpression::solve()
 {
+	if(mSolutions.size() != 0)
+		clearSolutions();
 	Qubo q = qubo();
 	Qsolver solver(q);
 	Qsolver::Samples samples = solver.solution();
-	solutions(samples);
+	add(samples);
 	return solutions();
+}
+
+void Qexpression::clearSolutions()
+{
+	mSolutions.clear();
+	root().clearSolutions();
 }
 
 std::ostream& dann5::ocean::operator << (std::ostream& out, const Qexpression& right)

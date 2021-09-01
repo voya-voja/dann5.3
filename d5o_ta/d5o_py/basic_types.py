@@ -4,7 +4,7 @@ Created on Sat Aug  7 17:48:12 2021
 
 @author: Nebojsa.Vojinovic
 """
-import dann5.d5o_d as d5o
+import dann5.d5o2 as d5o
 from DwaveSolvers import DwaveSolvers
 
 def basic_types():
@@ -43,9 +43,9 @@ def qbit_test(solvers):
         analyze.nodesNo(), analyze.branchesNo()))
     qAssign.solve()
     print("d5o simulation solutions: \n{}\n".format(qAssign.solutions()))
-    
+    qAssign.clearSolutions()
     samples = solvers.solve('Exact', qubo)
-    qAssign.solutions(samples)
+    qAssign.add(samples)
     print("Dwave simulation solutions: \n{}\n".format(qAssign.solutions()))
 
 #    samples = solvers.solve('Advantage', qubo)
@@ -72,11 +72,10 @@ def qbool_test(solvers):
         analyze.nodesNo(), analyze.branchesNo()))
     qAssign.solve()
     print("d5o simulation solutions: \n{}\n".format(qAssign.solutions()))
-    
+    qAssign.clearSolutions()
     samples = solvers.solve('Exact', qubo)
-    qAssign.solutions(samples)
+    qAssign.add(samples)
     print("Dwave simulation solutions: \n{}\n".format(qAssign.solutions()))
-
 #    samples = solvers.solve('Advantage', qubo)
 #    qAssign.solutions(samples)
 #    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
@@ -101,14 +100,13 @@ def qbin_test(solvers):
         analyze.nodesNo(), analyze.branchesNo()))
     qAssign.solve()
     print("d5o simulation solutions: \n{}\n".format(qAssign.solutions()))
-    
-    samples = solvers.solve('Exact', qubo)
-    qAssign.solutions(samples)
-    print("Dwave simulation solutions: \n{}\n".format(qAssign.solutions()))
-
-#    samples = solvers.solve('Advantage', qubo)
+    qAssign.clearSolutions()
+#    samples = solvers.solve('Exact', qubo)
 #    qAssign.solutions(samples)
-#    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
+#    print("Dwave simulation solutions: \n{}\n".format(qAssign.solutions()))
+    samples = solvers.solve('Advantage', qubo)
+    qAssign.add(samples)
+    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
 
 
 def qwholeAdd_test(solvers):
@@ -130,23 +128,22 @@ def qwholeAdd_test(solvers):
         analyze.nodesNo(), analyze.branchesNo()))
     aA.solve()
     print("d5o simulation solutions: \n{}\n".format(aA.solutions()))
-    
+    aA.clearSolutions()
     samples = solvers.solve('Exact', qubo)
-    aA.solutions(samples)
+    aA.add(samples)
     print("Dwave simulation solutions: \n{}\n".format(aA.solutions()))
-
 #    samples = solvers.solve('Advantage', qubo)
 #    qAssign.solutions(samples)
 #    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
 
 
 def qwholeX_test(solvers):
-    print("\n\n==== qwholeAdd_test() =====")
+    print("\n\n==== qwholeX_test() =====")
     p = d5o.Qwhole(3,"p")
-    q = d5o.Qwhole(3, "q")
-    r = d5o.Qwhole("r", 3)
-    M = d5o.Qwhole("M", 18)
-    mM = M.assign(p * q)
+    q = d5o.Qwhole(2, "q")
+    r = d5o.Qwhole(2, "r")
+    M = d5o.Qwhole("M", 54)
+    mM = M.assign(p * q * r)
     print("\n {} \n\n {}\n".format(mM.toString(), 
                                    mM.toString(True)))
     qubo = mM.qubo()
@@ -157,24 +154,45 @@ def qwholeX_test(solvers):
         analyze.nodesNo(), analyze.branchesNo()))
     mM.solve()
     print("d5o simulation solutions: \n{}\n".format(mM.solutions()))
-    
-    samples = solvers.solve('Exact', qubo)
-    mM.solutions(samples)
-    print("Dwave simulation solutions: \n{}\n".format(mM.solutions()))
+    mM.clearSolutions()    
+#    samples = solvers.solve('Exact', qubo)
+#    mM.solutions(samples)
+#    print("Dwave simulation solutions: \n{}\n".format(mM.solutions()))
+    samples = solvers.solve('Advantage', qubo)
+    mM.add(samples)
+    print("DWave Advantage solutions: \n{}\n".format(mM.solutions()))
 
-#    samples = solvers.solve('Advantage', qubo)
-#    qAssign.solutions(samples)
-#    print("DWave Advantage solutions: \n{}\n".format(qAssign.solutions()))
+
+def qwholeXlarge_test(solvers):
+    print("\n\n==== qwholeXlarge_test() =====")
+    p = d5o.Qwhole(5,"p")
+    q = d5o.Qwhole(5, "q")
+    r = d5o.Qwhole(5, "r")
+    M = d5o.Qwhole("M", 5580)
+    mM = M.assign(p * q * r)
+    print("\n {} \n".format(mM.toString()))
+    qubo = mM.qubo()
+    analyze = d5o.Qanalyzer(qubo)
+    print("# of nodes: {}\t# of branches: {}".format(
+        analyze.nodesNo(), analyze.branchesNo()))
+    samples = solvers.solve('Hybrid', qubo)
+    mM.add(samples)
+    print("DWave Hybrid solutions: \n{}\n".format(mM.solutions()))
+    mM.clearSolutions()    
+    samples = solvers.solve('Advantage', qubo)
+    mM.add(samples)
+    print("DWave Advantage solutions: \n{}\n".format(mM.solutions()))
 
 
 def main():
-    basic_types()
-    solvers = DwaveSolvers(5000, 5)
-    qbit_test(solvers)
-    qbool_test(solvers)
-    qbin_test(solvers)
-    qwholeAdd_test(solvers)
-    qwholeX_test(solvers)
+#    basic_types()
+    solvers = DwaveSolvers(1000, 5)
+#    qbit_test(solvers)
+#    qbool_test(solvers)
+#    qbin_test(solvers)
+#    qwholeAdd_test(solvers)
+#    qwholeX_test(solvers)
+    qwholeXlarge_test(solvers)
 
 if __name__ == "__main__":
     main()

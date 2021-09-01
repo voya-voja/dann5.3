@@ -66,15 +66,14 @@ void Qmultiply::sumDiagonal(const QcellMatrix& matrix)
 		while (!ins.empty())
 		{
 			// initialize addition-inputs, with no more than 3 inputs
-			size_t noElements = 0;
 			Qdefs addIns;
 			if (pAddition != nullptr)
 				addIns.push_back(pAddition);
-			while (!ins.empty() && ((noElements < 2 && pAddition != nullptr) || noElements++ < 3 ))
+			do
 			{
 				addIns.push_back(ins.back());
 				ins.pop_back();
-			}
+			} while (!ins.empty() && addIns.size() < 3);
 
 			if (addIns.size() == 1)
 				xCells[at] = dynamic_pointer_cast<Qcell>(addIns[0]);

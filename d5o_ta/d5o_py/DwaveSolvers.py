@@ -40,6 +40,9 @@ class DwaveSolvers:
 
   def solve(self, solverType, qubo):
     solver = self.mSolvers[solverType]
-    sampleset = solver.sample_qubo(qubo, **self.mKwargs)
+    if solverType == 'Advantage':
+        sampleset = solver.sample_qubo(qubo, **self.mKwargs)
+    else:
+        sampleset = solver.sample_qubo(qubo)
     samples = [dict(sample) for sample in sampleset.lowest().samples()]
     return samples
