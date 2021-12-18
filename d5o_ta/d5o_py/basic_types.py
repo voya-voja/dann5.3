@@ -7,6 +7,8 @@ Created on Sat Aug  7 17:48:12 2021
 import dann5.d5o2 as d5o
 from DwaveSolvers import DwaveSolvers
 
+from dimod import ExactSolver
+
 def basic_types():
     a0 = d5o.Qbit("0a", 1)
     print(a0.toString(), a0.toString(False, 0),
@@ -183,16 +185,39 @@ def qwholeXlarge_test(solvers):
     mM.add(samples)
     print("DWave Advantage solutions: \n{}\n".format(mM.solutions()))
 
+def qwholeLt_test(solvers):
+    print("\n\n==== qwholeLt_test() =====")
+    x = d5o.Qwhole(2,"x")
+    y = d5o.Qwhole(2, "y")
+    comp = x < y
+    print("\n {} \n".format(comp.toString()))
+    qubo = comp.qubo()
+    print("\n--- Logic Qubo --- {} \n\n --- Reduced discrete values Qubo --- {}\n".format(
+        comp.qubo(False), qubo))
+    analyze = d5o.Qanalyzer(qubo)
+    print("# of nodes: {}\t# of branches: {}".format(
+        analyze.nodesNo(), analyze.branchesNo()))
+    samples = solvers.solve('Exact', qubo)
+    comp.add(samples)
+    print("DWave simulator solutions: \n{}\n".format(comp.solutions()))
+    comp.clearSolutions()
+    comp.solve()
+    print("d5o simulator solutions: \n{}\n".format(comp.solutions()))
+    solver = ExactSolver()
+    sampleset = solver.sample_qubo(qubo)
+    print(sampleset)
+
 
 def main():
 #    basic_types()
     solvers = DwaveSolvers(1000, 5)
+    qwholeLt_test(solvers)
 #    qbit_test(solvers)
 #    qbool_test(solvers)
 #    qbin_test(solvers)
 #    qwholeAdd_test(solvers)
 #    qwholeX_test(solvers)
-    qwholeXlarge_test(solvers)
+#    qwholeXlarge_test(solvers)
 
 if __name__ == "__main__":
     main()

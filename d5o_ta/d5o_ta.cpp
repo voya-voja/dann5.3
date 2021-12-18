@@ -7,6 +7,7 @@
 #include <Qbin.h>
 #include <Qwhole.h>
 #include <Qassign.h>
+#include <Qint.h>
 
 #include <Qsolver.h>
 
@@ -82,7 +83,7 @@ void qwholeAdd_test()
 
 void qwholeX_test()
 {   
-    Qwhole M("M", 49), p(3, "p"), q(3, "q"), r(1, "r");
+    Qwhole M("M", 42), p(3, "p"), q(2, "q"), r(2, "r");
     Qassign<Qwhole> mM = M = p * q *r;
     cout << endl << mM << endl << endl << mM.toString(true) << endl;
     cout << endl << "*** Qubo ***" << endl << mM.qubo(false) << endl << mM.qubo() << endl;
@@ -99,7 +100,7 @@ void qwholeX_test()
 
 void qwholeXlarge_test()
 {
-    Qwhole M("M", 132560640), p(16, "p"), q(8, "q"), r(8, "r");
+    Qwhole M("M", 132560640), p(8, "p"), q(8, "q"), r(8, "r");
     Qassign<Qwhole> mM = M = p * q * r;
     cout << endl << mM << endl;
     Qanalyzer analyzeM(mM.qubo());
@@ -108,16 +109,111 @@ void qwholeXlarge_test()
 //    cout << endl << mM.solutions();
 }
 
+void qwholeLt_test()
+{
+    Qwhole x(2, "x"), y(2, "y");
+    Qexpr<Qwhole> comp = x <= y;
+    cout << endl << comp << endl << endl << comp.toString(true) << endl;
+    cout << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() << endl;
+    Qanalyzer analyzeM(comp.qubo());
+    cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
+    comp.solve();
+    cout << endl << comp.solutions();
+
+    Qbit x0("x0"), x1("x1"), y0("y0"), y1("y1"), _1("_1",1);
+    Qexpr<Qbit> e1 = x0 <= y0, e2 = x1 <= y1 , e3 = (x0 <= y1);
+    Qubo q = e1.qubo() + e2.qubo() + e3.qubo();// + e4.qubo();
+
+    cout << endl << e1 << endl << e2 << endl << e3 << endl;// << e4 << endl;
+    cout << endl << "*** Qubo ***" << endl << q << endl;
+    Qsolver s(q);
+    cout << endl << "# of nodes: " << s.nodesNo() << "\t# of branches: " << s.branchesNo() << endl;
+    for (auto sample : s.solution())
+    {
+        cout << endl;
+        for (auto element : sample)
+            cout << element.first << ": " << to_string(element.second) << "; ";
+    }
+}
+
+void qwholeLe_test()
+{
+    Qwhole x(2, "x"), y(2, "y");
+    Qexpr<Qwhole> comp = x <= y;
+    cout << endl << comp << endl << endl << comp.toString(true) << endl;
+    cout << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() << endl;
+    Qanalyzer analyzeM(comp.qubo());
+    cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
+    comp.solve();
+    cout << endl << comp.solutions();
+}
+
+void qwholeGe_test()
+{
+    Qwhole x(3, "x"), y(3, "y");
+    Qexpr<Qwhole> comp = x >= y;
+    cout << endl << comp << endl << endl << comp.toString(true) << endl;
+    cout << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() << endl;
+    Qanalyzer analyzeM(comp.qubo());
+    cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
+    comp.solve();
+    cout << endl << comp.solutions();
+}
+
+void qwholeGt_test()
+{
+    Qwhole x(3, "x"), y(3, "y");
+    Qexpr<Qwhole> comp = x > y;
+    cout << endl << comp << endl << endl << comp.toString(true) << endl;
+    cout << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() << endl;
+    Qanalyzer analyzeM(comp.qubo());
+    cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
+    comp.solve();
+    cout << endl << comp.solutions();
+}
+
+void qintAdd_test()
+{
+    std::cout << "Dann5.ocean Tests Qint!\n";
+    Qint a(3, "a"), b(3, "b"), c(2, "c"), d(1, "d"), A(2, "A", -3), _1_(2, "_1_", -1), _2_(2,"_2_", -2);
+    cout << endl << "A = " << A.Qbin::toString();
+    cout << endl << "-1 = " << _1_.Qbin::toString();
+    cout << endl << "-2 = " << _2_.Qbin::toString();
+    cout << endl << "A = " << A.Qbin::toString();
+    Qassign<Qint> aA = A = a + b; // +c + d + _1;
+    cout << endl << "aA.A = " << dynamic_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString();
+    cout << endl << aA << endl << endl << aA.toString(true) << endl;
+    cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
+    Qanalyzer analyzeA(aA.qubo());
+    cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
+    aA.solve();
+    cout << endl << aA.solutions();
+}
+
+#include <pybind11/embed.h>
+#include <iostream>
+
+namespace py = pybind11;
+
+int pymain() {
+    py::scoped_interpreter python;
+
+    auto math = py::module::import("math");
+    double root_two = math.attr("sqrt")(2.0).cast<double>();
+
+    std::cout << "The square root of 2 is: " << root_two << "\n";
+}
+
 int main()
 {
-    string answer;
+/*    string answer;
     cout << "should I start?";
     cin >> answer;
     basic_types();
     qbit_test();
     qbool_test();
     qbin_test();
-    const clock_t begin_time = clock();
+*/    const clock_t begin_time = clock();
     qwholeAdd_test();
     clock_t addition_end_time = clock();
     cout << endl << "Running time: " << to_string(float(addition_end_time - begin_time) / CLOCKS_PER_SEC) << "s";
@@ -125,8 +221,17 @@ int main()
     qwholeX_test();
     clock_t multiplication_end_time = clock();
     cout << endl << "Running time: " << to_string(float(multiplication_end_time - addition_end_time) / CLOCKS_PER_SEC) << "s";
+/*
+    qwholeXlarge_test();
+*/
+//    qwholeLt_test();
+//    qwholeLe_test();
+//    qwholeGe_test();
+//    qwholeGt_test();
 
-//    qwholeXlarge_test();
+//    qintAdd_test();
+//    pymain();
+
     return 0;
 }
 

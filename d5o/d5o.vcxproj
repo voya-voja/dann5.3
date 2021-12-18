@@ -78,12 +78,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetName>$(ProjectName)_d.cp38-win_amd64</TargetName>
+    <TargetName>$(ProjectName)_d.cp39-win_amd64</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>$(ProjectName)2.cp38-win_amd64</TargetName>
+    <TargetName>$(ProjectName)2.cp39-win_amd64</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -128,14 +128,14 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/Lib/site-packages/pybind11/include;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;../../../../AppData/Local/Programs/Python/Python39/Include</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/libs/Python38.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../../AppData/Local/Programs/Python/Python39/libs/Python39_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>false</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <MapExports>true</MapExports>
@@ -151,7 +151,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/Lib/site-packages/pybind11/include;../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;../../../../AppData/Local/Programs/Python/Python39/Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -159,7 +159,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>../../../../AppData/Local/Continuum/anaconda3/envs/ocean38/libs/Python38.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../../AppData/Local/Programs/Python/Python39/libs/Python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -184,6 +184,7 @@
     <ClInclude Include="..\dann5\ocean\include\Qtype.h" />
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h" />
+    <ClInclude Include="..\dann5\ocean\include\QwholeComp.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -205,6 +206,7 @@
     <ClCompile Include="..\dann5\ocean\source\Qsolver.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\QwholeComp.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">

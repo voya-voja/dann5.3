@@ -28,6 +28,7 @@ namespace dann5{
 		// The elements that exist only in right Qubo object are concatenated to the 
 		// elements in the left object
 		Qubo& operator+=(Qubo& left, const Qubo& right);
+		Qubo operator+(const Qubo& left, const Qubo& right);
 
 		// Sends a representation of Qubo into output stream
 		std::ostream& operator << (std::ostream&, const Qubo&);

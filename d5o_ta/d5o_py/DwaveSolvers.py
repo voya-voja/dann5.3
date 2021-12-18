@@ -15,17 +15,17 @@ class DwaveSolvers:
   def __init__(self, num_reads, chain_strength):
     try:
         qpu_advantage = DWaveSampler(solver={'topology__type': 'pegasus', 'qpu': True})
-        qpu_2000q = DWaveSampler(solver={'topology__type': 'chimera', 'qpu': True})
+#        qpu_2000q = DWaveSampler(solver={'topology__type': 'chimera', 'qpu': True})
         exact = ExactSolver()
         hybrid = LeapHybridSampler()
         
         self.mSolvers = {'Advantage': EmbeddingComposite(qpu_advantage), 
-                         'DW-2000Q': EmbeddingComposite(qpu_2000q), 
+#                         'DW-2000Q': EmbeddingComposite(qpu_2000q), 
                          'Exact': exact,
                          'Hybrid': hybrid
                          }
     
-        print(">>>> Connected to Advantage {} and 2000Q {}.".format(qpu_advantage.solver.id, qpu_2000q.solver.id))
+#        print(">>>> Connected to Advantage {} and 2000Q {}.".format(qpu_advantage.solver.id, qpu_2000q.solver.id))
     except SolverNotFoundError:
         print(">>>> Currently a pair of solvers are unavailable for sections comparing QPU technologies. Try those examples later.")
     

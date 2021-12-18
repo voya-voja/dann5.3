@@ -13,6 +13,8 @@ using namespace std;
 namespace dann5 {
 	namespace ocean {
 
+		class Qint;
+
 		// Quantum whole is a Q type, subtype of Qbin supporting instantiation of 
 		// and operations for positive whole number variables. As Qbianry, Q whole
 		// can be unknown when at least one of its Qbits is in supoerposition.

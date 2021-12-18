@@ -3,6 +3,8 @@
 #include <Factory.h>
 #include <Qadd.h>
 #include <Qmultiply.h>
+#include <QwholeComp.h>
+#include <Qint.h>
 
 using namespace dann5::ocean;
 
@@ -213,36 +215,52 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GtQT::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
-
+	QwholeComp comp(Factory<string, QcellOp>::Instance().create(GtQT::cMark));
+	comp.inputs({ clone() });
+	comp.output(right.clone());
+	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
 	Qexpr<Qwhole> expr(pOp);
+	
+	/*
+	Qwhole r(noqbs(), Qdef::id() + ">" + right.Qdef::id());
+	Qexpr<Qbin> iR(~(right));
+	Qexpr<Qwhole> invertRight(as_const(iR).root());
+	Qexpr<Qwhole> expr(r == (*this) + invertRight);
+	*/
 	return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator>=(const Qwhole& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(GeQT::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+	QwholeComp comp(Factory<string, QcellOp>::Instance().create(GeQT::cMark));
+	comp.inputs({ clone() });
+	comp.output(right.clone());
 
+	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator<(const Qwhole& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LtQT::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+	QwholeComp comp(Factory<string, QcellOp>::Instance().create(LtQT::cMark));
+	comp.inputs({ clone() });
+	comp.output(right.clone());
 
+	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator<=(const Qwhole& right) const
 {
+/*	QwholeComp comp(Factory<string, QcellOp>::Instance().create(LeQT::cMark));
+	comp.inputs({ clone() });
+	comp.output(right.clone());
+
+	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
+	Qexpr<Qwhole> expr(pOp);
+	return expr;*/
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LeQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());

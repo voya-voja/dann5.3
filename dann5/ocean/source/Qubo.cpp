@@ -25,6 +25,20 @@ Qubo& dann5::ocean::operator+=(Qubo& left, const Qubo& right)
 	return left;
 }
 
+Qubo dann5::ocean::operator+(const Qubo& left, const Qubo& right)
+{
+	Qubo result(left);
+	for (auto at = right.cbegin(); at != right.cend(); at++)
+	{
+		Qkey key = (*at).first;
+		Qubo::iterator item = result.find(key);
+		if (item != result.end())
+			(*item).second += (*at).second;
+		else
+			result[key] = (*at).second;
+	}
+	return result;
+}
 
 /**** Qubo Table ****/
 

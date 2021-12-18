@@ -96,6 +96,9 @@
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h">
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
+    <ClInclude Include="..\dann5\ocean\include\QwholeComp.h">
+      <Filter>Header Files\dann5\ocean</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -156,6 +159,9 @@
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp">
+      <Filter>Source Files\dann5\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\ocean\source\QwholeComp.cpp">
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
   </ItemGroup>

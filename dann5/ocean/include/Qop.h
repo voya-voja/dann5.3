@@ -98,6 +98,8 @@ namespace dann5 {
 			// Return the list of inputs
 			Qdefs& inputs() { return mInputs; };
 
+			void setOutput(const Qdef::Sp& pOut) { mpOutput = pOut; };
+
 		private:
 			static map<string, unsigned long long> gOutputIndices;
 
