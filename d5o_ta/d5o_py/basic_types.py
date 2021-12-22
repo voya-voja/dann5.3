@@ -144,7 +144,7 @@ def qwholeX_test(solvers):
     p = d5o.Qwhole(3,"p")
     q = d5o.Qwhole(2, "q")
     r = d5o.Qwhole(2, "r")
-    M = d5o.Qwhole("M", 54)
+    M = d5o.Qwhole("M", 18)
     mM = M.assign(p * q * r)
     print("\n {} \n\n {}\n".format(mM.toString(), 
                                    mM.toString(True)))
@@ -211,12 +211,12 @@ def qwholeLt_test(solvers):
 def main():
 #    basic_types()
     solvers = DwaveSolvers(1000, 5)
-    qwholeLt_test(solvers)
+#    qwholeLt_test(solvers)
 #    qbit_test(solvers)
 #    qbool_test(solvers)
 #    qbin_test(solvers)
 #    qwholeAdd_test(solvers)
-#    qwholeX_test(solvers)
+    qwholeX_test(solvers)
 #    qwholeXlarge_test(solvers)
 
 if __name__ == "__main__":
