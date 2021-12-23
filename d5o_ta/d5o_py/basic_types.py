@@ -5,7 +5,7 @@ Created on Sat Aug  7 17:48:12 2021
 @author: Nebojsa.Vojinovic
 """
 import dann5.d5o2 as d5o
-from DwaveSolvers import DwaveSolvers
+from dann5.dwave import Solvers as DwaveSolvers
 
 from dimod import ExactSolver
 
