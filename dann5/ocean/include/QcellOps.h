@@ -53,8 +53,9 @@ namespace dann5 {
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
 
-			// Clear all solution samples
-			virtual void clearSolutions();
+			// Reset the quantum operation into its initial state without solutions by clearing 
+			// all solution samples
+			virtual void reset();
 
 		protected:
 			virtual Qvalue calculate(const Qvalues& values) const = 0;

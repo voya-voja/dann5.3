@@ -58,7 +58,7 @@ string Qexpression::solutions() const
 string Qexpression::solve()
 {
 	if(mSolutions.size() != 0)
-		clearSolutions();
+		reset();
 	Qubo q = qubo();
 	Qsolver solver(q);
 	Qsolver::Samples samples = solver.solution();
@@ -66,10 +66,10 @@ string Qexpression::solve()
 	return solutions();
 }
 
-void Qexpression::clearSolutions()
+void Qexpression::reset()
 {
 	mSolutions.clear();
-	root().clearSolutions();
+	root().reset();
 }
 
 std::ostream& dann5::ocean::operator << (std::ostream& out, const Qexpression& right)

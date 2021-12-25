@@ -219,11 +219,11 @@ string Qop::solution(size_t sampleId) const
 	return osStr;
 }
 
-void Qop::clearSolutions()
+void Qop::reset()
 {
 	for (auto pInput : mInputs)
 	{
-		pInput->clearSolutions();
+		pInput->reset();
 	}
-	mpOutput->clearSolutions();
+	mpOutput->reset();
 }

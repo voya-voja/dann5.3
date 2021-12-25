@@ -17,7 +17,7 @@ string Qcell::solution(size_t sampleId) const
 	return sStr;
 }
 
-void Qcell::clearSolutions()
+void Qcell::reset()
 {
 	mSolutions.clear();
 }

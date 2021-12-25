@@ -82,9 +82,9 @@ string QcellOp::solution(size_t sampleId) const
 	return Qop::solution(sampleId);
 }
 
-void QcellOp::clearSolutions()
+void QcellOp::reset()
 {
-	Qop::clearSolutions();
+	Qop::reset();
 }
 
 

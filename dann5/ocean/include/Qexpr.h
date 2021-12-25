@@ -74,8 +74,9 @@ namespace dann5 {
 			// Solve this Q expression and return a string with all solutions
 			virtual string solve() ;
 
-			// Clear all solution samples
-			virtual void clearSolutions();
+			// Reset the quantum expression into its initial state without solutions by clearing 
+			// all solution samples
+			virtual void reset();
 
 			// Send a string representation of a Q expression into an output stream
 			friend std::ostream& operator << (std::ostream&, const Qexpression&);

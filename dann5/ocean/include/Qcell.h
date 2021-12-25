@@ -45,8 +45,9 @@ namespace dann5 {
 
 			Qvalue solutionValue(size_t sampleId) const;
 
-			// Clear all solution samples
-			virtual void clearSolutions();
+			// Reset the quantum cell into its initial state without solutions by clear 
+			// all solution samples
+			virtual void reset();
 
 		protected:
 			Qvalues& solutionValues() { return mSolutions; };

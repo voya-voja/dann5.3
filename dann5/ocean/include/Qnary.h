@@ -87,8 +87,9 @@ namespace dann5 {
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
 
-			// Clear all solution samples
-			virtual void clearSolutions();
+			// Reset the quantum array of cells into its initial state without solutions by 
+			// clearing all solution samples
+			virtual void reset();
 
 			void set(const Qcell::Sp& pCell, size_t forBit) {
 				mCells[forBit] = pCell;
@@ -151,8 +152,9 @@ namespace dann5 {
 
 				virtual Qdef::Sp clone() const { return Qdef::Sp(new Value0cell(*this)); };
 
-				// Clear all solution samples
-				virtual void clearSolutions() {};
+				// Reset the cell into its initial state without solutions by clearing 
+				// all solution samples
+				virtual void reset() {};
 
 			protected:
 			private:

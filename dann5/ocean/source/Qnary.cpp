@@ -154,11 +154,11 @@ string Qnary::solution(size_t sampleId) const
 	return id + "/" + to_string(size) + ":" + valueStr + "/";
 }
 
-void Qnary::clearSolutions()
+void Qnary::reset()
 {
 	Qcells& _cells = cells();
 	for (auto pCell : _cells)
-		pCell->clearSolutions();
+		pCell->reset();
 }
 
 Qcell::Sp Qnary::operator[](size_t pos) const noexcept

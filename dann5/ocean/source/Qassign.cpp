@@ -80,9 +80,9 @@ string Qassignment::solve()
 	return mpExpr->solve() + "\n";
 }
 
-void Qassignment::clearSolutions()
+void Qassignment::reset()
 {
-	mpExpr->clearSolutions();
+	mpExpr->reset();
 }
 
 

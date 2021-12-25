@@ -157,7 +157,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("add", &Qexpression::add, "Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
 		.def("solutions", &Qexpression::solutions, "For existing samples, returns a string with all solutions of this Q expression")
 		.def("solve", &Qexpression::solve, "Solve this Q expression and return a string with all solutions")
-		.def("clearSolutions", &Qexpression::clearSolutions, "Clear all solution samples");
+		.def("reset", &Qexpression::reset, "Clear all solution samples");
 
 	py::class_<Qexpr<Qbit>, Qexpression>(m, "QbitExpression", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
 		.def(py::init<>())
@@ -311,7 +311,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("add", &Qassignment::add, "Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
 		.def("solutions", &Qassignment::solutions, "For existing samples, returns a string with all solutions of this Q assignment")
 		.def("solve", &Qassignment::solve, "Solve this Q assignment and return a string with all solutions")
-		.def("clearSolutions", &Qassignment::clearSolutions, "Clear all solution samples");
+		.def("reset", &Qassignment::reset, "Clear all solution samples");
 
 	py::class_<Qassign<Qbit>, Qassignment>(m, "QbitAssignment", R"pbdoc( Instantiation of quantum bit expression)pbdoc")
 		.def(py::init<>())

@@ -121,7 +121,7 @@ string QnaryOp::solution(size_t sampleId) const
 	return Qop::solution(sampleId);
 }
 
-void QnaryOp::clearSolutions()
+void QnaryOp::reset()
 {
-	Qop::clearSolutions();
+	Qop::reset();
 }

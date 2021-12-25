@@ -202,6 +202,8 @@ int pymain() {
     double root_two = math.attr("sqrt")(2.0).cast<double>();
 
     std::cout << "The square root of 2 is: " << root_two << "\n";
+
+    return 0;
 }
 
 int main()
