@@ -69,6 +69,7 @@ class QuantumRequest:
     self.problem = Problem(name="Qubo conversion", 
                            problem_type=ProblemType.pubo, 
                            terms=self.terms)
+    return self.problem
     
         
   def solve(self):

@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 15 13:16:43 2021
+Created on Mon Dec 27 16:59:22 2021
 
 @author: Nebojsa.Vojinovic
 """
+
 import dann5.d5o2 as d5o
-from dann5.azure import QuantumRequest
+from dann5.qiskit import QuantumRequest
 
 import time
 
@@ -42,3 +43,4 @@ def main():
 if __name__ == "__main__":
     main()
     
+
