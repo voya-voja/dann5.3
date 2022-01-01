@@ -28,7 +28,35 @@ namespace dann5{
 		// The elements that exist only in right Qubo object are concatenated to the 
 		// elements in the left object
 		Qubo& operator+=(Qubo& left, const Qubo& right);
+		// Returns a Qubo object that resluts in addition of left and right Qubo objects
 		Qubo operator+(const Qubo& left, const Qubo& right);
+
+		// Scalar shift function returns a reference of an updated left operand
+		// with coeficients increased for the right scalar value.
+		Qubo& operator+=(Qubo& left, double scalar);
+		// Returns a Qubo object as result of a sclara shift of a Qubo object
+		Qubo operator+(double scalar, const Qubo& right);
+		Qubo operator+(const Qubo& left, double scalar);
+
+		// Scalar shift function returns a reference of an updated left operand
+		// with coeficients decreased for the right scalar value.
+		Qubo& operator-=(Qubo& left, double scalar);
+		// Returns a Qubo object as result of a sclara shift of a Qubo object
+		Qubo operator-(const Qubo& left, double scalar);
+
+		// Scalar multiplication function returns a reference of an updated left operand
+		// with coeficients multiplied for the right scalar value.
+		Qubo& operator*=(Qubo& left, double scalar);
+		// Returns a Qubo object as result of a sclara multiplication of a Qubo object
+		Qubo operator*(double scalar, const Qubo& right);
+		Qubo operator*(const Qubo& left, double scalar);
+
+		// Scalar division function returns a reference of an updated left operand
+		// with coeficients divided by the right scalar value.
+		Qubo& operator/=(Qubo& left, double scalar);
+		// Returns a Qubo object as result of a sclara division of a Qubo object
+		Qubo operator/(double scalar, const Qubo& right);
+		Qubo operator/(const Qubo& left, double scalar);
 
 		// Sends a representation of Qubo into output stream
 		std::ostream& operator << (std::ostream&, const Qubo&);

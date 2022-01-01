@@ -28,15 +28,92 @@ Qubo& dann5::ocean::operator+=(Qubo& left, const Qubo& right)
 Qubo dann5::ocean::operator+(const Qubo& left, const Qubo& right)
 {
 	Qubo result(left);
-	for (auto at = right.cbegin(); at != right.cend(); at++)
+	result += right;
+	return result;
+}
+
+Qubo& dann5::ocean::operator+=(Qubo& left, double scalar)
+{
+	for (auto at = left.begin(); at != left.end(); at++)
 	{
-		Qkey key = (*at).first;
-		Qubo::iterator item = result.find(key);
-		if (item != result.end())
-			(*item).second += (*at).second;
-		else
-			result[key] = (*at).second;
+		(*at).second += scalar;
 	}
+	return left;
+}
+
+Qubo dann5::ocean::operator+(double scalar, const Qubo& right)
+{
+	Qubo result(right);
+	result += scalar;
+	return result;
+}
+
+Qubo dann5::ocean::operator+(const Qubo& left, double scalar)
+{
+	Qubo result(left);
+	result += scalar;
+	return result;
+}
+
+Qubo& dann5::ocean::operator-=(Qubo& left, double scalar)
+{
+	for (auto at = left.begin(); at != left.end(); at++)
+	{
+		(*at).second -= scalar;
+	}
+	return left;
+}
+
+Qubo dann5::ocean::operator-(const Qubo& left, double scalar)
+{
+	Qubo result(left);
+	result -= scalar;
+	return result;
+}
+
+Qubo& dann5::ocean::operator*=(Qubo& left, double scalar)
+{
+	for (auto at = left.begin(); at != left.end(); at++)
+	{
+		(*at).second *= scalar;
+	}
+	return left;
+}
+
+Qubo dann5::ocean::operator*(double scalar, const Qubo& right)
+{
+	Qubo result(right);
+	result *= scalar;
+	return result;
+}
+
+Qubo dann5::ocean::operator*(const Qubo& left, double scalar)
+{
+	Qubo result(left);
+	result *= scalar;
+	return result;
+}
+
+Qubo& dann5::ocean::operator/=(Qubo& left, double scalar)
+{
+	for (auto at = left.begin(); at != left.end(); at++)
+	{
+		(*at).second /= scalar;
+	}
+	return left;
+}
+
+Qubo dann5::ocean::operator/(double scalar, const Qubo& right)
+{
+	Qubo result(right);
+	result /= scalar;
+	return result;
+}
+
+Qubo dann5::ocean::operator/(const Qubo& left, double scalar)
+{
+	Qubo result(left);
+	result /= scalar;
 	return result;
 }
 
@@ -171,8 +248,10 @@ LtQT::LtQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
-	*this <<  2,   4,
-			  0,  -6;
+//	*this <<  2,   4,
+//			  0,  -6;
+	*this << 0.5,  1,
+			 0,   -1.5;
 }
 
 /**** Less-equal operator Qubo Table ****/
@@ -181,7 +260,8 @@ LeQT::LeQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
-	*this <<  4,  -4,
+//	*this <<  4,  -4,
+	* this << 1,  -1,
 			  0,   0;
 }
 

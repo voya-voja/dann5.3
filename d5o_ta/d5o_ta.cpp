@@ -112,19 +112,19 @@ void qwholeXlarge_test()
 void qwholeLt_test()
 {
     Qwhole x(2, "x"), y(2, "y");
-    Qexpr<Qwhole> comp = x <= y;
+    Qexpr<Qwhole> comp = x < y;
     cout << endl << comp << endl << endl << comp.toString(true) << endl;
-    cout << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() << endl;
+    cout << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() / 2 << endl;
     Qanalyzer analyzeM(comp.qubo());
     cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
     comp.solve();
     cout << endl << comp.solutions();
 
-    Qbit x0("x0"), x1("x1"), y0("y0"), y1("y1"), _1("_1",1);
-    Qexpr<Qbit> e1 = x0 <= y0, e2 = x1 <= y1 , e3 = (x0 <= y1);
-    Qubo q = e1.qubo() + e2.qubo() + e3.qubo();// + e4.qubo();
+    Qbit x0("x0"), x1("x1"), x2("x2"), y0("y0"), y1("y1"), y2("y2"), _1("_1", 1);
+    Qexpr<Qbit> e1 = x0 <= y0, e2 = x1 <= y1, e3 = (x0 != y0) == _1, e4 = (x1 != y1) == _1;
+    Qubo q = e1.qubo() + e2.qubo() /* + e3.qubo()*/ + e4.qubo();// + e5.qubo() + e6.qubo();
 
-    cout << endl << e1 << endl << e2 << endl << e3 << endl;// << e4 << endl;
+    cout << endl << e1 << endl << e2 << endl << e3 << endl << e4 << endl;
     cout << endl << "*** Qubo ***" << endl << q << endl;
     Qsolver s(q);
     cout << endl << "# of nodes: " << s.nodesNo() << "\t# of branches: " << s.branchesNo() << endl;
@@ -146,6 +146,34 @@ void qwholeLe_test()
     cout << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
     comp.solve();
     cout << endl << comp.solutions();
+
+    Qbit x0("x0"), x1("x1"), x2("x2"), y0("y0"), y1("y1"), y2("y2"), _1("_1", 1), _0("_0", 0);
+    Qexpr<Qbit> e0 = x0 <= y0, e1 = x1 <= y1, e01 = ((x0 & y1) & (~x1 & ~y0)) == _1, e2 = x2 <= y2, e12 = ((x1 & y2) & (~x2 & ~y1)) == _1, e02 = ((x0 & y2) & (~x2 & ~y0)) == _1;
+    Qexpr<Qbit> eA = (x1 <= y1) & (x0 <= y0) & (((x0 & y1) & (~x1 & ~y0)) == _1);
+    Qubo q = /*eA.qubo();*/e0.qubo() + e1.qubo() + e01.qubo() + e2.qubo() + e12.qubo();// +e02.qubo();
+/*  q[Qkey("_01", "y1")] = -1;
+    q[Qkey("_01", "x0")] = -1;
+    q[Qkey("_01", "~y0")] = -1;
+    q[Qkey("_01", "~x1")] = -1;
+    q[Qkey("_01", "_01")] = 4;
+    q[Qkey("_=02", "y2")] = -2;
+    q[Qkey("_=02", "x0")] = -2;
+    q[Qkey("_=02", "_=02")] = 4;
+    q[Qkey("_=12", "y2")] = -2;
+    q[Qkey("_=12", "x1")] = -2;
+    q[Qkey("_=12", "_=12")] = 4;
+*/
+    cout << endl /*<< eA << endl;*/ << e0 << endl << e1 << endl << e01 << endl << e2 << endl;
+    cout << endl << "*** Qubo ***" << endl << q << endl;
+    Qsolver s(q);
+    cout << endl << "# of nodes: " << s.nodesNo() << "\t# of branches: " << s.branchesNo() << endl;
+    for (auto sample : s.solution())
+    {
+        cout << endl;
+        for (auto element : sample)
+            cout << element.first << ": " << to_string(element.second) << "; ";
+    }
+
 }
 
 void qwholeGe_test()
@@ -215,7 +243,7 @@ int main()
     qbit_test();
     qbool_test();
     qbin_test();
-*/    const clock_t begin_time = clock();
+    const clock_t begin_time = clock();
     qwholeAdd_test();
     clock_t addition_end_time = clock();
     cout << endl << "Running time: " << to_string(float(addition_end_time - begin_time) / CLOCKS_PER_SEC) << "s";
@@ -223,11 +251,11 @@ int main()
     qwholeX_test();
     clock_t multiplication_end_time = clock();
     cout << endl << "Running time: " << to_string(float(multiplication_end_time - addition_end_time) / CLOCKS_PER_SEC) << "s";
-/*
+
     qwholeXlarge_test();
 */
 //    qwholeLt_test();
-//    qwholeLe_test();
+    qwholeLe_test();
 //    qwholeGe_test();
 //    qwholeGt_test();
 
