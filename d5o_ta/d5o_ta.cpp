@@ -234,6 +234,42 @@ int pymain() {
     return 0;
 }
 
+void qassignVSqexpr()
+{
+    Qwhole a(3, "a"), b(2, "b"), A("A", 7), c(3, "c"), d(2, "d"), Ae("Ae", 7);
+    Qassign<Qwhole> aA = A = a + b;
+    cout << aA.toString() << endl << aA.solve() << endl;
+    Qanalyzer analyzeA(aA.qubo());
+    cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
+    Qexpr<Qwhole> eA = Ae == c + d;
+    cout << eA.toString() << endl << eA.solve() << endl;
+    Qanalyzer analyzeE(eA.qubo());
+    cout << endl << "# of nodes: " << analyzeE.nodesNo() << "\t# of branches: " << analyzeE.branchesNo() << endl;
+}
+
+void eqVSneq()
+{
+    Qwhole c(3, "c"), d(2, "d"), We("We", 7), e(3, "e"), f(2, "f"), Wne("Wne", 7);
+    Qexpr<Qwhole> eW = We == c + d;
+    cout << eW.toString() << endl << eW.solve() << endl;
+    Qanalyzer analyzeEw(eW.qubo());
+    cout << endl << "# of nodes: " << analyzeEw.nodesNo() << "\t# of branches: " << analyzeEw.branchesNo() << endl;
+    Qexpr<Qwhole> neW = Wne != e + f;
+    cout << neW.toString() << endl << neW.solve() << endl;
+    Qanalyzer analyzeNEw(neW.qubo());
+    cout << endl << "# of nodes: " << analyzeNEw.nodesNo() << "\t# of branches: " << analyzeNEw.branchesNo() << endl;
+
+    Qbin a(3, "a"), b(3, "b"), Be("Be", 7), x(3, "x"), y(3, "y"), Bne("Bne", 7);
+    Qexpr<Qbin> eB = Be == (a ^ b);
+    cout << eB.toString() << endl << eB.toString(true) << endl  << eB.solve() << endl;
+    Qanalyzer analyzeEb(eB.qubo());
+    cout << endl << "# of nodes: " << analyzeEb.nodesNo() << "\t# of branches: " << analyzeEb.branchesNo() << endl;
+    Qexpr<Qbin> neB = Bne != (x ^ y);
+    cout << neB.toString() << endl << neB.solve() << endl;
+    Qanalyzer analyzeNEb(neB.qubo());
+    cout << endl << "# of nodes: " << analyzeNEb.nodesNo() << "\t# of branches: " << analyzeNEb.branchesNo() << endl;
+}
+
 int main()
 {
 /*    string answer;
@@ -255,13 +291,15 @@ int main()
     qwholeXlarge_test();
 */
 //    qwholeLt_test();
-    qwholeLe_test();
+//    qwholeLe_test();
 //    qwholeGe_test();
 //    qwholeGt_test();
 
 //    qintAdd_test();
 //    pymain();
 
+//    qassignVSqexpr();
+    eqVSneq();
     return 0;
 }
 

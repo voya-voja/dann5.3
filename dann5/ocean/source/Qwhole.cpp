@@ -27,6 +27,15 @@ Qwhole::operator const unsigned long long() const
 	return(ull);
 }
 
+void Qwhole::resize(size_t size, Qvalue value)
+{
+	// if unknown, resize as Q binary
+	if (noqbs() == 0 || any())
+		Qbin::resize(size, value);
+	// otherwise, add 0's to the end
+	else
+		Qbin::resize(size);
+}
 string Qwhole::toString(bool decomposed, size_t forBit) const
 {
 	if (decomposed) return Qnary::toString(decomposed, forBit);
@@ -203,11 +212,31 @@ Qexpr<Qwhole> Qwhole::operator==(const Qwhole& right) const
 	return expr;
 }
 
+Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right)
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
+	pOp->inputs({ right.rootDef() });
+	pOp->output(clone());
+
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
 Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(right.clone());
+
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right)
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
+	pOp->inputs({ right.rootDef() });
+	pOp->output(clone());
 
 	Qexpr<Qwhole> expr(pOp);
 	return expr;

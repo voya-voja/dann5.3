@@ -45,7 +45,7 @@ Qint::operator const long long() const
 
 void Qint::resize(size_t size, Qvalue value)
 {
-	// if undefined, resize as Q binary
+	// if unknown, resize as Q binary
 	if (noqbs() == 0 || any())
 		Qbin::resize(size, value);
 	// if last bit is negative, add 1's to the end

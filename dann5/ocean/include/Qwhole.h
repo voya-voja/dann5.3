@@ -56,6 +56,12 @@ namespace dann5 {
 			operator unsigned long long();
 			operator const unsigned long long() const;
 
+			// Resizes the Q whole to size elements. If deterministic and size
+			// is greater than the current size, the content is expanded by 
+			// inserting at the end as many elements with value 0 as needed to reach
+			// the new size.
+			virtual void resize(size_t size, Qvalue value = 0);
+
 			// Return a Q whole representation when forBit is cAllBits. 
 			// Otherwise, return a string representation of a Q cell at the specified 
 			// forBit
@@ -107,9 +113,17 @@ namespace dann5 {
 			// the expression is 'x' == 'y'
 			Qexpr<Qwhole> operator==(const Qwhole& right) const;
 
+			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and 'y'
+			// expression [right] the expression is 'x' == [right]
+			Qexpr<Qwhole> operator==(const Qexpr<Qwhole>& right);
+
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' != 'y'
 			Qexpr<Qwhole> operator!=(const Qwhole& right) const;
+
+			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and 'y'
+			// expression [right] the expression is 'x' != [right]
+			Qexpr<Qwhole> operator!=(const Qexpr<Qwhole>& right);
 
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' > 'y'
