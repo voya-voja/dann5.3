@@ -259,15 +259,29 @@ void eqVSneq()
     Qanalyzer analyzeNEw(neW.qubo());
     cout << endl << "# of nodes: " << analyzeNEw.nodesNo() << "\t# of branches: " << analyzeNEw.branchesNo() << endl;
 
-    Qbin a(3, "a"), b(3, "b"), Be("Be", 7), x(3, "x"), y(3, "y"), Bne("Bne", 7);
+    Qbin a(3, "a"), b(2, "b"), Be("Be", 7), x(2, "x"), y(3, "y"), Bne("Bne", 7);
     Qexpr<Qbin> eB = Be == (a ^ b);
-    cout << eB.toString() << endl << eB.toString(true) << endl  << eB.solve() << endl;
+    cout << eB.toString() << endl << eB.solve() << endl;
     Qanalyzer analyzeEb(eB.qubo());
     cout << endl << "# of nodes: " << analyzeEb.nodesNo() << "\t# of branches: " << analyzeEb.branchesNo() << endl;
     Qexpr<Qbin> neB = Bne != (x ^ y);
     cout << neB.toString() << endl << neB.solve() << endl;
     Qanalyzer analyzeNEb(neB.qubo());
     cout << endl << "# of nodes: " << analyzeNEb.nodesNo() << "\t# of branches: " << analyzeNEb.branchesNo() << endl;
+}
+
+void qbinXorTest()
+{
+    Qbin a(3, "a"), b(3, "b"), Be("Be", 7), x(3, "x"), y(3, "y"), Bne("Bne", 7);
+    Qassign<Qbin> aB = Be = (a ^ b);
+    cout << aB.toString() << endl << aB.toString(true) << endl << aB.solve() << endl;
+    Qanalyzer analyzeAb(aB.qubo());
+    cout << endl << "# of nodes: " << analyzeAb.nodesNo() << "\t# of branches: " << analyzeAb.branchesNo() << endl;
+
+    Qexpr<Qbin> eB = Bne == (x ^ y);
+    cout << eB.toString() << endl << endl << eB.toString(true) << eB.solve() << endl;
+    Qanalyzer analyzeEb(eB.qubo());
+    cout << endl << "# of nodes: " << analyzeEb.nodesNo() << "\t# of branches: " << analyzeEb.branchesNo() << endl;
 }
 
 int main()
@@ -300,6 +314,7 @@ int main()
 
 //    qassignVSqexpr();
     eqVSneq();
+//    qbinXorTest();
     return 0;
 }
 

@@ -7,9 +7,21 @@ const Bits Qnary::cUnknown = ULLONG_MAX;
 const string Qnary::cUnknownSign = "U";
 
 Qnary::Qnary(const string& id, const Qcells& cells)
-	:Qdef(id), mCells(cells)
+	:Qdef(id)
 {
+	initCells(cells);
+}
 
+Qnary::Qnary(const Qnary& right) 
+	:Qdef(right) 
+{
+	initCells(right.mCells);
+}
+
+inline void Qnary::initCells(const Qcells& cells)
+{
+	for (auto pCell : cells)
+		mCells.push_back(dynamic_pointer_cast<Qcell>(pCell->clone()));
 }
 
 Qnary::operator Bits()

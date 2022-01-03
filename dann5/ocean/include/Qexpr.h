@@ -120,7 +120,7 @@ namespace dann5 {
 			// the logic is '~x' != 'x'
 			Qexpr<Q_Type>& operator~()
 			{
-				Qdef::Sp pOut = root()->output();
+				Qdef::Sp pOut = as_const(*this).root()->output();
 				Qdef::Sp pInverted = pOut->clone();
 				pInverted->id("~" + pOut->id());
 				Qdef::Sp pRoot = as_const(*this).rootDef();
@@ -136,7 +136,7 @@ namespace dann5 {
 			// the logic is '~x' != 'x'
 			Qexpr<Q_Type> operator~() const
 			{
-				Qdef::Sp pOut = root()->output();
+				Qdef::Sp pOut = as_const(*this).root()->output();
 				Qdef::Sp pInverted = pOut->clone();
 				pInverted->id("~" + pOut->id());
 				Qdef::Sp pRoot = as_const(*this).rootDef();

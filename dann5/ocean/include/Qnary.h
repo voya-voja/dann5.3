@@ -40,7 +40,7 @@ namespace dann5 {
 			Qnary(const string& id, const Qcells& value);
 
 			// copy constructor
-			Qnary(const Qnary& right) :Qdef(right), mCells(right.mCells) {};
+			Qnary(const Qnary& right);
 
 			// type conversion operator to a std::vertor of Qcells
 			operator Qcells() { return mCells; };
@@ -159,6 +159,8 @@ namespace dann5 {
 			protected:
 			private:
 			};
+
+			void initCells(const Qcells& cells);
 
 			Qcells mCells;
 		};
