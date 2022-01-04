@@ -103,13 +103,6 @@ Qubo& dann5::ocean::operator/=(Qubo& left, double scalar)
 	return left;
 }
 
-Qubo dann5::ocean::operator/(double scalar, const Qubo& right)
-{
-	Qubo result(right);
-	result /= scalar;
-	return result;
-}
-
 Qubo dann5::ocean::operator/(const Qubo& left, double scalar)
 {
 	Qubo result(left);

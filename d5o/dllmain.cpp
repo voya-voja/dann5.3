@@ -60,7 +60,17 @@ PYBIND11_MODULE(d5o2, m) {
 		corespondes to Quantum energy values for that node 
 		Qubo corresponds to DWave's dimod.BinaryQuadraticModel class, represented 
 		as an upper-diagonal matrix Q, where diagonal terms are the linear
-		coefficients and the nonzero off-diagonal terms the quadratic coefficients (graph branches)pbdoc");
+		coefficients and the nonzero off-diagonal terms the quadratic coefficients (graph branches)pbdoc")
+		.def("union", [](const Qubo& l, const Qubo& r) { return l + r; })
+		.def("expand", [](Qubo& l, const Qubo& r) { return l += r; })
+		.def("add", [](const Qubo& q, double offset) { return q + offset; })
+		.def("up", [](Qubo& q, double offset) { return q += offset; })
+		.def("sub", [](const Qubo& q, double offset) { return q + offset; })
+		.def("down", [](Qubo& q, double offset) { return q -= offset; })
+		.def("mul", [](const Qubo& q, double scalar) { return q * scalar; })
+		.def("scaleUp", [](Qubo& q, double scalar) { return q *= scalar; })
+		.def("div", [](const Qubo& q, double scalar) { return q / scalar; })
+		.def("scaleDown", [](Qubo& q, double scalar) { return q /= scalar; });
 
 	// specify C++ class->baseclass specialization
 	m.def("Qvalue", []() { return unsigned char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S}.)pbdoc");

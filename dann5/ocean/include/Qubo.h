@@ -55,7 +55,6 @@ namespace dann5{
 		// with coeficients divided by the right scalar value.
 		Qubo& operator/=(Qubo& left, double scalar);
 		// Returns a Qubo object as result of a sclara division of a Qubo object
-		Qubo operator/(double scalar, const Qubo& right);
 		Qubo operator/(const Qubo& left, double scalar);
 
 		// Sends a representation of Qubo into output stream
