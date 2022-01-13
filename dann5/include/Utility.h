@@ -75,9 +75,15 @@ namespace dann5 {
 		}
 	}
 
+	inline string replaceAll(const string& str, const string& from, const string& to)
+	{
+		string result(str);
+		replaceAll(result, from, to);
+		return result;
+	}
+
 	struct group_thousands : std::numpunct<char>
 	{
 		std::string do_grouping() const override { return "\3"; }
 	};
-
 };

@@ -59,34 +59,34 @@ namespace dann5 {
 			virtual void add(const Qsolver::Samples& samples);
 
 			/*** Assignments ***/
-			// assignment operator changes the identity and value of this object to be
-			// the same as right object
-			Qbit& operator=(const Qbit& right);
+			// assignment of an Q expression creates a Q bit assignment where this 
+			// Q bit is an assignee of equal expression between this to right Q bit
+			Qassign<Qbit> operator=(const Qbit& right);
 
 			// assignment of an Q expression creates a Q bit assignment where this 
 			// Q bit is an assignee
 			Qassign<Qbit> operator=(const Qexpr<Qbit>& right);
 
 			/*** Compound Assignments ***/
-			// change value of this object as result of and operation between this 
-			// and right Q bit
-			Qbit& operator&=(const Qbit& right);
+			// 'and assignment' of an Q expression creates a following Q bit assignment
+			// [this] = [this] & [right]
+			Qassign<Qbit> operator&=(const Qbit& right);
 
 			// 'and assignment' of an Q expression creates a following Q bit assignment
 			// [this] = [this] & [right]
 			Qassign<Qbit> operator&=(const Qexpr<Qbit>& right);
 
-			// change value of this object as result of or operation between this 
-			// and right Q bit
-			Qbit& operator|=(const Qbit& right);
+			// 'or assignment' of an Q expression creates a following Q bit assignment
+			// [this] = [this] | [right]
+			Qassign<Qbit> operator|=(const Qbit& right);
 
 			// 'or assignment' of an Q expression creates a following Q bit assignment
 			// [this] = [this] | [right]
 			Qassign<Qbit> operator|=(const Qexpr<Qbit>& right);
 
-			// change value of this object as result of xor operation between this 
-			// and right Q bit
-			Qbit& operator^=(const Qbit& right);
+			// 'xor assignment' of an Q expression creates a following Q bit assignment
+			// [this] = [this] ^ [right]
+			Qassign<Qbit> operator^=(const Qbit& right);
 
 			// 'xor assignment' of an Q expression creates a following Q bit assignment
 			// [this] = [this] ^ [right]
@@ -100,42 +100,60 @@ namespace dann5 {
 			// instantiate Q expression with and logic, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' & 'y'
 			Qexpr<Qbit> operator&(const Qbit& right) const;
+			Qexpr<Qbit> operator and(const Qbit& right) const { return (*this) & right; };
 
 			// instantiate Q expression with and logic, e.g. for Qbit id 'x' and [right]
 			// object the expression is 'x' & [right]
 			Qexpr<Qbit> operator&(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator and(const Qexpr<Qbit>& right) const { return (*this) & right; };
 
 			// instantiate Q expression with nand logic, e.g. for Qbit ids 'x' and 'y'
-			// the expression is ~('x' & 'y')
+			// the expression is !('x' & 'y')
 			Qexpr<Qbit> nand(const Qbit& right) const;
 
 			// instantiate Q expression with nand logic, e.g. for Qbit id 'x' and [right]
-			// object the expression is ~('x' & [right])
+			// object the expression is !('x' & [right])
 			Qexpr<Qbit> nand(const Qexpr<Qbit>& right) const;
 
 			// instantiate Q expression with or logic, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' | 'y'
 			Qexpr<Qbit> operator|(const Qbit& right) const;
+			Qexpr<Qbit> operator or(const Qbit& right) const { return (*this) | right; };
 
 			// instantiate Q expression with or logic, e.g. for Qbit id 'x' and [right]
 			// object the expression is 'x' | [right]
 			Qexpr<Qbit> operator|(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator or(const Qexpr<Qbit>& right) const { return (*this) | right; };
 
 			// instantiate Q expression with nor logic, e.g. for Qbit ids 'x' and 'y'
-			// the expression is ~('x' | 'y')
+			// the expression is !('x' | 'y')
 			Qexpr<Qbit> nor(const Qbit& right) const;
 
 			// instantiate Q expression with nor logic, e.g. for Qbit id 'x' and [right]
-			// object the expression is ~('x' | [right])
+			// object the expression is !('x' | [right])
 			Qexpr<Qbit> nor(const Qexpr<Qbit>& right) const;
 
-			// instantiate Q expression with xor logic, e.g. for Qbit ids 'x' and 'y'
+			// unlike Q expression with xor logic, e.g. for Qbit ids 'x' and 'y'
 			// the expression is 'x' ^ 'y'
-			Qexpr<Qbit> operator^(const Qbit& right) const;
+			Qexpr<Qbit> unlike(const Qbit& right) const;
+			Qexpr<Qbit> operator^(const Qbit& right) const { return unlike(right); };
 
-			// instantiate Q expression with xor logic, e.g. for Qbit id 'x' and [right]
+			// unlike Q expression with xor logic, e.g. for Qbit id 'x' and [right]
 			// object the expression is 'x' ^ [right]
-			Qexpr<Qbit> operator^(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> unlike(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator^(const Qexpr<Qbit>& right) const { return unlike(right); };
+
+			// same value Q expression with nxor logic, e.g. for Qbit ids 'x' and 'y'
+			// the expression is 'x' ^ 'y'
+			Qexpr<Qbit> alike(const Qbit& right) const;
+			Qexpr<Qbit> operator*=(const Qbit& right) const { return alike(right); };
+			Qexpr<Qbit> nxor(const Qbit& right) const { return alike(right); };
+
+			// same value Q expression with nxor logic, e.g. for Qbit id 'x' and [right]
+			// object the expression is 'x' ^ [right]
+			Qexpr<Qbit> alike(const Qexpr<Qbit>& right) const;
+			Qexpr<Qbit> operator*=(const Qexpr<Qbit>& right) const { return alike(right); };
+			Qexpr<Qbit> nxor(const Qexpr<Qbit>& right) const { return alike(right); };
 
 			/*** Comparison ***/
 			// instantiate Q expression with comparison, e.g. for Qbit ids 'x' and 'y'

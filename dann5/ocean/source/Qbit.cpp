@@ -26,11 +26,11 @@ void Qbit::add(const Qsolver::Samples& samples)
 	}
 }
 
-Qbit& Qbit::operator=(const Qbit& right)
+Qassign<Qbit> Qbit::operator=(const Qbit& right)
 {
-	mValue = right.mValue;
-	id(right.id());
-	return(*this);
+	Qexpr<Qbit> expr = *this == right;
+	Qassign<Qbit> assign(*this, expr);
+	return assign;
 }
 
 Qassign<Qbit> Qbit::operator=(const Qexpr<Qbit>& right)
@@ -39,13 +39,11 @@ Qassign<Qbit> Qbit::operator=(const Qexpr<Qbit>& right)
 	return assign;
 }
 
-Qbit& Qbit::operator&=(const Qbit& right)
+Qassign<Qbit> Qbit::operator&=(const Qbit& right)
 {
-	if (mValue == cSuperposition || right.mValue == cSuperposition)
-		mValue = cSuperposition;
-	else
-		mValue &= right.mValue;
-	return(*this);
+	Qexpr<Qbit> expr = *this & right;
+	Qassign<Qbit> assign(*this, expr);
+	return assign;
 }
 
 Qassign<Qbit> Qbit::operator&=(const Qexpr<Qbit>& right)
@@ -55,13 +53,11 @@ Qassign<Qbit> Qbit::operator&=(const Qexpr<Qbit>& right)
 	return assign;
 }
 
-Qbit& Qbit::operator|=(const Qbit& right)
+Qassign<Qbit> Qbit::operator|=(const Qbit& right)
 {
-	if (mValue == cSuperposition || right.mValue == cSuperposition)
-		mValue = cSuperposition;
-	else
-		mValue |= right.mValue;
-	return(*this);
+	Qexpr<Qbit> expr = *(this) | right;
+	Qassign<Qbit> assign(*this, expr);
+	return assign;
 }
 
 Qassign<Qbit> Qbit::operator|=(const Qexpr<Qbit>& right)
@@ -71,13 +67,11 @@ Qassign<Qbit> Qbit::operator|=(const Qexpr<Qbit>& right)
 	return assign;
 }
 
-Qbit& Qbit::operator^=(const Qbit& right)
+Qassign<Qbit> Qbit::operator^=(const Qbit& right)
 {
-	if (mValue == cSuperposition || right.mValue == cSuperposition)
-		mValue = cSuperposition;
-	else
-		mValue ^= right.mValue;
-	return(*this);
+	Qexpr<Qbit> expr = *this ^ right;
+	Qassign<Qbit> assign(*this, expr);
+	return assign;
 }
 
 Qassign<Qbit> Qbit::operator^=(const Qexpr<Qbit>& right)
@@ -186,7 +180,7 @@ Qexpr<Qbit> Qbit::nor(const Qexpr<Qbit>& right) const
 	return expr;
 }
 
-Qexpr<Qbit> Qbit::operator^(const Qbit& right) const
+Qexpr<Qbit> Qbit::unlike(const Qbit& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
 	pOp->inputs({ clone(), right.clone() });
@@ -197,9 +191,31 @@ Qexpr<Qbit> Qbit::operator^(const Qbit& right) const
 	return expr;
 }
 
-Qexpr<Qbit> Qbit::operator^(const Qexpr<Qbit>& right) const
+Qexpr<Qbit> Qbit::unlike(const Qexpr<Qbit>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
+	pOp->inputs({ clone(), right.rootDef() });
+	Qbit out(pOp->outId());
+	pOp->output(out.clone());
+
+	Qexpr<Qbit> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qbit> Qbit::alike(const Qbit& right) const
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NxorQT::cMark);
+	pOp->inputs({ clone(), right.clone() });
+	Qbit out(pOp->outId());
+	pOp->output(out.clone());
+
+	Qexpr<Qbit> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qbit> Qbit::alike(const Qexpr<Qbit>& right) const
+{
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NxorQT::cMark);
 	pOp->inputs({ clone(), right.rootDef() });
 	Qbit out(pOp->outId());
 	pOp->output(out.clone());

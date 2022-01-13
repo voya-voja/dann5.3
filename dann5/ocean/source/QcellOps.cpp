@@ -90,6 +90,15 @@ void QcellOp::reset()
 
 /*** Q operator ***/
 
+Qdef::Sp Qoperator::output(size_t forBit) const
+{
+	Qdef::Sp pOut = Qop::output(forBit);
+	Qop::Sp pOop = dynamic_pointer_cast<Qop>(pOut);
+	if (pOop != nullptr)
+		pOut = pOop->output(forBit);
+	return(pOut);
+}
+
 string Qoperator::toString(bool decomposed, size_t forBit) const
 {
 	string str("?"), rest(""), rStr("");
@@ -127,7 +136,7 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 		rStr += str;
 	}
 	if (decomposed)
-		rStr = "\n" + rStr + rest;
+		rStr = "; " + rStr + rest;
 	else
 		rStr += ")";
 	return rStr;
@@ -212,7 +221,7 @@ void Qcell2OutOp::output(const Qdef::Sp& pOut, size_t forBit)
 	// if aux output is not initialized, initialize it with same Q type as output
 	if (mpAuxiliary == nullptr)
 	{
-		mpAuxiliary = dynamic_pointer_cast<QcellOp>(Qop::output()->clone());
+		mpAuxiliary = dynamic_pointer_cast<Qcell>(Qop::output()->clone());
 		mpAuxiliary->id("?" + id() + Qop::Id("?" + id()));
 	}
 }
@@ -228,7 +237,7 @@ Qdefs Qcell2OutOp::outputs() const
 
 Qvalue QnAnd::calculate(const Qvalues& values) const
 {
-	return(Qvalue(~(values[0] & values[1])));
+	return(Qvalue(!(values[0] & values[1])));
 }
 
 /*** Q or operation ***/
@@ -242,7 +251,7 @@ Qvalue Qor::calculate(const Qvalues& values) const
 
 Qvalue QnOr::calculate(const Qvalues& values) const
 {
-	return(Qvalue(~(values[0] | values[1])));
+	return(Qvalue(!(values[0] | values[1])));
 }
 
 
@@ -315,7 +324,7 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 		Qvalue v = pOut->value();
 		if (v != cSuperposition) cStr = to_string(v);
 		else cStr.append(1, cSuperposition);
-		cStr = "\n" + Qop::output()->toString(decomposed, forBit) + " = "
+		cStr = "; " + Qop::output()->toString(decomposed, forBit) + " = "
 				+ AdderQT::Carry::Symbol(pOut->id() + "/" + cStr + "/");
 		return cStr;
 	}
@@ -333,6 +342,14 @@ Qvalue Qxor::calculate(const Qvalues& values) const
 {
 	// returns one Qbit value without carry bit
 	return(Qvalue((values[0] ^ values[1]) & 1));
+}
+
+/*** Q Nxor operation ***/
+
+Qvalue Qnxor::calculate(const Qvalues& values) const
+{
+	// returns one Qbit value without carry bit
+	return(Qvalue((values[0] ^ values[1]) & 0));
 }
 
 /*** Q adder operation ***/

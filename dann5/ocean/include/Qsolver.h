@@ -38,6 +38,10 @@ namespace dann5 {
 			Branches	mBranches;
 		};
 
+		// Send a string representation of Nodes or Branches into an output stream
+		std::ostream& operator << (std::ostream&, const Qanalyzer::Nodes&);
+		std::ostream& operator << (std::ostream&, const Qanalyzer::Branches&);
+
 		class Qsolver : public Qanalyzer
 		{
 		public:

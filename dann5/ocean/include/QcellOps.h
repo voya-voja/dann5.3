@@ -109,6 +109,9 @@ namespace dann5 {
 			// Destruct Qeq with shared pointers to its Qdef
 			~Qoperator() {};
 
+			// overrides output getter to to return utput operand when operation is an output
+			virtual Qdef::Sp output(size_t forBit = cAllBits) const;
+
 			// convert Quantum operator expration into a string
 			virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 
@@ -511,6 +514,33 @@ namespace dann5 {
 
 		// A Quntum half adder is a binary Q xor addition
 		typedef Qxor Qadder05;
+
+
+		// A Quntum xOr is a binary Q addition
+		class Qnxor : public Qaddition
+		{
+		public:
+			// Qnxor's shared pointer 
+			typedef shared_ptr<Qxor> Sp;
+
+			// Default constructor
+			Qnxor() : Qaddition(NxorQT::cMark, 2) {};
+
+			// Copy constructor
+			Qnxor(const Qnxor& right) : Qaddition(right) {};
+
+			// Destruct the Q xor instance with a shared pointer to its carry operand
+			// and two inputs
+			~Qnxor() {};
+
+			// Return a Qdef's shared pointer pointing to a copy of this object 
+			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qnxor(*this)); };
+
+		protected:
+			virtual Qvalue calculate(const Qvalues& values) const;
+
+		private:
+		};
 
 		/****Quantum Trinary operations *****/
 

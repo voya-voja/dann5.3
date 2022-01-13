@@ -115,9 +115,9 @@ Qassign<Qbin> Qbin::operator^=(const Qexpr<Qbin>& right)
 	return assign;
 }
 
-Qexpr<Qbin> Qbin::operator~() const
+Qexpr<Qbin> Qbin::operator!() const
 {
-	Qbin inverted(noqbs(), "~" + Qdef::id());
+	Qbin inverted(noqbs(), "!" + Qdef::id());
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(inverted.clone());

@@ -368,10 +368,16 @@ NxorQT::NxorQT()
 	:BinaryOp2OutQT()
 {
 	*this << "i0", "i1", "o0", "o1";
-	*this <<  -1,    2,   -4,    2,
+/*	*this <<  -1,    2,   -4,    2,
 			   0,   -1,   -4,    2,
 			   0,    0,    8,   -4,
 			   0,    0,    0,   -1;
+*/
+	*this <<  -1,    2,    2,   -4,
+			   0,   -1,    2,   -4,
+			   0,    0,   -1,   -4,
+			   0,    0,    0,    8;
+
 }
 
 /**** Adder trinary operation Qubo Table with two outputs****/

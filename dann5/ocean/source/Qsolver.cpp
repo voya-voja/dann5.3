@@ -41,6 +41,23 @@ Qanalyzer::Branches& Qanalyzer::branches()
 	return(mBranches);
 }
 
+ostream& dann5::ocean::operator<<(std::ostream& out, const Qanalyzer::Nodes& nodes)
+{
+	cout << "[";
+	for(auto node : nodes)
+		out << "(" << node.first << " : " << to_string(node.second) << "), ";
+	cout << "]";
+	return out;
+}
+
+ostream& dann5::ocean::operator<<(std::ostream& out, const Qanalyzer::Branches& branches)
+{
+	cout << "[";
+	for (auto branch : branches)
+		out << "((" << branch.first.first << ", " << branch.first.second << ") : " << to_string(branch.second) << "), ";
+	cout << "]";
+	return out;
+}
 
 /**** Q Solve ****/
 

@@ -89,7 +89,7 @@ Creator<string, QuboTable, AndQT> gAndQTcreator(AndQT::cName);
 
 /**** Nand binary operation Qubo Table with two outputs****/
 
-const string NandQT::cMark = "~&";
+const string NandQT::cMark = "!&";
 const string NandQT::cName = "nand";
 
 /**** Factory Creator's of Nand binary operation Qubo Table ****/
@@ -109,7 +109,7 @@ Creator<string, QuboTable, OrQT> gOrQTcreator(OrQT::cName);
 
 /**** Nand binary operation Qubo Table with two outputs****/
 
-const string NorQT::cMark = "~|";
+const string NorQT::cMark = "!|";
 const string NorQT::cName = "nor";
 
 /**** Factory Creator's of Nor binary operation Qubo Table ****/
@@ -119,7 +119,7 @@ Creator<string, QuboTable, NorQT> gNorQTcreator(NorQT::cName);
 
 /**** Not-left-or-right binary operation Qubo Table with two outputs****/
 
-const string NotLeftOrRightQT::cMark = "~l|r";
+const string NotLeftOrRightQT::cMark = "!l|r";
 const string NotLeftOrRightQT::cName = "notleftorright";
 
 /**** Factory Creator's of not-left-or-right binary operation Qubo Table ****/
@@ -129,7 +129,7 @@ Creator<string, QuboTable, NotLeftOrRightQT> gNotLeftOrRightQTcreator(NotLeftOrR
 
 /**** DWave not-left-or-right binary operation Qubo Table with two outputs****/
 
-const string DwNotLeftOrRightQT::cMark = "d~l|r";
+const string DwNotLeftOrRightQT::cMark = "d!l|r";
 const string DwNotLeftOrRightQT::cName = "dwnotleftorright";
 
 /**** Factory Creator's of DWave not-left-or-right binary operation Qubo Table ****/
@@ -149,7 +149,7 @@ Creator<string, QuboTable, XorQT> gXorQTcreator(XorQT::cName);
 
 /**** Nxor binary operation Qubo Table with two outputs****/
 
-const string NxorQT::cMark = "~^";
+const string NxorQT::cMark = "*=";
 const string NxorQT::cName = "nxor";
 
 /**** Factory Creator's of Nxor binary operation Qubo Table ****/
@@ -221,10 +221,10 @@ Creator<string, QcellOp, DwNotLeftOrRightOp> gNotLeftOrRightOpCreator_dw("dwnotl
 */
 Creator<string, QcellOp, Qxor> gXorOpCreator_m(XorQT::cMark);
 Creator<string, QcellOp, Qxor> gXorOpCreator(XorQT::cName);
-/*
-Creator<string, QcellOp, NxorOp> gNxorOpCreator_m("~^");
-Creator<string, QcellOp, NxorOp> gNxorOpCreator("nxor");
-*/
+
+Creator<string, QcellOp, Qnxor> gNxorOpCreator_m(NxorQT::cMark);
+Creator<string, QcellOp, Qnxor> gNxorOpCreator(NxorQT::cName);
+
 Creator<string, QcellOp, Qadder05> gHalfAdderOpCreator_m(Adder05QT::cMark);
 Creator<string, QcellOp, Qadder05> gHalfAdderOpCreator(Adder05QT::cName);
 

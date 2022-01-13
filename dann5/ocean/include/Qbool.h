@@ -63,34 +63,38 @@ namespace dann5 {
 			virtual string solution(size_t sampleId) const;
 
 			/*** Assignment ***/
-			// assignment operator changes the identity and value of this object to be
-			// the same as right object
-			Qbool& operator=(const Qbool& right);
+			// assignment of an Q expression creates a Q bool assignment where this 
+			// Q bool is an assignee of equal expression between this to right Q bool
+			Qassign<Qbool> operator=(const Qbool& right);
 
 			// assignment of an Q expression creates a Q bool assignment where this 
 			// Q boolean is an assignee
 			Qassign<Qbool> operator=(const Qexpr<Qbool>& right);
 
 			/*** Compound Assignments ***/
-			// change value of this object as result of and operation between this 
-			// and right Q bool
-			Qbool& operator&=(const Qbool& right);
+			// 'and assignment' of an Q expression creates a following Q bool assignment
+			// [this] = [this] & [right]
+			Qassign<Qbool> operator&=(const Qbool& right);
 
 			// 'and assignment' of an Q expression creates a following Q bool assignment
 			// [this] = [this] & [right]
 			Qassign<Qbool> operator&=(const Qexpr<Qbool>& right);
 
-			// change value of this object as result of or operation between this 
-			// and right Q bool
-			Qbool& operator|=(const Qbool& right);
+			// 'or assignment' of an Q expression creates a following Q bool assignment
+			// [this] = [this] | [right]
+			Qassign<Qbool> operator|=(const Qbool& right);
 
 			// 'or assignment' of an Q expression creates a following Q bool assignment
 			// [this] = [this] | [right]
 			Qassign<Qbool> operator|=(const Qexpr<Qbool>& right);
 
-			// change value of this object as result of xor operation between this 
-			// and right Q bool
-			Qbool& operator^=(const Qbool& right);
+			// 'xor assignment' of an Q expression creates a following Q bool assignment
+			// [this] = [this] ^ [right]
+			Qassign<Qbool> operator^=(const Qbool& right);
+
+			// 'xor assignment' of an Q expression creates a following Q bool assignment
+			// [this] = [this] ^ [right]
+			Qassign<Qbool> operator^=(const Qexpr<Qbool>& right);
 
 			/*** Logical ***/
 			// instantiate Q expression with inversion logic, e.g. for Qbool with id 'x'
@@ -98,22 +102,22 @@ namespace dann5 {
 			Qexpr<Qbool> operator !() const;
 
 			// instantiate Q expression with and logic, e.g. for Qbool ids 'x' and 'y'
-			// the expression is 'x' && 'y'
+			// the expression is 'x' & 'y'
 			Qexpr<Qbool> operator &(const Qbool& right) const;
 			Qexpr<Qbool> operator and(const Qbool& right) const { return (*this) & right; };
 
 			// instantiate Q expression with and logic, e.g. for Qbool id 'x' and [right]
-			// object the expression is 'x' && [right]
+			// object the expression is 'x' & [right]
 			Qexpr<Qbool> operator &(const Qexpr<Qbool>& right) const;
 			Qexpr<Qbool> operator and(const Qexpr<Qbool>& right) const { return (*this) & right; };
 
 			// instantiate Q expression with or logic, e.g. for Qbool ids 'x' and 'y'
-			// the expression is 'x' || 'y'
+			// the expression is 'x' | 'y'
 			Qexpr<Qbool> operator |(const Qbool& right) const;
 			Qexpr<Qbool> operator or(const Qbool& right) const { return (*this) | right; };
 
 			// instantiate Q expression with or logic, e.g. for Qbool id 'x' and [right]
-			// object the expression is 'x' || [right]
+			// object the expression is 'x' | [right]
 			Qexpr<Qbool> operator |(const Qexpr<Qbool>& right) const;
 			Qexpr<Qbool> operator or(const Qexpr<Qbool>& right) const { return (*this) | right; };
 
@@ -131,10 +135,31 @@ namespace dann5 {
 			// the expression is 'x' != 'y'
 			Qexpr<Qbool> operator!=(const Qbool& right) const;
 
-
 			// instantiate Q expression with comparison, e.g. for arguments
 			// 'x' and [right] the expression is 'x' != [right root]			
-			Qexpr<Qbool> operator!=(const Qexpr<Qbool>& right) const;
+			Qexpr<Qbool> operator !=(const Qexpr<Qbool>& right) const;
+
+			// same value Q expression with nXor logic, e.g. for Qbool ids 'x' and 'y'
+			// the expression is 'x' || 'y'
+			Qexpr<Qbool> alike(const Qbool& right) const;
+			Qexpr<Qbool> operator*=(const Qbool& right) const { return alike(right); };
+			Qexpr<Qbool> nxor(const Qbool& right) const { return alike(right); };
+
+			// same value Q expression with nXor logic, e.g. for arguments
+			// 'x' and [right] the expression is 'x' || [right root]			
+			Qexpr<Qbool> alike(const Qexpr<Qbool>& right) const;
+			Qexpr<Qbool> operator*=(const Qexpr<Qbool>& right) const { return alike(right); };
+			Qexpr<Qbool> nxor(const Qexpr<Qbool>& right) const { return alike(right); };
+
+			// unlike Q expression with xor logic, e.g. for Qbool ids 'x' and 'y'
+			// the expression is 'x' ^ 'y'
+			Qexpr<Qbool> unlike(const Qbool& right) const;
+			Qexpr<Qbool> operator^(const Qbool& right) const { return unlike(right); };
+
+			// unlike Q expression with xor logic, e.g. for arguments
+			// 'x' and [right] the expression is 'x' != [right root]			
+			Qexpr<Qbool> unlike(const Qexpr<Qbool>& right) const;
+			Qexpr<Qbool> operator^(const Qexpr<Qbool>& right) const { return unlike(right); };
 
 		protected:
 		private:

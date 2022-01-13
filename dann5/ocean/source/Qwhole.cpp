@@ -252,7 +252,7 @@ Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 	
 	/*
 	Qwhole r(noqbs(), Qdef::id() + ">" + right.Qdef::id());
-	Qexpr<Qbin> iR(~(right));
+	Qexpr<Qbin> iR(!(right));
 	Qexpr<Qwhole> invertRight(as_const(iR).root());
 	Qexpr<Qwhole> expr(r == (*this) + invertRight);
 	*/

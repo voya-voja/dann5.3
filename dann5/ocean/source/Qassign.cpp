@@ -51,6 +51,8 @@ void Qassignment::bind()
 
 Qubo Qassignment::qubo(bool finalized, size_t forBit) const
 {
+	if (mpExpr == nullptr)
+		return Qubo();
 	return(mpExpr->qubo(finalized, forBit));
 }
 
@@ -72,19 +74,18 @@ void Qassignment::add(const Qsolver::Samples& samples)
 
 string Qassignment::solutions() const
 {
-	return mpExpr->solutions() + "\n";
+	return mpExpr->solutions();
 }
 
 string Qassignment::solve()
 {
-	return mpExpr->solve() + "\n";
+	return mpExpr->solve();
 }
 
 void Qassignment::reset()
 {
 	mpExpr->reset();
 }
-
 
 ostream& dann5::ocean::operator<<(std::ostream& out, const Qassignment& statement)
 {

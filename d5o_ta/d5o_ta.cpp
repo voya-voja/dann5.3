@@ -10,9 +10,11 @@
 #include <Qint.h>
 
 #include <Qsolver.h>
+#include <Utility.h>
 
 using namespace std;
 using namespace dann5::ocean;
+using namespace dann5;
 
 void basic_types()
 {
@@ -31,15 +33,82 @@ void basic_types()
 
 void qbit_test()
 {
-    Qbit a0("0a", 1), a1("1a"), a2("2a", 5), a3("3a", 0), a4("4a"), ar("ar",1);
-    Qassign<Qbit> qbitAssign = ar = (a0 & a1) | ((a2 ^ a3) == a4);
-    cout << endl << qbitAssign << endl << endl << qbitAssign.toString(true) << endl;
-    cout << endl << "*** Logic Qubo ***" << endl << qbitAssign.qubo(false) << endl 
-        << endl << "*** Reduced discrete values Qubo ***" << endl << qbitAssign.qubo() << endl;
+    Qbit a("a"), r("r"), b("b", 1), x("x"), y("y", 5), z("z"), _0("_0_", 0), _1("_1_", 1);
+
+    cout << "x !&y:" << endl << (x.nand(y)).qubo() << endl << (x.nand(y)).solve() << endl;
+    cout << "_1_ & (x !& y):" << endl << (_1.nand(x.nand(y))).solve() << endl;
+    cout << "x !| y:" << endl << (x.nor(y)).solve() << endl;
+    cout << "_0_ !| (x & y):" << endl << (_0.nor(x.nor(y))).solve() << endl;
+
+    Qexpr<Qbit> xGtNe = z > (x != y), xGeNe = z >= (x != y), xLtNe = z < (x != y), xLeNe = z <= (x != y);
+    Qexpr<Qbit> xNeGt = (x != y) > z, xNeGe = (x != y) >= z, xNeLt = (x != y) < z, xNeLe = (x != y) <= z;
+    cout << xGtNe.toString(true) << endl << xGtNe.qubo() << endl << xGtNe.solve() << endl
+        << xGeNe.toString(true) << endl << xGeNe.qubo() << endl << xGeNe.solve() << endl
+        << xLtNe.toString(true) << endl << xLtNe.qubo() << endl << xLtNe.solve() << endl
+        << xLeNe.toString(true) << endl << xLeNe.qubo() << endl << xLeNe.solve() << endl
+        << xNeGt.toString(true) << endl << xNeGt.qubo() << endl << xNeGt.solve() << endl
+        << xNeGe.toString(true) << endl << xNeGe.qubo() << endl << xNeGe.solve() << endl
+        << xNeLt.toString(true) << endl << xNeLt.qubo() << endl << xNeLt.solve() << endl
+        << xNeLe.toString(true) << endl << xNeLe.qubo() << endl << xNeLe.solve() << endl;
+
+    Qexpr<Qbit> xEq = x == y, xAl = x *= y, xNe = x != y, xUl = x ^ y, xI = ~x;
+    cout << xI << endl << xI.toString(true) << endl;
+
+    Qassign<Qbit> aR = r = a, axEq = r = x == y, axAl = r = x *= y, axUl = _1 = x ^ y;
+
+    cout << "Assignment\n" << aR.qubo() << "\nEqual Expression\n" << xEq.qubo() 
+        << "\nEqual Assignment\n" << axEq.qubo() << "\nAlike Expression\n" 
+        << xAl.qubo() << "\nAlike Assignment\n" << axAl.qubo() << endl;
+    cout << "\nAssignment\n" << aR.solve() << "\nEqual Expression\n" << xEq.solve() 
+        << "\nEqual Assignment\n" << axEq.solve() << "\nAlike Expression\n" 
+        << xAl.solve() << "\nAlike Assignment\n" << axAl.solve() << endl;
+
+    cout << "\nNot Equal Expression\n" << xNe.qubo() << "\nUnlike Expression\n" 
+        << xUl.qubo() << "\nUnlike Assignment\n" << axUl.qubo() << endl;
+    cout << "\nNot equal Expression\n" << xNe.solve() << "\nUnlike Expression\n" 
+        << xUl.solve() << "\nUnlike Assignment\n" << axUl.solve() << endl;
+
+    Qassign<Qbit> qbitAssign = _1 = (z != (b & x)) | (z == (y ^ _0));
+    cout << endl << qbitAssign << endl << endl << replaceAll(qbitAssign.toString(true), "; ", "\n") << endl;
+    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign.qubo(false) << endl 
+        << endl << "*** Finalized Qubo ***" << endl << qbitAssign.qubo() << endl;
     Qanalyzer analyze(qbitAssign.qubo());
     cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
     qbitAssign.solve();
     cout << endl << qbitAssign.solutions();
+
+    Qassign<Qbit> qbitAssign2 = _1 = ((b & x) != z) | (z == (y ^ _0));
+    cout << endl << qbitAssign2 << endl << endl << qbitAssign2.toString(true) << endl;
+    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign2.qubo(false) << endl
+        << endl << "*** Finalized Qubo ***" << endl << qbitAssign2.qubo() << endl;
+    Qanalyzer analyze2(qbitAssign2.qubo());
+    cout << endl << "# of nodes: " << analyze2.nodesNo() << "\t# of branches: " << analyze2.branchesNo() << endl;
+    qbitAssign2.solve();
+    cout << endl << qbitAssign2.solutions();
+
+    Qassign<Qbit> qbitAssign3 = _1 = ((b & x) != z) | ((y ^ _0) == z);
+    cout << endl << qbitAssign3 << endl << endl << qbitAssign3.toString(true) << endl;
+    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign3.qubo(false) << endl
+        << endl << "*** Finalized Qubo ***" << endl << qbitAssign3.qubo() << endl;
+    Qanalyzer analyze3(qbitAssign3.qubo());
+    cout << endl << "# of nodes: " << analyze3.nodesNo() << "\t# of branches: " << analyze3.branchesNo() << endl;
+    qbitAssign3.solve();
+    cout << endl << qbitAssign3.solutions();
+
+    Qassign<Qbit> qbitAssign4 = _1 = (z != (b & x)) | ((y ^ _0) == z);
+    cout << endl << qbitAssign4 << endl << endl << qbitAssign4.toString(true) << endl;
+    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign4.qubo(false) << endl
+        << endl << "*** Finalized Qubo ***" << endl << qbitAssign4.qubo() << endl;
+    Qanalyzer analyze4(qbitAssign4.qubo());
+    cout << endl << "# of nodes: " << analyze4.nodesNo() << "\t# of branches: " << analyze4.branchesNo() << endl;
+    qbitAssign4.solve();
+    cout << endl << qbitAssign4.solutions();
+
+    Qassign<Qbit> qbitA = _1 = ((b & x).unlike(z)) | ((y ^ _0).alike(z));
+    cout << endl << qbitA << endl << endl << qbitA.toString(true) << endl;
+    Qanalyzer anlyze(qbitA.qubo());
+    cout << endl << "# of nodes: " << anlyze.nodesNo() << "\t# of branches: " << anlyze.branchesNo() << endl;
+    cout << endl << qbitA.solve();
 }
 
 void qbool_test()
@@ -47,8 +116,8 @@ void qbool_test()
     Qbool b0("0b"), b1("1b", 'F'), b2("2b", 33), b3("3b"), b4("4b"), br("br", Qbool::cTrue);
     Qassign<Qbool> qboolAssign = br = ((b3 != b4) & (b2 == b0)) | b1;
     cout << endl << qboolAssign << endl << endl << qboolAssign.toString(true) << endl;
-    cout << endl << "*** Logic Qubo ***" << endl << qboolAssign.qubo(false) << endl
-        << endl << "*** Reduced discrete values Qubo ***" << endl << qboolAssign.qubo() << endl;
+    cout << endl << "*** Generic Qubo ***" << endl << qboolAssign.qubo(false) << endl
+        << endl << "*** Finalized Qubo ***" << endl << qboolAssign.qubo() << endl;
     Qanalyzer analyze(qboolAssign.qubo());
     cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
     qboolAssign.solve();
@@ -60,8 +129,8 @@ void qbin_test()
     Qbin bn0("bn0", 03), bn1(3, "bn1"), bn2(4,"bn2"), bn3("bn3", 0b110), bn4(2, "bn4"), bnr("bnr", 0x5);
     Qassign<Qbin> qbinAssign = bnr = (bn0 & bn1) | ((bn2 ^ bn3) == bn4);
     cout << endl << qbinAssign << endl << endl << qbinAssign.toString(true) << endl;
-    cout << endl << "*** Logic Qubo ***" << endl << qbinAssign.qubo(false) << endl
-        << endl << "*** Reduced discrete values Qubo ***" << endl << qbinAssign.qubo() << endl;
+    cout << endl << "*** Generic Qubo ***" << endl << qbinAssign.qubo(false) << endl
+        << endl << "*** Finalized Qubo ***" << endl << qbinAssign.qubo() << endl;
     Qanalyzer analyze(qbinAssign.qubo());
     cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
     qbinAssign.solve();
@@ -153,8 +222,8 @@ void qwholeLe_test()
     Qubo q = /*eA.qubo();*/e0.qubo() + e1.qubo() + e01.qubo() + e2.qubo() + e12.qubo();// +e02.qubo();
 /*  q[Qkey("_01", "y1")] = -1;
     q[Qkey("_01", "x0")] = -1;
-    q[Qkey("_01", "~y0")] = -1;
-    q[Qkey("_01", "~x1")] = -1;
+    q[Qkey("_01", "!y0")] = -1;
+    q[Qkey("_01", "!x1")] = -1;
     q[Qkey("_01", "_01")] = 4;
     q[Qkey("_=02", "y2")] = -2;
     q[Qkey("_=02", "x0")] = -2;
@@ -284,15 +353,43 @@ void qbinXorTest()
     cout << endl << "# of nodes: " << analyzeEb.nodesNo() << "\t# of branches: " << analyzeEb.branchesNo() << endl;
 }
 
+void routineTest()
+{
+    Qwhole c(3, "c"), d(2, "d"), We("We", 7), _3("3_", 3), _1("1_", 1);
+    Qexpr<Qwhole> xW = We == c + d;
+    Qanalyzer xWa(xW.qubo(false)), xWfa(xW.qubo());
+    cout << "\n\nAddition:\n" << xWa.nodes() << endl << xWa.branches() << endl;
+    cout << xW.toString() << endl << xW.solve() << endl;
+    Qexpr<Qwhole> xEqW = d == _3;
+    Qanalyzer xEqWa(xEqW.qubo(false));
+    cout << "\n\nEqual:\n" << xEqWa.nodes() << endl << xEqWa.branches() << endl;
+    cout << xEqW.toString() << endl << xEqW.solve() << endl;
+    Qanalyzer rWa(xW.qubo(false) + xEqW.qubo(false));
+    cout << "\n\nUnion:\n" << rWa.nodes() << endl << rWa.branches() << endl;
+    Qubo rQ = xW.qubo() + xEqW.qubo();
+    Qsolver solver(rQ);
+    xW.reset();
+    xW.add(solver.solution());
+    cout << xW.toString() << endl << xW.solve() << endl;
+    cout << "\n\n---------- FINALIZED -------\n\nUnion:\n" << solver.nodes() << endl << solver.branches() << endl;
+    cout << "\n\nAddition:\n" << xWfa.nodes() << endl << xWfa.branches() << endl;
+
+    Qexpr<Qwhole> xaneW = (We == c + d) & (d == _3), xareW = (We == c + d) | (d == _3);
+    cout << xaneW.toString() << endl << xaneW.solve() << endl;
+    cout << xareW.toString() << endl << xareW.solve() << endl;
+}
+
 int main()
 {
 /*    string answer;
     cout << "should I start?";
     cin >> answer;
-    basic_types();
+*/
+//    basic_types();
     qbit_test();
-    qbool_test();
-    qbin_test();
+//    qbool_test();
+//    qbin_test();
+/*
     const clock_t begin_time = clock();
     qwholeAdd_test();
     clock_t addition_end_time = clock();
@@ -313,8 +410,10 @@ int main()
 //    pymain();
 
 //    qassignVSqexpr();
-    eqVSneq();
+//    eqVSneq();
 //    qbinXorTest();
+//    routineTest();
+
     return 0;
 }
 

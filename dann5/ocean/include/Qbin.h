@@ -77,8 +77,8 @@ namespace dann5 {
 
 			/*** Bitwise ***/
 			// instantiate Q expression with inversion logic, e.g. for Qbin with id 'x'
-			// the logic is '~x' != 'x'
-			Qexpr<Qbin> operator~() const;
+			// the logic is '!x' != 'x'
+			Qexpr<Qbin> operator!() const;
 
 			// instantiate Q expression with and logic, e.g. for Qbin ids 'x' and 'y'
 			// the expression is 'x' & 'y'
@@ -89,11 +89,11 @@ namespace dann5 {
 			Qexpr<Qbin> operator&(const Qexpr<Qbin>& right) const;
 
 			// instantiate Q expression with nand logic, e.g. for Qbin ids 'x' and 'y'
-			// the expression is ~('x' & 'y')
+			// the expression is !('x' & 'y')
 			Qexpr<Qbin> nand(const Qbin& right) const;
 
 			// instantiate Q expression with nand logic, e.g. for Qbin id 'x' and [right]
-			// object the expression is ~('x' & [right])
+			// object the expression is !('x' & [right])
 			Qexpr<Qbin> nand(const Qexpr<Qbin>& right) const;
 
 			// instantiate Q expression with or logic, e.g. for Qbin ids 'x' and 'y'
@@ -105,11 +105,11 @@ namespace dann5 {
 			Qexpr<Qbin> operator|(const Qexpr<Qbin>& right) const;
 
 			// instantiate Q expression with nor logic, e.g. for Qbin ids 'x' and 'y'
-			// the expression is ~('x' | 'y')
+			// the expression is !('x' | 'y')
 			Qexpr<Qbin> nor(const Qbin& right) const;
 
 			// instantiate Q expression with nor logic, e.g. for Qbin id 'x' and [right]
-			// object the expression is ~('x' | [right])
+			// object the expression is !('x' | [right])
 			Qexpr<Qbin> nor(const Qexpr<Qbin>& right) const;
 
 			// instantiate Q expression with xor logic, e.g. for Qbin ids 'x' and 'y'

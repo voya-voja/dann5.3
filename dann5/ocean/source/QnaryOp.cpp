@@ -82,7 +82,7 @@ string QnaryOp::toString(bool decomposed, size_t forBit) const
 	string rStr("");
 	for (size_t atBit = 0; atBit < size; atBit++)
 	{
-		rStr += logic[atBit]->toString(decomposed) + "\n";
+		rStr += logic[atBit]->toString(decomposed) + "; ";
 	}
 	return rStr;
 }

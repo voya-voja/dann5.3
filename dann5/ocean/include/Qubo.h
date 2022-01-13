@@ -283,7 +283,7 @@ namespace dann5{
 		private:
 		protected:
 		public:
-			static const string cMark;	// "~&"
+			static const string cMark;	// "!&"
 			static const string cName;	// "nand"
 
 			NandQT();
@@ -311,7 +311,7 @@ namespace dann5{
 		private:
 		protected:
 		public:
-			static const string cMark;	// "~|"
+			static const string cMark;	// "!|"
 			static const string cName;	// "nor"
 
 			NorQT();
@@ -324,7 +324,7 @@ namespace dann5{
 		private:
 		protected:
 		public:
-			static const string cMark;	// "~l|r"
+			static const string cMark;	// "!l|r"
 			static const string cName;	// "notleftorright"
 
 			NotLeftOrRightQT();
@@ -338,7 +338,7 @@ namespace dann5{
 		private:
 		protected:
 		public:
-			static const string cMark;	// "d~l|r"
+			static const string cMark;	// "d!l|r"
 			static const string cName;	// "dwnotleftorright"
 
 			DwNotLeftOrRightQT();
@@ -365,7 +365,7 @@ namespace dann5{
 		private:
 		protected:
 		public:
-			static const string cMark;	// "~^"
+			static const string cMark;	// "*="
 			static const string cName;	// "nxor"
 
 			NxorQT();

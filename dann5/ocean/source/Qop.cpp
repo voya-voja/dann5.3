@@ -168,7 +168,7 @@ string Qop::toString(bool decomposed, size_t forBit) const
 	size_t size = mInputs.size();
 	string rStr(""), rest("");
 	if (decomposed)
-		rStr += "\n" + output(forBit)->toString(decomposed, forBit) + " = ";
+		rStr += "; " + output(forBit)->toString(decomposed, forBit) + " = ";
 	else
 		rStr += "(";
 	for (size_t atArg = 0; atArg < size; atArg++)
