@@ -21,7 +21,7 @@ Qwhole::operator const unsigned long long() const
 	size_t at = 0;
 	for (auto qbit : cells())
 	{
-		ull += qbit->value() * unsigned long long(pow(2, at));
+		ull += qbit->value() * (unsigned long long)(pow(2, at));
 		at++;
 	}
 	return(ull);

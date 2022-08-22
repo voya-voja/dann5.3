@@ -44,7 +44,7 @@ namespace dann5 {
 
 			// type conversion operator to a std::vertor of Qcells
 			operator Qcells() { return mCells; };
-			operator const Qcells() const { mCells; };
+			operator const Qcells() const { return mCells; };
 
 			// type conversion operator to a Bits object
 			operator Bits();

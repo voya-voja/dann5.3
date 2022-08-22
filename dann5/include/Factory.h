@@ -64,8 +64,11 @@ namespace dann5 {
 		{
 			mCreators[creator->key()] = creator;
 		}
-
+#ifdef _WINDOWS
 		static Factory<K, T>		gFactory;
+#else
+		static inline Factory<K, T>		gFactory;
+#endif
 		std::map<K, Creator<K, T>*>	mCreators;
 	};
 

@@ -6,10 +6,10 @@ Created on Fri Oct 15 13:16:43 2021
 """
 from qiskit import IBMQ
 
-from qiskit.aqua import aqua_globals, QuantumInstance
-from qiskit.aqua.algorithms import QAOA, NumPyMinimumEigensolver
-from qiskit.optimization.algorithms import MinimumEigenOptimizer, RecursiveMinimumEigenOptimizer
-from qiskit.optimization import QuadraticProgram
+from qiskit.utils import algorithm_globals, QuantumInstance
+from qiskit.algorithms import QAOA #, NumPyMinimumEigensolver
+from qiskit_optimization.algorithms import MinimumEigenOptimizer#, RecursiveMinimumEigenOptimizer
+from qiskit_optimization import QuadraticProgram
 
 from dann5.d5o2 import Qanalyzer
 

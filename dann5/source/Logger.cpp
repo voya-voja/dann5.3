@@ -47,7 +47,7 @@ void Logger::log_alloc(const void* pObject, const char* oType, bool deallocated)
 #ifdef _DANN5_LOG_INTO_CSV
 	replaceAll(typeStr, ",", "_");
 #endif
-	const char* typeTxt = typeStr._Unchecked_begin();
+	const char* typeTxt = typeStr.c_str();
 	_DANN5_LOG << "'" << typeTxt << "', " << (deallocated ? "deallocate" : "allocate") << ", "
 		<< pObject << endl;
 }
@@ -62,8 +62,8 @@ void Logger::log_alloc(const void* pObject, const char* oType, const string& txt
 	replaceAll(txtStr, "\t", ";");
 	replaceAll(txtStr, "\n", ";");
 #endif
-	const char* typeTxt = typeStr._Unchecked_begin();
-	const char* pTxt = txtStr._Unchecked_begin();
+	const char* typeTxt = typeStr.c_str();
+	const char* pTxt = txtStr.c_str();
 	_DANN5_LOG << "'" << typeTxt << "', " << (deallocated ? "deallocate" : "allocate") << ", "
 		<< pObject << ", '" << pTxt << "'" << endl;
 }
@@ -83,8 +83,8 @@ void Logger::log(const void* pObject, const char* oType, const string& action, c
 	replaceAll(actStr, "\t", ";");
 	replaceAll(actStr, "\n", ";");
 #endif
-	const char* typeTxt = typeStr._Unchecked_begin();
-	const char* pTxt = txtStr._Unchecked_begin();
-	const char* actTxt = actStr._Unchecked_begin();
+	const char* typeTxt = typeStr.c_str();
+	const char* pTxt = txtStr.c_str();
+	const char* actTxt = actStr.c_str();
 	_DANN5_LOG << "'" << typeTxt << "', " << actTxt << ", " << pObject << ", '" << pTxt << "'" << endl;
 }

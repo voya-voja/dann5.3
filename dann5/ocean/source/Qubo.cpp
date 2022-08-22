@@ -20,7 +20,14 @@ Qubo& dann5::ocean::operator+=(Qubo& left, const Qubo& right)
 		if (item != left.end())
 			(*item).second += (*at).second;
 		else
-			left[key] = (*at).second;
+		{
+			Qkey mirrorKey(key.second, key.first);
+			item = left.find(mirrorKey);
+			if (item != left.end())
+				(*item).second += (*at).second;
+			else
+				left[key] = (*at).second;
+		}
 	}
 	return left;
 }

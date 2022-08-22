@@ -28,7 +28,7 @@ void Qbit::add(const Qsolver::Samples& samples)
 
 Qassign<Qbit> Qbit::operator=(const Qbit& right)
 {
-	Qexpr<Qbit> expr = *this == right;
+	Qexpr<Qbit> expr = right == right;
 	Qassign<Qbit> assign(*this, expr);
 	return assign;
 }

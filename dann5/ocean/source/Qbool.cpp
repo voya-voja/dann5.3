@@ -4,6 +4,9 @@
 
 using namespace dann5::ocean;
 
+const Qvalue Qbool::cTrue;  // 'T' value 84
+const Qvalue Qbool::cFalse; // 'F' value 71
+
 void Qbool::value(Qvalue v) 
 { 
 	if (v == 1 || v == cTrue)
@@ -67,7 +70,7 @@ string Qbool::solution(size_t sampleId) const
 
 Qassign<Qbool> Qbool::operator=(const Qbool& right)
 {
-	Qexpr<Qbool> expr = *this == right;
+	Qexpr<Qbool> expr = right == right;
 	Qassign<Qbool> assign(*this, expr);
 	return assign;
 }

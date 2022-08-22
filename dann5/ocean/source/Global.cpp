@@ -15,7 +15,9 @@ using namespace dann5::ocean;
 unique_ptr<Logger> Logger::mpSingleton;
 
 /**** A global instance of Qubo Table Factory singleton ****/
+#ifdef _WINDOWS
 Factory<string, QuboTable> Factory<string, QuboTable>::gFactory;
+#endif
 
 /**** Equal operator Qubo Table ****/
 
@@ -182,8 +184,9 @@ const string AdderQT::Carry::cMark = "#";
 const string AdderQT::Carry::cName = "carry";
 
 /*** Quantum Cell Operations Factory ***/
-
+#ifdef _WINDOWS
 Factory<string, QcellOp> Factory<string, QcellOp>::gFactory;
+#endif
 
 Creator<string, QcellOp, Qeq> gEqualOperatorCreator_m(EqQT::cMark);
 Creator<string, QcellOp, Qeq> gEqualOperatorCreator(EqQT::cName);
@@ -232,8 +235,9 @@ Creator<string, QcellOp, Qadder> gAdderOpCreator_m(AdderQT::cMark);
 Creator<string, QcellOp, Qadder> gAdderOpCreator(AdderQT::cName);
 
 /*** Quantum-nary Operations Factory ***/
-
+#ifdef _WINDOWS
 Factory<string, QnaryOp> Factory<string, QnaryOp>::gFactory;
+#endif
 
 /**** Factory Creator's of Addition ****/
 Creator<string, QnaryOp, Qadd> gAdditionCreator_m(AdderQT::cMark);

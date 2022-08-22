@@ -209,14 +209,14 @@ def qwholeLt_test(solvers):
 
 
 def main():
-#    basic_types()
+    basic_types()
     solvers = DwaveSolvers(1000, 2)
 #    qwholeLt_test(solvers)
 #    qbit_test(solvers)
 #    qbool_test(solvers)
 #    qbin_test(solvers)
-#    qwholeAdd_test(solvers)
-    qwholeX_test(solvers)
+    qwholeAdd_test(solvers)
+#    qwholeX_test(solvers)
 #    qwholeXlarge_test(solvers)
 
 if __name__ == "__main__":

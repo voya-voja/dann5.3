@@ -10,10 +10,10 @@ from dann5.d5o2 import Qbit, Superposition, Qanalyzer
 class QbitTest:
     def __init__(self):
         q_bit = Qbit('qBit')
-        print("*** default ***\n\tAll: {}\n\t0 q-bit :{}\n".format(
+        print("*** default ***\n\tAll qbits:\t{}\n\t0 q-bit:\t{}\n".format(
                                     q_bit.toString(), 
                                     q_bit.toString(False, 0)),
-              "*** decomposed ***\n\tAll: {}\n\t0 q-bit: {}\n".format( 
+              "*** decomposed ***\n\tAll qubits:\t{}\n\t0 q-bit:\t{}\n".format( 
                                           q_bit.toString(True), 
                                           q_bit.toString(True, 0)))
         self.qBit = q_bit;
@@ -27,26 +27,36 @@ class QbitTest:
     
     def aNxEqAl(self):
         aR = self.r.assign(self.qBit)
+        print("\nAssignment 'r = qBit' => '{}'\n\tQUBO: {}".format(aR.toString(), aR.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(aR.solve()))
+              
         xEq = self.x == self.y
+        print("Equal Expression '{}'\n\tQUBO: {}".format(xEq.toString(), xEq.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(xEq.solve()))
         xAl = self.x.alike(self.y)
+        print("Alike Expression '{}'\n\tQUBO: {}".format(xAl.toString(), xAl.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(xAl.solve()))
         axEq = self.r.assign(self.x == self.y)
-        axAl = self.r = self.x.alike(self.y)
-        print("\nQUBO:\nAssignment\n{}\nEqual Expression\n{}".format(aR.qubo(),xEq.qubo()),
-              "\nEqual Assignment\n{}\nAlike Expression\n".format(axEq.qubo()),
-              "{}\nAlike Assignment\n{}\n".format(xAl.qubo(),axAl.qubo()))
-        print("\nSOLUTION:\nAssignment\n{}\nEqual Expression\n".format(aR.solve()), 
-              "{}\nEqual Assignment\n{}\n".format(xEq.solve(),axEq.solve()),
-              "Alike Expression\n{}\nAlike Assignment\n{}\n".format(xAl.solve(),axAl.solve()))
+        print("Equal Assignment 'r = x == y' => '{}'\n\tQUBO: {}".format(axEq.toString(), axEq.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(axEq.solve()))
+        axAl = self.r.assign(self.x.alike(self.y))
+        print("Alike Assignment '{}'\n\tQUBO: {}".format(axAl.toString(), axAl.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(axAl.solve()))
+        axAl = self._1_.assign(self.x.alike(self.y))
+        print("Alike Assignment to _1_ => '{}'\n\tQUBO: {}".format(axAl.toString(), axAl.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(axAl.solve()))
 
 
     def aNxNeUl(self):
         xNe = self.x != self.y
+        print("Not Equal Expression '{}'\n\tQUBO: {}".format(xNe.toString(), xNe.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(xNe.solve()))
         xUl = self.x ^ self.y
+        print("Unlike Expression '{}'\n\tQUBO: {}".format(xUl.toString(), xUl.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(xUl.solve()))
         axUl = self._1_.assign(self.x ^ self.y)
-        print("\nQUBO:\nNot Equal Expression\n{}\nUnlike Expression\n".format(xNe.qubo()), 
-              "{}\nUnlike Assignment\n{}\n".format(xUl.qubo(),axUl.qubo()))
-        print("\nSOLUTION:\nNot equal Expression\n{}\nUnlike Expression\n".format(xNe.solve()), 
-              "{}\nUnlike Assignment\n{}\n".format(xUl.solve(),axUl.solve()))
+        print("Unlike Assignment to _1_ => '{}'\n\tQUBO: {}".format(axUl.toString(), axUl.qubo()),
+              "\n\tSOLUTION: \n{}\n".format(axUl.solve()))
 
     def eqNne(self):
         qbitAssign = self._1_.assign(((self.b & self.x) != self.z) | (self.z == (self.y ^ self._0_)))
@@ -59,6 +69,12 @@ class QbitTest:
         qbitAssign = self._1_.assign(((self.b & self.x) != self.z) | ((self.y ^ self._0_) == self.z))
         print("\nLOGIC:\n{}\n{}".format(qbitAssign.toString(),qbitAssign.toString(True)))
         print("*** SOLUTION ***\n{}".format(qbitAssign.solve()))
+        qbitAssign = self._1_.assign((self.z != (self.b & self.x)) | ((self.y ^ self._0_) == self.z))
+        print("\nLOGIC:\n{}\n{}".format(qbitAssign.toString(),qbitAssign.toString(True)))
+        print("*** SOLUTION ***\n{}".format(qbitAssign.solve()))
+        qbitAssign = self._1_.assign((self.z != (self.b & self.x)) | (self.z) == (self.y ^ self._0_))
+        print("\nLOGIC:\n{}\n{}".format(qbitAssign.toString(),qbitAssign.toString(True)))
+        print("*** SOLUTION ***\n{}".format(qbitAssign.solve()))
 
     def alNul(self):       
         qbitAssign = self._1_.assign(((self.b & self.x).unlike(self.z)) | (self.z.alike(self.y ^ self._0_)))
@@ -67,4 +83,13 @@ class QbitTest:
         print("*** Finalized Qubo ***\n{}\n".format(qbitAssign.qubo()))
         analyze = Qanalyzer(qbitAssign.qubo())
         print("# of nodes: {}, # of branches: {}\n".format(analyze.nodesNo(),analyze.branchesNo()))
+        print("*** SOLUTION ***\n{}".format(qbitAssign.solve()))
+        qbitAssign = self._1_.assign(((self.b & self.x).unlike(self.z)) | ((self.y ^ self._0_).alike(self.z)))
+        print("\nLOGIC:\n{}\n{}".format(qbitAssign.toString(),qbitAssign.toString(True)))
+        print("*** SOLUTION ***\n{}".format(qbitAssign.solve()))
+        qbitAssign = self._1_.assign((self.z.unlike(self.b & self.x)) | ((self.y ^ self._0_).alike(self.z)))
+        print("\nLOGIC:\n{}\n{}".format(qbitAssign.toString(),qbitAssign.toString(True)))
+        print("*** SOLUTION ***\n{}".format(qbitAssign.solve()))
+        qbitAssign = self._1_.assign((self.z.unlike(self.b & self.x)) | (self.z.alike(self.y ^ self._0_)))
+        print("\nLOGIC:\n{}\n{}".format(qbitAssign.toString(),qbitAssign.toString(True)))
         print("*** SOLUTION ***\n{}".format(qbitAssign.solve()))

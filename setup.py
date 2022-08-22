@@ -27,8 +27,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='dann5',    # This is the name of your PyPI-package.
-    version='2.0.8',                          # Update the version number for new releases
-    author="Voya",
+    version='2.0.9',                          # Update the version number for new releases
+    author="Voya-voja",
     author_email="nebojsa.vojinovic@rogers.com",
     description="A Library of Quantum computing types",
     long_description=long_description,
@@ -44,7 +44,7 @@ setup(
         'Natural Language :: English',
         'Operating System :: Microsoft :: Windows :: Windows 10',
         'Programming Language :: C++',
-        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Software Development',
@@ -58,9 +58,9 @@ setup(
 #    packages=find_packages(include=['dann5', 'dann5.*']),
 #    package_dir={'dann5': 'dann5'},
 #    include_package_data = True,
-#    package_data={'dann5': ['x64/Release/d5o2.cp39-win_amd64.pyd']},
+#    package_data={'dann5': ['x64/Release/d5o2.cp310-win_amd64.pyd']},
     install_requires=['pybind11'],
-    python_requires=">=3.9",
-    data_files=[('Lib/site-packages/dann5', ['x64/Release/d5o2.cp39-win_amd64.pyd'])],
+    python_requires=">=3.10",
+    data_files=[('Lib/site-packages/dann5', ['x64/Release/d5o2.cp310-win_amd64.pyd'])],
 #    scripts=['dann5/d5o2.cp39-win_amd64.pyd']                  # The name of your scipt, and also the command you'll be using for calling it
 )
