@@ -363,20 +363,58 @@ void qwholeGt_test()
     cout << endl << comp.solutions();
 }
 
-void qintAdd_test()
+void qintNegativeAdd_test()
 {
     std::cout << "Dann5.ocean Tests Qint!\n";
-    Qint a(3, "a"), b(3, "b"), c(2, "c"), d(1, "d"), A(2, "A", -3), _1_(2, "_1_", -1), _2_(2,"_2_", -2);
-    cout << endl << "A = " << A.Qbin::toString();
+    Qint a(3, "a"), b(3, "b"), c(2, "c"), d(1, "d"), A(2, "A", -3), _1_(2, "_1_", -1), _2_(2,"_2_", -2), _4_(3,"_4_",-4), _5_(3, "_5_", -5), _6_(3, "_6_", -6), _7_(3, "_7_", -7);
     cout << endl << "-1 = " << _1_.Qbin::toString();
     cout << endl << "-2 = " << _2_.Qbin::toString();
-    cout << endl << "A = " << A.Qbin::toString();
+    cout << endl << "-4 = " << _4_.Qbin::toString();
+    cout << endl << "-5 = " << _5_.Qbin::toString();
+    cout << endl << "-6 = " << _6_.Qbin::toString();
+    cout << endl << "-7 = " << _7_.Qbin::toString();
+    cout << endl << "A = " << A.Qbin::toString() << endl;
+
     Qassign<Qint> aA = A = a + b; // +c + d + _1;
-    cout << endl << "aA.A = " << dynamic_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString();
+    cout << endl << "aA.A = " << dynamic_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
+
     cout << endl << aA << endl << endl << aA.toString(true) << endl;
     cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
+
     Qanalyzer analyzeA(aA.qubo());
     cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
+
+    aA.solve();
+    cout << endl << aA.solutions();
+
+    Qubo q = aA.qubo();
+    q[Qkey("a3", "a3")] = 0;
+    q[Qkey("b3", "b3")] = 0;
+    q[Qkey("a3", "b3")] = 1;
+    cout << endl << "*** Qubo ***" << endl << q << endl;
+    Qsolver solver(q);
+    Qsolver::Samples samples = solver.solution();
+    aA.add(samples);
+    cout << endl << aA.solutions() << endl << "min Energy : " << solver.minEnergy() << endl;
+}
+
+void qintPositiveAdd_test()
+{
+    std::cout << "Dann5.ocean Tests Qint!\n";
+    Qint a(3, "a"), b(3, "b"), c(2, "c"), d(1, "d"), A(2, "A", 3), _1(2, "_1", 1), _2(2, "_2", 2);
+    cout << endl << "1 = " << _1.Qbin::toString();
+    cout << endl << "2 = " << _2.Qbin::toString();
+    cout << endl << "A = " << A.Qbin::toString() << endl;
+
+    Qassign<Qint> aA = A = a + b; // +c + d + _1;
+    cout << endl << "aA.A = " << dynamic_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
+
+    cout << endl << aA << endl << endl << aA.toString(true) << endl;
+    cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
+
+    Qanalyzer analyzeA(aA.qubo());
+    cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
+
     aA.solve();
     cout << endl << aA.solutions();
 }
@@ -479,8 +517,8 @@ int main()
     cout << "should I start?";
     cin >> answer;
 */
-    basic_types();
-    qbit_test();
+//    basic_types();
+//    qbit_test();
 //    qbitLt_test();
 //    qbitLe_test();
 //    qbool_test();
@@ -506,7 +544,9 @@ int main()
 //    qwholeGe_test();
 //    qwholeGt_test();
 
-//    qintAdd_test();
+    qintNegativeAdd_test();
+    qintPositiveAdd_test();
+
 //    pymain();
 
 //    qassignVSqexpr();

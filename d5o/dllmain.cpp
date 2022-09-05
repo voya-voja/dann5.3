@@ -74,6 +74,7 @@ PYBIND11_MODULE(d5o2, m) {
 
 	// specify C++ class->baseclass specialization
 	m.def("Qvalue", []() { return char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S}.)pbdoc");
+//	m.def("Qvalue", []() { return unsigned char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S}.)pbdoc");
 
 	m.def("Superposition", []() { return cSuperposition; }, R"pbdoc(Quantum default superposition value, though any Q bit value except 0 and 1 will be considered superposition.)pbdoc");
 

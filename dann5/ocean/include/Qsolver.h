@@ -56,6 +56,8 @@ namespace dann5 {
 			~Qsolver();
 
 			Samples solution();
+			double minEnergy() { return mMinEnergy; };
+
 		protected:
 			void solve();
 
