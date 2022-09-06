@@ -511,13 +511,13 @@ void routineTest()
     cout << xareW.toString() << endl << xareW.solve() << endl;
 }
 
-int main()
+int main(int argc, const char * argv[])
 {
 /*    string answer;
     cout << "should I start?";
     cin >> answer;
 */
-    basic_types();
+//    basic_types();
 //    qbit_test();
 //    qbitLt_test();
 //    qbitLe_test();
