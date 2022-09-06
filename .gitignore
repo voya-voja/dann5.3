@@ -365,3 +365,8 @@ FodyWeavers.xsd
 /dist
 /build/lib/dann5
 /notebooks/.ipynb_checkpoints
+.DS_Store
+d5o/.DS_Store
+d5o/d5o_Xc/.DS_Store
+dann5/.DS_Store
+dann5/ocean/.DS_Store
