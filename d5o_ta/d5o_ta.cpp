@@ -517,7 +517,7 @@ int main()
     cout << "should I start?";
     cin >> answer;
 */
-//    basic_types();
+    basic_types();
 //    qbit_test();
 //    qbitLt_test();
 //    qbitLe_test();
