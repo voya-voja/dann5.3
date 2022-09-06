@@ -1,0 +1,2 @@
+# This actually adds the data file.
+include dann5/d5o2.cp310-win_amd64.pyd

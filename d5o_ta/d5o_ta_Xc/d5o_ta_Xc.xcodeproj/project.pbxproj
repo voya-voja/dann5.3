@@ -388,11 +388,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
-					"/System/Volumes/Data/Developer/Work/eigen-master",
+					"../../../eigen-master",
 					/Library/Frameworks/Python.framework/Versions/3.10/include/python3.10,
-					"/Users/nvojinov/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
+					"$(HOME)/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
 					../../dann5/include,
-					"../..//dann5/ocean/include",
+					../../dann5/ocean/include,
 				);
 				LIBRARY_SEARCH_PATHS = /Library/Frameworks/Python.framework/Versions/3.10/lib;
 				OTHER_LDFLAGS = (
@@ -408,11 +408,11 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
-					"/System/Volumes/Data/Developer/Work/eigen-master",
+					"../../../eigen-master",
 					/Library/Frameworks/Python.framework/Versions/3.10/include/python3.10,
-					"/Users/nvojinov/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
+					"$(HOME)/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
 					../../dann5/include,
-					"../..//dann5/ocean/include",
+					../../dann5/ocean/include,
 				);
 				LIBRARY_SEARCH_PATHS = /Library/Frameworks/Python.framework/Versions/3.10/lib;
 				OTHER_LDFLAGS = (

@@ -1,0 +1,17 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.py
+dann5/__init__.py
+dann5/azure.py
+dann5/azureWS.py
+dann5/d5o2.cp310-win_amd64.pyd
+dann5/d5o2.cpython-310-darwin.so
+dann5/dwave.py
+dann5/qiskit.py
+dann5.egg-info/PKG-INFO
+dann5.egg-info/SOURCES.txt
+dann5.egg-info/dependency_links.txt
+dann5.egg-info/requires.txt
+dann5.egg-info/top_level.txt
