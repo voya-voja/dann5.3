@@ -27,10 +27,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='dann5',    # This is the name of your PyPI-package.
-    version='2.1.1',                          # Update the version number for new releases
+    version='2.1.2',                          # Update the version number for new releases
     author="voya-voja",
     author_email="nebojsa@nand5.onmicrosoft.com",
-    description="A Library of Quantum computing types",
+    description="A Library of Quantum computing types for programming",
     long_description=long_description,
     long_description_content_type='text/markdown',
     url="https://github.com/voya-voja/d5o2",
@@ -53,7 +53,7 @@ setup(
         'Topic :: Software Development',
         'Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator',
     ],
-    keywords='quantum coding development types',
+    keywords='quantum computing programming coding language development types dwave ibm azure',
     project_urls={
         "Bug Tracker": "https://github.com/voya-voja/d5o2/issues",
     },
