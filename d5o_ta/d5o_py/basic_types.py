@@ -25,6 +25,10 @@ def basic_types():
     x = d5o.Qwhole("x", 33)
     print(x.toString(), x.toString(False, 0),
           x.toString(True), x.toString(True, 0))
+    
+    y = d5o.Qint(4, "y", d5o.Bits(0b10101))
+    print(y.toString(), y.toString(False, 0),
+          y.toString(True), y.toString(True, 0))
 
 def qbit_test(solvers):
     print("\n\n==== qbit_test() =====")
@@ -215,7 +219,7 @@ def main():
 #    qbit_test(solvers)
 #    qbool_test(solvers)
 #    qbin_test(solvers)
-    qwholeAdd_test(solvers)
+#    qwholeAdd_test(solvers)
 #    qwholeX_test(solvers)
 #    qwholeXlarge_test(solvers)
 
