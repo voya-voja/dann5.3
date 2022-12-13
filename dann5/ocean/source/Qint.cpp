@@ -47,7 +47,7 @@ void Qint::resize(size_t size, Qvalue value)
 {
 	// if unknown, resize as Q binary
 	if (noqbs() == 0 || any())
-		Qbin::resize(size, value);
+		Qbin::resize(size, cSuperposition);
 	// if last bit is negative, add 1's to the end
 	else if ((*this)[noqbs() - 1] == 1) 
 		Qbin::resize(size, 1);
@@ -195,7 +195,7 @@ Qexpr<Qint> Qint::operator<=(const Qint& right) const
 
 Qexpr<Qint> Qint::operator+(const Qint& right) const
 {
-	Qop::Sp pOp(new Qadd());
+	Qop::Sp pOp(new QaddQints());
 	pOp->inputs({ clone(), right.clone() });
 	Qint out(pOp->outId());
 	pOp->output(out.clone());
@@ -206,7 +206,7 @@ Qexpr<Qint> Qint::operator+(const Qint& right) const
 
 Qexpr<Qint> Qint::operator+(const Qexpr<Qint>& right) const
 {
-	Qop::Sp pOp(new Qadd());
+	Qop::Sp pOp(new QaddQints());
 	pOp->inputs({ clone(), right.rootDef() });
 	Qint out(pOp->outId());
 	pOp->output(out.clone());

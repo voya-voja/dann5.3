@@ -152,5 +152,8 @@
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h">
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
+    <ClInclude Include="..\dann5\ocean\include\QwholeComp.h">
+      <Filter>Header Files\dann5\ocean</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

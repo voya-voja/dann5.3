@@ -47,7 +47,7 @@ void Qbool::add(const Qsolver::Samples& samples)
 	string identity = id();
 	for (auto sample : samples)
 	{
-		Qvalue v = sample[identity];
+		Qvalue v = sample.mSample[identity];
 		if(v == 0)
 			sltns.push_back(Qbool::cFalse);
 		else

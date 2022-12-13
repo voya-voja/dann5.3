@@ -68,11 +68,11 @@ namespace dann5 {
 		class Qsolve
 		{
 		public:
-			Qsolve(Qsolver::RawElement* pSample, std::size_t start, std::size_t last, Qvalue value, bool lowest = true);
+			Qsolve(Qsolver::RawElement* pSample, std::size_t start, std::size_t last, bool lowest = true);
 			~Qsolve();
 
 			double energy() { return mMinEnergy; };
-			Qsolver::Samples solutions() { return mSolutions; }
+			Qsolver::Samples solution() { return mSolution; }
 			void run();
 
 		protected:
@@ -85,22 +85,24 @@ namespace dann5 {
 			Qsolver::RawElement* mpSample;
 			std::size_t		mStart;
 			std::size_t		mLast;
-			Qvalue			mValue;
 
 			bool				mLowest;
 			double				mMinEnergy;
-			Qsolver::Samples	mSolutions;
+			Qsolver::Samples	mSolution;
 		};
 	};
 };
 
 void Qsolve::run()
 {
-	solve(mStart, mValue);
+	if(!mLowest)
+		mSolution.clear();
+	solve(mStart, 0);
+	solve(mStart, 1);
 }
 
-Qsolve::Qsolve(Qsolver::RawElement* pSample, size_t start, size_t last, Qvalue value, bool lowest)
-	: mStart(start), mLast(last), mValue(value), mLowest(lowest), mMinEnergy(Qsolver::cMaxEnergy)
+Qsolve::Qsolve(Qsolver::RawElement* pSample, size_t start, size_t last, bool lowest)
+	: mStart(start), mLast(last), mLowest(lowest), mMinEnergy(Qsolver::cMaxEnergy)
 {
 	mpSample = clone(pSample);
 	for (size_t at = 0; at < mStart; at++)
@@ -121,21 +123,20 @@ void Qsolve::solve(std::size_t at, Qvalue value)
 
 	if (at == mLast)
 	{
-		if (mpSample[at].valuesXenergySum < mMinEnergy)
+		if (mLowest && mpSample[at].valuesXenergySum < mMinEnergy)
 		{
 			mMinEnergy = mpSample[at].valuesXenergySum;
 			{
-				mSolutions.clear();
+				mSolution.clear();
 			}
 		}
 		if (!mLowest || mpSample[at].valuesXenergySum == mMinEnergy)
 		{
-			Qsolver::Sample sample;
+			Qsolver::SampleEng sample;
 			for (std::size_t index = 0; index <= mLast; index++)
-				sample[mpSample[index].pNode->first] = mpSample[index].value;
-			{
-				mSolutions.push_back(sample);
-			}
+				sample.mSample[mpSample[index].pNode->first] = mpSample[index].value;
+			sample.mEnergy = mpSample[at].valuesXenergySum;
+			mSolution.push_back(sample);
 		}
 	}
 	else
@@ -183,11 +184,11 @@ Qsolver::~Qsolver()
 
 Qsolver::Samples Qsolver::solution()
 {
-	if (mSolutions.size() == 0)
+	if (mSolution.size() == 0)
 	{
 		solve();
 	}
-	return(mSolutions);
+	return(mSolution);
 }
 
 
@@ -198,29 +199,29 @@ void  Qsolver::solve()
 	std::vector<std::thread> threads;
 	std::vector<Qsolve*> solvePtrs;
 
-	size_t noSolveThreads = 2;
-	if(nodesNo() > 15) 
-		noSolveThreads = size_t(pow(2, int(log2(nodesNo()) - 0.1)) / 2);
-	// for 8 solve threads the samples will be initialized to 0b00-0b11 and 
+	// for 4 solve threads the samples will be initialized to 0b00-0b11 and 
 	// respectfully have start update value 0 or 1
-	const size_t noInitNodes = size_t(noSolveThreads / 4);
+	size_t noInitNodes = size_t(log2(nodesNo()) - 0.1);
+	size_t noSolveThreads = 1;
+	if (noInitNodes > 0)
+	{
+		noInitNodes--;
+		noSolveThreads = size_t(pow(2, noInitNodes));
+	}
 	size_t last = nodesNo() - 1;
 	RawElement* pSample = createSample();	// create sample 0b00...0
 	for (size_t at = 0; at < noSolveThreads; ++at)		// 
 	{
-		size_t init = size_t(at / 2);		// sample init value in 0 (0b00) - 3 (0b11)
-		Qvalue value = at % 2;				// start update value 0 or 1
-		if (init > 0 && value == 0)
-		{ // init
-			for (size_t atNode = 0; atNode < noInitNodes; atNode++)
-			{
-				Qvalue value = init % 2;
-				pSample[atNode].value = value;
-				init >>= 1;
-			}
+		// set initial sample nodes values
+		size_t atNoBuffer = at;
+		for (size_t atNode = 0; atNode < noInitNodes; atNode++)
+		{
+			Qvalue value = atNoBuffer % 2;
+			pSample[atNode].value = value;
+			atNoBuffer >>= 1;
 		}
-		// each solver start at nomber of initialized nodes and go to teh last node
-		Qsolve* pSolve = new Qsolve(pSample, noInitNodes, last, value);
+		// each solver start at nomber of initialized nodes and go to the last node
+		Qsolve* pSolve = new Qsolve(pSample, noInitNodes, last, mLowest);
 		solvePtrs.push_back(pSolve);
 		threads.push_back(std::thread(&Qsolve::run, std::ref(*pSolve)));
 	}
@@ -228,19 +229,19 @@ void  Qsolver::solve()
 	// synchronizing all threads...
 	for (auto& th : threads) th.join();
 
-	// synchronizing all threads...
+	// merge solutions from all Qsolve threads...
 	for (auto& pSolve : solvePtrs)
 	{
 		double energy = pSolve->energy();
-		if (energy < mMinEnergy)
+		if (mLowest && energy < mMinEnergy)
 		{
 			mMinEnergy = energy;
-			mSolutions = pSolve->solutions();
+			mSolution = pSolve->solution();
 		}
-		else if (energy == mMinEnergy)
+		else if (!mLowest || energy == mMinEnergy)
 		{
-			Samples solutons = pSolve->solutions();
-			mSolutions.insert(mSolutions.end(), solutons.begin(), solutons.end());
+			Samples solutons = pSolve->solution();
+			mSolution.insert(mSolution.end(), solutons.begin(), solutons.end());
 		}
 		delete pSolve;
 	}
@@ -281,4 +282,25 @@ inline Qsolver::RawElement* Qsolver::createSample(Qvalue init)
 		}
 	}
 	return sample;
+}
+
+void Qsolver::solution(ostream& out)
+{
+	if (mSolution.size() == 0)
+		solution();
+	bool tableHeader = true;
+	for (auto sample : mSolution)
+	{
+		out << endl;
+		if (tableHeader)
+		{
+			for (auto element : sample.mSample)
+				out << element.first << " ";
+			out << endl;
+			tableHeader = false;
+		}
+		for (auto element : sample.mSample)
+			out << to_string(element.second) << " ";
+		out << "--> " << sample.mEnergy;
+	}
 }

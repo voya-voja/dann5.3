@@ -36,6 +36,9 @@ namespace dann5 {
 
 
 		protected:
+			// An Q addition has identity and should have at least two argument
+			size_t& noLastCarryBit() { return mNoLastCarryBit; }
+
 			// Refreshes QnaryOp cells with the addition logic
 			virtual void refresh();
 
@@ -48,6 +51,23 @@ namespace dann5 {
 									bool assignOutput) const;
 
 		private:
+			size_t mNoLastCarryBit;	// number of dedicated last carry bit can be 1 or 0
+		};
+
+		class QaddQints : public Qadd
+		{
+		public:
+			// Qadd's shared pointer 
+			typedef shared_ptr<QaddQints> Sp;
+
+			// An Q addition has identity and should have at least two argument
+			QaddQints();
+
+			// Copy constructor
+			QaddQints(const QaddQints& right);
+
+			// Destruct the Q addition instance with a shared pointer to its carry operand
+			~QaddQints();
 		};
 	};
 };

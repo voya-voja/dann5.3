@@ -275,13 +275,16 @@ void Qaddition::inputs(const Qdefs& ins)
 void Qaddition::output(const Qdef::Sp& pOut, size_t forBit)
 {
 	QcellOp::output(pOut, forBit);
+	Qdef::Sp pAdditionOut = Qop::output();
 	// if carry output is not initialized, initialize it with same Q type as output
-	if(mpCarry->Qop::output() == nullptr)
+	Qdef::Sp pCarryOut = mpCarry->Qop::output(forBit);
+	if(pCarryOut == nullptr)
 	{
-		Qdef::Sp pCarryOut = Qop::output()->clone();
-		pCarryOut->id(mpCarry->id() + Qop::Id(mpCarry->id()));
+		pCarryOut = pAdditionOut->clone();
 		mpCarry->output(pCarryOut);
 	}
+	// refresh carry out id to be consistent with addition out id
+	pCarryOut->id(AdderQT::Carry::Symbol(pAdditionOut->id()));
 }
 
 Qdefs Qaddition::outputs() const
@@ -305,6 +308,35 @@ Qaddition::Carry::Carry(const Carry& right)
 Qaddition::Carry::~Carry()
 {}
 
+void Qaddition::Carry::output(const Qdef::Sp& pOut, size_t forBit)
+{
+	Qop::output(pOut);
+}
+
+string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
+{
+	if (decomposed)
+	{
+		string cStr = Qop::output()->toString(decomposed, forBit) + " = ";
+
+		Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(mpAddition->Qop::output(forBit));
+
+		Qvalue value = pOut->value();
+		string valueStr = "";
+		if (value != cSuperposition) valueStr = to_string(value);
+		else valueStr.append(1, cSuperposition);
+
+		cStr += AdderQT::Carry::Symbol(pOut->id()) + "/" + valueStr + "/";
+		return cStr;
+	}
+	return AdderQT::Carry::Symbol(mpAddition->Qop::toString(decomposed, forBit));
+}
+
+void Qaddition::Carry::addition(Qaddition* pAddition)
+{
+	mpAddition = pAddition;
+}
+
 Qvalue Qaddition::Carry::calculate(const Qvalues& values) const
 {
 	const Qdefs& ins = as_const(*mpAddition).Qop::inputs();
@@ -315,26 +347,6 @@ Qvalue Qaddition::Carry::calculate(const Qvalues& values) const
 	return carry;
 }
 
-string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
-{
-	if (decomposed)
-	{
-		Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(mpAddition->Qop::output(forBit));	
-		string cStr = "";
-		Qvalue v = pOut->value();
-		if (v != cSuperposition) cStr = to_string(v);
-		else cStr.append(1, cSuperposition);
-		cStr = "; " + Qop::output()->toString(decomposed, forBit) + " = "
-				+ AdderQT::Carry::Symbol(pOut->id() + "/" + cStr + "/");
-		return cStr;
-	}
-	return AdderQT::Carry::Symbol(mpAddition->Qop::toString(decomposed, forBit));
-}
-
-void Qaddition::Carry::addition(Qaddition* pAddition)
-{
-	mpAddition = pAddition;
-}
 
 /*** Q xor operation ***/
 

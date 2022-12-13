@@ -92,13 +92,13 @@ namespace dann5 {
 			// Send a string representation of a Q expression into an output stream
 			friend std::ostream& operator << (std::ostream&, const Qassignment&);
 
-		protected:
 			// return a pointer to assignee
 			Qdef::Sp assignee() { return mpAssignee; };
 
 			// return a pointer to expression
 			Qexpression::Sp expression() { return mpExpr; };
 
+		protected:
 			// bind the assignee to a quantum expression.
 			// If Qnary, resize assignee if expresion has more Q cells.
 			// If assignee has more Q cells than the expression, 

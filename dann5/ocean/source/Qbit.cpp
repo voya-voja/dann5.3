@@ -22,7 +22,7 @@ void Qbit::add(const Qsolver::Samples& samples)
 	string identity = id();
 	for (auto sample : samples)
 	{
-		sltns.push_back(sample[identity]);
+		sltns.push_back(sample.mSample[identity]);
 	}
 }
 

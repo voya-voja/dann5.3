@@ -48,15 +48,21 @@ namespace dann5 {
 			// A semple is defined as a dictionary (map) of definition nodes and their values.
 			// The node names are defined by qubo() for each Q equation
 			typedef map<string, Qvalue> Sample;
+			struct SampleEng
+			{
+				Sample mSample;
+				double mEnergy;
+			};
 
 			// A list of samples with the same list of nodes and different combination of values
-			typedef vector<Sample> Samples;
+			typedef vector<SampleEng> Samples;
 
 			Qsolver(const Qubo& qubo, bool lowest = true);
 			~Qsolver();
 
 			Samples solution();
 			double minEnergy() { return mMinEnergy; };
+			void solution(ostream& out);
 
 		protected:
 			void solve();
@@ -78,7 +84,7 @@ namespace dann5 {
 
 			bool	mLowest;
 			double	mMinEnergy;
-			Samples	mSolutions;
+			Samples	mSolution;
 		};
 	};
 };

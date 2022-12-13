@@ -2,6 +2,8 @@
 //
 
 #include <iostream>
+#include <fstream>
+
 #include <Qbit.h>
 #include <Qbool.h>
 #include <Qbin.h>
@@ -149,7 +151,7 @@ void qbitLt_test()
     for (auto sample : s.solution())
     {
         cout << endl;
-        for (auto element : sample)
+        for (auto element : sample.mSample)
             cout << element.first << ": " << to_string(element.second) << "; ";
     }
 }
@@ -180,7 +182,7 @@ void qbitLe_test()
     for (auto sample : s.solution())
     {
         cout << endl;
-        for (auto element : sample)
+        for (auto element : sample.mSample)
             cout << element.first << ": " << to_string(element.second) << "; ";
     }
 
@@ -365,10 +367,11 @@ void qwholeGt_test()
 
 void qintNegativeAdd_test()
 {
-    std::cout << "Dann5.ocean Tests Qint!\n";
-    Qint a(3, "a"), b(3, "b"), c(2, "c"), d(1, "d"), A(2, "A", -3), _1_(2, "_1_", -1), _2_(2,"_2_", -2), _4_(3,"_4_",-4), _5_(3, "_5_", -5), _6_(3, "_6_", -6), _7_(3, "_7_", -7);
+    std::cout << "Dann5.ocean Tests Qint Negative Add!\n";
+    Qint a(1, "a"), b(1, "b"), c(2, "c"), d(1, "d"), A(1, "A", -2), _1_(2, "_1_", -1), _2_(2,"_2_", -2), _3_(2, "_3_", -3), _4_(2,"_4_",-4), _5_(3, "_5_", -5), _6_(3, "_6_", -6), _7_(3, "_7_", -7);
     cout << endl << "-1 = " << _1_.Qbin::toString();
     cout << endl << "-2 = " << _2_.Qbin::toString();
+    cout << endl << "-3 = " << _3_.Qbin::toString();
     cout << endl << "-4 = " << _4_.Qbin::toString();
     cout << endl << "-5 = " << _5_.Qbin::toString();
     cout << endl << "-6 = " << _6_.Qbin::toString();
@@ -385,23 +388,17 @@ void qintNegativeAdd_test()
     cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
 
     aA.solve();
-    cout << endl << aA.solutions();
-
     Qubo q = aA.qubo();
-    q[Qkey("a3", "a3")] = 0;
-    q[Qkey("b3", "b3")] = 0;
-    q[Qkey("a3", "b3")] = 1;
-    cout << endl << "*** Qubo ***" << endl << q << endl;
-    Qsolver solver(q);
-    Qsolver::Samples samples = solver.solution();
-    aA.add(samples);
-    cout << endl << aA.solutions() << endl << "min Energy : " << solver.minEnergy() << endl;
+    Qsolver s0(q, false);
+    Qsolver::Samples samples = s0.solution();
+    cout << endl << aA.solutions() << endl << "min Energy : " << s0.minEnergy() << endl;
+    s0.solution(cout);
 }
 
 void qintPositiveAdd_test()
 {
-    std::cout << "Dann5.ocean Tests Qint!\n";
-    Qint a(3, "a"), b(3, "b"), c(2, "c"), d(1, "d"), A(2, "A", 3), _1(2, "_1", 1), _2(2, "_2", 2);
+    std::cout << "Dann5.ocean Tests Qint Positive Add!\n";
+    Qint a(2, "a"), b(2, "b"), c(2, "c"), d(1, "d"), A(2, "A", 3), _1(2, "_1", 1), _2(2, "_2", 2);
     cout << endl << "1 = " << _1.Qbin::toString();
     cout << endl << "2 = " << _2.Qbin::toString();
     cout << endl << "A = " << A.Qbin::toString() << endl;
@@ -511,6 +508,36 @@ void routineTest()
     cout << xareW.toString() << endl << xareW.solve() << endl;
 }
 
+void testSolver()
+{
+    ofstream fout("testSolver.txt");
+    Qbit a("a"), b("b"), N("N");
+    Qassign<Qbit> aN = N = a & b;
+    Qsolver sN(aN.qubo(), false);
+    fout << endl << "Nodes #: " << sN.nodesNo() << ", Threds #: " << size_t(pow(2, int(log2(sN.nodesNo()) - 0.1)) / 2) << endl;
+    sN.solution(fout);
+
+    Qint i1(2, "a"), i2(2, "b"), A(2, "A");
+    fout << endl << endl << "A =>" << A.toString(true) << endl;
+    Qassign<Qint> aA = A = i1 + i2;
+    fout << "A =>" << aA.assignee()->toString(true) << endl;
+    fout << endl << aA << endl << aA.qubo() << endl;
+    clock_t begin_time = clock();
+    aA.solve();
+    clock_t end_time = clock();
+    fout << endl << "Running time: " << to_string(float(end_time - begin_time) / CLOCKS_PER_SEC) << "s" << endl;
+    fout << aA.solutions();
+
+    Qsolver sA(aA.qubo(), false);
+    fout << endl << "Nodes #: " << sA.nodesNo() << ", Threds #: " << size_t(pow(2, int(log2(sA.nodesNo()) - 0.1)) / 2) << endl;
+    begin_time = clock();
+    sA.solution();
+    end_time = clock();
+    fout << endl << "Running time: " << to_string(float(end_time - begin_time) / CLOCKS_PER_SEC) << "s" << endl;
+    sA.solution(fout);
+    fout.close();
+}
+
 int main(int argc, const char * argv[])
 {
 /*    string answer;
@@ -545,7 +572,7 @@ int main(int argc, const char * argv[])
 //    qwholeGt_test();
 
     qintNegativeAdd_test();
-    qintPositiveAdd_test();
+//    qintPositiveAdd_test();
 
 //    pymain();
 
@@ -553,6 +580,8 @@ int main(int argc, const char * argv[])
 //    eqVSneq();
 //    qbinXorTest();
 //    routineTest();
+
+//    testSolver();
 
     return 0;
 }

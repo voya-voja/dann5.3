@@ -425,10 +425,11 @@ namespace dann5 {
 				// Destruct a Q carry operand
 				~Carry();
 
+				// Override: Carry is an operation that should be treated as a definition
+				virtual bool asDefinition() { return true; };
+
 				// overrides output setter to set its output pointer
-				virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits) {
-					Qop::output(pOut);
-				};
+				virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits);
 
 				// Return a Qdef's shared pointer pointing to a copy of this object 
 				virtual Qdef::Sp clone() const { return Qdef::Sp(new Carry(*this)); };

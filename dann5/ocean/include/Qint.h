@@ -29,6 +29,9 @@ namespace dann5 {
 			// Qint unknown string representation is "(U)"
 			static const string cUnknownSign;
 
+			// Default constructor initializes Q integer an empty binary
+			Qint() :Qbin() {};
+
 			// Initialize Q int with a given id and byte size 0 value
 			Qint(const string& id) : Qbin(id) {};
 
@@ -57,7 +60,7 @@ namespace dann5 {
 			// is greater than the current size, the content is expanded by 
 			// inserting at the end as many elements with value 1 as needed to reach
 			// the new size.
-			virtual void resize(size_t size, Qvalue value = 0);
+			virtual void resize(size_t size, Qvalue value = cSuperposition);
 
 			// Return a Q int representation when forBit is cAllBits. 
 			// Otherwise, return a string representation of a Q cell at the specified 

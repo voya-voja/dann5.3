@@ -33,6 +33,9 @@ namespace dann5 {
 			// Return true, if this Qop object is identical to the object pointed by pRight
 			bool isIdentical(const Qop::Sp& pRight) { return(this == pRight.get()); }
 
+			// override to return true, if the operation needs to be treated just as a definition
+			virtual bool asDefinition() { return false; };
+
 			// The Qop's number of inputs
 			size_t noInputs() const { return mNoInputs; }
 

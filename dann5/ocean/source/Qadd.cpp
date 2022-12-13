@@ -8,11 +8,11 @@ using namespace dann5::ocean;
 /*** Addition ***/
 
 Qadd::Qadd()
-	:QnaryOp(AdderQT::cMark, 2)
+	:QnaryOp(AdderQT::cMark, 2), mNoLastCarryBit(1)
 {}
 
 Qadd::Qadd(const Qadd& right)
-	: QnaryOp(right)
+	: QnaryOp(right), mNoLastCarryBit(right.mNoLastCarryBit)
 {}
 
 Qadd::~Qadd()
@@ -20,7 +20,7 @@ Qadd::~Qadd()
 
 void Qadd::refresh()
 {
-	size_t size = Qop::noqbs() + 1;
+	size_t size = Qop::noqbs() + mNoLastCarryBit;
 	Qcells& addCells = cells();
 	addCells.resize(size);
 	const Qdefs& args = Qop::inputs();
@@ -96,3 +96,18 @@ Qcell::Sp Qadd::opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight,
 	// return the cell addition operation
 	return(pOp);
 }
+
+/*** Addition of Quantum integers ***/
+
+QaddQints::QaddQints()
+	:Qadd()
+{
+	noLastCarryBit() = 0;
+}
+
+QaddQints::QaddQints(const QaddQints& right)
+	: Qadd(right)
+{}
+
+QaddQints::~QaddQints()
+{}

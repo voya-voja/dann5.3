@@ -34,7 +34,6 @@ string Qexpression::toString(bool decomposed, size_t forBit) const
 	for (size_t at = 0; at < size; at++)
 	{
 		tStr += mpRoot->toString(decomposed, at) + "; ";
-		tStr.replace(0, 2, "");
 	}
 	return tStr;
 }

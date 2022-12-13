@@ -167,24 +167,24 @@ string Qop::toString(bool decomposed, size_t forBit) const
 {
 	size_t size = mInputs.size();
 	string rStr(""), rest("");
-	if (decomposed)
-		rStr += "; " + output(forBit)->toString(decomposed, forBit) + " = ";
-	else
+	if (!decomposed)
 		rStr += "(";
+	else
+		rStr += output(forBit)->toString(decomposed, forBit) + " = ";
 	for (size_t atArg = 0; atArg < size; atArg++)
 	{
-		Qdef::Sp arg = mInputs[atArg];
+		Qdef::Sp pArg = mInputs[atArg];
 		string aStr("?");
-		if (arg != nullptr)
+		if (pArg != nullptr)
 		{
-			aStr = arg->toString(decomposed, forBit);
+			aStr = pArg->toString(decomposed, forBit);
 			if (decomposed)
 			{
 				// if operand is a sub-operation
-				Qop::Sp pOp = dynamic_pointer_cast<Qop>(arg);
+				Qop::Sp pOp = dynamic_pointer_cast<Qop>(pArg);
 				if (pOp != nullptr)
 				{
-					rest += aStr;
+					if(!pOp->asDefinition()) rest += aStr;
 					aStr = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
 				}
 			}
@@ -193,10 +193,11 @@ string Qop::toString(bool decomposed, size_t forBit) const
 		if (atArg != size - 1)
 			rStr += " " + identifier() + " ";
 	}
-	if (decomposed)
-		rStr += rest;
-	else
+	if (!decomposed)
 		rStr += ")";
+	else if (rest != "")
+		rStr += "; " + rest;
+		
 	return rStr;
 }
 
