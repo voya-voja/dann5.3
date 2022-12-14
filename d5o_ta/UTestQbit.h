@@ -14,20 +14,29 @@ using namespace std;
 
 namespace dann5
 {
+    // Unit tests of Qbit operations
     class UTestQbit
     {
     public:
         UTestQbit() {};
         
+        // execute all unit tests
         void runAll(ostream& out);
         
+        // test Qbit object initialization (constructors)
         void initialization(ostream& out);
+        // test Qbit assignments
         void assignment(ostream& out);
+        // test Qbit bitwise operations and expressions
         void bitwise(ostream& out);
+        // test Qbit comparison operations and expressions
         void comparison(ostream& out);
 
+        // test compares Qbit equal expressions and assignments
         void eq_asign(ostream& out);
+        // Dwave's vertex problem solved using Qbit's logic
         void vertex(ostream& out);
+        // Dwave's friends & enemies problem solved using Qbit's logic
         void friends_enemies(ostream& out);
     protected:
     private:
