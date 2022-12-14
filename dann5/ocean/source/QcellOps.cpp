@@ -135,10 +135,10 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 		}
 		rStr += str;
 	}
-	if (decomposed)
-		rStr = "; " + rStr + rest;
-	else
+	if (!decomposed)
 		rStr += ")";
+	else if (rest != "")
+		rStr += "; " + rest;
 	return rStr;
 }
 
