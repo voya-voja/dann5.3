@@ -33,8 +33,7 @@ namespace dann5 {
 
 			// Initialize Q bit with a given id and value. If value is different  from 0 or 1, 
 			// Qbit into superposition state
-			Qbit(const string& id, Qvalue value) : Qcell(id), Qtype(), mValue(value)
-			{
+			Qbit(const string& id, Qvalue value) : Qcell(id), Qtype(), mValue(value) {
 				if (value > 1) mValue = cSuperposition;
 			};
 
@@ -42,7 +41,10 @@ namespace dann5 {
 			Qbit(const Qbit& right) : Qcell(right), Qtype(right), mValue(right.mValue) {};
 
 			// set the new value of this Q bit
-			virtual void value(Qvalue v) { mValue = v; };
+			virtual void value(Qvalue v) {
+                if (v > 1) mValue = cSuperposition;
+                else mValue = v;
+            };
 
 			// constant and non-constant get a value of this Q bit
 			virtual Qvalue value() const { return mValue; };

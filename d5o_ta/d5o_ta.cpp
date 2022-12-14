@@ -14,6 +14,8 @@
 #include <Qsolver.h>
 #include <Utility.h>
 
+#include "UTestQbit.h"
+
 using namespace std;
 using namespace dann5::ocean;
 using namespace dann5;
@@ -21,8 +23,6 @@ using namespace dann5;
 
 void basic_types()
 {
-    Qbit a0("0a", 1);
-    cout << a0.toString() << " " << a0.toString(false, 0) << " " << a0.toString(true) << " " << a0.toString(true, 0) << endl;
 
     Qbool b("boolean", Qbool::cTrue);
     cout << b.toString() << " " << b.toString(false, 0) << " " << b.toString(true) << " " << b.toString(true, 0) << endl;
@@ -540,6 +540,8 @@ void testSolver()
 
 int main(int argc, const char * argv[])
 {
+    UTestQbit utQbit;
+    utQbit.runAll(cout);
 /*    string answer;
     cout << "should I start?";
     cin >> answer;
@@ -571,7 +573,7 @@ int main(int argc, const char * argv[])
 //    qwholeGe_test();
 //    qwholeGt_test();
 
-    qintNegativeAdd_test();
+//    qintNegativeAdd_test();
 //    qintPositiveAdd_test();
 
 //    pymain();
