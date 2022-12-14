@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>
 
-#include <Qbit.h>
 #include <Qbool.h>
 #include <Qbin.h>
 #include <Qwhole.h>
@@ -32,160 +31,6 @@ void basic_types()
 
     Qwhole x("a", 33);
     cout << x.toString() << " " << x.toString(false, 0) << " " << x.toString(true) << " " << x.toString(true, 0) << endl;
-}
-
-void qbit_test()
-{
-    Qbit a("a"), r("r"), b("b", 1), x("x"), y("y", 5), z("z"), _0("_0_", 0), _1("_1_", 1);
-/*
-    cout << "x !& y:" << endl << (x.nand(y)).qubo() << endl << (x.nand(y)).solve() << endl;
-    cout << "_1_ & (x !& y):" << endl << (_1.nand(x.nand(y))).solve() << endl;
-    cout << "x !| y:" << endl << (x.nor(y)).solve() << endl;
-    cout << "_0_ !| (x & y):" << endl << (_0.nor(x.nor(y))).solve() << endl;
-
-    Qexpr<Qbit> xGtNe = z > (x != y), xGeNe = z >= (x != y), xLtNe = z < (x != y), xLeNe = z <= (x != y);
-    Qexpr<Qbit> xNeGt = (x != y) > z, xNeGe = (x != y) >= z, xNeLt = (x != y) < z, xNeLe = (x != y) <= z;
-    cout << xGtNe.toString(true) << endl << xGtNe.qubo() << endl << xGtNe.solve() << endl
-        << xGeNe.toString(true) << endl << xGeNe.qubo() << endl << xGeNe.solve() << endl
-        << xLtNe.toString(true) << endl << xLtNe.qubo() << endl << xLtNe.solve() << endl
-        << xLeNe.toString(true) << endl << xLeNe.qubo() << endl << xLeNe.solve() << endl
-        << xNeGt.toString(true) << endl << xNeGt.qubo() << endl << xNeGt.solve() << endl
-        << xNeGe.toString(true) << endl << xNeGe.qubo() << endl << xNeGe.solve() << endl
-        << xNeLt.toString(true) << endl << xNeLt.qubo() << endl << xNeLt.solve() << endl
-        << xNeLe.toString(true) << endl << xNeLe.qubo() << endl << xNeLe.solve() << endl;
-
-    Qexpr<Qbit> xEq = x == y, xAl = x *= y, xNe = x != y, xUl = x ^ y, xI = ~x;
-    cout << xI << endl << xI.toString(true) << endl;
-
-    Qassign<Qbit> aR = r = a, axEq = r = x == y, axAl = r = x *= y, axUl = _1 = x ^ y;
-
-    cout << "Assignment\n" << aR.qubo() << "\nEqual Expression\n" << xEq.qubo() 
-        << "\nEqual Assignment\n" << axEq.qubo() << "\nAlike Expression\n" 
-        << xAl.qubo() << "\nAlike Assignment\n" << axAl.qubo() << endl;
-    cout << "\nAssignment\n" << aR.solve() << "\nEqual Expression\n" << xEq.solve() 
-        << "\nEqual Assignment\n" << axEq.solve() << "\nAlike Expression\n" 
-        << xAl.solve() << "\nAlike Assignment\n" << axAl.solve() << endl;
-
-    cout << "\nNot Equal Expression\n" << xNe.qubo() << "\nUnlike Expression\n" 
-        << xUl.qubo() << "\nUnlike Assignment\n" << axUl.qubo() << endl;
-    cout << "\nNot equal Expression\n" << xNe.solve() << "\nUnlike Expression\n" 
-        << xUl.solve() << "\nUnlike Assignment\n" << axUl.solve() << endl;
-*/
-    Qassign<Qbit> qbitAssign = r = x; //_1 = (z != (b & x)) | (z != (y ^ _0));
-    cout << qbitAssign << endl;
-/*
-    cout << endl << qbitAssign << endl << endl << replaceAll(qbitAssign.toString(true), "; ", "\n") << endl;
-    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign.qubo(false) << endl 
-        << endl << "*** Finalized Qubo ***" << endl << qbitAssign.qubo() << endl;
-    Qanalyzer analyze(qbitAssign.qubo());
-    cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
-*/    qbitAssign.solve();
-    cout << endl << qbitAssign.solutions();
-
-    Qassign<Qbit> qbitAssign2 = _1 = ((b & x) != z) | (z != (y ^ _0));
-/*    cout << endl << qbitAssign2 << endl << endl << qbitAssign2.toString(true) << endl;
-    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign2.qubo(false) << endl
-        << endl << "*** Finalized Qubo ***" << endl << qbitAssign2.qubo() << endl;
-    Qanalyzer analyze2(qbitAssign2.qubo());
-    cout << endl << "# of nodes: " << analyze2.nodesNo() << "\t# of branches: " << analyze2.branchesNo() << endl;
-*/    qbitAssign2.solve();
-    cout << endl << qbitAssign2.solutions();
-
-    Qassign<Qbit> qbitAssign3 = _1 = ((b & x) != z) | ((y ^ _0) != z);
-/*    cout << endl << qbitAssign3 << endl << endl << qbitAssign3.toString(true) << endl;
-    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign3.qubo(false) << endl
-        << endl << "*** Finalized Qubo ***" << endl << qbitAssign3.qubo() << endl;
-    Qanalyzer analyze3(qbitAssign3.qubo());
-    cout << endl << "# of nodes: " << analyze3.nodesNo() << "\t# of branches: " << analyze3.branchesNo() << endl;
-*/    qbitAssign3.solve();
-    cout << endl << qbitAssign3.solutions();
-
-    Qassign<Qbit> qbitAssign4 = _1 = (z != (b & x)) | ((y ^ _0) != z);
-/*    cout << endl << qbitAssign4 << endl << endl << qbitAssign4.toString(true) << endl;
-    cout << endl << "*** Generic Qubo ***" << endl << qbitAssign4.qubo(false) << endl
-        << endl << "*** Finalized Qubo ***" << endl << qbitAssign4.qubo() << endl;
-    Qanalyzer analyze4(qbitAssign4.qubo());
-    cout << endl << "# of nodes: " << analyze4.nodesNo() << "\t# of branches: " << analyze4.branchesNo() << endl;
-*/    qbitAssign4.solve();
-    cout << endl << qbitAssign4.solutions();
-/*
-    Qassign<Qbit> qbitA = _1 = ((b & x).unlike(z)) | ((y ^ _0).alike(z));
-    cout << endl << qbitA << endl << endl << qbitA.toString(true) << endl;
-    Qanalyzer anlyze(qbitA.qubo());
-    cout << endl << "# of nodes: " << anlyze.nodesNo() << "\t# of branches: " << anlyze.branchesNo() << endl;
-    cout << endl << qbitA.solve();
-*/
-}
-
-void qbitLt_test()
-{
-    Qbit x0("x0"), x1("x1"), x2("x2"), y0("y0"), y1("y1"), y2("y2"), _1("_1", 1);
-    Qexpr<Qbit> xpr =  (x1 < y1) | ((x1 *= y1) & (x0 < y0));
-    cout << xpr << endl << xpr.toString(true) << endl << endl;
-    cout << xpr.qubo(false) << endl << xpr.qubo() << endl << endl;
-    cout << xpr.solve() << endl;
-
-    Qexpr<Qbit> xpr1 = ((x0 < y0) & (x1 *= y1)) | (x1 < y1);
-    cout << xpr1 << endl << xpr1.toString(true) << endl << endl;
-    cout << xpr1.qubo(false) << endl << xpr1.qubo() << endl << endl;
-    cout << xpr1.solve() << endl;
-
-    Qexpr<Qbit> e1 = x0 <= y0, e2 = x1 <= y1, e3 = x0 != y0, e4 = x1 != y1;
-    Qubo q;// = e1.qubo() + e2.qubo() /* + e3.qubo()*/ + e4.qubo();// + e5.qubo() + e6.qubo();
-    q[Qkey("x0", "x0")] = 1;
-    q[Qkey("x1", "x1")] = 1;
-    q[Qkey("y0", "y0")] = 0;
-    q[Qkey("y1", "y1")] = 0;
-    q[Qkey("x1", "y1")] = 1;
-    q[Qkey("x0", "y1")] = -1;
-    q[Qkey("x1", "y0")] = -1;
-    q[Qkey("x0", "x1")] = 1;
-    q[Qkey("T", "T")] = 1;
-    q[Qkey("T", "y1")] = -2;
-    q[Qkey("T", "x0")] = 4;
-
-//    cout << endl << e1 << endl << e2 << endl << e3 << endl << e4 << endl;
-    cout << endl << "*** Qubo ***" << endl << q << endl;
-    Qsolver s(q);
-    cout << endl << "# of nodes: " << s.nodesNo() << "\t# of branches: " << s.branchesNo() << endl;
-    for (auto sample : s.solution())
-    {
-        cout << endl;
-        for (auto element : sample.mSample)
-            cout << element.first << ": " << to_string(element.second) << "; ";
-    }
-}
-
-void qbitLe_test()
-{
-    Qbit x0("x0"), x1("x1"), x2("x2"), y0("y0"), y1("y1"), y2("y2"), _1("_1", 1), _0("_0", 0);
-    Qexpr<Qbit> e0 = x0 <= y0, e1 = x1 <= y1, e01 = ((x0 & y1) & (~x1 & ~y0)) == _1, e2 = x2 <= y2, e12 = ((x1 & y2) & (~x2 & ~y1)) == _1, e02 = ((x0 & y2) & (~x2 & ~y0)) == _1;
-    Qexpr<Qbit> eA = (x1 <= y1) & (x0 <= y0) & (((x0 & y1) & (~x1 & ~y0)) == _1);
-    Qubo q = /*eA.qubo();*/e0.qubo() + e1.qubo() + e01.qubo() + e2.qubo() + e12.qubo();// +e02.qubo();
-/*
-    q[Qkey("_01", "y1")] = -1;
-    q[Qkey("_01", "x0")] = -1;
-    q[Qkey("_01", "!y0")] = -1;
-    q[Qkey("_01", "!x1")] = -1;
-    q[Qkey("_01", "_01")] = 4;
-    q[Qkey("_=02", "y2")] = -2;
-    q[Qkey("_=02", "x0")] = -2;
-    q[Qkey("_=02", "_=02")] = 4;
-    q[Qkey("_=12", "y2")] = -2;
-    q[Qkey("_=12", "x1")] = -2;
-    q[Qkey("_=12", "_=12")] = 4;
-*/
-    cout << endl /*<< eA << endl;*/ << e0 << endl << e1 << endl << e01 << endl << e2 << endl;
-    cout << endl << "*** Qubo ***" << endl << q << endl;
-    Qsolver s(q);
-    cout << endl << "# of nodes: " << s.nodesNo() << "\t# of branches: " << s.branchesNo() << endl;
-    for (auto sample : s.solution())
-    {
-        cout << endl;
-        for (auto element : sample.mSample)
-            cout << element.first << ": " << to_string(element.second) << "; ";
-    }
-
 }
 
 void qbool_test()
@@ -220,24 +65,6 @@ void friends_enemies()
 
 }
 
-void vertex()
-{
-/*    Qbool xaviar("x"), yolanda("y"), zeke("z"), wanda("w"), _T_("_T_", true);
-    Qexpr<Qbool> xFnEs = (xaviar == yolanda) & (!yolanda == zeke) & (zeke == wanda);
-    cout << endl << xFnEs.solve() << endl;
-    Qassign<Qbool> aFnEs = _T_ = (xaviar & yolanda) & (!yolanda & !zeke) & (zeke & wanda);
-    //    cout << endl << aFnEs.solve() << endl;
-*/
-    Qbit v1("v1"), v2("v2"), v3("v3"), v4("v4"), v5("v5"), _1_("_1_", 1);
-    Qexpr<Qbit> xbV = (v1 == v2) & (v1 == v3) & (v2 == v4) & (v3 == v4) & (v3 == v5) & (v4 == v5);
-    cout << endl << xbV.toString(true) << endl;
-    cout << endl << xbV.solve() << endl;
-/*
-    Qassign<Qbit> abFnEs = _1_ = (x *= y) & ((y ^ z) & (z *= w));
-    cout << endl << abFnEs.toString(true) << endl;
-    cout << endl << abFnEs.solve() << endl;
-*/
-}
 
 void qbin_test()
 {

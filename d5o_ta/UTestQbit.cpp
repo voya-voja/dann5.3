@@ -16,12 +16,20 @@ using namespace dann5::ocean;
 
 void UTestQbit::runAll(ostream& out)
 {
-    out << endl << " --- Initialization ----" << endl;
+    out << endl << " --- Initializations ----" << endl;
     initialization(out);
     out << endl << " --- Bitwise Expressions ----" << endl;
     bitwise(out);
-    out << endl << " --- Assignment ----" << endl;
+    out << endl << " --- Comparison Expressions ----" << endl;
+    comparison(out);
+    out << endl << " --- Assignments ----" << endl;
     assignment(out);
+    out << endl << " --- Equal Expressions vs. Assignments ----" << endl;
+    eq_asign(out);
+    out << endl << " --- Vertex problem ----" << endl;
+    vertex(out);
+    out << endl << " --- Friends & enemies problem ----" << endl;
+    friends_enemies(out);
 }
 
 void UTestQbit::initialization(ostream& out)
@@ -154,4 +162,67 @@ void UTestQbit::bitwise(ostream& out)
         << " It's generic Qubo is '" << qbExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
+}
+
+
+void UTestQbit::comparison(ostream& out)
+{
+    Qbit a("a"), r("r"), b("b"), x("x"), y("y"), z("z"), _0("_0_", 0), _1("_1_", 1);
+
+    Qexpr<Qbit> xGtNe = z > (x != y), xGeNe = z >= (x != y), xLtNe = z < (x != y), xLeNe = z <= (x != y);
+
+    Qexpr<Qbit> xNeGt = (x != y) > z, xNeGe = (x != y) >= z, xNeLt = (x != y) < z, xNeLe = (x != y) <= z;
+
+    out << xGtNe.toString() << "decomposed: " << xGtNe.toString(true) << endl << "Qubo: " << xGtNe.qubo() << endl << xGtNe.solve() << endl
+        << xGeNe.toString() << "decomposed: " << xGeNe.toString(true) << endl << "Qubo: " << xGeNe.qubo() << endl << xGeNe.solve() << endl
+        << xLtNe.toString() << "decomposed: " << xLtNe.toString(true) << endl << "Qubo: " << xLtNe.qubo() << endl << xLtNe.solve() << endl
+        << xLeNe.toString() << "decomposed: " << xLeNe.toString(true) << endl << "Qubo: " << xLeNe.qubo() << endl << xLeNe.solve() << endl
+        << xNeGt.toString() << "decomposed: " << xNeGt.toString(true) << endl << "Qubo: " << xNeGt.qubo() << endl << xNeGt.solve() << endl
+        << xNeGe.toString() << "decomposed: " << xNeGe.toString(true) << endl << "Qubo: " << xNeGe.qubo() << endl << xNeGe.solve() << endl
+        << xNeLt.toString() << "decomposed: " << xNeLt.toString(true) << endl << "Qubo: " << xNeLt.qubo() << endl << xNeLt.solve() << endl
+        << xNeLe.toString() << "decomposed: " << xNeLe.toString(true) << endl << "Qubo: " << xNeLe.qubo() << endl << xNeLe.solve() << endl;
+}
+
+void UTestQbit::eq_asign(ostream& out)
+{
+    Qbit a("a"), r("r"), b("b"), x("x"), y("y"), z("z"), _0("_0_", 0), _1("_1_", 1);
+
+    Qexpr<Qbit> xEq = x == y, xAl = x *= y, xNe = x != y, xUl = x ^ y, xI = ~x;
+    cout << xI << endl << xI.toString(true) << endl;
+
+    Qassign<Qbit> aR = r = a, axEq = r = x == y, axAl = r = x *= y, axUl = _1 = x ^ y;
+
+    cout << "Assignment\n" << aR.qubo() << "\nEqual Expression\n" << xEq.qubo()
+        << "\nEqual Assignment\n" << axEq.qubo() << "\nAlike Expression\n"
+        << xAl.qubo() << "\nAlike Assignment\n" << axAl.qubo() << endl;
+    cout << "\nAssignment\n" << aR.solve() << "\nEqual Expression\n" << xEq.solve()
+        << "\nEqual Assignment\n" << axEq.solve() << "\nAlike Expression\n"
+        << xAl.solve() << "\nAlike Assignment\n" << axAl.solve() << endl;
+
+    cout << "\nNot Equal Expression\n" << xNe.qubo() << "\nUnlike Expression\n"
+        << xUl.qubo() << "\nUnlike Assignment\n" << axUl.qubo() << endl;
+    cout << "\nNot equal Expression\n" << xNe.solve() << "\nUnlike Expression\n"
+        << xUl.solve() << "\nUnlike Assignment\n" << axUl.solve() << endl;
+
+    Qassign<Qbit> qbitA = _1 = ((b & x).unlike(z)) | ((y ^ _0).alike(z));
+    cout << endl << qbitA << endl << endl << qbitA.toString(true) << endl;
+    Qanalyzer anlyze(qbitA.qubo());
+    cout << endl << "# of nodes: " << anlyze.nodesNo() << "\t# of branches: " << anlyze.branchesNo() << endl;
+    cout << endl << qbitA.solve();
+}
+
+void UTestQbit::vertex(ostream& out)
+{
+    Qbit v1("v1"), v2("v2"), v3("v3"), v4("v4"), v5("v5"), _1_("_1_", 1);
+    Qexpr<Qbit> xbV = (v1 == v2) & (v1 == v3) & (v2 == v4) & (v3 == v4) & (v3 == v5) & (v4 == v5);
+    cout << endl << xbV.toString(true) << endl;
+    cout << endl << xbV.solve() << endl;
+}
+
+void UTestQbit::friends_enemies(ostream& out)
+{
+    Qbit x("xaviar"), y("yolanda"), z("zeke"), w("wanda"), _1_("_1_", 1);
+    Qassign<Qbit> abFnEs = _1_ = (x *= y) & ((y ^ z) & (z *= w));
+    cout << endl << abFnEs.toString(true) << endl;
+    cout << endl << abFnEs.solve() << endl;
 }

@@ -184,7 +184,11 @@ string Qop::toString(bool decomposed, size_t forBit) const
 				Qop::Sp pOp = dynamic_pointer_cast<Qop>(pArg);
 				if (pOp != nullptr)
 				{
-					if(!pOp->asDefinition()) rest += aStr;
+					if (!pOp->asDefinition())
+					{
+						if (rest != "") rest += "; ";
+						rest += aStr;
+					}
 					aStr = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
 				}
 			}

@@ -164,6 +164,7 @@
     <ClCompile Include="..\dann5\ocean\source\QwholeComp.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />
     <ClCompile Include="d5o_ta.cpp" />
+    <ClCompile Include="UTestQbit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h" />
     <ClInclude Include="..\dann5\ocean\include\QwholeComp.h" />
+    <ClInclude Include="UTestQbit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,7 +24,11 @@ namespace dann5
         void initialization(ostream& out);
         void assignment(ostream& out);
         void bitwise(ostream& out);
-        
+        void comparison(ostream& out);
+
+        void eq_asign(ostream& out);
+        void vertex(ostream& out);
+        void friends_enemies(ostream& out);
     protected:
     private:
     };
