@@ -34,10 +34,11 @@ namespace dann5
 
         // test compares Qbit equal expressions and assignments
         void eq_asign(ostream& out);
-        // Dwave's vertex problem solved using Qbit's logic
-        void vertex(ostream& out);
         // Dwave's friends & enemies problem solved using Qbit's logic
         void friends_enemies(ostream& out);
+        // Based on Dwave's vertex triangle and sqare graph problem solved using Qbit's logic
+        void vertex(ostream& out, size_t noVertices = 5);
+
     protected:
     private:
     };

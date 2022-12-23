@@ -26,10 +26,10 @@ void UTestQbit::runAll(ostream& out)
     assignment(out);
     out << endl << " --- Equal Expressions vs. Assignments ----" << endl;
     eq_asign(out);
-    out << endl << " --- Vertex problem ----" << endl;
-    vertex(out);
     out << endl << " --- Friends & enemies problem ----" << endl;
     friends_enemies(out);
+    out << endl << " --- Vertex problem ----" << endl;
+    vertex(out);
 }
 
 void UTestQbit::initialization(ostream& out)
@@ -116,12 +116,31 @@ void UTestQbit::assignment(ostream& out)
     out << "Assignment 4" << endl << qbitAssign4 << endl
         << " decomposed logic: " << qbitAssign4.toString(true) << endl
         << " resulting in :" << endl << qbitAssign4.solutions() << endl;
+
+    Qassign<Qbit> qbitA4 = _1 = (z.unlike(b & x) | z.alike(y ^ _0));
+    out << "Assignment 4 using un/a-like operation: " << endl << qbitA4 << endl
+        << " decomposed: " << qbitA4.toString(true) << endl;
+    Qanalyzer anlyze(qbitA4.qubo());
+    out << endl << " # of nodes: " << anlyze.nodesNo()
+        << " # of branches: " << anlyze.branchesNo()
+        << qbitA4.solve();
+
+    Qassign<Qbit> qbitA3 = _1 = ((b & x).unlike(z)) | ((y ^ _0).alike(z));
+    out << "Assignment 3 using un/a-like operation: " << endl << qbitA3 << endl
+        << " decomposed: " << qbitA3.toString(true) << endl
+        << qbitA3.solve();
 }
 
 void UTestQbit::bitwise(ostream& out)
 {
     Qbit x("x"), y("y", 5), _0("_0_", 0), _1("_1_", 1);
-    Qexpr<Qbit> qbExpr = x & y;
+    Qexpr<Qbit> qbExpr = x & y, xI = ~x;
+
+    out << "Expression '~x', NOT (invert) x is: " << xI << endl
+        << " decomposed logic: " << xI.toString(true) << endl
+        << " It's Qubo is '" << xI.qubo() << "'" << endl
+        << " resulting in :" << endl << xI.solve() << endl;
+
     out << "Expression AND: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
@@ -173,56 +192,73 @@ void UTestQbit::comparison(ostream& out)
 
     Qexpr<Qbit> xNeGt = (x != y) > z, xNeGe = (x != y) >= z, xNeLt = (x != y) < z, xNeLe = (x != y) <= z;
 
-    out << xGtNe.toString() << "decomposed: " << xGtNe.toString(true) << endl << "Qubo: " << xGtNe.qubo() << endl << xGtNe.solve() << endl
-        << xGeNe.toString() << "decomposed: " << xGeNe.toString(true) << endl << "Qubo: " << xGeNe.qubo() << endl << xGeNe.solve() << endl
-        << xLtNe.toString() << "decomposed: " << xLtNe.toString(true) << endl << "Qubo: " << xLtNe.qubo() << endl << xLtNe.solve() << endl
-        << xLeNe.toString() << "decomposed: " << xLeNe.toString(true) << endl << "Qubo: " << xLeNe.qubo() << endl << xLeNe.solve() << endl
-        << xNeGt.toString() << "decomposed: " << xNeGt.toString(true) << endl << "Qubo: " << xNeGt.qubo() << endl << xNeGt.solve() << endl
-        << xNeGe.toString() << "decomposed: " << xNeGe.toString(true) << endl << "Qubo: " << xNeGe.qubo() << endl << xNeGe.solve() << endl
-        << xNeLt.toString() << "decomposed: " << xNeLt.toString(true) << endl << "Qubo: " << xNeLt.qubo() << endl << xNeLt.solve() << endl
-        << xNeLe.toString() << "decomposed: " << xNeLe.toString(true) << endl << "Qubo: " << xNeLe.qubo() << endl << xNeLe.solve() << endl;
+    out << xGtNe.toString() << " decomposed: " << xGtNe.toString(true) << endl << "Qubo: " << xGtNe.qubo() << endl << xGtNe.solve() << endl
+        << xGeNe.toString() << " decomposed: " << xGeNe.toString(true) << endl << "Qubo: " << xGeNe.qubo() << endl << xGeNe.solve() << endl
+        << xLtNe.toString() << " decomposed: " << xLtNe.toString(true) << endl << "Qubo: " << xLtNe.qubo() << endl << xLtNe.solve() << endl
+        << xLeNe.toString() << " decomposed: " << xLeNe.toString(true) << endl << "Qubo: " << xLeNe.qubo() << endl << xLeNe.solve() << endl
+        << xNeGt.toString() << " decomposed: " << xNeGt.toString(true) << endl << "Qubo: " << xNeGt.qubo() << endl << xNeGt.solve() << endl
+        << xNeGe.toString() << " decomposed: " << xNeGe.toString(true) << endl << "Qubo: " << xNeGe.qubo() << endl << xNeGe.solve() << endl
+        << xNeLt.toString() << " decomposed: " << xNeLt.toString(true) << endl << "Qubo: " << xNeLt.qubo() << endl << xNeLt.solve() << endl
+        << xNeLe.toString() << " decomposed: " << xNeLe.toString(true) << endl << "Qubo: " << xNeLe.qubo() << endl << xNeLe.solve() << endl;
 }
 
 void UTestQbit::eq_asign(ostream& out)
 {
     Qbit a("a"), r("r"), b("b"), x("x"), y("y"), z("z"), _0("_0_", 0), _1("_1_", 1);
 
-    Qexpr<Qbit> xEq = x == y, xAl = x *= y, xNe = x != y, xUl = x ^ y, xI = ~x;
-    cout << xI << endl << xI.toString(true) << endl;
+    Qexpr<Qbit> xEq = x == y, xAl = x *= y, xNe = x != y, xUl = x ^ y;
 
-    Qassign<Qbit> aR = r = a, axEq = r = x == y, axAl = r = x *= y, axUl = _1 = x ^ y;
+    Qassign<Qbit> aR = r = a, axEq = r = x == y, axAl = r = x *= y, axNe = r = x != y, axUl = _1 = x ^ y;
 
-    cout << "Assignment\n" << aR.qubo() << "\nEqual Expression\n" << xEq.qubo()
-        << "\nEqual Assignment\n" << axEq.qubo() << "\nAlike Expression\n"
-        << xAl.qubo() << "\nAlike Assignment\n" << axAl.qubo() << endl;
-    cout << "\nAssignment\n" << aR.solve() << "\nEqual Expression\n" << xEq.solve()
-        << "\nEqual Assignment\n" << axEq.solve() << "\nAlike Expression\n"
-        << xAl.solve() << "\nAlike Assignment\n" << axAl.solve() << endl;
+    out << "Assignment " << aR << "\n qubo: " << aR.qubo() << endl << aR.solve() << endl
+        << "Equal Expression " << xEq << "\n qubo: " << xEq.qubo() << endl << xEq.solve() << endl
+        << "Equal Assignment " << axEq << "\n qubo: " << axEq.qubo() << endl << axEq.solve() << endl
+        << "Alike Expression " << xAl << "\n qubo: " << xAl.qubo() << endl << xAl.solve() << endl
+        << "Alike Assignment " << axAl << "\n qubo: " << axAl.qubo() << endl << axAl.solve() << endl;
 
-    cout << "\nNot Equal Expression\n" << xNe.qubo() << "\nUnlike Expression\n"
-        << xUl.qubo() << "\nUnlike Assignment\n" << axUl.qubo() << endl;
-    cout << "\nNot equal Expression\n" << xNe.solve() << "\nUnlike Expression\n"
-        << xUl.solve() << "\nUnlike Assignment\n" << axUl.solve() << endl;
-
-    Qassign<Qbit> qbitA = _1 = ((b & x).unlike(z)) | ((y ^ _0).alike(z));
-    cout << endl << qbitA << endl << endl << qbitA.toString(true) << endl;
-    Qanalyzer anlyze(qbitA.qubo());
-    cout << endl << "# of nodes: " << anlyze.nodesNo() << "\t# of branches: " << anlyze.branchesNo() << endl;
-    cout << endl << qbitA.solve();
-}
-
-void UTestQbit::vertex(ostream& out)
-{
-    Qbit v1("v1"), v2("v2"), v3("v3"), v4("v4"), v5("v5"), _1_("_1_", 1);
-    Qexpr<Qbit> xbV = (v1 == v2) & (v1 == v3) & (v2 == v4) & (v3 == v4) & (v3 == v5) & (v4 == v5);
-    cout << endl << xbV.toString(true) << endl;
-    cout << endl << xbV.solve() << endl;
+    out << "Not Equal Expression " << xNe << "\n qubo: " << xNe.qubo() << endl << xNe.solve() << endl
+    << "Not Equal Assignment " << axNe << "\n qubo: " << axNe.qubo() << endl << axNe.solve() << endl
+    << "Unlike Expression " << xUl << "\n qubo: " << xUl.qubo() << endl << xUl.solve() << endl
+    << "Unlike Assignment " << axUl << "\n qubo: " << axUl.qubo() << endl << axUl.solve() << endl;
 }
 
 void UTestQbit::friends_enemies(ostream& out)
 {
     Qbit x("xaviar"), y("yolanda"), z("zeke"), w("wanda"), _1_("_1_", 1);
     Qassign<Qbit> abFnEs = _1_ = (x *= y) & ((y ^ z) & (z *= w));
-    cout << endl << abFnEs.toString(true) << endl;
-    cout << endl << abFnEs.solve() << endl;
+    out << endl << abFnEs.toString(true) << endl;
+    out << endl << abFnEs.solve() << endl;
+}
+
+void UTestQbit::vertex(ostream& out, size_t noVertices)
+{
+    Qbit _1_("_1_", 1), _0_("_0_", 0), vertices[noVertices];
+    for(int at = 0; at < noVertices; at++)
+        vertices[at].id(string(1, char('a' + at)));
+
+/*    Qexpr<Qbit> xbV = (v1 *= v2) ^ (v1 *= v3) // & (v1 ^ v4) & (v1 ^ v5)
+                    & (v2 ^ v3) & (v2 *= v4) // & (v2 ^ v5)
+                    ^ (v3 *= v4) ^ (v3 *= v5)
+                    ^ (v4 *= v5);
+*/  // triangle
+    Qexpr<Qbit> xbTV = (vertices[2] ^ vertices[3]) & (vertices[3] ^ vertices[4]) & (vertices[3] *= _0_)
+                    | (vertices[3] ^ vertices[2]) & (vertices[2] ^ vertices[4]) & (vertices[2] *= _0_)
+                    | (vertices[2] ^ vertices[4]) & (vertices[4] ^ vertices[3]) & (vertices[4] *= _0_);
+    Qassign<Qbit> axbTV = _1_ = xbTV;
+    out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString(true) << endl;
+    out << endl << "---- Triangle c-d-e solutions:" << endl << axbTV.solve() << endl;
+    // sqare
+    Qexpr<Qbit> xbSV = ((vertices[0] ^ vertices[1]) & (vertices[0] ^ vertices[3])
+                        & (vertices[2] ^ vertices[1]) & (vertices[2] ^ vertices[3]))
+                        & (((vertices[0] *= _0_) & (vertices[2] *= _0_))
+                           | ((vertices[1] *= _0_) & (vertices[3] *= _0_)));
+    Qassign<Qbit> axbSV = _1_ = xbSV;
+    out << endl << "---- Square a-b-c-d equation:" << endl << axbSV.toString(true) << endl;
+    out << endl << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
+    
+    Qassign<Qbit> problemAssignment = _1_ = xbSV & xbTV;
+    out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem equation:"
+        << endl << axbSV.toString(true) << endl;
+    out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem qubo:"
+        << endl << axbSV.qubo() << endl;
 }
