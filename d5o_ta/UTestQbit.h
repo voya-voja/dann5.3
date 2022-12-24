@@ -37,7 +37,7 @@ namespace dann5
         // Dwave's friends & enemies problem solved using Qbit's logic
         void friends_enemies(ostream& out);
         // Based on Dwave's vertex triangle and sqare graph problem solved using Qbit's logic
-        void vertex(ostream& out, size_t noVertices = 5);
+        void vertex(ostream& out);
 
     protected:
     private:

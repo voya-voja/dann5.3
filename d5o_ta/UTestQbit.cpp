@@ -226,26 +226,23 @@ void UTestQbit::friends_enemies(ostream& out)
 {
     Qbit x("xaviar"), y("yolanda"), z("zeke"), w("wanda"), _1_("_1_", 1);
     Qassign<Qbit> abFnEs = _1_ = (x *= y) & ((y ^ z) & (z *= w));
-    out << endl << abFnEs.toString(true) << endl;
-    out << endl << abFnEs.solve() << endl;
+    out << endl << "*** Dwave's friends & enemies problem equation:" << endl << abFnEs.toString() << endl;
+    out << endl << "*** Dwave's friends & enemies problem solutions:" << endl << abFnEs.solve() << endl;
 }
 
-void UTestQbit::vertex(ostream& out, size_t noVertices)
+void UTestQbit::vertex(ostream& out)
 {
+    const size_t noVertices = 5;
     Qbit _1_("_1_", 1), _0_("_0_", 0), vertices[noVertices];
     for(int at = 0; at < noVertices; at++)
         vertices[at].id(string(1, char('a' + at)));
 
-/*    Qexpr<Qbit> xbV = (v1 *= v2) ^ (v1 *= v3) // & (v1 ^ v4) & (v1 ^ v5)
-                    & (v2 ^ v3) & (v2 *= v4) // & (v2 ^ v5)
-                    ^ (v3 *= v4) ^ (v3 *= v5)
-                    ^ (v4 *= v5);
-*/  // triangle
+
     Qexpr<Qbit> xbTV = (vertices[2] ^ vertices[3]) & (vertices[3] ^ vertices[4]) & (vertices[3] *= _0_)
                     | (vertices[3] ^ vertices[2]) & (vertices[2] ^ vertices[4]) & (vertices[2] *= _0_)
                     | (vertices[2] ^ vertices[4]) & (vertices[4] ^ vertices[3]) & (vertices[4] *= _0_);
     Qassign<Qbit> axbTV = _1_ = xbTV;
-    out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString(true) << endl;
+    out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString() << endl;
     out << endl << "---- Triangle c-d-e solutions:" << endl << axbTV.solve() << endl;
     // sqare
     Qexpr<Qbit> xbSV = ((vertices[0] ^ vertices[1]) & (vertices[0] ^ vertices[3])
@@ -253,12 +250,12 @@ void UTestQbit::vertex(ostream& out, size_t noVertices)
                         & (((vertices[0] *= _0_) & (vertices[2] *= _0_))
                            | ((vertices[1] *= _0_) & (vertices[3] *= _0_)));
     Qassign<Qbit> axbSV = _1_ = xbSV;
-    out << endl << "---- Square a-b-c-d equation:" << endl << axbSV.toString(true) << endl;
+    out << endl << "---- Square a-b-c-d equation:" << endl << axbSV.toString() << endl;
     out << endl << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
     
     Qassign<Qbit> problemAssignment = _1_ = xbSV & xbTV;
     out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem equation:"
-        << endl << axbSV.toString(true) << endl;
+        << endl << axbSV.toString() << endl;
     out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem qubo:"
         << endl << axbSV.qubo() << endl;
 }
