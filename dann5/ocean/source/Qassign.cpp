@@ -43,7 +43,7 @@ void Qassignment::bind()
 	else if(exprSize < asgnSize)
 	{ // if expression has less Q bits, remaining Q bits or result will result 0 bitwise logic
 		QnaryOp::Sp pNaryOp = dynamic_pointer_cast<QnaryOp>(as_const(*mpExpr).root());
-		pNaryOp->resize(asgnSize);
+		if(pNaryOp != nullptr) pNaryOp->resize(asgnSize);
 	}
 
 	mpExpr->root().output(mpAssignee);

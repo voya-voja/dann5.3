@@ -37,14 +37,19 @@ namespace dann5 {
 			// copy constructor
 			Qbin(const Qbin& right) : Qtype(right), Qnary(right) {};
 
+            // type conversion operator to a std::vertor of Qcells
+            operator Qbits();
+            operator const Qbits() const;
+
 			// Return a Qdef's shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbin(*this)); };
 
+            Qbit& operator[](size_t pos);
 
 			/*** Assignments ***/
 			// assignment operator changes the identity and value of this object to be
 			// the same as right object
-			Qbin& operator=(const Qbin& right);
+            Qassign<Qbin> operator=(const Qbin& right);
 
 			// assignment of an Q expression creates a Q bin assignment where this 
 			// Q bin is an assignee
@@ -53,7 +58,7 @@ namespace dann5 {
 			/*** Compound Assignments ***/
 			// change value of this object as result of and operation between this 
 			// and right Q bin
-			Qbin& operator&=(const Qbin& right);
+            Qassign<Qbin> operator&=(const Qbin& right);
 
 			// 'and assignment' of an Q expression creates a following Q bin assignment
 			// [this] = [this] & [right]
@@ -61,7 +66,7 @@ namespace dann5 {
 
 			// change value of this object as result of or operation between this 
 			// and right Q bin
-			Qbin& operator|=(const Qbin& right);
+            Qassign<Qbin> operator|=(const Qbin& right);
 
 			// 'or assignment' of an Q expression creates a following Q bin assignment
 			// [this] = [this] | [right]
@@ -69,7 +74,7 @@ namespace dann5 {
 
 			// change value of this object as result of xor operation between this 
 			// and right Q bin
-			Qbin& operator^=(const Qbin& right);
+            Qassign<Qbin> operator^=(const Qbin& right);
 
 			// 'xor assignment' of an Q expression creates a following Q bin assignment
 			// [this] = [this] ^ [right]
@@ -77,8 +82,8 @@ namespace dann5 {
 
 			/*** Bitwise ***/
 			// instantiate Q expression with inversion logic, e.g. for Qbin with id 'x'
-			// the logic is '!x' != 'x'
-			Qexpr<Qbin> operator!() const;
+			// the logic is '~x' != 'x'
+			Qexpr<Qbin> operator~() const;
 
 			// instantiate Q expression with and logic, e.g. for Qbin ids 'x' and 'y'
 			// the expression is 'x' & 'y'
@@ -114,11 +119,25 @@ namespace dann5 {
 
 			// instantiate Q expression with xor logic, e.g. for Qbin ids 'x' and 'y'
 			// the expression is 'x' ^ 'y'
-			Qexpr<Qbin> operator^(const Qbin& right) const;
+            Qexpr<Qbin> unlike(const Qbin& right) const;
+            Qexpr<Qbin> operator^(const Qbin& right) const { return unlike(right); };;
 
 			// instantiate Q expression with xor logic, e.g. for Qbin id 'x' and [right]
 			// object the expression is 'x' ^ [right]
-			Qexpr<Qbin> operator^(const Qexpr<Qbin>& right) const;
+            Qexpr<Qbin> unlike(const Qexpr<Qbin>& right) const;
+            Qexpr<Qbin> operator^(const Qexpr<Qbin>& right) const { return unlike(right); };;
+
+            // same value Q expression with nxor logic, e.g. for Qbin ids 'x' and 'y'
+            // the expression is 'x' ^ 'y'
+            Qexpr<Qbin> alike(const Qbin& right) const;
+            Qexpr<Qbin> operator*=(const Qbin& right) const { return alike(right); };
+            Qexpr<Qbin> nxor(const Qbin& right) const { return alike(right); };
+
+            // same value Q expression with nxor logic, e.g. for Qbin id 'x' and [right]
+            // object the expression is 'x' ^ [right]
+            Qexpr<Qbin> alike(const Qexpr<Qbin>& right) const;
+            Qexpr<Qbin> operator*=(const Qexpr<Qbin>& right) const { return alike(right); };
+            Qexpr<Qbin> nxor(const Qexpr<Qbin>& right) const { return alike(right); };
 
 			/*** Comparison ***/
 			// instantiate Q expression with comparison, e.g. for Qbin ids 'x' and 'y'

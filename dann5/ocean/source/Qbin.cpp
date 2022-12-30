@@ -33,11 +33,38 @@ Qbin::Qbin(const string& id, const Bits& value, bool asis)
 	}
 }
 
-Qbin& Qbin::operator=(const Qbin& right)
+Qbin::operator Qbits()
 {
-	cells(right.cells());
-	id(right.Qdef::id());
-	return(*this);
+    Qcells cells = Qcells(*this);
+    Qbits bits;
+    for(auto pCell: cells)
+    {
+        bits.push_back(dynamic_pointer_cast<Qbit>(pCell));
+    }
+    return bits;
+}
+
+Qbin::operator const Qbits() const
+{
+    Qcells cells = Qcells(*this);
+    Qbits bits;
+    for(auto pCell: cells)
+    {
+        bits.push_back(dynamic_pointer_cast<Qbit>(pCell));
+    }
+    return bits;
+}
+
+Qbit& Qbin::operator[](size_t pos)
+{
+    return *(dynamic_pointer_cast<Qbit>(as_const(*this).Qnary::operator[](pos)));
+}
+
+Qassign<Qbin> Qbin::operator=(const Qbin& right)
+{
+    Qexpr<Qbin> expr = right == right;
+    Qassign<Qbin> assign(*this, expr);
+    return assign;
 }
 
 Qassign<Qbin> Qbin::operator=(const Qexpr<Qbin>& right)
@@ -46,21 +73,11 @@ Qassign<Qbin> Qbin::operator=(const Qexpr<Qbin>& right)
 	return assign;
 }
 
-Qbin& Qbin::operator&=(const Qbin& right)
+Qassign<Qbin> Qbin::operator&=(const Qbin& right)
 {
-	size_t size = noqbs(), rSize = right.noqbs();
-	if (rSize > size)
-	{ // resize this object if right has more bits
-		resize(rSize);
-		size = noqbs();
-	}
-	Qcells& tCells = cells(), rCells = right.cells();
-	for (size_t at = 0; at < size; at++)
-		if (at < rSize)
-			tCells[at]->value(tCells[at]->value() & rCells[at]->value());
-		else // when right is smaller all Qbits are 0
-			tCells[at]->value(0);
-	return (*this);
+    Qexpr<Qbin> expr = *this & right;
+    Qassign<Qbin> assign(*this, expr);
+    return assign;
 }
 
 Qassign<Qbin> Qbin::operator&=(const Qexpr<Qbin>& right)
@@ -70,18 +87,11 @@ Qassign<Qbin> Qbin::operator&=(const Qexpr<Qbin>& right)
 	return assign;
 }
 
-Qbin& Qbin::operator|=(const Qbin& right)
+Qassign<Qbin> Qbin::operator|=(const Qbin& right)
 {
-	size_t size = noqbs(), rSize = right.noqbs();
-	if (rSize > size)
-	{ // resize this object if right has more bits
-		resize(rSize);
-	}
-	Qcells& tCells = cells(), rCells = right.cells();
-	// if right is smaller apply | operator up to last right Q bit
-	for (size_t at = 0; at < rSize; at++)
-		tCells[at]->value(tCells[at]->value() | rCells[at]->value());
-	return (*this);
+    Qexpr<Qbin> expr = *this | right;
+    Qassign<Qbin> assign(*this, expr);
+    return assign;
 }
 
 Qassign<Qbin> Qbin::operator|=(const Qexpr<Qbin>& right)
@@ -91,21 +101,11 @@ Qassign<Qbin> Qbin::operator|=(const Qexpr<Qbin>& right)
 	return assign;
 }
 
-Qbin& Qbin::operator^=(const Qbin& right)
+Qassign<Qbin> Qbin::operator^=(const Qbin& right)
 {
-	size_t size = noqbs(), rSize = right.noqbs();
-	if (rSize > size)
-	{ // resize this object if right has more bits
-		resize(rSize);
-		size = noqbs();
-	}
-	Qcells& tCells = cells(), rCells = right.cells();
-	for (size_t at = 0; at < size; at++)
-		if (at < rSize)
-			tCells[at]->value(tCells[at]->value() ^ rCells[at]->value());
-		else // when right is smaller all Qbits are 0
-			tCells[at]->value(tCells[at]->value() & 0);
-	return (*this);
+    Qexpr<Qbin> expr = *this ^ right;
+    Qassign<Qbin> assign(*this, expr);
+    return assign;
 }
 
 Qassign<Qbin> Qbin::operator^=(const Qexpr<Qbin>& right)
@@ -115,9 +115,9 @@ Qassign<Qbin> Qbin::operator^=(const Qexpr<Qbin>& right)
 	return assign;
 }
 
-Qexpr<Qbin> Qbin::operator!() const
+Qexpr<Qbin> Qbin::operator~() const
 {
-	Qbin inverted(noqbs(), "!" + Qdef::id());
+	Qbin inverted(noqbs(), "~" + Qdef::id());
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
 	pOp->inputs({ clone() });
 	pOp->output(inverted.clone());
@@ -214,26 +214,48 @@ Qexpr<Qbin> Qbin::nor(const Qexpr<Qbin>& right) const
 	return expr;
 }
 
-Qexpr<Qbin> Qbin::operator^(const Qbin& right) const
+Qexpr<Qbin> Qbin::unlike(const Qbin& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
-	pOp->inputs({ clone(), right.clone() });
-	Qbin out(pOp->outId());
-	pOp->output(out.clone());
+    QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
+    pOp->inputs({ clone(), right.clone() });
+    Qbin out(pOp->outId());
+    pOp->output(out.clone());
 
-	Qexpr<Qbin> expr(pOp);
-	return expr;
+    Qexpr<Qbin> expr(pOp);
+    return expr;
 }
 
-Qexpr<Qbin> Qbin::operator^(const Qexpr<Qbin>& right) const
+Qexpr<Qbin> Qbin::unlike(const Qexpr<Qbin>& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
-	pOp->inputs({ clone(), right.rootDef() });
-	Qbin out(pOp->outId());
-	pOp->output(out.clone());
+    QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(XorQT::cMark);
+    pOp->inputs({ clone(), right.rootDef() });
+    Qbin out(pOp->outId());
+    pOp->output(out.clone());
 
-	Qexpr<Qbin> expr(pOp);
-	return expr;
+    Qexpr<Qbin> expr(pOp);
+    return expr;
+}
+
+Qexpr<Qbin> Qbin::alike(const Qbin& right) const
+{
+    QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NxorQT::cMark);
+    pOp->inputs({ clone(), right.clone() });
+    Qbin out(pOp->outId());
+    pOp->output(out.clone());
+
+    Qexpr<Qbin> expr(pOp);
+    return expr;
+}
+
+Qexpr<Qbin> Qbin::alike(const Qexpr<Qbin>& right) const
+{
+    QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NxorQT::cMark);
+    pOp->inputs({ clone(), right.rootDef() });
+    Qbin out(pOp->outId());
+    pOp->output(out.clone());
+
+    Qexpr<Qbin> expr(pOp);
+    return expr;
 }
 
 Qexpr<Qbin> Qbin::operator==(const Qbin& right) const

@@ -87,7 +87,8 @@ void Qnary::resize(size_t size, Qvalue value)
 bool Qnary::all(Qvalue value) const
 {
 	size_t at = 0, size = mCells.size();
-	while (at < size && mCells[at++]->value() == value);
+    if(size == 0) return false;
+	while (at < size && mCells[at]->value() == value) at++;
 	return(at == size);
 }
 
@@ -101,7 +102,7 @@ bool Qnary::any(Qvalue value) const
 bool Qnary::none(Qvalue value) const
 {
 	size_t at = 0, size = mCells.size();
-	while (at < size && mCells[at++]->value() != value);
+	while (at < size && mCells[at]->value() != value) at++;
 	return(at == size);
 }
 
@@ -123,11 +124,11 @@ string Qnary::toString(bool decomposed, size_t forBit) const
 			return mCells[forBit]->toString(decomposed);
 		else
 		{
-			for(size_t at = 0; at < size; at++)
-				valueStr += mCells[at]->toString(decomposed) + ";";
+			for(size_t at = size; at > 0; at--)
+				valueStr += mCells[at - 1]->toString(decomposed) + ";";
 		}
 	}
-	else
+	else if(size > 0)
 	{
 		valueStr = "0";
 		if (!all(0))
@@ -201,9 +202,9 @@ Qnary& Qnary::operator<<=(size_t pos)
 	for (size_t at = s; at > 0; at--)
 	{
 		if (at - 1 >= pos)
-			mCells[at - 1] = create(mCells[at - pos - 1]->value(), at);
+			mCells[at - 1] = create(mCells[at - pos - 1]->value(), at - 1);
 		else
-			mCells[at - 1] = create(0, at);
+			mCells[at - 1] = create(cSuperposition, at - 1);
 	}
 	return (*this);
 }
@@ -220,10 +221,10 @@ Qnary& Qnary::operator>>=(size_t pos)
 	size_t size = mCells.size();
 	for (size_t at = 0; at < size; at++)
 	{
-		if (at > size - pos)
+		if (at < size - pos)
 			mCells[at] = create(mCells[at + pos]->value(), at);
 		else
-			mCells[at] = create(0, at);
+			mCells[at] = create(cSuperposition, at);
 	}
 	return (*this);
 }

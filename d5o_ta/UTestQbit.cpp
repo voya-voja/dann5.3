@@ -4,12 +4,9 @@
 //
 //  Created by Nebojsa Vojinovic on 2022-12-13.
 //
-
-#include <stdio.h>
+#include "UTestQbit.h"
 
 #include <Qbit.h>
-
-#include "UTestQbit.h"
 
 using namespace dann5;
 using namespace dann5::ocean;
@@ -37,11 +34,14 @@ void UTestQbit::initialization(ostream& out)
     // Default constructor initializes Q bit with an empty id and supperposition value
     // Initialize Q bit with a given id and supperposition value
     Qbit dcQbit, idQbit("id");
+    out << "Qbit defualt constructor: " << dcQbit.toString()
+        << ", creates an object with empty id, i.e. '',\n and it is set to superposition state, i.e. S" << endl
+        << "Qbit with an id only: " << idQbit.toString() << " is set to supportposition state, too." << endl;
     
     // Initialize Q bit with a given id and value.
     // If value is different from 0 or 1, Qbit into superposition state
     Qbit aIs1("a", 1), bIsS("b", 5);
-    out << "For 'a' set to value 1:" << endl;
+    out << "Qbit with an id 'a' is set to value 1:" << endl;
     out << " toString() => " << aIs1.toString() << endl << " toString(false, 0) => " << aIs1.toString(false, 0) << endl << " toString(true) => " << aIs1.toString(true) << endl << " toString(true, 0) => " << aIs1.toString(true, 0) << endl;
     out << endl << "'b' was set to 5, but it is " << bIsS.toString() << endl;
 
@@ -64,33 +64,33 @@ void UTestQbit::assignment(ostream& out)
     
     out << "Assignment 'r = x' creats logic => " << qbitAssign << endl
         << " It's finalized (execution ready) Qubo is '" << qbitAssign.qubo() << "'" << endl;
-    out << "resulting in 2 solutions:"<< endl;
+    out << "resulting in solutions:"<< endl;
     qbitAssign.solve();
     out << qbitAssign.solutions() << endl;
 
     qbitAssign = r &= x;
     out << endl << "Assignment 'r &= x' creats logic => " << qbitAssign << endl
         << " It's Qubo is '" << qbitAssign.qubo() << "'" << endl;
-    out << "resulting in 2 solutions:"<< endl;
+    out << "resulting in solutions:"<< endl;
     qbitAssign.solve();
     out << qbitAssign.solutions() << endl;
 
     qbitAssign = r |= x;
     out << endl << "Assignment 'r |= x' creats logic => " << qbitAssign << endl
         << " It's Qubo is '" << qbitAssign.qubo() << "'" << endl;
-    out << "resulting in 2 solutions:"<< endl;
+    out << "resulting in solutions:"<< endl;
     qbitAssign.solve();
     out << qbitAssign.solutions() << endl;
 
     qbitAssign = r ^= x;
     out << endl << "Assignment 'r ^= x' creats logic => " << qbitAssign << endl
         << " It's Qubo is '" << qbitAssign.qubo() << "'" << endl;
-    out << "resulting in 2 solutions:"<< endl;
+    out << "resulting in solutions:"<< endl;
     qbitAssign.solve();
     out << qbitAssign.solutions() << endl;
     
     out << "The order of operations is important in following 4 assignments:" << endl;
-    Qbit a("a"), b("b", 1), y("y", 5), z("z"), _0("_0_", 0), _1("_1_", 1);
+    Qbit a("a"), b("b", 1), y("y", 5), z("z"), _0("_0", 0), _1("_1", 1);
     Qassign<Qbit> qbitAssign1 = _1 = (z != (b & x)) | (z != (y ^ _0));
     qbitAssign1.solve();
     out << "Assignment 1" << endl << qbitAssign1 << endl
@@ -133,7 +133,7 @@ void UTestQbit::assignment(ostream& out)
 
 void UTestQbit::bitwise(ostream& out)
 {
-    Qbit x("x"), y("y", 5), _0("_0_", 0), _1("_1_", 1);
+    Qbit x("x"), y("y", 5), _0("_0", 0), _1("_1", 1);
     Qexpr<Qbit> qbExpr = x & y, xI = ~x;
 
     out << "Expression '~x', NOT (invert) x is: " << xI << endl
@@ -186,7 +186,7 @@ void UTestQbit::bitwise(ostream& out)
 
 void UTestQbit::comparison(ostream& out)
 {
-    Qbit a("a"), r("r"), b("b"), x("x"), y("y"), z("z"), _0("_0_", 0), _1("_1_", 1);
+    Qbit a("a"), r("r"), b("b"), x("x"), y("y"), z("z"), _0("_0", 0), _1("_1", 1);
 
     Qexpr<Qbit> xGtNe = z > (x != y), xGeNe = z >= (x != y), xLtNe = z < (x != y), xLeNe = z <= (x != y);
 
@@ -204,7 +204,7 @@ void UTestQbit::comparison(ostream& out)
 
 void UTestQbit::eq_asign(ostream& out)
 {
-    Qbit a("a"), r("r"), b("b"), x("x"), y("y"), z("z"), _0("_0_", 0), _1("_1_", 1);
+    Qbit a("a"), r("r"), b("b"), x("x"), y("y"), z("z"), _0("_0", 0), _1("_1", 1);
 
     Qexpr<Qbit> xEq = x == y, xAl = x *= y, xNe = x != y, xUl = x ^ y;
 
@@ -224,8 +224,8 @@ void UTestQbit::eq_asign(ostream& out)
 
 void UTestQbit::friends_enemies(ostream& out)
 {
-    Qbit x("xaviar"), y("yolanda"), z("zeke"), w("wanda"), _1_("_1_", 1);
-    Qassign<Qbit> abFnEs = _1_ = (x *= y) & ((y ^ z) & (z *= w));
+    Qbit x("xaviar"), y("yolanda"), z("zeke"), w("wanda"), _1("_1", 1);
+    Qassign<Qbit> abFnEs = _1 = (x *= y) & ((y ^ z) & (z *= w));
     out << endl << "*** Dwave's friends & enemies problem equation:" << endl << abFnEs.toString() << endl;
     out << endl << "*** Dwave's friends & enemies problem solutions:" << endl << abFnEs.solve() << endl;
 }
@@ -233,27 +233,27 @@ void UTestQbit::friends_enemies(ostream& out)
 void UTestQbit::vertex(ostream& out)
 {
     const size_t noVertices = 5;
-    Qbit _1_("_1_", 1), _0_("_0_", 0), vertices[noVertices];
+    Qbit _1("_1", 1), _0("_0", 0), vertices[noVertices];
     for(int at = 0; at < noVertices; at++)
         vertices[at].id(string(1, char('a' + at)));
 
 
-    Qexpr<Qbit> xbTV = (vertices[2] ^ vertices[3]) & (vertices[3] ^ vertices[4]) & (vertices[3] *= _0_)
-                    | (vertices[3] ^ vertices[2]) & (vertices[2] ^ vertices[4]) & (vertices[2] *= _0_)
-                    | (vertices[2] ^ vertices[4]) & (vertices[4] ^ vertices[3]) & (vertices[4] *= _0_);
-    Qassign<Qbit> axbTV = _1_ = xbTV;
+    Qexpr<Qbit> xbTV = (vertices[2] ^ vertices[3]) & (vertices[3] ^ vertices[4]) & (vertices[3] *= _0)
+                    | (vertices[3] ^ vertices[2]) & (vertices[2] ^ vertices[4]) & (vertices[2] *= _0)
+                    | (vertices[2] ^ vertices[4]) & (vertices[4] ^ vertices[3]) & (vertices[4] *= _0);
+    Qassign<Qbit> axbTV = _1 = xbTV;
     out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString() << endl;
     out << endl << "---- Triangle c-d-e solutions:" << endl << axbTV.solve() << endl;
     // sqare
     Qexpr<Qbit> xbSV = ((vertices[0] ^ vertices[1]) & (vertices[0] ^ vertices[3])
                         & (vertices[2] ^ vertices[1]) & (vertices[2] ^ vertices[3]))
-                        & (((vertices[0] *= _0_) & (vertices[2] *= _0_))
-                           | ((vertices[1] *= _0_) & (vertices[3] *= _0_)));
-    Qassign<Qbit> axbSV = _1_ = xbSV;
+                        & (((vertices[0] *= _0) & (vertices[2] *= _0))
+                           | ((vertices[1] *= _0) & (vertices[3] *= _0)));
+    Qassign<Qbit> axbSV = _1 = xbSV;
     out << endl << "---- Square a-b-c-d equation:" << endl << axbSV.toString() << endl;
     out << endl << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
     
-    Qassign<Qbit> problemAssignment = _1_ = xbSV & xbTV;
+    Qassign<Qbit> problemAssignment = _1 = xbSV & xbTV;
     out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem equation:"
         << endl << axbSV.toString() << endl;
     out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem qubo:"

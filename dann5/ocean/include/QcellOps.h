@@ -323,7 +323,7 @@ namespace dann5 {
 
 		protected:
 		private:
-			Qcell::Sp mpAuxiliary;
+			Qdef::Sp mpAuxiliary;
 		};
 
 		// A Quntum nAnd is a binary operation

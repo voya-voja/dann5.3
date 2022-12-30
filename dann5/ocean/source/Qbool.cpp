@@ -8,7 +8,7 @@ const Qvalue Qbool::cTrue;  // 'T' value 84
 const Qvalue Qbool::cFalse; // 'F' value 71
 
 void Qbool::value(Qvalue v) 
-{ 
+{
 	if (v == 1 || v == cTrue)
 		mValue = cTrue;
 	else if (v == 0 || v == cFalse)

@@ -8,6 +8,8 @@
 #ifndef UTestQbit_h
 #define UTestQbit_h
 
+#include <stdio.h>
+
 #include <iostream>
 
 using namespace std;
@@ -34,9 +36,9 @@ namespace dann5
 
         // test compares Qbit equal expressions and assignments
         void eq_asign(ostream& out);
-        // Dwave's friends & enemies problem solved using Qbit's logic
+        // Dwave's friends & enemies problem solved using Qbit logic
         void friends_enemies(ostream& out);
-        // Based on Dwave's vertex triangle and sqare graph problem solved using Qbit's logic
+        // Based on Dwave's vertex triangle and sqare graph problem solved using Qbit logic
         void vertex(ostream& out);
 
     protected:

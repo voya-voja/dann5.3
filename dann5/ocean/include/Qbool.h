@@ -29,10 +29,12 @@ namespace dann5 {
 			Qbool(const string& id) : Qtype(), Qcell(id), mValue(cSuperposition) {};
 
 			// Initialize Q bool with a given id and value. If value is different from 'T' or 'F', 
-			// Qbool into superposition state, i.e. value 'S'
+			// set Qbool into superposition state, i.e. value 'S'
 			Qbool(const string& id, Qvalue value) : Qtype(), Qcell(id), mValue(value)
 			{
-				if (value != cTrue && value != cFalse) mValue = cSuperposition;
+                if(value == 1) mValue = cTrue;
+                else if (value == 0) mValue = cFalse;
+				else if (value != cTrue && value != cFalse) mValue = cSuperposition;
 			};
 
 			// copy constructor

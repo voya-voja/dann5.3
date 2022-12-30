@@ -57,6 +57,9 @@ namespace dann5 {
 			// by defualt returns Qcell::Sp to a created Qbit with a value and apporopriate id 
 			// override to create appropriate Qcell object for a given value at givel level
 			virtual Qcell::Sp create(Qvalue value, size_t atLevel) const;
+            
+            // Return the Qdef identity string
+            virtual string id() const { return Qdef::id(); };
 
 			// Set a new Q definition identity
 			virtual void id(const string& id);
@@ -112,13 +115,13 @@ namespace dann5 {
 			size_t count(Qvalue value = cSuperposition) const;
 
 			//Performs binary shift left and binary shift right. 
-			// 1 - 2) Performs binary shift left with zeroes shifted in.
+			// 1 - 2) Performs binary shift left with superposition shifted in.
 			Qnary::Sp operator<<(size_t pos) const;
-			// The(2) version is performs the shift to the current object.
+			// The(2) version is performs the shift left to the current object.
 			Qnary& operator<<=(size_t pos);
-			// 3 - 4) Performs binary shift left with zeroes shifted in.
+			// 3 - 4) Performs binary shift right with superposition shifted in.
 			Qnary::Sp operator>>(size_t pos) const;
-			// The(4) version is performs the shift to the current object.
+			// The(4) version is performs the shift right to the current object.
 			Qnary& operator>>=(size_t pos);
 			// 5 - 6) Performs binary shift left with specified Q bit value shifted in.
 			Qnary::Sp operator<<(Qvalue value) const;

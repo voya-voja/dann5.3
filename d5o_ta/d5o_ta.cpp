@@ -4,8 +4,6 @@
 #include <iostream>
 #include <fstream>
 
-#include <Qbool.h>
-#include <Qbin.h>
 #include <Qwhole.h>
 #include <Qassign.h>
 #include <Qint.h>
@@ -14,6 +12,8 @@
 #include <Utility.h>
 
 #include "UTestQbit.h"
+#include "UTestQbool.hpp"
+#include "UTestQbin.hpp"
 
 using namespace std;
 using namespace dann5::ocean;
@@ -23,60 +23,8 @@ using namespace dann5;
 void basic_types()
 {
 
-    Qbool b("boolean", Qbool::cTrue);
-    cout << b.toString() << " " << b.toString(false, 0) << " " << b.toString(true) << " " << b.toString(true, 0) << endl;
-
-    Qbin a(3, "a");
-    cout << a.toString() << " " << a.toString(false, 0) << " " << a.toString(true) << " " << a.toString(true, 0) << endl;
-
     Qwhole x("a", 33);
     cout << x.toString() << " " << x.toString(false, 0) << " " << x.toString(true) << " " << x.toString(true, 0) << endl;
-}
-
-void qbool_test()
-{
-    Qbool b0("0b"), b1("1b", 'F'), b2("2b", 33), b3("3b"), b4("4b"), br("br", Qbool::cTrue);
-    Qassign<Qbool> qboolAssign = br = ((b3 != b4) & (b2 == b0)) | b1;
-    cout << endl << qboolAssign << endl << endl << qboolAssign.toString(true) << endl;
-    cout << endl << "*** Generic Qubo ***" << endl << qboolAssign.qubo(false) << endl
-        << endl << "*** Finalized Qubo ***" << endl << qboolAssign.qubo() << endl;
-    Qanalyzer analyze(qboolAssign.qubo());
-    cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
-    qboolAssign.solve();
-    cout << endl << qboolAssign.solutions();
-}
-
-void friends_enemies()
-{
-    Qbool xaviar("x"), yolanda("y"), zeke("z"), wanda("w"), _T_("_T_", true);
-    Qexpr<Qbool> xFnEs = (xaviar == yolanda) & (!yolanda == zeke) & (zeke == wanda);
-    cout << endl << xFnEs.solve() << endl;
-    Qassign<Qbool> aFnEs = _T_ = (xaviar & yolanda) & (!yolanda & !zeke) & (zeke & wanda);
-//    cout << endl << aFnEs.solve() << endl;
-
-    Qbit x("x"), y("y"), z("z"), w("w"), _1_("_1_", 1);
-    Qexpr<Qbit> xbFnEs = (x == y) & ((~y == z) & (z == w));
-    cout << endl << xbFnEs.toString(true) << endl;
-    cout << endl << xbFnEs.solve() << endl;
-
-    Qassign<Qbit> abFnEs = _1_ = (x *= y) & ((y ^ z) & (z *= w));
-    cout << endl << abFnEs.toString(true) << endl;
-    cout << endl << abFnEs.solve() << endl;
-
-}
-
-
-void qbin_test()
-{
-    Qbin bn0("bn0", 03), bn1(3, "bn1"), bn2(4,"bn2"), bn3("bn3", 0b110), bn4(2, "bn4"), bnr("bnr", 0x5);
-    Qassign<Qbin> qbinAssign = bnr = (bn0 & bn1) | ((bn2 ^ bn3) == bn4);
-    cout << endl << qbinAssign << endl << endl << qbinAssign.toString(true) << endl;
-    cout << endl << "*** Generic Qubo ***" << endl << qbinAssign.qubo(false) << endl
-        << endl << "*** Finalized Qubo ***" << endl << qbinAssign.qubo() << endl;
-    Qanalyzer analyze(qbinAssign.qubo());
-    cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
-    qbinAssign.solve();
-    cout << endl << qbinAssign.solutions();
 }
 
 void qwholeAdd_test()
@@ -368,7 +316,12 @@ void testSolver()
 int main(int argc, const char * argv[])
 {
     UTestQbit utQbit;
-    utQbit.runAll(cout);
+//    utQbit.runAll(cout);
+    UTestQbool utQbool;
+//    utQbool.runAll(cout);
+    UTestQbin utQbin;
+    utQbin.runAll(cout);
+    
 /*    string answer;
     cout << "should I start?";
     cin >> answer;

@@ -221,7 +221,7 @@ void Qcell2OutOp::output(const Qdef::Sp& pOut, size_t forBit)
 	// if aux output is not initialized, initialize it with same Q type as output
 	if (mpAuxiliary == nullptr)
 	{
-		mpAuxiliary = dynamic_pointer_cast<Qcell>(Qop::output()->clone());
+		mpAuxiliary = Qop::output()->clone();
 		mpAuxiliary->id("?" + id() + Qop::Id("?" + id()));
 	}
 }
