@@ -90,6 +90,12 @@
     <ClCompile Include="UTestQbit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UTestQbin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UTestQbool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h">
@@ -159,6 +165,12 @@
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
     <ClInclude Include="UTestQbit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UTestQbin.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UTestQbool.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
