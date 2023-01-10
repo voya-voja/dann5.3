@@ -23,7 +23,7 @@
 
 using namespace dann5::ocean;
 
-#define VERSION_INFO "2.0.0"
+#define VERSION_INFO "2.1.2"
 
 namespace py = pybind11;
 
@@ -44,38 +44,39 @@ PYBIND11_MODULE(d5o2, m) {
 
 			Qubo
 			QuboTable
+			Qbit
+			Qbool
+			Qbin
 			Qwhole
-			Qdef
+			Oint
 			Qexpression
-			Qvar
-			Qequation
+			Qassignment
     )pbdoc";
 /*--- Qubo.h definitions ---*/
 	py::class_<Qkey>(m, "Qkey", R"pbdoc(Qubo key corresponds to an element of DWave's dimod.BinaryQuadraticModel class where
 		key pair with the same Quantum node name is a linear node and one with different Quantum node names is a quadratic element)pbdoc");
 
-	py::class_<Qubo>(m, "Qubo", R"pbdoc(Qubo model dictionar of a solution graph for a binary objective
-		function where a node pair is a Qubo key mapped into its bias, which
-		corespondes to Quantum energy values for that node 
+	py::class_<Qubo>(m, "Qubo", R"pbdoc(Qubo model dictionary of a problem binary objective
+		function where a node pair is a Qubo key mapped into node-pair bias, which
+		corespondes to Quantum energy values for that node-pair 
 		Qubo corresponds to DWave's dimod.BinaryQuadraticModel class, represented 
-		as an upper-diagonal matrix Q, where diagonal terms are the linear
-		coefficients and the nonzero off-diagonal terms the quadratic coefficients (graph branches)pbdoc")
+		as an upper-diagonal matrix Q, where diagonal terms (graph nodes) are the linear
+		coefficients and the nonzero off-diagonal terms are quadratic coefficients (graph branches)pbdoc")
 		.def("union", [](const Qubo& l, const Qubo& r) { return l + r; })
 		.def("expand", [](Qubo& l, const Qubo& r) { return l += r; })
 		.def("add", [](const Qubo& q, double offset) { return q + offset; })
 		.def("up", [](Qubo& q, double offset) { return q += offset; })
-		.def("sub", [](const Qubo& q, double offset) { return q + offset; })
+		.def("sub", [](const Qubo& q, double offset) { return q - offset; })
 		.def("down", [](Qubo& q, double offset) { return q -= offset; })
 		.def("mul", [](const Qubo& q, double scalar) { return q * scalar; })
 		.def("scaleUp", [](Qubo& q, double scalar) { return q *= scalar; })
 		.def("div", [](const Qubo& q, double scalar) { return q / scalar; })
 		.def("scaleDown", [](Qubo& q, double scalar) { return q /= scalar; });
 
-	// specify C++ class->baseclass specialization
-	m.def("Qvalue", []() { return char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S}.)pbdoc");
-//	m.def("Qvalue", []() { return unsigned char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S}.)pbdoc");
+	m.def("Qvalue", []() { return char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S(uperposition)}.)pbdoc");
 
-	m.def("Superposition", []() { return cSuperposition; }, R"pbdoc(Quantum default superposition value, though any Q bit value except 0 and 1 will be considered superposition.)pbdoc");
+	m.def("Superposition", []() { return cSuperposition; }, R"pbdoc(Default quantum superposition value. 
+		Though any Q bit value except 0 and 1 will be considered superposition.)pbdoc");
 
 	py::class_<Qvalues>(m, "Qvalues", R"pbdoc(An array of Quantum values)pbdoc");
 

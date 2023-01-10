@@ -326,7 +326,7 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 		if (value != cSuperposition) valueStr = to_string(value);
 		else valueStr.append(1, cSuperposition);
 
-		cStr += AdderQT::Carry::Symbol(pOut->id()) + "/" + valueStr + "/";
+		cStr += AdderQT::Carry::Symbol(pOut->id()) + "\\" + valueStr + "\\";
 		return cStr;
 	}
 	return AdderQT::Carry::Symbol(mpAddition->Qop::toString(decomposed, forBit));

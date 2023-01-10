@@ -75,38 +75,47 @@ namespace dann5 {
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qwhole(*this)); };
 
 			/*** Assignments ***/
-			// assignment operator changes the identity and value of this object to be
-			// the same as right object
-			Qwhole& operator=(const Qwhole& right);
+			// assignment of a Q whole creates a Q whole assignment where this 
+			// Q whole is an assignee
+			Qassign<Qwhole> operator=(const Qwhole& right);
 
-			// assignment of an Q expression creates a Q whole assignment where this 
+			// assignment of a Q expression creates a Q whole assignment where this 
 			// Q whole is an assignee
 			Qassign<Qwhole> operator=(const Qexpr<Qwhole>& right);
 
 			/*** Compound Assignments ***/
-			// change value of this object as result of and operation between this 
-			// and right Q bit
-			Qwhole& operator+=(const Qwhole& right);
+			// 'add assignment' of a Q whole creates a following Q whole assignment
+			// [this] = [this] + [right]
+			Qassign<Qwhole> operator+=(const Qwhole& right);
 
-			// 'add assignment' of an Q expression creates a following Q whole assignment
+			// 'add assignment' of a Q expression creates a following Q whole assignment
 			// [this] = [this] + [right]
 			Qassign<Qwhole> operator+=(const Qexpr<Qwhole>& right);
 
-			// change value of this object as result of or operation between this 
-			// and right Q bit
-			Qwhole& operator*=(const Qwhole& right);
+			// 'add assignment' of a Q whole creates a following Q whole assignment
+			// [this] = [this] * [right]
+			Qassign<Qwhole> operator*=(const Qwhole& right);
 
-			// 'add assignment' of an Q expression creates a following Q whole assignment
+			// 'add assignment' of a Q expression creates a following Q whole assignment
 			// [this] = [this] * [right]
 			Qassign<Qwhole> operator*=(const Qexpr<Qwhole>& right);
 
-			// change value of this object as result of xor operation between this 
-			// and right Q bit
-			Qwhole& operator-=(const Qwhole& right);
+			// 'add assignment' of a Q whole creates a following Q whole assignment
+			// [this] = [this] - [right]
+			Qassign<Qwhole> operator-=(const Qwhole& right);
 
-			// change value of this object as result of xor operation between this 
-			// and right Q bit
-			Qwhole& operator/=(const Qwhole& right);
+			// 'add assignment' of a Q expression creates a following Q whole assignment
+			// [this] = [this] - [right]
+			Qassign<Qwhole> operator-=(const Qexpr<Qwhole>& right);
+
+
+			// 'add assignment' of a Q whole creates a following Q whole assignment
+			// [this] = [this] / [right]
+			Qassign<Qwhole> operator/=(const Qwhole& right);
+
+			// 'add assignment' of a Q expression creates a following Q whole assignment
+			// [this] = [this] / [right]
+			Qassign<Qwhole> operator/=(const Qexpr<Qwhole>& right);
 
 			/*** Comparison ***/
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
@@ -143,7 +152,7 @@ namespace dann5 {
 
 			/*** Arithmetic ***/
 
-			// instantiate Q expression with and logic, e.g. for Qwhole ids 'x' and 'y'
+			// instantiate Q expression with add logic, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' + 'y'
 			Qexpr<Qwhole> operator+(const Qwhole& right) const;
 
@@ -151,13 +160,29 @@ namespace dann5 {
 			// object the expression is 'x' + [right]
 			Qexpr<Qwhole> operator+(const Qexpr<Qwhole>& right) const;
 
-			// instantiate Q expression with or logic, e.g. for Qwhole ids 'x' and 'y'
+			// instantiate Q expression with multiply logic, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' * 'y'
 			Qexpr<Qwhole> operator*(const Qwhole& right) const;
 
 			// instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right]
 			// object the expression is 'x' * [right]
 			Qexpr<Qwhole> operator*(const Qexpr<Qwhole>& right) const;
+
+			// instantiate Q expression with subtract logic, e.g. for Qwhole ids 'x' and 'y'
+			// the expression is 'x' - 'y'
+			Qexpr<Qwhole> operator-(const Qwhole& right) const;
+
+			// instantiate Q expression with subtract logic, e.g. for Qwhole id 'x' and [right]
+			// object the expression is 'x' - [right]
+			Qexpr<Qwhole> operator-(const Qexpr<Qwhole>& right) const;
+
+			// instantiate Q expression with divide logic, e.g. for Qwhole ids 'x' and 'y'
+			// the expression is 'x' / 'y'
+			Qexpr<Qwhole> operator/(const Qwhole& right) const;
+
+			// instantiate Q expression with divide logic, e.g. for Qwhole id 'x' and [right]
+			// object the expression is 'x' / [right]
+			Qexpr<Qwhole> operator/(const Qexpr<Qwhole>& right) const;
 
 		protected:
 		private:

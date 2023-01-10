@@ -6,6 +6,7 @@
 
 #include <Qwhole.h>
 #include <Qassign.h>
+#include <Qblock.h>
 #include <Qint.h>
 
 #include <Qsolver.h>
@@ -14,6 +15,7 @@
 #include "UTestQbit.h"
 #include "UTestQbool.hpp"
 #include "UTestQbin.hpp"
+#include "UtestQwhole.hpp"
 
 using namespace std;
 using namespace dann5::ocean;
@@ -320,20 +322,10 @@ int main(int argc, const char * argv[])
     UTestQbool utQbool;
 //    utQbool.runAll(cout);
     UTestQbin utQbin;
-    utQbin.runAll(cout);
-    
-/*    string answer;
-    cout << "should I start?";
-    cin >> answer;
-*/
-//    basic_types();
-//    qbit_test();
-//    qbitLt_test();
-//    qbitLe_test();
-//    qbool_test();
-//    friends_enemies();
-//    vertex();
-//    qbin_test();
+//    utQbin.runAll(cout);
+    UTestQwhole utQwhole;
+    utQwhole.runAll(cout);
+
 /*
     const clock_t begin_time = clock();
     qwholeAdd_test();

@@ -96,6 +96,21 @@
     <ClCompile Include="UTestQbool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\dann5\ocean\source\Qblock.cpp">
+      <Filter>Source Files\dann5\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\ocean\source\Qstatement.cpp">
+      <Filter>Source Files\dann5\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\ocean\source\Qroutine.cpp">
+      <Filter>Source Files\dann5\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\ocean\source\Qbinder.cpp">
+      <Filter>Source Files\dann5\ocean</Filter>
+    </ClCompile>
+    <ClCompile Include="UTestQwhole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h">
@@ -171,6 +186,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UTestQbool.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\ocean\include\Qblock.h">
+      <Filter>Header Files\dann5\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\ocean\include\Qstatement.h">
+      <Filter>Header Files\dann5\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\ocean\include\Qroutine.h">
+      <Filter>Header Files\dann5\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\ocean\include\Qbinder.h">
+      <Filter>Header Files\dann5\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="UTestQwhole.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -67,7 +67,7 @@ string Qint::toString(bool decomposed, size_t forBit) const
 	}
 	size_t size = noqbs();
 	string id = Qdef::toString(decomposed);
-	return id + "/" + to_string(size) + ":" + vStr + "/";
+	return id + "\\" + to_string(size) + ":" + vStr + "\\";
 }
 
 string Qint::solution(size_t sampleId) const
@@ -84,7 +84,7 @@ string Qint::solution(size_t sampleId) const
 	long long v = (long long)value.to_ullong();
 	string valueStr = to_string(v);
 	string id = Qdef::toString();
-	return id + "/" + to_string(size) + ":" + valueStr + "/";
+	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
 }
 
 Qint& Qint::operator=(const Qint& right)

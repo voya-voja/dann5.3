@@ -14,8 +14,6 @@ using namespace std;
 namespace dann5 {
 	namespace ocean {
 
-		class Qbool;
-
 		// Quantum bit is a Q cell type supporting instantiation of and operations
 		// forvariables which can have values 0, 1 and 'S'-uperposition, value 83
 		class Qbit : public Qcell, public Qtype
@@ -42,9 +40,9 @@ namespace dann5 {
 
 			// set the new value of this Q bit
 			virtual void value(Qvalue v) {
-                if (v > 1) mValue = cSuperposition;
-                else mValue = v;
-            };
+				if (v > 1) mValue = cSuperposition;
+				else mValue = v;
+			};
 
 			// constant and non-constant get a value of this Q bit
 			virtual Qvalue value() const { return mValue; };
@@ -52,13 +50,10 @@ namespace dann5 {
 
 			// return string presentation of this Qoperand
 			virtual string toString(bool decomposed = false,
-									size_t forBit = cAllBits) const;
+				size_t forBit = cAllBits) const;
 
 			// Return a Q def shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbit(*this)); };
-
-			// Override to set solution values from the sample set for this deffinition
-			virtual void add(const Qsolver::Samples& samples);
 
 			/*** Assignments ***/
 			// assignment of an Q expression creates a Q bit assignment where this 

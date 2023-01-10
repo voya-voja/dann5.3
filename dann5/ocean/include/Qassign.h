@@ -4,6 +4,8 @@
 #include <pybind11/pybind11.h>
 
 #include <utility>
+
+#include <Qstatement.h>
 #include <Qdef.h>
 #include <Qtype.h>
 #include <Qexpr.h>
@@ -16,23 +18,24 @@ namespace dann5 {
 	namespace ocean {
 
 		// A Quantum assignment
-		class Qassignment
+		class Qassignment : public Qstatement
 		{
 		public:
 			// Q assignment shared pointer 
 			typedef shared_ptr<Qassignment> Sp;
 
-			// default constructor creates an Q assignment without assignee and 
-			// Q expression
+			// default constructor creates an Q assignment without assignee and
+			// expression
 			Qassignment() : mpAssignee(nullptr), mpExpr(nullptr) {};
 
-			// Initilized Q assignment with Q definition assignee
+			// Constructs a Q assignment with an assignee Q definition
 			Qassignment(const Qdef::Sp& pAssignee)
 				: mpAssignee(pAssignee), mpExpr(nullptr) {};
 
-			// Initilized Q assignment with Q definition assignee and coresponding 
-			// Q expression
-			Qassignment(const Qdef::Sp& pAssignee, const Qexpression::Sp& pExpr);
+			// Constructs a Q assignment with an assignee Q definition and 
+			// coresponding Q expression
+			Qassignment(const Qdef::Sp& pAssignee, 
+						const Qexpression::Sp& pExpr);
 
 			// copy constructor
 			Qassignment(const Qassignment& right) 
@@ -41,62 +44,82 @@ namespace dann5 {
 			// destructor
 			~Qassignment() {};
 
-			virtual Qassignment::Sp clone() const = 0;
+			// Override to return a Q assignment shared pointer to a clone of 
+			// this Q assignmnet
+			virtual Qassignment::Sp clone(bool) const = 0;
+
+			// Returns a Q statement shared pointer to a clone of this Q 
+			// assignmnet
+			virtual Qstatement::Sp clone() const
+			{
+				return dynamic_pointer_cast<Qstatement>(clone(true));
+			};
 
 			// Assign a Q expression to Q defintion assignee. 
 			// Use without inputs to remove (one or boath) Q assignment members
-			void assign(const Qdef::Sp& pAssignee = nullptr, const Qexpression::Sp& pExpr = nullptr);
+			void assign(const Qdef::Sp& pAssignee = nullptr, 
+						const Qexpression::Sp& pExpr = nullptr);
 
-			// returns a Q definition pointer to the assignee
+			// Returns a Q definition pointer to the assignee
 			const Qdef::Sp& assignee() const { return mpAssignee; };
 
-			// set a Q definition pointer to a new assignee
+			// return a pointer to assignee
+			Qdef::Sp assignee() { return mpAssignee; };
+
+			// Sets a Q definition pointer to a new assignee
 			void assignee(const Qdef::Sp& pAssignee) { mpAssignee = pAssignee; };
 
-			// returns a pointer to the Q expression
+			// Returns a pointer to the Q expression
 			const Qexpression::Sp& expression() const { return mpExpr; };
 
-			// set assignment's new Q expression
+			// return a pointer to expression
+			Qexpression::Sp expression() { return mpExpr; };
+
+			// Sets assignment's new Q expression
 			void expression(const Qexpression::Sp& pExpr);
 
 			// Returns the number of Q bits that the Q assignment holds
 			virtual size_t noqbs() const noexcept { return mpAssignee->noqbs(); };
 
 			// Returns a qubo representation of this Q assignment, 
-			// if not finalized, returns a full qubo definition representation
-			// if finalized, returns an expression that replaces symbols with values of
-			// Q bits in deterministic states
-			virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const;
+			// if not finalized, returns a full qubo without substitutions
+			// if finalized, returns a qubo with all constant variables (with 
+			// all Q bits in deterministic states) substituted by their values
+			// when applicable, if forBit is specified (differs from cAllBits),
+			// returns qubo only  for the specified bit level
+			virtual Qubo qubo(bool finalized = true, 
+								size_t forBit = cAllBits) const;
 
-			// Return a string representation of this Q expression
-			// when decomposed is true, shows bit-level expressions per line
-			// when decomposed and forBit specified, shows a decomposed expression only
-			// for that bit level
-			string toString(bool decomposed = false, size_t forBit = cAllBits) const;
+			// Returns a string representation of this Q assignment, 
+			// if not decomposed, returns a statement as initially specified
+			// if decomposed, returns bit-level logic of the assignment
+			// when applicable, if forBit is specified (differs from cAllBits),
+			// returns decomposed logic only for the specified bit level
+			string toString(bool decomposed = false, 
+								size_t forBit = cAllBits) const;
 
-			// Set a sample set with a node list defined by qubo() of this Q assignment
-			// the combination of node values should be different for each sample
+			// Adds a sample set containing nodes with solutions values,
+			// the nodes should correspond to operands of this Q assignment
 			virtual void add(const Qsolver::Samples& samples);
 
-			// For existing samples, returns a string representation of all solutions of 
-			// this Q assignment
+			// For added sample set(s), returns a string representation of all
+			// solutions of operands of this Q assignment
 			virtual string solutions() const;
 
-			// Solve this Q assignment and return a string with all solutions
-			virtual string solve();
+			// For added sample set(s), returns a string represnting 'at'
+			// solution of operands of this Q assignment
+			virtual string solution(size_t at) const 
+							{ return mpExpr->solution(at); };
 
-			// Reset the assignment into its initial state without solutions by clear 
-			// all solution samples
+			// Returns computed sample set with all solutions of the assignment
+			virtual Qsolver::Samples compute();
+
+			// Resets the assignment into its initial state without solutions
+			// for the operands of this Q assignment
 			virtual void reset();
 
 			// Send a string representation of a Q expression into an output stream
 			friend std::ostream& operator << (std::ostream&, const Qassignment&);
-
-			// return a pointer to assignee
-			Qdef::Sp assignee() { return mpAssignee; };
-
-			// return a pointer to expression
-			Qexpression::Sp expression() { return mpExpr; };
 
 		protected:
 			// bind the assignee to a quantum expression.
@@ -105,8 +128,8 @@ namespace dann5 {
 			virtual void bind();
 
 		private:
-			Qdef::Sp			mpAssignee;
-			Qexpression::Sp		mpExpr;
+			Qdef::Sp			mpAssignee;	// A pointer to assignee's defintion
+			Qexpression::Sp		mpExpr;		// A pointer to the expression
 		};
 
 		// A templated Q assign for all Q types
@@ -126,7 +149,7 @@ namespace dann5 {
 
 			// Initilized Q expression with its root definition 
 			Qassign(const Q_Type& assignee, const Qexpr<Q_Type>& expr)
-				: Qassignment(Qdef::Sp(assignee.clone()), expr.clone()) {};
+				: Qassignment(Qdef::Sp(assignee.clone()), expr.clone(true)) {};
 
 			// copy constructor
 			Qassign(const Qassign<Q_Type>& right) : Qassignment(right) {};
@@ -134,15 +157,20 @@ namespace dann5 {
 			// destructor
 			~Qassign() {};
 
-			virtual Qassignment::Sp clone() const
+			// Returns a Q assignment shared pointer to a clone of 
+			// this Q assignmnet
+			virtual Qassignment::Sp clone(bool) const
 			{
 				return Qassignment::Sp(new Qassign<Q_Type>(*this));
 			};
 
+			// Qstatement cast operator
+			operator Qstatement() { return *this; };
+
 			/*** Assignments ***/
 			// Update Q assignment with a new Q expression
 			Qassign<Q_Type>& operator=(const Qexpr<Q_Type>& right) {
-				expression(right.clone());
+				expression(right.clone(true));
 				return(*this);
 			};
 

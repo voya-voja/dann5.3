@@ -47,36 +47,36 @@ namespace dann5 {
             Qbit& operator[](size_t pos);
 
 			/*** Assignments ***/
-			// assignment operator changes the identity and value of this object to be
-			// the same as right object
+			// assignment of a Q binary creates a Q bin assignment where this 
+			// Q bin is an assignee
             Qassign<Qbin> operator=(const Qbin& right);
 
-			// assignment of an Q expression creates a Q bin assignment where this 
+			// assignment of a Q expression creates a Q bin assignment where this 
 			// Q bin is an assignee
 			Qassign<Qbin> operator=(const Qexpr<Qbin>& right);
 
 			/*** Compound Assignments ***/
-			// change value of this object as result of and operation between this 
-			// and right Q bin
-            Qassign<Qbin> operator&=(const Qbin& right);
+			// 'and assignment' of a Q binary creates a following Q bin assignment
+			// [this] = [this] & [right]
+			Qassign<Qbin> operator&=(const Qbin& right);
 
-			// 'and assignment' of an Q expression creates a following Q bin assignment
+			// 'and assignment' of a Q expression creates a following Q bin assignment
 			// [this] = [this] & [right]
 			Qassign<Qbin> operator&=(const Qexpr<Qbin>& right);
 
-			// change value of this object as result of or operation between this 
-			// and right Q bin
-            Qassign<Qbin> operator|=(const Qbin& right);
+			// 'or assignment' of a Q binary creates a following Q bin assignment
+			// [this] = [this] | [right]
+			Qassign<Qbin> operator|=(const Qbin& right);
 
-			// 'or assignment' of an Q expression creates a following Q bin assignment
+			// 'or assignment' of a Q expression creates a following Q bin assignment
 			// [this] = [this] | [right]
 			Qassign<Qbin> operator|=(const Qexpr<Qbin>& right);
 
-			// change value of this object as result of xor operation between this 
-			// and right Q bin
-            Qassign<Qbin> operator^=(const Qbin& right);
+			// 'xor assignment' of a Q binary creates a following Q bin assignment
+			// [this] = [this] ^ [right]
+			Qassign<Qbin> operator^=(const Qbin& right);
 
-			// 'xor assignment' of an Q expression creates a following Q bin assignment
+			// 'xor assignment' of a Q expression creates a following Q bin assignment
 			// [this] = [this] ^ [right]
 			Qassign<Qbin> operator^=(const Qexpr<Qbin>& right);
 

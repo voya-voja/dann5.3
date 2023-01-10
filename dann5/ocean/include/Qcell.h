@@ -40,17 +40,22 @@ namespace dann5 {
 			virtual Qvalue value() const = 0;
 			virtual Qvalue value() = 0;
 
+			// Override to set solution values from the sample set for this deffinition
+			virtual void add(const Qsolver::Samples& samples);
+
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
-
-			Qvalue solutionValue(size_t sampleId) const;
 
 			// Reset the quantum cell into its initial state without solutions by clear 
 			// all solution samples
 			virtual void reset();
 
+			// returns a reference of solutions, known for this cell
+			Qvalues& solutions() { return mSolutions; };
+
+			Qvalue solutionValue(size_t sampleId) const;
+
 		protected:
-			Qvalues& solutionValues() { return mSolutions; };
 
 		private:
 			Qvalues	mSolutions;

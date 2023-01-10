@@ -76,7 +76,7 @@ namespace dann5 {
 			// otherwise, they are 0 - initialized. If size is also greater than the 
 			// current container capacity, an automatic reallocation of the allocated 
 			// storage space takes place.
-			virtual void resize(size_t size, Qvalue value = 0);
+			virtual void resize(size_t size, Qvalue value = cSuperposition);
 
 			// Return a Q nary string representation when forBit is cAllBits. 
 			// Otherwise, return a string representation of a Q cell at the specified 

@@ -170,7 +170,9 @@
     <ClInclude Include="..\dann5\ocean\include\Qadd.h" />
     <ClInclude Include="..\dann5\ocean\include\Qassign.h" />
     <ClInclude Include="..\dann5\ocean\include\Qbin.h" />
+    <ClInclude Include="..\dann5\ocean\include\Qbinder.h" />
     <ClInclude Include="..\dann5\ocean\include\Qbit.h" />
+    <ClInclude Include="..\dann5\ocean\include\Qblock.h" />
     <ClInclude Include="..\dann5\ocean\include\Qbool.h" />
     <ClInclude Include="..\dann5\ocean\include\Qcell.h" />
     <ClInclude Include="..\dann5\ocean\include\QcellOps.h" />
@@ -181,7 +183,9 @@
     <ClInclude Include="..\dann5\ocean\include\Qnary.h" />
     <ClInclude Include="..\dann5\ocean\include\QnaryOp.h" />
     <ClInclude Include="..\dann5\ocean\include\Qop.h" />
+    <ClInclude Include="..\dann5\ocean\include\Qroutine.h" />
     <ClInclude Include="..\dann5\ocean\include\Qsolver.h" />
+    <ClInclude Include="..\dann5\ocean\include\Qstatement.h" />
     <ClInclude Include="..\dann5\ocean\include\Qtype.h" />
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h" />
@@ -194,7 +198,9 @@
     <ClCompile Include="..\dann5\ocean\source\Qadd.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qassign.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qbin.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\Qbinder.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qbit.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\Qblock.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qbool.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qcell.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QcellOps.cpp" />
@@ -204,7 +210,9 @@
     <ClCompile Include="..\dann5\ocean\source\Qnary.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QnaryOp.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qop.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\Qroutine.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qsolver.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\Qstatement.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QwholeComp.cpp" />

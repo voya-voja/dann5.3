@@ -36,14 +36,14 @@ string Qbool::toString(bool decomposed, size_t forBit) const
 	string id = Qdef::toString(decomposed);
 	string valueStr = "";
 	valueStr.append(1,mValue);
-	return id + "/" + valueStr + "/";
+	return id + "\\" + valueStr + "\\";
 }
 
 void Qbool::add(const Qsolver::Samples& samples)
 {
 	if (value() != cSuperposition) return;
 
-	Qvalues& sltns = Qcell::solutionValues();
+	Qvalues& sltns = Qcell::solutions();
 	string identity = id();
 	for (auto sample : samples)
 	{
@@ -61,9 +61,9 @@ string Qbool::solution(size_t sampleId) const
 		return Qcell::solution(sampleId);
 	else
 	{
-		string sStr = id() + "/";
+		string sStr = id() + "\\";
 		sStr.append(1, mValue);
-		sStr += "/";
+		sStr += "\\";
 		return sStr;
 	}
 }

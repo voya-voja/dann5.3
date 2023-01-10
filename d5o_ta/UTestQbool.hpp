@@ -29,7 +29,7 @@ namespace dann5
         void initialization(ostream& out);
         // test Qbool assignments
         void assignment(ostream& out);
-        // test Qbool bitwise operations and expressions
+        // test Qbool logical operations and expressions
         void logical(ostream& out);
         // test Qbool comparison operations and expressions
         void comparison(ostream& out);

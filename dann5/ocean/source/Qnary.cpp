@@ -143,7 +143,7 @@ string Qnary::toString(bool decomposed, size_t forBit) const
 		}
 	}
 	string id = Qdef::toString(decomposed);
-	return id + "/" + to_string(size) + "b:" + valueStr + "/";
+	return id + "\\" + to_string(size) + "b:" + valueStr + "\\";
 }
 
 void Qnary::add(const Qsolver::Samples& samples)
@@ -164,7 +164,7 @@ string Qnary::solution(size_t sampleId) const
 	string valueStr = value.to_string();
 	valueStr = valueStr.substr(value.size() - size);
 	string id = Qdef::toString();
-	return id + "/" + to_string(size) + ":" + valueStr + "/";
+	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
 }
 
 void Qnary::reset()

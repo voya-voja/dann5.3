@@ -8,6 +8,8 @@
 #include "UTestQbin.hpp"
 
 #include <Qbin.h>
+#include <Qblock.h>
+#include <Qbinder.h>
 
 using namespace dann5;
 using namespace dann5::ocean;
@@ -43,12 +45,9 @@ void UTestQbin::initialization(ostream& out)
     
     
     Qbin size3(3, "size3");
-    out << "Qbin 'size3' is undefined and has 3 Qbits:" << endl;
+    out << "Qbin 'size3' is unknown and has 3 Qbits:" << endl;
     out << " toString() => " << size3.toString() << endl << " toString(false, 0) => " << size3.toString(false, 0) << endl << " toString(true) => " << size3.toString(true) << endl << " toString(true, 0) => " << size3.toString(true, 0) << endl;
-    
-    
-    Qbin bn0("bn0", 03), bn1(3, "bn1"), bn2(4,"bn2"), bn3("bn3", 0b110), bn4(2, "bn4"), bnr("bnr", 0x5);
-    
+        
     // Initialize Q bin with a given id and value.
     // If value is different from 0 or 1, Qbin into superposition state
     Qbin oct10("octal10", 010), dec5("dec5", 5), bin6("bin6", 0b110), hexA("hexA", 0xA);
@@ -183,7 +182,7 @@ void UTestQbin::bitwise(ostream& out)
     Qbin x(3, "x"), y("y", 5), _0("_0", 0), _1("_1", 1);
     Qexpr<Qbin> qbExpr = x & y, xI = ~x;
 
-    out << "Expression '~x', NOT (invert) x is: " << xI << endl
+    out << "Expression '~x', INVERT (not) x is: " << xI << endl
         << " decomposed logic: " << xI.toString(true) << endl
         << " It's Qubo is '" << xI.qubo() << "'" << endl
         << " resulting in :" << endl << xI.solve() << endl;
@@ -244,7 +243,6 @@ void UTestQbin::bitwise(ostream& out)
         << " resulting in :" << endl << qbExpr.solve() << endl;
 }
 
-
 void UTestQbin::comparison(ostream& out)
 {
     Qbin x(3, "x"), y("y", 5), z(3, "z");
@@ -263,21 +261,54 @@ void UTestQbin::eq_asign(ostream& out)
 {
     Qbin bn0("bn0", 03), bn1(3, "bn1"), bn2(4,"bn2"), bn3("bn3", 0b110), bn4(2, "bn4"), bnr("bnr", 0x5);
     Qassign<Qbin> qbinAssign = bnr = (bn0 & bn1) | ((bn2 ^ bn3) == bn4);
-    cout << endl << qbinAssign << endl << endl << qbinAssign.toString(true) << endl;
-    cout << endl << "*** Generic Qubo ***" << endl << qbinAssign.qubo(false) << endl
+    out << endl << qbinAssign << endl << endl << qbinAssign.toString(true) << endl;
+    out << endl << "*** Generic Qubo ***" << endl << qbinAssign.qubo(false) << endl
         << endl << "*** Finalized Qubo ***" << endl << qbinAssign.qubo() << endl;
     Qanalyzer analyze(qbinAssign.qubo());
-    cout << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
+    out << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
     qbinAssign.solve();
-    cout << endl << qbinAssign.solutions();
+    out << endl << qbinAssign.solutions();
 }
 
 void UTestQbin::friends_enemies(ostream& out)
 {
-    Qbin x(2, "xaviar"), y(2, "yolanda"), z(2, "zeke"), w(2, "wanda"), r(2, "ramon"), _3("_3", 0b11);
-    Qassign<Qbin> abFnEs = _3 = (x *= y) & (y ^ z) & (z *= w);
-    out << endl << "*** Dwave's friends & enemies problem equation:" << endl << abFnEs.toString() << endl;
-    out << endl << "*** Dwave's friends & enemies problem solutions:" << endl << abFnEs.solve() << endl;
+    Qbin w(2, "wolf"), x(2, "xenia"), y(2, "yael"), z(2, "zeke"), s(2, "sean"), t(2, "tea"), u(2, "una"), v(2, "veda"), _3("_3", 0b11);
+    Qassign<Qbin> aWXfYZe = _3 = (w *= x) & (x ^ y) & (y *= z);
+    out << endl << "*** Dwave's friends & enemies problem equation:" << endl << aWXfYZe.toString() << endl;
+    out << endl << "*** Dwave's friends & enemies problem solutions:" << endl << aWXfYZe.solve() << endl;
+
+    Qsolver::Samples solutions = aWXfYZe.compute();
+    Qbinder wxyzBinder(solutions);
+    wxyzBinder = w, x, y, z;
+    out << endl << wxyzBinder << endl;
+
+    Qassign<Qbin> aWXfYe = _3 = (w *= x) & (w ^ y);
+    Qassign<Qbin> aSTf = _3 = (s *= t);
+    Qbit _1("_1", 1);
+    Qassign<Qbit> aSorW = _1 = ((s[1] ^ w[1]) | (s[0] ^ w[0]));
+    Qassign<Qbit> aSorY = _1 = ((s[1] ^ y[1]) | (s[0] ^ y[0]));
+    Qblock prFnE;
+    prFnE = aWXfYe, aSTf, aSorW, aSorY;
+    out << endl << "*** Friends & enemies problem block:" << endl << prFnE.toString() << endl;
+    Qubo qPrFnE = prFnE.qubo();
+    out << endl << "*** Friends & enemies problem qubo:" << endl << qPrFnE << endl;
+    Qanalyzer analysePrFnE(qPrFnE);
+    out << endl << "*** Friends & enemies problem # of nodes: " << analysePrFnE.nodesNo() << " # of branches: " << analysePrFnE.branchesNo() << endl;
+    Qsolver::Samples prFnEsltns = prFnE.compute();
+    Qbinder wxystBinder;
+    wxystBinder = w, x, y, s, t;
+    wxystBinder.add(prFnEsltns);
+    out << endl << "*** Friends & enemies problem solutions:" << endl << wxystBinder << endl;
+
+    Qassign<Qbin> aSTfUVe = _3 = (s *= t) & (s ^ u) & (u *= v);
+    Qblock xPrFnE;
+    xPrFnE = aWXfYZe, aSTfUVe, aSorW, aSorY;
+    out << endl << "*** Extended friends & enemies problem block:" << endl << xPrFnE.toString() << endl;
+    Qubo qXprFnE = xPrFnE.qubo();
+    out << endl << "*** Extended friends & enemies problem qubo:" << endl << qXprFnE << endl;
+    Qanalyzer analyseXprFnE(qXprFnE);
+    out << endl << "*** Extended friends & enemies problem # of nodes: " 
+        << analyseXprFnE.nodesNo() << ", # of branches: " << analyseXprFnE.branchesNo() << endl;
 }
 
 void UTestQbin::vertex(ostream& out)
@@ -302,8 +333,12 @@ void UTestQbin::vertex(ostream& out)
     out << endl << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
     
     Qassign<Qbit> problemAssignment = _1 = xbSV & xbTV;
-    out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem equation:"
-        << endl << axbSV.toString() << endl;
+    out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem statement:"
+        << endl << problemAssignment.toString() << endl;
+    Qubo qPA = problemAssignment.qubo();
     out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem qubo:"
-        << endl << axbSV.qubo() << endl;
+        << endl << qPA << endl;
+    Qanalyzer analysePA(qPA);
+    out << endl << "*** DWave square(a-b-c-d) + triangle (c-d-e) vertex problem # of nodes: " 
+        << analysePA.nodesNo() << ", # of branches: " << analysePA.branchesNo() << endl;
 }

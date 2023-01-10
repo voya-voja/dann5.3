@@ -11,19 +11,7 @@ string Qbit::toString(bool decomposed, size_t forBit) const
 	string valueStr = "";
 	if (mValue != cSuperposition) valueStr = to_string(mValue);
 	else valueStr.append(1, cSuperposition);
-	return id + "/" + valueStr + "/";
-}
-
-void Qbit::add(const Qsolver::Samples& samples)
-{
-	if (value() != cSuperposition) return;
-
-	Qvalues& sltns = Qcell::solutionValues();
-	string identity = id();
-	for (auto sample : samples)
-	{
-		sltns.push_back(sample.mSample[identity]);
-	}
+	return id + "\\" + valueStr + "\\";
 }
 
 Qassign<Qbit> Qbit::operator=(const Qbit& right)

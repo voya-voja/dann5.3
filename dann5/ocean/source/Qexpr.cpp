@@ -55,15 +55,14 @@ string Qexpression::solutions() const
 	return asStr;
 }
 
-string Qexpression::solve()
+Qsolver::Samples Qexpression::compute()
 {
 	if(mSolutions.size() != 0)
 		reset();
 	Qubo q = qubo();
 	Qsolver solver(q);
 	Qsolver::Samples samples = solver.solution();
-	add(samples);
-	return solutions();
+	return samples;
 }
 
 void Qexpression::reset()

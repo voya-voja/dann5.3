@@ -41,7 +41,7 @@ void Qassignment::bind()
 			throw std::logic_error("The Q equation result and expression are of different type!");
 	}
 	else if(exprSize < asgnSize)
-	{ // if expression has less Q bits, remaining Q bits or result will result 0 bitwise logic
+	{ // if expression has less Q bits, remaining Q bits of the result will become 0 bitwise logic
 		QnaryOp::Sp pNaryOp = dynamic_pointer_cast<QnaryOp>(as_const(*mpExpr).root());
 		if(pNaryOp != nullptr) pNaryOp->resize(asgnSize);
 	}
@@ -77,9 +77,9 @@ string Qassignment::solutions() const
 	return mpExpr->solutions();
 }
 
-string Qassignment::solve()
+Qsolver::Samples Qassignment::compute()
 {
-	return mpExpr->solve();
+	return mpExpr->compute();
 }
 
 void Qassignment::reset()
