@@ -39,6 +39,12 @@ namespace dann5
  
         // use Qwhole to solve factorial problem
         void factorial(ostream& out);
+        // use Qwhole to calculate prime numbers
+        void prime(ostream& out);
+        // use (6 * Qwhole +/- 1) algorithm to calculate prime numbers
+        void prime6(ostream& out);
+
+
     protected:
     private:
     };

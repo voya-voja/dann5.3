@@ -172,6 +172,7 @@ namespace dann5 {
 			// the expression is 'x' - 'y'
 			Qexpr<Qwhole> operator-(const Qwhole& right) const;
 
+			// Subtraction with EXPRESSION needs to be tested
 			// instantiate Q expression with subtract logic, e.g. for Qwhole id 'x' and [right]
 			// object the expression is 'x' - [right]
 			Qexpr<Qwhole> operator-(const Qexpr<Qwhole>& right) const;
@@ -180,6 +181,7 @@ namespace dann5 {
 			// the expression is 'x' / 'y'
 			Qexpr<Qwhole> operator/(const Qwhole& right) const;
 
+			// Division with EXPRESSION needs to be tested
 			// instantiate Q expression with divide logic, e.g. for Qwhole id 'x' and [right]
 			// object the expression is 'x' / [right]
 			Qexpr<Qwhole> operator/(const Qexpr<Qwhole>& right) const;

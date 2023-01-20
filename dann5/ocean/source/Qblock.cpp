@@ -25,7 +25,7 @@ string Qblock::toString(bool decomposed, size_t forBit) const
 	string blockStr("{");
 	for (auto pStatement : mStatements)
 	{
-		blockStr += "\n" + pStatement->toString(decomposed, forBit);
+		blockStr += "\n\t" + pStatement->toString(decomposed, forBit);
 	}
 	blockStr += "\n}";
 	return(blockStr);

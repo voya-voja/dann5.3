@@ -4,6 +4,7 @@
 #include <Qubo.h>
 #include <Qop.h>
 #include <Qadd.h>
+#include <QderivedOps.h>
 #include <Qmultiply.h>
 
 using namespace std;
@@ -239,9 +240,23 @@ Creator<string, QcellOp, Qadder> gAdderOpCreator(AdderQT::cName);
 Factory<string, QnaryOp> Factory<string, QnaryOp>::gFactory;
 #endif
 
+/**** Addition binary operation ****/
+
+const string Qadd::cMark = "+";
+const string Qadd::cName = "add";
+
 /**** Factory Creator's of Addition ****/
-Creator<string, QnaryOp, Qadd> gAdditionCreator_m(AdderQT::cMark);
-Creator<string, QnaryOp, Qadd> gAdditionCreator("add");
+Creator<string, QnaryOp, Qadd> gAdditionCreator_m(Qadd::cMark);
+Creator<string, QnaryOp, Qadd> gAdditionCreator(Qadd::cName);
+
+/**** Subtraction binary operation ****/
+
+const string Qsubtract::cMark = "-";
+const string Qsubtract::cName = "subtract";
+
+/**** Factory Creator's of Subtraction ****/
+Creator<string, QnaryOp, Qsubtract> gSubtractionCreator_m(Qsubtract::cMark);
+Creator<string, QnaryOp, Qsubtract> gSubtractionCreator(Qsubtract::cName);
 
 /**** Multiplication binary operation ****/
 
@@ -250,4 +265,13 @@ const string Qmultiply::cName = "multiply";
 
 /**** Factory Creator's of Multiplication ****/
 Creator<string, QnaryOp, Qmultiply> gMultiplicationCreator_m(Qmultiply::cMark);
-Creator<string, QnaryOp, Qmultiply> gMultiplicationCreator((string(Qmultiply::cName)));
+Creator<string, QnaryOp, Qmultiply> gMultiplicationCreator(Qmultiply::cName);
+
+/**** Division binary operation ****/
+
+const string Qdivide::cMark = "/";
+const string Qdivide::cName = "divide";
+
+/**** Factory Creator's of Multiplication ****/
+Creator<string, QnaryOp, Qdivide> gDivisionCreator_m(Qdivide::cMark);
+Creator<string, QnaryOp, Qdivide> gDivisionCreator(Qdivide::cName);

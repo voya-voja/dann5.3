@@ -48,10 +48,6 @@ namespace dann5 {
 			virtual Qvalue value() const { return mValue; };
 			virtual Qvalue value() { return mValue; };
 
-			// return string presentation of this Qoperand
-			virtual string toString(bool decomposed = false,
-				size_t forBit = cAllBits) const;
-
 			// Return a Q def shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qbit(*this)); };
 

@@ -5,15 +5,6 @@
 
 using namespace dann5::ocean;
 
-string Qbit::toString(bool decomposed, size_t forBit) const
-{
-	string id = Qdef::toString(decomposed);
-	string valueStr = "";
-	if (mValue != cSuperposition) valueStr = to_string(mValue);
-	else valueStr.append(1, cSuperposition);
-	return id + "\\" + valueStr + "\\";
-}
-
 Qassign<Qbit> Qbit::operator=(const Qbit& right)
 {
 	Qexpr<Qbit> expr = right == right;

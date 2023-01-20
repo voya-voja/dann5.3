@@ -129,6 +129,7 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 			Qop::Sp pOp = dynamic_pointer_cast<Qop>(pOut);
 			if (pOp != nullptr)
 			{
+				if (rest != "") rest += "; ";
 				rest += str;
 				str = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
 			}

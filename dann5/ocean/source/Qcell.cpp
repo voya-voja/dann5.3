@@ -2,6 +2,15 @@
 
 using namespace dann5::ocean;
 
+string Qcell::toString(bool decomposed, size_t forBit) const
+{
+	string id = Qdef::toString(decomposed);
+	string valueStr = "";
+	Qvalue v = value();
+	if (v != cSuperposition) valueStr = to_string(v);
+	else valueStr.append(1, cSuperposition);
+	return id + "\\" + valueStr + "\\";
+}
 
 void Qcell::add(const Qsolver::Samples& samples)
 {

@@ -76,7 +76,14 @@ string QnaryOp::toString(bool decomposed, size_t forBit) const
 {
 	const Qcells& logic = cells();
 	if (!decomposed) return Qop::toString(decomposed, forBit);
-	if (forBit != cAllBits) return logic[forBit]->toString(decomposed, forBit);
+	if (forBit != cAllBits)
+	{
+		size_t size = logic.size();
+		if (forBit < size)
+			return logic[forBit]->toString(decomposed, forBit);
+		else // if logic doesn't have requested cell return empty string
+			return "";
+	}
 
 	size_t size = noqbs();
 	string rStr("");

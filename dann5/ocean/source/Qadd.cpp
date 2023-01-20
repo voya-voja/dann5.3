@@ -36,6 +36,7 @@ void Qadd::refresh()
 		{
 			size--;
 			addCells.resize(size);
+			if (atBit >= size) return;
 			checkSize = false;
 		}
 		addCells[atBit] = opAt(pLeft, pRight, atBit, pCarry, assignOutput);

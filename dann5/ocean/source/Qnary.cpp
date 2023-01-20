@@ -120,12 +120,14 @@ string Qnary::toString(bool decomposed, size_t forBit) const
 	size_t size = noqbs();
 	if (decomposed)
 	{
-		if (forBit < noqbs())
-			return mCells[forBit]->toString(decomposed);
-		else
+		if(forBit == cAllBits)
 		{
 			for(size_t at = size; at > 0; at--)
 				valueStr += mCells[at - 1]->toString(decomposed) + ";";
+		}
+		else
+		{
+			return (*this)[forBit]->toString(decomposed);
 		}
 	}
 	else if(size > 0)
@@ -176,16 +178,20 @@ void Qnary::reset()
 
 Qcell::Sp Qnary::operator[](size_t pos) const noexcept
 {
-	if (pos >= mCells.size())
+	size_t size = mCells.size();
+	if (pos >= size)
 		return Qcell::Sp(new Value0cell(Qdef::id() + to_string(pos)));
+	/*		throw invalid_argument("Position " + to_string(pos) +
+			" is out of range for " + toString());
+*/
 	return mCells[pos]; 
 }
 
 Qcell& Qnary::operator[](size_t pos) 
 { 
-	if (pos >= mCells.size())
-		throw invalid_argument("Position " + to_string(pos) + 
-			" is out of range for " + toString());
+	size_t size = mCells.size();
+	if (pos >= size)
+		resize(pos + 1);
 	return *mCells[pos];
 }
 

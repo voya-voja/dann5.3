@@ -71,7 +71,7 @@ namespace dann5 {
 			typedef shared_ptr<QnullCellOp> Sp;
 
 			// Instantiate an Quantum null cell operation instance with its identity
-			QnullCellOp() : QcellOp("!", 0) {};
+			QnullCellOp() : QcellOp("?null-op!", 0) {};
 
 			// Copy constructor
 			QnullCellOp(const QnullCellOp& right) : QcellOp(right) {};
@@ -87,8 +87,12 @@ namespace dann5 {
 				return Qubo();
 			};
 
+			virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const {
+				return ""; // representation of null cell operation is an empty string
+			};
+
 		protected:
-			virtual Qvalue calculate(const Qvalues& values) const { return cSuperposition; };
+			virtual Qvalue calculate(const Qvalues& values) const { return 0; };
 
 		private:
 		};

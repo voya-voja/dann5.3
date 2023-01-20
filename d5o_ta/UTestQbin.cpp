@@ -214,8 +214,8 @@ void UTestQbin::bitwise(ostream& out)
         << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
-    x[3].value(cSuperposition);
-    out << "**** x's 3rd qbit is set to superposition ****" << endl
+    x[3].value(1);
+    out << "**** x's 3rd qbit is set to 1 ****" << endl
         << " decomposed: " << x.toString(true) << endl << endl;
 
     qbExpr = x ^ y;

@@ -57,7 +57,8 @@ Qbin::operator const Qbits() const
 
 Qbit& Qbin::operator[](size_t pos)
 {
-    return *(dynamic_pointer_cast<Qbit>(as_const(*this).Qnary::operator[](pos)));
+	Qbit& qbit = dynamic_cast<Qbit&>(Qnary::operator[](pos));
+    return qbit;
 }
 
 Qassign<Qbin> Qbin::operator=(const Qbin& right)

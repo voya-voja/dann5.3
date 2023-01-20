@@ -101,7 +101,7 @@ namespace dann5 {
 			// Accesses the Q bit at position pos. The first version returns the value 
 			// of the Q bit, the second version returns a reference to a Q bit object 
 			// that allows modification of the value.
-			Qcell::Sp operator[](size_t pos) const noexcept;
+			Qcell::Sp operator[](size_t pos) const  noexcept;
 			Qcell& operator[](size_t pos);
 
 			// Checks if all, any or none of the bits are set to a value

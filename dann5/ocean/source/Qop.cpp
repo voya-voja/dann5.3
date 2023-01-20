@@ -89,7 +89,7 @@ void Qop::output(const Qdef::Sp& pOut, size_t forBit)
 		size_t size = noqbs();
 		if (pNary != nullptr && size != pNary->noqbs())
 		{
-			pNary->resize(size, cSuperposition);
+			pNary->resize(size);
 		}
 	}
 	else
@@ -110,15 +110,16 @@ Qubo Qop::qubo(bool finalized, size_t forBit) const
 	Qdefs outs = outputs();
 	size_t size = iSize + outs.size();
 	Qubo aQubo;
-	QuboTable::IoPorts ports(size);
+	QuboTable::IoPorts ports;
 	// process input ports
 	for (size_t at = 0; at < iSize; at++)
 	{
 		// use names of argument and this operands as unique string describing inputs
-		Qcell::Sp pOprnd = dynamic_pointer_cast<Qcell>(ins[at]);
+		Qdef::Sp pIn = ins[at];
+		Qcell::Sp pOprnd = dynamic_pointer_cast<Qcell>(pIn);
 		if (pOprnd == nullptr)
 		{
-			Qnary::Sp pNary = dynamic_pointer_cast<Qnary>(ins[at]);
+			Qnary::Sp pNary = dynamic_pointer_cast<Qnary>(pIn);
 			pOprnd = as_const(*pNary)[forBit];
 		}
 		Qop::Sp pOp = dynamic_pointer_cast<Qop>(pOprnd);
@@ -127,20 +128,21 @@ Qubo Qop::qubo(bool finalized, size_t forBit) const
 			// add sub-qubo from argument operand
 			aQubo += pOp->qubo(finalized, forBit);
 			Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->output(forBit));
-			ports[at] = QuboTable::IoPort(pOut->id(), pOut->value());
+			ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
 		}
 		else
 		{
-			ports[at] = QuboTable::IoPort(pOprnd->id(), pOprnd->value());
+			ports.push_back(QuboTable::IoPort(pOprnd->id(), pOprnd->value()));
 		}
 	}
 	// process output ports
 	for (size_t at = iSize; at < size; at++)
 	{
-		Qcell::Sp pOprnd = dynamic_pointer_cast<Qcell>(outs[at - iSize]);
+		Qdef::Sp pOut = outs[at - iSize];
+		Qcell::Sp pOprnd = dynamic_pointer_cast<Qcell>(pOut);
 		if (pOprnd == nullptr)
 		{
-			Qnary::Sp pNary = dynamic_pointer_cast<Qnary>(outs[at - iSize]);
+			Qnary::Sp pNary = dynamic_pointer_cast<Qnary>(pOut);
 			pOprnd = as_const(*pNary)[forBit];
 		}
 		Qop::Sp pOp = dynamic_pointer_cast<Qop>(pOprnd);
@@ -149,13 +151,15 @@ Qubo Qop::qubo(bool finalized, size_t forBit) const
 			// add sub-qubo from argument operand
 			aQubo += pOp->qubo(finalized, forBit);
 			Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->output(forBit));
-			ports[at] = QuboTable::IoPort(pOut->id(), pOut->value());
+			if(pOut != nullptr)
+				ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
 		}
 		else
 		{
-			ports[at] = QuboTable::IoPort(pOprnd->id(), pOprnd->value());
+			ports.push_back(QuboTable::IoPort(pOprnd->id(), pOprnd->value()));
 		}
 	}
+	if (size > ports.size()) return aQubo;
 	// create QuboTable rule object for this operand
 	QuboTable::Sp pQubo = Factory<string, QuboTable>::Instance().create(identifier());
 	Qubo qubo = pQubo->qubo(ports, finalized);

@@ -31,6 +31,10 @@ namespace dann5 {
 			// Returns the number of Q bits that the Q binary holds
 			virtual std::size_t noqbs() const noexcept { return 1; };
 
+			// return string presentation of this Qcell
+			virtual string toString(bool decomposed = false,
+				size_t forBit = cAllBits) const;
+
 			// type conversion operator
 			operator const Qvalue() const { return value(); };
 			operator const Qvalue() { return value(); };

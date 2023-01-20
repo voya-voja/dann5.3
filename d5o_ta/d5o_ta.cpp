@@ -8,6 +8,7 @@
 #include <Qassign.h>
 #include <Qblock.h>
 #include <Qint.h>
+#include <Qbinder.h>
 
 #include <Qsolver.h>
 #include <Utility.h>
@@ -324,8 +325,110 @@ int main(int argc, const char * argv[])
     UTestQbin utQbin;
 //    utQbin.runAll(cout);
     UTestQwhole utQwhole;
-    utQwhole.runAll(cout);
+//    utQwhole.runAll(cout);
+//    utQwhole.prime6(cout);
+    Qwhole a("a", 6), b(2, "b"), c(2, "c"), d(2, "d");
+    Qexpr<Qwhole> expr = b + c;
+    cout << expr << endl << endl;
+    cout << expr.toString(true) << endl << endl;
+    Qassign<Qwhole> assign = d = a - expr;
+    cout << assign << endl << endl;
+    cout << assign.toString(true) << endl << endl;
+    cout << " It's generic Qubo is '" << assign.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << assign.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << assign.solve() << endl;
 
+    Qsolver::Samples solutions = assign.compute();
+    Qbinder xyBinder(solutions);
+    xyBinder = d, a, b, c;
+    cout << endl << xyBinder << endl;
+/*
+    Qwhole  x(4, "x"), y(4, "y"), r(4, "r"), _0("_0", 0);
+    Qbit _1("_1", 1);
+    Qblock blck;
+    {
+        Qexpr<Qbit> expr;
+        expr = r[1] | r[0];
+        for (size_t at = 2; at < r.noqbs(); at++)
+            expr = r[at] | expr;
+        blck = y = r + x,
+               _1 = expr;
+    }
+    cout << "Qwhole x != y " << endl << blck << endl
+        << " decomposed logic: " << blck.toString(true) << endl;
+    cout << " It's generic Qubo is '" << blck.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << blck.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << blck.solve() << endl;
+
+    Qsolver::Samples solutions = blck.compute();
+    Qbinder xyBinder(solutions);
+    xyBinder = x, y;
+    cout << endl << xyBinder << endl;
+
+    Qwhole  y2(4, "y"), r2(4, "r"), x2(5, "x");
+    Qassign<Qwhole> a5 = x2 = r2 + y2;
+    Qexpr<Qbit> a6 = _0[0] != x2[4];
+    Qblock blck2;
+    blck2 = a5, a6;
+    cout << "Qwhole x < y " << endl << blck2 << endl
+        << " decomposed logic: " << blck2.toString(true) << endl;
+    cout << " It's generic Qubo is '" << blck2.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << blck2.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << blck2.solve() << endl;
+
+    Qsolver::Samples solutions2 = blck2.compute();
+    Qbinder xyBinder2(solutions2);
+    xyBinder2 = x, y;
+    cout << endl << xyBinder2 << endl;
+
+    Qwhole  y3(4, "y"), r3(4, "r"), x3(5, "x");
+    Qassign<Qwhole> a7 = x3 = r3 + y3;
+    Qexpr<Qbit> a8 = _0[0] == x3[4];
+    Qblock blck3;
+    blck3 = a7, a8;
+    cout << "Qwhole x >= y " << endl << blck3 << endl
+        << " decomposed logic: " << blck3.toString(true) << endl;
+    cout << " It's generic Qubo is '" << blck3.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << blck3.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << blck3.solve() << endl;
+
+    Qsolver::Samples solutions3 = blck3.compute();
+    Qbinder xyBinder3(solutions3);
+    xyBinder3 = x, y;
+    cout << endl << xyBinder3 << endl;
+
+    Qwhole  y1(5, "y"), r1(4, "r"), x1(4, "x");
+    Qassign<Qwhole> a3 = y1 = r1 + x1;
+    Qexpr<Qbit> a4 = _0[0] == y1[4];
+    Qblock blck1;
+    blck1 = a3, a4;
+    cout << "Qwhole x <= y " << endl << blck1 << endl
+        << " decomposed logic: " << blck1.toString(true) << endl;
+    cout << " It's generic Qubo is '" << blck1.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << blck1.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << blck1.solve() << endl;
+
+    Qsolver::Samples solutions1 = blck1.compute();
+    Qbinder xyBinder1(solutions1);
+    xyBinder1 = x, y;
+    cout << endl << xyBinder1 << endl;
+
+    Qwhole  y4(5, "y"), r4(4, "r"), x4(4, "x");
+    Qassign<Qwhole> a9 = y4 = r4 + x4;
+    Qexpr<Qbit> a10 = _0[0] != y4[4];
+    Qblock blck4;
+    blck4 = a9, a10;
+    cout << "Qwhole x > y " << endl << blck4 << endl
+        << " decomposed logic: " << blck4.toString(true) << endl;
+    cout << " It's generic Qubo is '" << blck4.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << blck4.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << blck4.solve() << endl;
+
+    Qsolver::Samples solutions4 = blck4.compute();
+    Qbinder xyBinder4(solutions4);
+    xyBinder4 = x, y;
+    cout << endl << xyBinder4 << endl;
+*/
 /*
     const clock_t begin_time = clock();
     qwholeAdd_test();

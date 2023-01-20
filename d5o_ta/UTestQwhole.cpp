@@ -7,6 +7,9 @@
 #include "UTestQwhole.hpp"
 
 #include <Qwhole.h>
+#include <Qblock.h>
+#include <Qroutine.h>
+#include <Qbinder.h>
 
 using namespace dann5;
 using namespace dann5::ocean;
@@ -97,8 +100,8 @@ void UTestQwhole::bitwise(ostream& out)
         << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
-    x[3].value(cSuperposition);
-    out << "**** x's 3rd qbit is set to superposition ****" << endl
+    x[2].value(0);
+    out << "**** x's 2nd qbit is set to 0 ****" << endl
         << " decomposed: " << x.toString(true) << endl << endl;
 
     qbExpr = x ^ y;
@@ -126,10 +129,9 @@ void UTestQwhole::bitwise(ostream& out)
         << " resulting in :" << endl << qbExpr.solve() << endl;
 }
 
-
 void UTestQwhole::arithmetic(ostream& out)
 {
-    Qwhole x(2, "x"), y("y", 5), z(1, "z");
+    Qwhole x(2, "x"), y("y", 5), z(1, "z"), _3("_3", 3);
     Qexpr<Qwhole> qwExpr = x + y;
     out << "Addition Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
@@ -137,27 +139,77 @@ void UTestQwhole::arithmetic(ostream& out)
         << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 
-    Qexpr<Qwhole> qwxExpr = z + qwExpr;
+    qwExpr = y + x;
+    out << "Addition Expression" << endl << qwExpr << endl
+        << " decomposed logic: " << qwExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qwExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qwExpr.solve() << endl;
+
+    Qexpr<Qwhole> qwwExpr = x + y + z + _3;// +qwExpr;
+    out << "Addition Expression" << endl << qwwExpr << endl
+        << " decomposed logic: " << qwwExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qwwExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwwExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qwwExpr.solve() << endl;
+
+    qwExpr.reset();
+    Qexpr<Qwhole> qxwExpr = qwExpr + z + _3;
+    out << "Addition Expression" << endl << qxwExpr << endl
+        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qxwExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qxwExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qxwExpr.solve() << endl;
+
+    qwExpr = x + y;
+    qxwExpr = z + qwExpr + _3;
+    out << "Addition Expression" << endl << qxwExpr << endl
+        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qxwExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qxwExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qxwExpr.solve() << endl;
+
+    Qexpr<Qwhole> z_3Expr = z + _3;
+    Qexpr<Qwhole> qwxExpr = x + y + z_3Expr;
     out << "Addition Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
 
-    qwExpr = x - y;
-    out << "Subtraction Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
-        << " It's generic Qubo is '" << qwExpr.qubo(false) << "'" << endl
-        << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl
-        << " resulting in :" << endl << qwExpr.solve() << endl;
+    qwExpr = x + y;
+    z_3Expr = z + _3;
+    Qexpr<Qwhole> qxxExpr = qwExpr + z_3Expr;
+    out << "Addition Expression" << endl << qxxExpr << endl
+        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qxxExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qxxExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qxxExpr.solve() << endl;
 
-    qwxExpr = z - qwExpr;
+    qwExpr = x + y;
+    z_3Expr = z + _3;
+    qxxExpr = z_3Expr + qwExpr;
+    out << "Addition Expression" << endl << qxxExpr << endl
+        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qxxExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qxxExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qxxExpr.solve() << endl;
+
+    qwExpr = y - x;
+    out << "Subtraction Expression" << endl << qwExpr << endl
+        << " decomposed logic: " << qwExpr.toString(true) << endl;
+    out << " It's generic Qubo is '" << qwExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qwExpr.solve() << endl;
+/*
+    qwExpr.reset();
+    qwxExpr = x - qwExpr;
     out << "Subtraction Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
-
+*/
     qwExpr = x * y;
     out << "Multiplication Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
@@ -165,12 +217,32 @@ void UTestQwhole::arithmetic(ostream& out)
         << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 
+    qwExpr.reset();
     qwxExpr = z * qwExpr;
     out << "Multiplication Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
+
+    qwExpr.reset();
+    qwxExpr = qwExpr * z;
+    out << "Multiplication Expression" << endl << qwxExpr << endl
+        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qwxExpr.solve() << endl;
+
+    qwExpr = x * y;
+    z_3Expr = _3 * z;
+    qxxExpr = qwExpr * z_3Expr;
+    out << "Division Expression" << endl << qxxExpr << endl
+        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qxxExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qxxExpr.qubo() << "'" << endl;
+    Qanalyzer anlyze(qxxExpr.qubo());
+    out << endl << " # of nodes: " << anlyze.nodesNo()
+        << " # of branches: " << anlyze.branchesNo();
 
     qwExpr = x / y;
     out << "Division Expression" << endl << qwExpr << endl
@@ -179,13 +251,27 @@ void UTestQwhole::arithmetic(ostream& out)
         << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qwExpr.solve() << endl;
 
+    /*
+    qwExpr.reset();
     qwxExpr = z / qwExpr;
     out << "Division Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
+*/
+
+    Qwhole  r("r", 6), k(2, "k");
+    Qexpr<Qwhole> e1 = r - x, e2 = x / k;
+    Qblock blck;
+    blck = e1, e2;
+    cout << "Subtraction Expression" << endl << blck << endl
+        << " decomposed logic: " << blck.toString(true) << endl;
+    cout << " It's generic Qubo is '" << blck.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << blck.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << blck.solve() << endl;
 }
+
 
 void UTestQwhole::comparison(ostream& out)
 {
@@ -295,8 +381,95 @@ void UTestQwhole::assignment(ostream& out)
     out << "resulting in solutions:" << endl;
     qwholeAssign.solve();
     out << qwholeAssign.solutions() << endl;
+
+    Qwhole y("y", 6), z(2, "z"), k(2, "k");
+    Qassign<Qwhole> a1 = y = r - x, a2 = k = y - z;
+    Qblock blck;
+    blck = a1, a2;
+    cout << "Subtraction Expression" << endl << blck << endl
+        << " decomposed logic: " << blck.toString(true) << endl;
+    cout << " It's generic Qubo is '" << blck.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << blck.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << blck.solve() << endl;
 }
 
 void UTestQwhole::factorial(ostream& out)
 {
+}
+
+void UTestQwhole::prime(ostream& out)
+{
+    Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _1("1_", 1), _2("2_", 2);
+    Qbin _3("3_", 3), _7("7_", 7);
+    Qassign<Qwhole> p_s2_2t2 = prime = s * s + _2 * t * t;
+    Qassign<Qbin> p3mod8 = _3 = prime & _7;
+    Qassign<Qbin> s1mod2 = Qbin(_1) = s & _1;
+    Qassign<Qbin> t1mod2 = Qbin(_1) = t & _1;
+    Qblock gcd1;
+    {
+        Qwhole d(1, "d");
+        gcd1 = s = s * d,
+                t = t * d,
+                d == _1;
+    }
+    Qblock primeNo;
+    primeNo = p_s2_2t2, p3mod8, s1mod2, t1mod2, gcd1;
+    cout << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+    Qubo qPrime = primeNo.qubo();
+    cout << " It's generic Qubo is '" << primeNo.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qPrime << "'" << endl;
+    Qanalyzer analyse(qPrime);
+    out << endl << "*** Prime number p = s2 + 2t2, p mod 8 = 3, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
+//    cout << " resulting in :" << endl << primeNo.solve() << endl;
+    Qsolver::Samples solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    cout << " resulting in :" << endl << pst << endl;
+}
+
+void UTestQwhole::prime6(ostream& out)
+{
+    Qwhole prime(4, "p"), s(2, "s"), t(1, "t"), mod(2, "m"), _1("1_", 1), _5("5_", 5), _3("3_", 3), _6("6_", 6), _8("8_", 8);
+    Qblock prime6m1;
+    {
+        prime6m1 = prime = _6 * s - _1; // ,
+//        prime6m1 = prime + _1 == _6 * s; // ,
+//            prime = t * _8 + mod,
+//                   mod != 5;
+    }
+
+    cout << "Prime Number\n Code" << endl << prime6m1 << endl
+        << " Logic: " << prime6m1.toString(true) << endl;
+    Qubo qPrime = prime6m1.qubo();
+    cout << " It's generic Qubo is '" << prime6m1.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qPrime << "'" << endl;
+    Qanalyzer analyse(qPrime);
+    out << endl << "*** Prime number p = 6s - 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
+    Qsolver::Samples solution = prime6m1.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t, mod;
+    cout << " resulting in :" << endl << pst << endl;
+
+    Qblock prime6p1;
+    {
+        prime6p1 = prime = _6 * s + _1;
+        //                    prime = t * _8 + mod,
+        //                    mod != 5;
+    }
+
+    cout << "Prime Number\n Code" << endl << prime6p1 << endl
+        << " Logic: " << prime6p1.toString(true) << endl;
+    qPrime = prime6p1.qubo();
+    cout << " It's generic Qubo is '" << prime6p1.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qPrime << "'" << endl;
+    Qanalyzer analyse2(qPrime);
+    out << endl << "*** Prime number p = 6s + 1 has: "
+        << analyse2.nodesNo() << " # of node and # of branches: " << analyse2.branchesNo() << endl;
+    Qsolver::Samples solution2 = prime6p1.compute();
+    Qbinder pst2(solution2);
+    pst2 = prime, s, t, mod;
+    cout << " resulting in :" << endl << pst2 << endl;
 }

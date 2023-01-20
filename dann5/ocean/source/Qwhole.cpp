@@ -2,6 +2,7 @@
 #include <QcellOps.h>
 #include <Factory.h>
 #include <Qadd.h>
+#include <QderivedOps.h>
 #include <Qmultiply.h>
 #include <QwholeComp.h>
 #include <Qint.h>
@@ -34,7 +35,7 @@ void Qwhole::resize(size_t size, Qvalue value)
 		Qbin::resize(size);
 	// otherwise, add 0's to the end
 	else
-		Qbin::resize(size, value);
+		Qbin::resize(size, 0);
 }
 string Qwhole::toString(bool decomposed, size_t forBit) const
 {
@@ -286,12 +287,10 @@ Qexpr<Qwhole> Qwhole::operator*(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator-(const Qwhole& right) const
 {
-	// out = *this - right in quantum world is same as *this = out - right
-	Qop::Sp pOp(new Qadd());
-	size_t size = noqbs();
-	Qwhole out(size, pOp->outId());
-	pOp->inputs({ out.clone(), right.clone() });
-	pOp->output(clone());
+	Qop::Sp pOp(new Qsubtract());
+	pOp->inputs({ clone(), right.clone() });
+	Qwhole out(pOp->outId());
+	pOp->output(out.clone());
 
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
@@ -299,12 +298,10 @@ Qexpr<Qwhole> Qwhole::operator-(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator-(const Qexpr<Qwhole>& right) const
 {
-	// out = *this - right in quantum world is same as *this = out - right
-	Qop::Sp pOp(new Qadd());
-	size_t size = noqbs();
-	Qwhole out(size, pOp->outId());
-	pOp->inputs({ out.clone(), right.rootDef() });
-	pOp->output(clone());
+	Qop::Sp pOp(new Qsubtract());
+	pOp->inputs({ clone(), right.rootDef() });
+	Qwhole out(pOp->outId());
+	pOp->output(out.clone());
 
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
@@ -312,12 +309,10 @@ Qexpr<Qwhole> Qwhole::operator-(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator/(const Qwhole& right) const
 {
-	// out = *this / right in quantum world is same as *this = out * right
-	Qop::Sp pOp(new Qmultiply());
-	size_t size = noqbs();
-	Qwhole out(size, pOp->outId());
-	pOp->inputs({ out.clone(), right.clone() });
-	pOp->output(clone());
+	Qop::Sp pOp(new Qdivide());
+	pOp->inputs({ clone(), right.clone() });
+	Qwhole out(pOp->outId());
+	pOp->output(out.clone());
 
 	Qexpr<Qwhole> expr(pOp);
 	return expr;

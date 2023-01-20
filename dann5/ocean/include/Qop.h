@@ -30,9 +30,6 @@ namespace dann5 {
 			// Destruct Q operation with shared pointers to its inputs
 			~Qop();
 
-			// Return true, if this Qop object is identical to the object pointed by pRight
-			bool isIdentical(const Qop::Sp& pRight) { return(this == pRight.get()); }
-
 			// override to return true, if the operation needs to be treated just as a definition
 			virtual bool asDefinition() { return false; };
 
@@ -46,6 +43,9 @@ namespace dann5 {
 			// throw invalid_argument exception when # of inputs in the list is not
 			// the same as value defined by noInputs() const
 			virtual void inputs(const Qdefs&);
+
+			// Remove all the Qdefs from the list of inputs
+			void releaseArguments();
 
 			// add Q operation input to the list of the inputs
 			// throw invalid_argument exception preventing a new argument to be added to
@@ -93,9 +93,6 @@ namespace dann5 {
 			virtual void reset();
 
 		protected:
-			// Remove all the Qdefs from the list of inputs
-			void releaseArguments();
-
 			// The Qop's number of inputs
 			void noInputs(size_t nIns) { mNoInputs = nIns; }
 
