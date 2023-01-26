@@ -234,5 +234,6 @@ void Qop::reset()
 	{
 		pInput->reset();
 	}
-	mpOutput->reset();
+	if(mpOutput != nullptr)
+		mpOutput->reset();
 }

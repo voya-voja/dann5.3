@@ -18,7 +18,7 @@ namespace dann5 {
 		// A Q derived operation is an abstract base for operations like quantum
 		// subtraction or division. The QeqOp specializes a Qnary operation
 //		template <typename Q_Type = Qtype>
-		class QderivedOp : public QnaryOp
+		class QderivedOp : public QcellOp
 		{
 		public:
 			// QeqOp's shared pointer 
@@ -35,7 +35,7 @@ namespace dann5 {
 			~QderivedOp();
 
 			// Returns the number of Q bits that the Q binary holds
-			virtual size_t noqbs() const noexcept { return mEq.noqbs(); };
+//			virtual size_t noqbs() const noexcept { return mEq.noqbs(); };
 
 			// Overridden output setter to refresh mAdd object
 			virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits);
@@ -46,7 +46,7 @@ namespace dann5 {
 				size_t forBit = cAllBits) const
 			{
 				if (decomposed) return mEq.toString(decomposed, forBit);
-				return QnaryOp::toString(decomposed, forBit);
+				return QcellOp::toString(decomposed, forBit);
 			};
 
 			// return Qubo presentation of this Q operation
@@ -59,6 +59,7 @@ namespace dann5 {
 			// Refreshes QnaryOp cells with the subtractition logic
 			virtual void refresh();
 
+			virtual Qvalue calculate(const Qvalues& values) const;
 		private:
 			Qeq mEq;	// Qeq operand is used to form derived expression
 		};

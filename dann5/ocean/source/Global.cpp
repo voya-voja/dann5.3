@@ -255,8 +255,8 @@ const string Qsubtract::cMark = "-";
 const string Qsubtract::cName = "subtract";
 
 /**** Factory Creator's of Subtraction ****/
-Creator<string, QnaryOp, Qsubtract> gSubtractionCreator_m(Qsubtract::cMark);
-Creator<string, QnaryOp, Qsubtract> gSubtractionCreator(Qsubtract::cName);
+Creator<string, QcellOp, Qsubtract> gSubtractionCreator_m(Qsubtract::cMark);
+Creator<string, QcellOp, Qsubtract> gSubtractionCreator(Qsubtract::cName);
 
 /**** Multiplication binary operation ****/
 
@@ -273,5 +273,5 @@ const string Qdivide::cMark = "/";
 const string Qdivide::cName = "divide";
 
 /**** Factory Creator's of Multiplication ****/
-Creator<string, QnaryOp, Qdivide> gDivisionCreator_m(Qdivide::cMark);
-Creator<string, QnaryOp, Qdivide> gDivisionCreator(Qdivide::cName);
+Creator<string, QcellOp, Qdivide> gDivisionCreator_m(Qdivide::cMark);
+Creator<string, QcellOp, Qdivide> gDivisionCreator(Qdivide::cName);

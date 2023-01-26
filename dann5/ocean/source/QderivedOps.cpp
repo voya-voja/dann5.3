@@ -14,13 +14,13 @@ using namespace dann5::ocean;
 /*** Quantum derived operation ***/
 
 QderivedOp::QderivedOp(const string& id, const QnaryOp& op)
-	:QnaryOp(id, op.noInputs()), mEq()
+	:QcellOp(id, op.noInputs()), mEq()
 {
 	mEq.inputs({ op.clone() });
 }
 
 QderivedOp::QderivedOp(const QderivedOp& right)
-	: QnaryOp(right), mEq(right.mEq)
+	: QcellOp(right), mEq(right.mEq)
 {}
 
 QderivedOp::~QderivedOp()
@@ -28,7 +28,7 @@ QderivedOp::~QderivedOp()
 
 void QderivedOp::output(const Qdef::Sp& pOut, size_t forBit)
 {
-	QnaryOp::output(pOut, forBit);
+	QcellOp::output(pOut, forBit);
 	refresh();
 }
 
@@ -42,31 +42,33 @@ void QderivedOp::refresh()
 	size_t iSize = ins.size();
 	if (iSize != 2) return;
 
-	bool reduceSize = true;
 	// ... is same as ins[0] = out + ins[1]
 	size_t outSize = ins[0]->noqbs();
 	if (pOut->noqbs() == 0)
 	{
 		dynamic_pointer_cast<Qnary>(pOut)->resize(outSize);
-		reduceSize = false;
 	}
 	QnaryOp::Sp mpSubstOp = dynamic_pointer_cast<QnaryOp>(as_const(mEq).Qop::inputs()[0]);
-	mpSubstOp->releaseArguments();
-	Qdef::Sp pIn = ins[1];
-	mpSubstOp->inputs({ pOut, pIn });
 	Qwhole out(mpSubstOp->outId());
-	mpSubstOp->output(out.clone());
-	pIn = ins[0];
-	mEq.QcellOp::output(pIn);
-	if (reduceSize)
+	mpSubstOp->releaseArguments();
+	QnaryOp::Sp mpNaryOp = dynamic_pointer_cast<QnaryOp>(ins[1]);
+	if(mpNaryOp != nullptr)
 	{
-		dynamic_pointer_cast<Qnary>(pOut)->resize(pOut->noqbs() - 1);
-		dynamic_pointer_cast<Qnary>(ins[0])->resize(ins[0]->noqbs() - 1);
+		Qdefs insNaryOp = as_const(*mpNaryOp).Qop::inputs();
+		mpNaryOp->releaseArguments();
+		mpNaryOp->inputs(insNaryOp);
 	}
-	Qcells logic = Qcells(mEq);
-	Qcells& subractCells = cells();
-	for (auto pCell : logic)
-		subractCells.push_back(pCell);
+	mpSubstOp->inputs({ pOut, ins[1] });
+	mpSubstOp->output(out.clone());
+	mEq.QcellOp::output(ins[0]);
+}
+
+Qvalue QderivedOp::calculate(const Qvalues& values) const
+{
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(mEq.Qop::output());
+	if (pOut == nullptr || pOut->value() == cSuperposition)
+		return(cSuperposition);
+	return(Qvalue(values[0] == pOut->value()));
 }
 
 /*** Substraction ***/

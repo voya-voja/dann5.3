@@ -327,11 +327,11 @@ int main(int argc, const char * argv[])
     UTestQwhole utQwhole;
 //    utQwhole.runAll(cout);
 //    utQwhole.prime6(cout);
-    Qwhole a("a", 6), b(2, "b"), c(2, "c"), d(2, "d");
-    Qexpr<Qwhole> expr = b + c;
+    Qwhole a("a", 6), b(2, "b"), c(2, "c"), d(4, "d"), e(2, "e");
+    Qexpr<Qwhole> expr = a - c;
     cout << expr << endl << endl;
     cout << expr.toString(true) << endl << endl;
-    Qassign<Qwhole> assign = d = a - expr;
+    Qassign<Qwhole> assign = d = expr - (e + b);
     cout << assign << endl << endl;
     cout << assign.toString(true) << endl << endl;
     cout << " It's generic Qubo is '" << assign.qubo(false) << "'" << endl
