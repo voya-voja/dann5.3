@@ -9,6 +9,7 @@
 #include <Qblock.h>
 #include <Qint.h>
 #include <Qbinder.h>
+#include <Qroutine.h>
 
 #include <Qsolver.h>
 #include <Utility.h>
@@ -157,7 +158,7 @@ void qintNegativeAdd_test()
     cout << endl << "A = " << A.Qbin::toString() << endl;
 
     Qassign<Qint> aA = A = a + b; // +c + d + _1;
-    cout << endl << "aA.A = " << dynamic_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
+    cout << endl << "aA.A = " << static_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
 
     cout << endl << aA << endl << endl << aA.toString(true) << endl;
     cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
@@ -182,7 +183,7 @@ void qintPositiveAdd_test()
     cout << endl << "A = " << A.Qbin::toString() << endl;
 
     Qassign<Qint> aA = A = a + b; // +c + d + _1;
-    cout << endl << "aA.A = " << dynamic_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
+    cout << endl << "aA.A = " << static_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
 
     cout << endl << aA << endl << endl << aA.toString(true) << endl;
     cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
@@ -325,42 +326,43 @@ int main(int argc, const char * argv[])
     UTestQbin utQbin;
 //    utQbin.runAll(cout);
     UTestQwhole utQwhole;
-//    utQwhole.runAll(cout);
-//    utQwhole.prime6(cout);
-    Qwhole a("a", 6), b(2, "b"), c(2, "c"), d(4, "d"), e(2, "e");
-    Qexpr<Qwhole> expr = a - c;
-    cout << expr << endl << endl;
-    cout << expr.toString(true) << endl << endl;
-    Qassign<Qwhole> assign = d = expr - (e + b);
-    cout << assign << endl << endl;
-    cout << assign.toString(true) << endl << endl;
-    cout << " It's generic Qubo is '" << assign.qubo(false) << "'" << endl
-        << " & finalized Qubo is '" << assign.qubo() << "'" << endl;
-    cout << " resulting in :" << endl << assign.solve() << endl;
-
-    Qsolver::Samples solutions = assign.compute();
+ //   utQwhole.runAll(cout); 
+ 
+    Qwhole  x(3, "x"), y(3, "y"), z(1, "z"), _0("_0", 0);
+    Qexpr<Qwhole> xpr = x < y ;
+    cout << "Qwhole x != y " << endl << xpr << endl
+        << " decomposed logic: " << xpr.toString(true) << endl;
+    cout << " It's generic Qubo is '" << xpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << xpr.qubo() << "'" << endl;
+//    cout << " resulting in :" << endl << xpr.solve() << endl;
+    Qanalyzer anlyze(xpr.qubo());
+    cout << endl << " # of nodes: " << anlyze.nodesNo()
+        << " # of branches: " << anlyze.branchesNo() << endl << endl;
+    Qsolver::Samples solutions = xpr.compute();
     Qbinder xyBinder(solutions);
-    xyBinder = d, a, b, c;
+    xyBinder = x, y;
     cout << endl << xyBinder << endl;
+
 /*
-    Qwhole  x(4, "x"), y(4, "y"), r(4, "r"), _0("_0", 0);
     Qbit _1("_1", 1);
-    Qblock blck;
+    Qblock neBlck;
     {
         Qexpr<Qbit> expr;
         expr = r[1] | r[0];
         for (size_t at = 2; at < r.noqbs(); at++)
             expr = r[at] | expr;
-        blck = y = r + x,
+        neBlck = y = r + x,
                _1 = expr;
     }
-    cout << "Qwhole x != y " << endl << blck << endl
-        << " decomposed logic: " << blck.toString(true) << endl;
-    cout << " It's generic Qubo is '" << blck.qubo(false) << "'" << endl
-        << " & finalized Qubo is '" << blck.qubo() << "'" << endl;
-    cout << " resulting in :" << endl << blck.solve() << endl;
+    Qroutine notEqual("ne", neBlck);
 
-    Qsolver::Samples solutions = blck.compute();
+    cout << "Qwhole x != y " << endl << neBlck << endl
+        << " decomposed logic: " << neBlck.toString(true) << endl;
+    cout << " It's generic Qubo is '" << neBlck.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << neBlck.qubo() << "'" << endl;
+    cout << " resulting in :" << endl << neBlck.solve() << endl;
+
+    Qsolver::Samples solutions = neBlck.compute();
     Qbinder xyBinder(solutions);
     xyBinder = x, y;
     cout << endl << xyBinder << endl;
@@ -378,12 +380,12 @@ int main(int argc, const char * argv[])
 
     Qsolver::Samples solutions2 = blck2.compute();
     Qbinder xyBinder2(solutions2);
-    xyBinder2 = x, y;
+    xyBinder2 = x2, y2;
     cout << endl << xyBinder2 << endl;
-
-    Qwhole  y3(4, "y"), r3(4, "r"), x3(5, "x");
+*//*
+    Qwhole  y3(3, "y"), r3(3, "_>=0"), x3(3, "x");
     Qassign<Qwhole> a7 = x3 = r3 + y3;
-    Qexpr<Qbit> a8 = _0[0] == x3[4];
+    Qexpr<Qbit> a8 = _0[0] == x3[3];
     Qblock blck3;
     blck3 = a7, a8;
     cout << "Qwhole x >= y " << endl << blck3 << endl
@@ -394,7 +396,7 @@ int main(int argc, const char * argv[])
 
     Qsolver::Samples solutions3 = blck3.compute();
     Qbinder xyBinder3(solutions3);
-    xyBinder3 = x, y;
+    xyBinder3 = x3, y3;
     cout << endl << xyBinder3 << endl;
 
     Qwhole  y1(5, "y"), r1(4, "r"), x1(4, "x");
@@ -410,7 +412,7 @@ int main(int argc, const char * argv[])
 
     Qsolver::Samples solutions1 = blck1.compute();
     Qbinder xyBinder1(solutions1);
-    xyBinder1 = x, y;
+    xyBinder1 = x1, y1;
     cout << endl << xyBinder1 << endl;
 
     Qwhole  y4(5, "y"), r4(4, "r"), x4(4, "x");
@@ -426,7 +428,7 @@ int main(int argc, const char * argv[])
 
     Qsolver::Samples solutions4 = blck4.compute();
     Qbinder xyBinder4(solutions4);
-    xyBinder4 = x, y;
+    xyBinder4 = x4, y4;
     cout << endl << xyBinder4 << endl;
 */
 /*

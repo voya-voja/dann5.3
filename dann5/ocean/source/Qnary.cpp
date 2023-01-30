@@ -21,7 +21,7 @@ Qnary::Qnary(const Qnary& right)
 inline void Qnary::initCells(const Qcells& cells)
 {
 	for (auto pCell : cells)
-		mCells.push_back(dynamic_pointer_cast<Qcell>(pCell->clone()));
+		mCells.push_back(static_pointer_cast<Qcell>(pCell->clone()));
 }
 
 Qnary::operator Bits()
@@ -197,7 +197,7 @@ Qcell& Qnary::operator[](size_t pos)
 
 Qnary::Sp Qnary::operator<<(size_t pos) const
 {
-	Qnary::Sp result = dynamic_pointer_cast<Qnary>(clone());
+	Qnary::Sp result = static_pointer_cast<Qnary>(clone());
 	(*result) <<= pos;
 	return result;
 }
@@ -217,7 +217,7 @@ Qnary& Qnary::operator<<=(size_t pos)
 
 Qnary::Sp Qnary::operator>>(size_t pos) const
 {
-	Qnary::Sp result = dynamic_pointer_cast<Qnary>(clone());
+	Qnary::Sp result = static_pointer_cast<Qnary>(clone());
 	(*result) >>= pos;
 	return result;
 }
@@ -237,7 +237,7 @@ Qnary& Qnary::operator>>=(size_t pos)
 
 Qnary::Sp Qnary::operator<<(Qvalue value) const
 {
-	Qnary::Sp result = dynamic_pointer_cast<Qnary>(clone());
+	Qnary::Sp result = static_pointer_cast<Qnary>(clone());
 	(*result) <<= value;
 	return result;
 }
@@ -251,7 +251,7 @@ Qnary& Qnary::operator<<=(Qvalue value)
 
 Qnary::Sp Qnary::operator>>(Qvalue value) const
 {
-	Qnary::Sp result = dynamic_pointer_cast<Qnary>(clone());
+	Qnary::Sp result = static_pointer_cast<Qnary>(clone());
 	(*result) >>= value;
 	return result;
 }

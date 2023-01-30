@@ -127,7 +127,7 @@ Qubo Qop::qubo(bool finalized, size_t forBit) const
 		{
 			// add sub-qubo from argument operand
 			aQubo += pOp->qubo(finalized, forBit);
-			Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->output(forBit));
+			Qcell::Sp pOut = static_pointer_cast<Qcell>(pOp->output(forBit));
 			ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
 		}
 		else

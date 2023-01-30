@@ -43,7 +43,11 @@ void QcellOp::output(const Qdef::Sp& pOut, size_t forBit)
 
 void QcellOp::value(Qvalue v)
 {
-	throw std::logic_error("Setting value of a Qcell operation!");
+	Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(outputs()[0]);
+	if (pOut != nullptr)
+		pOut->value(v);
+	else
+		throw std::logic_error("Setting value of a Qcell operation without output argument!");
 }
 
 Qvalue QcellOp::value() const
@@ -320,7 +324,7 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 	{
 		string cStr = Qop::output()->toString(decomposed, forBit) + " = ";
 
-		Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(mpAddition->Qop::output(forBit));
+		Qcell::Sp pOut = static_pointer_cast<Qcell>(mpAddition->Qop::output(forBit));
 
 		Qvalue value = pOut->value();
 		string valueStr = "";
@@ -342,9 +346,9 @@ Qvalue Qaddition::Carry::calculate(const Qvalues& values) const
 {
 	const Qdefs& ins = as_const(*mpAddition).Qop::inputs();
 	size_t iSize = ins.size();
-	Qvalue carry = dynamic_pointer_cast<Qcell>(ins[0])->value() & dynamic_pointer_cast<Qcell>(ins[1])->value();
+	Qvalue carry = static_pointer_cast<Qcell>(ins[0])->value() & dynamic_pointer_cast<Qcell>(ins[1])->value();
 	if (iSize == 3)
-		carry &= dynamic_pointer_cast<Qcell>(ins[2])->value();
+		carry &= static_pointer_cast<Qcell>(ins[2])->value();
 	return carry;
 }
 

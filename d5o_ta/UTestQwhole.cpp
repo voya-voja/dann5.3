@@ -29,6 +29,10 @@ void UTestQwhole::runAll(ostream& out)
     assignment(out);
     out << endl << " --- Factorial ----" << endl;
     factorial(out);
+    out << endl << " --- Prime numbers ----" << endl;
+    prime(out);
+    out << endl << " --- Prime numbers (6 * Qwhole +/- 1) algorithm ----" << endl;
+    void prime6(ostream & out);
 }
 
 void UTestQwhole::initialization(ostream& out)
@@ -201,7 +205,7 @@ void UTestQwhole::arithmetic(ostream& out)
     out << " It's generic Qubo is '" << qwExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
-/*
+/* Issue #6
     qwExpr.reset();
     qwxExpr = x - qwExpr;
     out << "Subtraction Expression" << endl << qwxExpr << endl
@@ -209,6 +213,22 @@ void UTestQwhole::arithmetic(ostream& out)
         << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
+*/
+
+    qwExpr = qwExpr - x;
+    out << "Subtraction Expression" << endl << qwExpr << endl
+        << " decomposed logic: " << qwExpr.toString(true) << endl;
+    out << " It's generic Qubo is '" << qwExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qwExpr.solve() << endl;
+/* Issue #6 
+        qwExpr.reset();
+        qwxExpr = z_3Expr - qwExpr;
+        out << "Subtraction Expression" << endl << qwxExpr << endl
+            << " decomposed logic: " << qwxExpr.toString(true) << endl
+            << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
+            << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
+        out << " resulting in :" << endl << qwxExpr.solve() << endl;
 */
     qwExpr = x * y;
     out << "Multiplication Expression" << endl << qwExpr << endl
@@ -236,30 +256,56 @@ void UTestQwhole::arithmetic(ostream& out)
     qwExpr = x * y;
     z_3Expr = _3 * z;
     qxxExpr = qwExpr * z_3Expr;
-    out << "Division Expression" << endl << qxxExpr << endl
+    out << "Multiplication Expression" << endl << qxxExpr << endl
         << " decomposed logic: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '" << qxxExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qxxExpr.qubo() << "'" << endl;
     Qanalyzer anlyze(qxxExpr.qubo());
     out << endl << " # of nodes: " << anlyze.nodesNo()
-        << " # of branches: " << anlyze.branchesNo();
+        << " # of branches: " << anlyze.branchesNo() << endl << endl;
 
-    qwExpr = x / y;
-    out << "Division Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
-        << " It's generic Qubo is '" << qwExpr.qubo(false) << "'" << endl
-        << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl
-        << " resulting in :" << endl << qwExpr.solve() << endl;
-
-    /*
     qwExpr.reset();
-    qwxExpr = z / qwExpr;
+    qwExpr = y / x;
+    out << "Division Expression" << endl << qwExpr << endl
+        << " decomposed logic: " << qwExpr.toString(true) << endl;
+    out << " It's generic Qubo is '" << qwExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwExpr.qubo() << "'" << endl;
+    Qanalyzer anlyzeD(qwExpr.qubo());
+    out << endl << " # of nodes: " << anlyzeD.nodesNo()
+        << " # of branches: " << anlyzeD.branchesNo() << endl << endl;
+    out << " resulting in :" << endl << qwExpr.solve() << endl;
+
+    qwExpr.reset();
+    qwxExpr.reset();
+    qwxExpr = qwExpr / z;
     out << "Division Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
         << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
-*/
+
+    qwExpr.reset();
+    qwxExpr.reset();
+    qwExpr = x + z;
+    qwxExpr = y / qwExpr;
+    out << "Division Expression" << endl << qwxExpr << endl
+        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
+    out << " resulting in :" << endl << qwxExpr.solve() << endl;
+
+    qwExpr.reset();
+    qwxExpr.reset();
+    z_3Expr.reset();
+    qwxExpr = z_3Expr / qwExpr;
+    out << "Division Expression" << endl << qwxExpr << endl
+        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " It's generic Qubo is '" << qwxExpr.qubo(false) << "'" << endl
+        << " & finalized Qubo is '" << qwxExpr.qubo() << "'" << endl;
+    Qanalyzer anlyzeD2(qwxExpr.qubo());
+    out << endl << " # of nodes: " << anlyzeD2.nodesNo()
+        << " # of branches: " << anlyzeD2.branchesNo() << endl << endl;
+//    out << " resulting in :" << endl << qwxExpr.solve() << endl;
 
     Qwhole  r("r", 6), k(2, "k");
     Qexpr<Qwhole> e1 = r - x, e2 = x / k;

@@ -76,13 +76,13 @@ void Qmultiply::sumDiagonal(const QcellMatrix& matrix)
 			} while (!ins.empty() && addIns.size() < 3);
 
 			if (addIns.size() == 1)
-				xCells[at] = dynamic_pointer_cast<Qcell>(addIns[0]);
+				xCells[at] = static_pointer_cast<Qcell>(addIns[0]);
 			else
 			{	// create addition object according to # of addition-inputs
 				if (addIns.size() == 2)
-					pAddition = dynamic_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(XorQT::cMark));
+					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(XorQT::cMark));
 				else
-					pAddition = dynamic_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(AdderQT::cMark));
+					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(AdderQT::cMark));
 				pAddition->inputs(addIns);
 				Qbit out(pAddition->outId());
 				pAddition->output(out.clone());

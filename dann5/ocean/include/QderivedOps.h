@@ -17,7 +17,6 @@ namespace dann5 {
 
 		// A Q derived operation is an abstract base for operations like quantum
 		// subtraction or division. The QeqOp specializes a Qnary operation
-//		template <typename Q_Type = Qtype>
 		class QderivedOp : public QcellOp
 		{
 		public:

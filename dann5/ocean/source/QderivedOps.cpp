@@ -46,9 +46,9 @@ void QderivedOp::refresh()
 	size_t outSize = ins[0]->noqbs();
 	if (pOut->noqbs() == 0)
 	{
-		dynamic_pointer_cast<Qnary>(pOut)->resize(outSize);
+		static_pointer_cast<Qnary>(pOut)->resize(outSize);
 	}
-	QnaryOp::Sp mpSubstOp = dynamic_pointer_cast<QnaryOp>(as_const(mEq).Qop::inputs()[0]);
+	QnaryOp::Sp mpSubstOp = static_pointer_cast<QnaryOp>(as_const(mEq).Qop::inputs()[0]);
 	Qwhole out(mpSubstOp->outId());
 	mpSubstOp->releaseArguments();
 	QnaryOp::Sp mpNaryOp = dynamic_pointer_cast<QnaryOp>(ins[1]);

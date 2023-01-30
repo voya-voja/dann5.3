@@ -6,6 +6,7 @@
 #include <Qmultiply.h>
 #include <QwholeComp.h>
 #include <Qint.h>
+#include <Qroutine.h>
 
 using namespace dann5::ocean;
 
@@ -64,83 +65,71 @@ string Qwhole::solution(size_t sampleId) const
 	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
 }
 
-Qassign<Qwhole> Qwhole::operator=(const Qwhole& right)
+Qassign<Qwhole> Qwhole::operator=(const Qwhole& right) const
 {
 	Qexpr<Qwhole> expr = right == right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator=(const Qexpr<Qwhole>& right)
+Qassign<Qwhole> Qwhole::operator=(const Qexpr<Qwhole>& right) const
 {
 	Qassign<Qwhole> assign(*this, right);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator+=(const Qwhole& right)
+Qassign<Qwhole> Qwhole::operator+=(const Qwhole& right) const
 {
 	Qexpr<Qwhole> expr = *this + right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator+=(const Qexpr<Qwhole>& right)
+Qassign<Qwhole> Qwhole::operator+=(const Qexpr<Qwhole>& right) const
 {
 	Qexpr<Qwhole> expr = *this + right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator*=(const Qwhole& right)
+Qassign<Qwhole> Qwhole::operator*=(const Qwhole& right) const
 {
 	Qexpr<Qwhole> expr = *this * right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator*=(const Qexpr<Qwhole>& right)
+Qassign<Qwhole> Qwhole::operator*=(const Qexpr<Qwhole>& right) const
 {
 	Qexpr<Qwhole> expr = *this * right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator-=(const Qwhole& right)
+Qassign<Qwhole> Qwhole::operator-=(const Qwhole& right) const
 {
-	// for *this = *this - right, *this is an 'assignee' after the assignment
-	// so: assignee = *this - right => *this = assignee + right
-	Qwhole assignee(noqbs(), "a-" + id());
-	Qexpr<Qwhole> expr = assignee + right;
+	Qexpr<Qwhole> expr = *this - right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator-=(const Qexpr<Qwhole>& right)
+Qassign<Qwhole> Qwhole::operator-=(const Qexpr<Qwhole>& right) const
 {
-	// for *this = *this - right, *this is an 'assignee' after the assignment
-	// so: assignee = *this - right => *this = assignee + right
-	Qwhole assignee(noqbs(), "a-" + id());
-	Qexpr<Qwhole> expr = assignee + right;
+	Qexpr<Qwhole> expr = *this - right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator/=(const Qwhole& right)
+Qassign<Qwhole> Qwhole::operator/=(const Qwhole& right) const
 {
-	// for *this = *this - right, *this is an 'assignee' after the assignment
-	// so: assignee = *this - right => *this = assignee + right
-	Qwhole assignee(noqbs(), "a/" + id());
-	Qexpr<Qwhole> expr = assignee * right;
+	Qexpr<Qwhole> expr = *this / right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qwhole> Qwhole::operator/=(const Qexpr<Qwhole>& right)
+Qassign<Qwhole> Qwhole::operator/=(const Qexpr<Qwhole>& right) const
 {
-	// for *this = *this - right, *this is an 'assignee' after the assignment
-	// so: assignee = *this - right => *this = assignee + right
-	Qwhole assignee(noqbs(), "a/" + id());
-	Qexpr<Qwhole> expr = assignee * right;
+	Qexpr<Qwhole> expr = *this / right;
 	Qassign<Qwhole> assign(*this, expr);
 	return assign;
 }
@@ -155,7 +144,7 @@ Qexpr<Qwhole> Qwhole::operator==(const Qwhole& right) const
 	return expr;
 }
 
-Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right)
+Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(EqQT::cMark);
 	pOp->inputs({ right.rootDef() });
@@ -167,76 +156,102 @@ Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right)
 
 Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
-
+	Qroutine* pRtn = new Qroutine("!=");
+	Qwhole out(noqbs(), pRtn->outId());
+	Qbit _1("_1", 1);
+	{
+		size_t size = out.noqbs();
+		if (size < 2)
+			out.resize(2);
+		Qexpr<Qbit> qbXpr;
+		qbXpr = out[1] | out[0];
+		for (size_t at = 2; at < size; at++)
+			qbXpr = out[at] | qbXpr;
+		*pRtn = Qwhole(right) = out + *this,
+			_1 = qbXpr;
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
 
-Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right)
+Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(NeqQT::cMark);
-	pOp->inputs({ right.rootDef() });
-	pOp->output(clone());
-
+	Qroutine* pRtn = new Qroutine("!=");
+	Qwhole out(noqbs(), pRtn->outId());
+	Qbit _1("_1", 1);
+	{
+		size_t size = out.noqbs();
+		if (size < 2)
+			out.resize(2);
+		Qexpr<Qbit> qbXpr;
+		qbXpr = out[1] | out[0];
+		for (size_t at = 2; at < size; at++)
+			qbXpr = out[at] | qbXpr;
+		*pRtn = out = right - *this,
+			_1 = qbXpr;
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 {
-	QwholeComp comp(Factory<string, QcellOp>::Instance().create(GtQT::cMark));
-	comp.inputs({ clone() });
-	comp.output(right.clone());
-	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
+	Qroutine* pRtn = new Qroutine(">");
+	Qwhole out(noqbs(), pRtn->outId());
+	Qbit _0("_0", 0);
+	{
+		Qwhole rght(right);
+		*pRtn = rght = out + *this,
+			_0 != rght[rght.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);
-	
-	/*
-	Qwhole r(noqbs(), Qdef::id() + ">" + right.Qdef::id());
-	Qexpr<Qbin> iR(!(right));
-	Qexpr<Qwhole> invertRight(as_const(iR).root());
-	Qexpr<Qwhole> expr(r == (*this) + invertRight);
-	*/
 	return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator>=(const Qwhole& right) const
 {
-	QwholeComp comp(Factory<string, QcellOp>::Instance().create(GeQT::cMark));
-	comp.inputs({ clone() });
-	comp.output(right.clone());
-
-	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
+	Qroutine* pRtn = new Qroutine(">=");
+	Qwhole out(noqbs(), pRtn->outId());
+	Qbit _0("_0", 0);
+	{
+		Qwhole ths(*this);
+		*pRtn = ths = out + right,
+			_0 == ths[ths.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator<(const Qwhole& right) const
 {
-	QwholeComp comp(Factory<string, QcellOp>::Instance().create(LtQT::cMark));
-	comp.inputs({ clone() });
-	comp.output(right.clone());
-
-	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
+	Qroutine* pRtn = new Qroutine("<");
+	Qwhole out(noqbs(), pRtn->outId());
+	Qbit _0("_0", 0);
+	{
+		Qwhole ths(*this);
+		*pRtn = ths = out + right,
+			_0 != ths[ths.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator<=(const Qwhole& right) const
 {
-/*	QwholeComp comp(Factory<string, QcellOp>::Instance().create(LeQT::cMark));
-	comp.inputs({ clone() });
-	comp.output(right.clone());
-
-	Qop::Sp pOp = dynamic_pointer_cast<Qop>(comp.clone());
-	Qexpr<Qwhole> expr(pOp);
-	return expr;*/
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(LeQT::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
-
+	Qroutine* pRtn = new Qroutine("<=");
+	Qwhole out(noqbs(), pRtn->outId());
+	Qbit _0("_0", 0);
+	{
+		Qwhole rght(right);
+		*pRtn = rght = out + *this,
+			_0 == rght[rght.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -320,12 +335,10 @@ Qexpr<Qwhole> Qwhole::operator/(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator/(const Qexpr<Qwhole>& right) const
 {
-	// out = *this / right in quantum world is same as *this = out * right
-	Qop::Sp pOp(new Qmultiply());
-	size_t size = noqbs();
-	Qwhole out(size, pOp->outId());
-	pOp->inputs({ out.clone(), right.rootDef() });
-	pOp->output(clone());
+	Qop::Sp pOp(new Qdivide());
+	pOp->inputs({ clone(), right.rootDef() });
+	Qwhole out(pOp->outId());
+	pOp->output(out.clone());
 
 	Qexpr<Qwhole> expr(pOp);
 	return expr;

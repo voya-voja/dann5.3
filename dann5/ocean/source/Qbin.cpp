@@ -39,7 +39,7 @@ Qbin::operator Qbits()
     Qbits bits;
     for(auto pCell: cells)
     {
-        bits.push_back(dynamic_pointer_cast<Qbit>(pCell));
+        bits.push_back(static_pointer_cast<Qbit>(pCell));
     }
     return bits;
 }
@@ -50,7 +50,7 @@ Qbin::operator const Qbits() const
     Qbits bits;
     for(auto pCell: cells)
     {
-        bits.push_back(dynamic_pointer_cast<Qbit>(pCell));
+        bits.push_back(static_pointer_cast<Qbit>(pCell));
     }
     return bits;
 }

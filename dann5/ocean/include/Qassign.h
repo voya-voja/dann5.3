@@ -52,7 +52,7 @@ namespace dann5 {
 			// assignmnet
 			virtual Qstatement::Sp clone() const
 			{
-				return dynamic_pointer_cast<Qstatement>(clone(true));
+				return static_pointer_cast<Qstatement>(clone(true));
 			};
 
 			// Assign a Q expression to Q defintion assignee. 

@@ -32,7 +32,7 @@ namespace dann5 {
 			virtual void inputs(const Qdefs&);
 
 			// overrides output setter to sync its value and value of this operation
-			virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
+			virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits);
 
 			// Returns the largest number of Q bits of all its inputs
 			virtual std::size_t noqbs() const noexcept { return Qop::noqbs(); };

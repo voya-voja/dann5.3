@@ -77,45 +77,45 @@ namespace dann5 {
 			/*** Assignments ***/
 			// assignment of a Q whole creates a Q whole assignment where this 
 			// Q whole is an assignee
-			Qassign<Qwhole> operator=(const Qwhole& right);
+			Qassign<Qwhole> operator=(const Qwhole& right) const;
 
 			// assignment of a Q expression creates a Q whole assignment where this 
 			// Q whole is an assignee
-			Qassign<Qwhole> operator=(const Qexpr<Qwhole>& right);
+			Qassign<Qwhole> operator=(const Qexpr<Qwhole>& right) const;
 
 			/*** Compound Assignments ***/
 			// 'add assignment' of a Q whole creates a following Q whole assignment
 			// [this] = [this] + [right]
-			Qassign<Qwhole> operator+=(const Qwhole& right);
+			Qassign<Qwhole> operator+=(const Qwhole& right) const;
 
 			// 'add assignment' of a Q expression creates a following Q whole assignment
 			// [this] = [this] + [right]
-			Qassign<Qwhole> operator+=(const Qexpr<Qwhole>& right);
+			Qassign<Qwhole> operator+=(const Qexpr<Qwhole>& right) const;
 
 			// 'add assignment' of a Q whole creates a following Q whole assignment
 			// [this] = [this] * [right]
-			Qassign<Qwhole> operator*=(const Qwhole& right);
+			Qassign<Qwhole> operator*=(const Qwhole& right) const;
 
 			// 'add assignment' of a Q expression creates a following Q whole assignment
 			// [this] = [this] * [right]
-			Qassign<Qwhole> operator*=(const Qexpr<Qwhole>& right);
+			Qassign<Qwhole> operator*=(const Qexpr<Qwhole>& right) const;
 
 			// 'add assignment' of a Q whole creates a following Q whole assignment
 			// [this] = [this] - [right]
-			Qassign<Qwhole> operator-=(const Qwhole& right);
+			Qassign<Qwhole> operator-=(const Qwhole& right) const;
 
 			// 'add assignment' of a Q expression creates a following Q whole assignment
 			// [this] = [this] - [right]
-			Qassign<Qwhole> operator-=(const Qexpr<Qwhole>& right);
+			Qassign<Qwhole> operator-=(const Qexpr<Qwhole>& right) const;
 
 
 			// 'add assignment' of a Q whole creates a following Q whole assignment
 			// [this] = [this] / [right]
-			Qassign<Qwhole> operator/=(const Qwhole& right);
+			Qassign<Qwhole> operator/=(const Qwhole& right) const;
 
 			// 'add assignment' of a Q expression creates a following Q whole assignment
 			// [this] = [this] / [right]
-			Qassign<Qwhole> operator/=(const Qexpr<Qwhole>& right);
+			Qassign<Qwhole> operator/=(const Qexpr<Qwhole>& right) const;
 
 			/*** Comparison ***/
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
@@ -124,7 +124,7 @@ namespace dann5 {
 
 			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and 'y'
 			// expression [right] the expression is 'x' == [right]
-			Qexpr<Qwhole> operator==(const Qexpr<Qwhole>& right);
+			Qexpr<Qwhole> operator==(const Qexpr<Qwhole>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' != 'y'
@@ -132,7 +132,7 @@ namespace dann5 {
 
 			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and 'y'
 			// expression [right] the expression is 'x' != [right]
-			Qexpr<Qwhole> operator!=(const Qexpr<Qwhole>& right);
+			Qexpr<Qwhole> operator!=(const Qexpr<Qwhole>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' > 'y'

@@ -7,6 +7,7 @@
 #include <Qdef.h>
 #include <Qblock.h>
 #include <Qsolver.h>
+#include <Qop.h>
 
 using namespace std;
 
@@ -17,29 +18,30 @@ namespace dann5 {
 
 		// Quantum routine is a Q definition with a sequence of logical 
 		// quantum statements organized as Q block
-		class Qroutine : public Qdef
+//		template <typename Out_T = Qtype, typename In_T = Qtype>
+		class Qroutine : public Qdef, public Qop
 		{
 		public:
 			// Qroutine's shared pointer 
 			typedef shared_ptr<Qroutine> Sp;
 
 			// default constructor
-			Qroutine() :Qdef("") {};
+			Qroutine(size_t noArguments = 0) :Qdef(""), Qop(noArguments){};
 
 			// creates Q routine with a name 
-			Qroutine(const string& id) :Qdef(id) {};
+			Qroutine(const string& id, size_t noArguments = 0) :Qdef(id), Qop(noArguments) {};
 
 			// creates a named Q routine with a given Q block 
-			Qroutine(const string& id, const Qblock& block) 
-				:Qdef(id), mBlock(block) {};
+			Qroutine(const string& id, const Qblock& block, size_t noArguments = 0)
+				:Qdef(id), Qop(noArguments), mBlock(block) {};
 
 			// creates a named Q routine with a given list of Q statements
-			Qroutine(const string& id, const Qstatements& statements) 
-				:Qdef(id), mBlock(statements) {};
+			Qroutine(const string& id, const Qstatements& statements, size_t noArguments = 0)
+				:Qdef(id), Qop(noArguments), mBlock(statements) {};
 
 			//copy constructor
 			Qroutine(const Qroutine& right) 
-				:Qdef(right), mBlock(right.mBlock) {};
+				:Qdef(right), Qop(right), mBlock(right.mBlock) {};
 
 			// desruct the Q equation with its members
 			~Qroutine() {};
