@@ -79,7 +79,7 @@ namespace dann5 {
 			void expression(const Qexpression::Sp& pExpr);
 
 			// Returns the number of Q bits that the Q assignment holds
-			virtual size_t noqbs() const noexcept { return mpAssignee->noqbs(); };
+			virtual size_t noqbs() const noexcept { return mpExpr->noqbs(); };
 
 			// Returns a qubo representation of this Q assignment, 
 			// if not finalized, returns a full qubo without substitutions

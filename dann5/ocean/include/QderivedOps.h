@@ -54,6 +54,12 @@ namespace dann5 {
 				return mEq.qubo(finalized, forBit);
 			};
 
+			const Qeq& equalOp() const { return mEq; };
+			QnaryOp::Sp substituteOp() const 
+			{ 
+				return static_pointer_cast<QnaryOp>(as_const(mEq).Qop::inputs()[0]);
+			};
+
 		protected:
 			// Refreshes QnaryOp cells with the subtractition logic
 			virtual void refresh();

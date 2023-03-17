@@ -40,9 +40,14 @@ Qop::~Qop()
 std::size_t Qop::noqbs() const noexcept
 {
 	size_t size = 0;
-	for (auto arg : mInputs)
+	for (auto pIn : mInputs)
 	{
-		size_t aNobs = arg->noqbs();
+		size_t aNobs = pIn->noqbs();
+		if (aNobs > size) size = aNobs;
+	}
+	if (mpOutput != nullptr)
+	{
+		size_t aNobs = mpOutput->noqbs();
 		if (aNobs > size) size = aNobs;
 	}
 	return(size);

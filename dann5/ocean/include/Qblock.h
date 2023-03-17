@@ -89,6 +89,10 @@ namespace dann5 {
 			// Q block and returns the reference to 'this' object
 			Qblock& operator<<(const Qstatement& right);
 
+			// An insertion operator (<<) to add a new statement into a copy of this 
+			// Q block and returns the reference to 'this' object
+			Qblock operator<<(const Qstatement& right) const;
+
 			// Comma Operator class allows use of comma operator to insert 
 			// operands into specified Q block
 			class CommaOp

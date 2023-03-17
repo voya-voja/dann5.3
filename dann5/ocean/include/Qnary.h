@@ -117,19 +117,19 @@ namespace dann5 {
 			//Performs binary shift left and binary shift right. 
 			// 1 - 2) Performs binary shift left with superposition shifted in.
 			Qnary::Sp operator<<(size_t pos) const;
-			// The(2) version is performs the shift left to the current object.
+			// The(2) version is performing the shift left to the current object.
 			Qnary& operator<<=(size_t pos);
 			// 3 - 4) Performs binary shift right with superposition shifted in.
 			Qnary::Sp operator>>(size_t pos) const;
-			// The(4) version is performs the shift right to the current object.
+			// The(4) version is performing the shift right to the current object.
 			Qnary& operator>>=(size_t pos);
 			// 5 - 6) Performs binary shift left with specified Q bit value shifted in.
 			Qnary::Sp operator<<(Qvalue value) const;
-			// The(6) version is performs the shift to the current object.
+			// The(6) version is performing the shift to the current object.
 			Qnary& operator<<=(Qvalue value);
 			// 7 - 8) Performs binary shift left with specified Q bit value shifted in.
 			Qnary::Sp operator>>(Qvalue value) const;
-			// The(8) version is performs the shift to the current object.
+			// The(8) version is performing the shift to the current object.
 			Qnary& operator>>=(Qvalue value);
 
 		protected:

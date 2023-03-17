@@ -72,6 +72,10 @@ namespace dann5 {
 			// Q binder and returns teh reference to 'this' object
 			Qbinder& operator<<(const Qdef& right);
 
+			// An insertion operator (<<) to add a new operand into a copy of this 
+			// Q binder and returns teh reference to 'this' object
+			Qbinder operator<<(const Qdef& right) const;
+
 			// Comma Operator class allows use of comma operator to insert 
 			// operands into specified Q binder
 			class CommaOp

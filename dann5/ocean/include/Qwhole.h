@@ -122,7 +122,7 @@ namespace dann5 {
 			// the expression is 'x' == 'y'
 			Qexpr<Qwhole> operator==(const Qwhole& right) const;
 
-			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and 'y'
+			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and
 			// expression [right] the expression is 'x' == [right]
 			Qexpr<Qwhole> operator==(const Qexpr<Qwhole>& right) const;
 
@@ -130,7 +130,7 @@ namespace dann5 {
 			// the expression is 'x' != 'y'
 			Qexpr<Qwhole> operator!=(const Qwhole& right) const;
 
-			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and 'y'
+			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and
 			// expression [right] the expression is 'x' != [right]
 			Qexpr<Qwhole> operator!=(const Qexpr<Qwhole>& right) const;
 
@@ -138,17 +138,33 @@ namespace dann5 {
 			// the expression is 'x' > 'y'
 			Qexpr<Qwhole> operator>(const Qwhole& right) const;
 
+			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and
+			// expression [right] the expression is 'x' > [right]
+			Qexpr<Qwhole> operator>(const Qexpr<Qwhole>& right) const;
+
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' >= 'y'
 			Qexpr<Qwhole> operator>=(const Qwhole& right) const;
+
+			// instantiate Q expression with comparison, e.g. for Qwhole id 'x' and
+			// expression [right] the expression is 'x' >= [right]
+			Qexpr<Qwhole> operator>=(const Qexpr<Qwhole>& right) const;
 
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' < 'y'
 			Qexpr<Qwhole> operator<(const Qwhole& right) const;
 
+			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and
+			// expression [right] the expression is 'x' < [right]
+			Qexpr<Qwhole> operator<(const Qexpr<Qwhole>& right) const;
+
 			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
 			// the expression is 'x' <= 'y'
 			Qexpr<Qwhole> operator<=(const Qwhole& right) const;
+
+			// instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and
+			// expression [right] the expression is 'x' < [right]
+			Qexpr<Qwhole> operator<=(const Qexpr<Qwhole>& right) const;
 
 			/*** Arithmetic ***/
 
@@ -157,7 +173,7 @@ namespace dann5 {
 			Qexpr<Qwhole> operator+(const Qwhole& right) const;
 
 			// instantiate Q expression with add logic, e.g. for Qwhole id 'x' and [right]
-			// object the expression is 'x' + [right]
+			// expression the expression is 'x' + [right]
 			Qexpr<Qwhole> operator+(const Qexpr<Qwhole>& right) const;
 
 			// instantiate Q expression with multiply logic, e.g. for Qwhole ids 'x' and 'y'
@@ -165,7 +181,7 @@ namespace dann5 {
 			Qexpr<Qwhole> operator*(const Qwhole& right) const;
 
 			// instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right]
-			// object the expression is 'x' * [right]
+			// expression the expression is 'x' * [right]
 			Qexpr<Qwhole> operator*(const Qexpr<Qwhole>& right) const;
 
 			// instantiate Q expression with subtract logic, e.g. for Qwhole ids 'x' and 'y'
@@ -174,7 +190,7 @@ namespace dann5 {
 
 			// Subtraction with EXPRESSION needs to be tested
 			// instantiate Q expression with subtract logic, e.g. for Qwhole id 'x' and [right]
-			// object the expression is 'x' - [right]
+			// expression the expression is 'x' - [right]
 			Qexpr<Qwhole> operator-(const Qexpr<Qwhole>& right) const;
 
 			// instantiate Q expression with divide logic, e.g. for Qwhole ids 'x' and 'y'
@@ -183,7 +199,7 @@ namespace dann5 {
 
 			// Division with EXPRESSION needs to be tested
 			// instantiate Q expression with divide logic, e.g. for Qwhole id 'x' and [right]
-			// object the expression is 'x' / [right]
+			// expression the expression is 'x' / [right]
 			Qexpr<Qwhole> operator/(const Qexpr<Qwhole>& right) const;
 
 		protected:

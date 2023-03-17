@@ -13,8 +13,16 @@ void QnaryOp::resize(size_t size, Qvalue value)
 	Qcells& logic = cells();
 	size_t oSize = logic.size();
 	logic.resize(size);
-	for (size_t at = oSize; at < size; at++)
-		logic[at] = Qcell::Sp(new QnullCellOp());
+	Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(outputs()[0]);
+	if (pNaryOut != nullptr)
+	{
+		for (size_t at = oSize; at < size; at++)
+		{
+			QnullCellOp::Sp pNullOp(new QnullCellOp());
+			logic[at] = pNullOp;
+			pNullOp->output(as_const(*pNaryOut)[at], at);
+		}
+	}
 }
 
 void QnaryOp::inputs(const Qdefs& args)
@@ -99,6 +107,9 @@ Qubo QnaryOp::qubo(bool finalized, size_t forBit) const
 	const Qcells& logic = cells();
 	if (forBit != cAllBits)
 	{
+		size_t size = logic.size();
+		if (forBit >= size)
+			return Qubo();	// returns empty qubo
 		Qop::Sp pCellOp = dynamic_pointer_cast<Qop>(logic[forBit]);
 		if (pCellOp != nullptr)
 			return pCellOp->qubo(finalized);

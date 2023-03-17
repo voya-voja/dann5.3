@@ -18,7 +18,6 @@ namespace dann5 {
 
 		// Quantum routine is a Q definition with a sequence of logical 
 		// quantum statements organized as Q block
-//		template <typename Out_T = Qtype, typename In_T = Qtype>
 		class Qroutine : public Qdef, public Qop
 		{
 		public:
@@ -93,6 +92,10 @@ namespace dann5 {
 			// Q routine and returns the reference to 'this' object
 			Qroutine& operator<<(const Qstatement& right);
 
+			// An insertion operator (<<) to add a new statement into a copy of this 
+			// Q routine and returns the reference to 'this' object
+			Qroutine operator<<(const Qstatement& right) const;
+
 			// Comma Operator class allows use of comma operator to insert 
 			// operands into specified Q routine
 			class CommaOp
@@ -126,6 +129,8 @@ namespace dann5 {
 			friend std::ostream& operator << (std::ostream&, const Qroutine&);
 
 		protected:
+			Qblock& block() { return mBlock; };
+
 		private:
 			Qblock	mBlock;
 		};

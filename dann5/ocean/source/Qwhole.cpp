@@ -1,10 +1,8 @@
 #include <Qwhole.h>
-#include <QcellOps.h>
 #include <Factory.h>
 #include <Qadd.h>
 #include <QderivedOps.h>
 #include <Qmultiply.h>
-#include <QwholeComp.h>
 #include <Qint.h>
 #include <Qroutine.h>
 
@@ -157,9 +155,8 @@ Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 {
 	Qroutine* pRtn = new Qroutine("!=");
-	Qwhole out(noqbs(), pRtn->outId());
-	Qbit _1("_1", 1);
 	{
+		Qwhole out(noqbs(), pRtn->outId());
 		size_t size = out.noqbs();
 		if (size < 2)
 			out.resize(2);
@@ -167,6 +164,7 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 		qbXpr = out[1] | out[0];
 		for (size_t at = 2; at < size; at++)
 			qbXpr = out[at] | qbXpr;
+		Qbit _1("_1", 1);
 		*pRtn = Qwhole(right) = out + *this,
 			_1 = qbXpr;
 	}
@@ -178,9 +176,8 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 {
 	Qroutine* pRtn = new Qroutine("!=");
-	Qwhole out(noqbs(), pRtn->outId());
-	Qbit _1("_1", 1);
 	{
+		Qwhole out(noqbs(), pRtn->outId());
 		size_t size = out.noqbs();
 		if (size < 2)
 			out.resize(2);
@@ -188,6 +185,7 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 		qbXpr = out[1] | out[0];
 		for (size_t at = 2; at < size; at++)
 			qbXpr = out[at] | qbXpr;
+		Qbit _1("_1", 1);
 		*pRtn = out = right - *this,
 			_1 = qbXpr;
 	}
@@ -199,12 +197,31 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 {
 	Qroutine* pRtn = new Qroutine(">");
-	Qwhole out(noqbs(), pRtn->outId());
-	Qbit _0("_0", 0);
 	{
-		Qwhole rght(right);
+		Qwhole rght(right), out(noqbs(), pRtn->outId());
+		Qbit _0("_0", 0);
 		*pRtn = rght = out + *this,
 			_0 != rght[rght.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qwhole> Qwhole::operator>(const Qexpr<Qwhole>& right) const
+{
+	Qroutine* pRtn = new Qroutine(">");
+	{
+		Qwhole out(noqbs(), pRtn->outId());
+		Qwhole::Sp pRout = dynamic_pointer_cast<Qwhole>(right.root()->outputs()[0]);
+		Qbit _0("_0", 0);
+		Qassign<Qwhole> subA = out = right - *this;
+		Qexpression& subX = *subA.expression();
+		Qsubtract::Sp pSubtract = static_pointer_cast<Qsubtract>(as_const(subX).root());
+		QnaryOp::Sp pSbstttOp = pSubtract->substituteOp();
+		Qwhole::Sp pSubXout = static_pointer_cast<Qwhole>(pSbstttOp->outputs()[0]);
+		*pRtn =  subA,
+			_0 != (*pSubXout)[pSubXout->noqbs() - 1];
 	}
 	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);
@@ -214,10 +231,23 @@ Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator>=(const Qwhole& right) const
 {
 	Qroutine* pRtn = new Qroutine(">=");
-	Qwhole out(noqbs(), pRtn->outId());
-	Qbit _0("_0", 0);
 	{
-		Qwhole ths(*this);
+		Qwhole ths(*this), out(noqbs(), pRtn->outId());
+		Qbit _0("_0", 0);
+		*pRtn = ths = out + right,
+			_0 == ths[ths.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qwhole> Qwhole::operator>=(const Qexpr<Qwhole>& right) const
+{
+	Qroutine* pRtn = new Qroutine(">=");
+	{
+		Qwhole ths(*this), out(noqbs(), pRtn->outId());
+		Qbit _0("_0", 0);
 		*pRtn = ths = out + right,
 			_0 == ths[ths.noqbs()];
 	}
@@ -229,10 +259,23 @@ Qexpr<Qwhole> Qwhole::operator>=(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator<(const Qwhole& right) const
 {
 	Qroutine* pRtn = new Qroutine("<");
-	Qwhole out(noqbs(), pRtn->outId());
-	Qbit _0("_0", 0);
 	{
-		Qwhole ths(*this);
+		Qwhole ths(*this), out(noqbs(), pRtn->outId());
+		Qbit _0("_0", 0);
+		*pRtn = ths = out + right,
+			_0 != ths[ths.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qwhole> Qwhole::operator<(const Qexpr<Qwhole>& right) const
+{
+	Qroutine* pRtn = new Qroutine("<");
+	{
+		Qwhole ths(*this), out(noqbs(), pRtn->outId());
+		Qbit _0("_0", 0);
 		*pRtn = ths = out + right,
 			_0 != ths[ths.noqbs()];
 	}
@@ -244,12 +287,31 @@ Qexpr<Qwhole> Qwhole::operator<(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator<=(const Qwhole& right) const
 {
 	Qroutine* pRtn = new Qroutine("<=");
-	Qwhole out(noqbs(), pRtn->outId());
-	Qbit _0("_0", 0);
 	{
-		Qwhole rght(right);
+		Qwhole rght(right), out(noqbs(), pRtn->outId());
+		Qbit _0("_0", 0);
 		*pRtn = rght = out + *this,
 			_0 == rght[rght.noqbs()];
+	}
+	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qwhole> Qwhole::operator<=(const Qexpr<Qwhole>& right) const
+{
+	Qroutine* pRtn = new Qroutine("<=");
+	{
+		Qwhole out(noqbs(), pRtn->outId());
+		Qwhole::Sp pRout = dynamic_pointer_cast<Qwhole>(right.root()->outputs()[0]);
+		Qbit _0("_0", 0);
+		Qassign<Qwhole> subA = out = right - *this;
+		Qexpression& subX = *subA.expression();
+		Qsubtract::Sp pSubtract = static_pointer_cast<Qsubtract>(as_const(subX).root());
+		QnaryOp::Sp pSbstttOp = pSubtract->substituteOp();
+		Qwhole::Sp pSubXout = static_pointer_cast<Qwhole>(pSbstttOp->outputs()[0]);
+		*pRtn = subA,
+			_0 == (*pSubXout)[pSubXout->noqbs() - 1];
 	}
 	Qop::Sp pOp = static_pointer_cast<Qop>(Qroutine::Sp(pRtn));
 	Qexpr<Qwhole> expr(pOp);

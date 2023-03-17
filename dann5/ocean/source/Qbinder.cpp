@@ -74,6 +74,13 @@ Qbinder& Qbinder::operator<<(const Qdef& right)
 	return(*this);
 }
 
+Qbinder Qbinder::operator<<(const Qdef& statement) const
+{
+	Qbinder result(*this);
+	result.mOperands.push_back(statement.clone());
+	return(result);
+}
+
 Qbinder::CommaOp Qbinder::operator=(const Qdef& right)
 {
 	addOperand(right);

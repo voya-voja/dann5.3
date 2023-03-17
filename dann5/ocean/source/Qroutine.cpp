@@ -23,6 +23,14 @@ Qroutine& Qroutine::operator<<(const Qstatement& statement)
 	return(*this);
 }
 
+Qroutine Qroutine::operator<<(const Qstatement& statement) const
+{
+	Qroutine result(*this);
+	result.block() << statement;
+	return(result);
+}
+
+
 Qroutine::CommaOp Qroutine::operator=(const Qstatement& statement)
 {
 	mBlock << statement;

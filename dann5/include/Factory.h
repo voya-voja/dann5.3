@@ -73,7 +73,7 @@ namespace dann5 {
 	};
 
 	template<typename K, typename T, typename O>
-class Creator : Factory<K,T>::template Creator<K, T>
+	class Creator : Factory<K,T>::template Creator<K, T>
 	{
 	public:
 		Creator(K key)

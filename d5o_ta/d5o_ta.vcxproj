@@ -166,7 +166,7 @@
     <ClCompile Include="..\dann5\ocean\source\QderivedOps.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\QwholeComp.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\QwholeExpr.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />
     <ClCompile Include="d5o_ta.cpp" />
     <ClCompile Include="UTestQbin.cpp" />
@@ -201,7 +201,7 @@
     <ClInclude Include="..\dann5\ocean\include\Qtype.h" />
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h" />
-    <ClInclude Include="..\dann5\ocean\include\QwholeComp.h" />
+    <ClInclude Include="..\dann5\ocean\include\QwholeExpr.h" />
     <ClInclude Include="UTestQbin.hpp" />
     <ClInclude Include="UTestQbit.h" />
     <ClInclude Include="UTestQbool.hpp" />

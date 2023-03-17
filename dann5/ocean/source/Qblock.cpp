@@ -99,6 +99,13 @@ Qblock& Qblock::operator<<(const Qstatement& statement)
 	return(*this);
 }
 
+Qblock Qblock::operator<<(const Qstatement& statement) const
+{
+	Qblock result(*this);
+	result.mStatements.push_back(statement.clone());
+	return(result);
+}
+
 Qblock::CommaOp Qblock::operator=(const Qstatement& statement)
 {
 	mStatements.push_back(statement.clone());
