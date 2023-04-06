@@ -6,11 +6,13 @@ Created on Fri Feb 17 19:12:42 2023
 """
 
 from UTestQwhole import UTestQwhole
-from dann5.dwave import Solvers as DwaveSolvers
+from dann5.dwave import Solvers
 #from dann5.dwave import DwaveSolvers
 from dann5.d5o2 import Qwhole, Qbin, Qblock, Qanalyzer
+from PrimeNumberGenerator import PNGen
 
 def main():
+    """
     solvers = DwaveSolvers(1000, None)
     #solvers = None
     x = Qwhole(2, "x"); y = Qwhole(2, "y"); z = Qwhole(2, "z");
@@ -44,6 +46,91 @@ def main():
 
     test = UTestQwhole(solvers)
     test.runAll(0)
+"""    """
+    png = PNGen(16)
+    png.prime6()
 
+    solvers = Solvers(1000, None)
+    for nQbits in range(2,22,2):
+        x = Qwhole(nQbits, "x"); y = Qwhole(int(nQbits / 2), "y"); r = Qwhole("r", nQbits);
+        xpr = r._( x * y);
+        qubo = xpr.qubo()
+        a = Qanalyzer(qubo);
+        print("{}\n  Nodes: {} Branches: {}".format( xpr.toString(), a.nodesNo(), a.branchesNo()))
+        if(solvers != None):
+            samples = solvers.solve('Hybrid', qubo)
+            xpr.add(samples)
+            print("  {}".format(xpr.solutions()))
+"""            
+    solvers = Solvers(1000)
+    x = Qwhole(3, "x"); y = Qwhole(3, "y"); r = Qwhole("r", 18);
+    xpr = r._( x * y);
+    samples = solvers.solve('Advantage2', xpr.qubo())
+    xpr.add(samples)
+    print("{}".format(xpr.solutions()))
+    
+    x = Qwhole(3, "x"); y = Qwhole(3, "y"); r = Qwhole("r", 24);
+    xpr = r._( x * y);
+    samples = solvers.solve('Advantage', xpr.qubo())
+    xpr.add(samples)
+    print("{}".format(xpr.solutions()))
+
+    x = Qwhole(3, "x"); y = Qwhole(3, "y"); r = Qwhole("r", 6);
+    xpr = r._( x * y);
+    samples = solvers.solve('2000Q', xpr.qubo())
+    xpr.add(samples)
+    print("{}".format(xpr.solutions()))
+
+    for i in range(5):
+        x = Qwhole(16, "x"); y = Qwhole(8, "y"); r = Qwhole("r", 42173); 
+        _1 = Qwhole("1_", 1)
+        xpr = r._( x * y);
+        yGt1 = y > _1
+        blck = Qblock() << xpr << yGt1
+        qubo = blck.qubo()
+        a = Qanalyzer(qubo);
+        print("{}\n  Nodes: {} Branches: {}".format( xpr.toString(), a.nodesNo(), a.branchesNo()))
+        if(solvers != None):
+            samples = solvers.solve('Hybrid', qubo)
+            xpr.add(samples)
+            print("  {}".format(xpr.solutions()))
+    
+    for i in range(5):
+        x = Qwhole(16, "x"); y = Qwhole(8, "y"); r = Qwhole("r", 24509);
+        xpr = r._( x * y);
+        qubo = xpr.qubo()
+        a = Qanalyzer(qubo);
+        print("{}\n  Nodes: {} Branches: {}".format( xpr.toString(), a.nodesNo(), a.branchesNo()))
+        if(solvers != None):
+            samples = solvers.solve('Hybrid', qubo)
+            xpr.add(samples)
+            print("  {}".format(xpr.solutions()))
+        
+    for i in range(5):
+        x = Qwhole(16, "x"); y = Qwhole(8, "y"); r = Qwhole("r", 24510);
+        xpr = r._( x * y);
+        yGt1 = y > _1
+        blck = Qblock() << xpr << yGt1
+        qubo = blck.qubo()
+        a = Qanalyzer(qubo);
+        print("{}\n  Nodes: {} Branches: {}".format( xpr.toString(), a.nodesNo(), a.branchesNo()))
+        if(solvers != None):
+            samples = solvers.solve('Hybrid', qubo)
+            xpr.add(samples)
+            print("  {}".format(xpr.solutions()))
+
+    for i in range(5):
+        x = Qwhole(16, "x"); y = Qwhole(8, "y"); r = Qwhole("r", 42170);
+        xpr = r._( x * y);
+        yGt1 = y > _1
+        blck = Qblock() << xpr << yGt1
+        qubo = blck.qubo()
+        a = Qanalyzer(qubo);
+        print("{}\n  Nodes: {} Branches: {}".format( xpr.toString(), a.nodesNo(), a.branchesNo()))
+        if(solvers != None):
+            samples = solvers.solve('Hybrid', qubo)
+            xpr.add(samples)
+            print("  {}".format(xpr.solutions()))
+            
 if __name__ == "__main__":
     main()

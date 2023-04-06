@@ -41,6 +41,13 @@ Qanalyzer::Branches& Qanalyzer::branches()
 	return(mBranches);
 }
 
+void Qanalyzer::calculateChainStrength()
+{
+	for(auto element: mQubo)
+		if (abs(element.second) > mChainStrength)
+			mChainStrength = abs(element.second);
+}
+
 ostream& dann5::ocean::operator<<(std::ostream& out, const Qanalyzer::Nodes& nodes)
 {
 	cout << "[";

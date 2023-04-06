@@ -173,6 +173,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("add", &Qexpression::add, "Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
 		.def("solutions", &Qexpression::solutions, "For existing samples, returns a string with all solutions of this Q expression")
 		.def("solve", &Qexpression::solve, "Solve this Q expression and return a string with all solutions")
+		.def("compute", &Qexpression::compute, "Returns computed sample set with all solutions for the Q expression logic")
 		.def("reset", &Qexpression::reset, "Clear all solution samples");
 
 
@@ -357,6 +358,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("add", &Qassignment::add, "Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
 		.def("solutions", &Qassignment::solutions, "For existing samples, returns a string with all solutions of this Q assignment")
 		.def("solve", &Qassignment::solve, "Solve this Q assignment and return a string with all solutions")
+		.def("compute", &Qassignment::compute, "Returns computed sample set with all solutions for the Q assignment logic")
 		.def("reset", &Qassignment::reset, "Clear all solution samples");
 
 
@@ -415,6 +417,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("add", &Qblock::add, "Set a sample set with a node list defined by qubo() of this Q block the combination of node values should be different for each sample")
 		.def("solutions", &Qblock::solutions, "For existing samples, returns a string with all solutions of this Q block")
 		.def("solve", &Qblock::solve, "Solve this Q block and return a string with all solutions")
+		.def("compute", &Qblock::compute, "Returns computed sample set with all solutions for the Q block logic")
 		.def("reset", &Qblock::reset, "Clear all solution samples")
 		
 		.def(py::self << Qexpr<Qbit>())
@@ -727,6 +730,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", [](Qwhole& o) { return o.toString(); })
 
 		.def("solution", &Qwhole::solution, "returns a solution for this object identified by id")
+		.def("results", &Qwhole::results, "Returns the list of assigned solutions as unsigned long long numbers")
 
 
 		/*** Assignments ***/
@@ -874,7 +878,7 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("add", &Qroutine::add, "Set a sample set with a node list defined by qubo() of this Q routine the combination of node values should be different for each sample")
 		.def("solution", &Qroutine::solution, "For added sample set(s), returns a string represnting 'at' solution of operands of statements within this Q routine")
-		.def("compute", &Qroutine::compute, "Returns computed sample set with all solutions for the Q block logic")
+		.def("compute", &Qroutine::compute, "Returns computed sample set with all solutions for the Q routine logic")
 		.def("reset", &Qroutine::reset, "Clear all solution samples")
 
 		.def(py::self << Qexpr<Qbit>())
@@ -906,13 +910,16 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("add", &Qbinder::add, "Set a sample set with a node list defined by qubo() of this Q binder the combination of node values should be different for each sample")
 		.def("solution", &Qbinder::solution, "For added sample set(s), returns a string represnting 'at' solution of operands of statements within this Q binder")
-		.def("compute", &Qbinder::solutions, "For added sample set(s), returns a string represnting all solutions of operands contained in the Q binder")
+		.def("solutions", &Qbinder::solutions, "For added sample set(s), returns a string represnting all solutions of operands contained in the Q binder")
 		.def("reset", &Qbinder::reset, "Clear all solution samples")
 
 		.def(py::self << Qbit())
 		.def(py::self << Qbool())
 		.def(py::self << Qbin())
-		.def(py::self << Qwhole());
+		.def(py::self << Qwhole())
+		
+		.def("__getitem__", [](Qbinder& self, size_t at) { return &(*self[at]); })
+		.def("__getitem__", [](Qbinder& self, string id) { return &(*self[id]); });
 
 
 /*--- Qsolver.h definitions ---*/
@@ -923,7 +930,8 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("branches", &Qanalyzer::branches)
 		.def("nodesNo", &Qanalyzer::nodesNo)
 		.def("branchesNo", &Qanalyzer::branchesNo)
-		.def("qubo", &Qanalyzer::qubo);
+		.def("qubo", &Qanalyzer::qubo)
+		.def("chainStrength", &Qanalyzer::chainStrength);
 
 	// specify C++ class->baseclass specialization
 	py::class_<Qsolver, Qanalyzer>(m, "Qsolver")

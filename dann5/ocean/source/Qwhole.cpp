@@ -63,6 +63,24 @@ string Qwhole::solution(size_t sampleId) const
 	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
 }
 
+vector<unsigned long long>  Qwhole::results() const
+{
+	const Qcells& _cells = cells();
+	size_t size = noqbs();
+	size_t noSolutions = _cells[0]->solutions().size();
+	vector<unsigned long long> rslts;
+	for (size_t sampleId = 0; sampleId < noSolutions; sampleId++)
+	{
+		Bits value;
+		for (size_t at = 0; at < size; at++)
+		{
+			value[at] = _cells[at]->solutionValue(sampleId);
+		}
+		rslts.push_back(value.to_ullong());
+	}
+	return rslts;
+}
+
 Qassign<Qwhole> Qwhole::operator=(const Qwhole& right) const
 {
 	Qexpr<Qwhole> expr = right == right;

@@ -6,6 +6,7 @@
 #include <Qbin.h>
 #include <Qexpr.h>
 
+#include <vector>
 #include <bitset>
 
 using namespace std;
@@ -70,6 +71,9 @@ namespace dann5 {
 
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
+
+			// Returns the list of assigned solutions as unsigned long long numbers
+			vector<unsigned long long> results() const;
 
 			// Return a Qdef's shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qwhole(*this)); };

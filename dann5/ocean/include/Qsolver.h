@@ -31,11 +31,21 @@ namespace dann5 {
 
 			inline const Qubo& qubo() const { return mQubo; };
 
+			inline double chainStrength()
+			{
+				if (mChainStrength == 0)
+					calculateChainStrength();
+				return mChainStrength;
+			};
+
 		protected:
+			void calculateChainStrength();
+
 		private:
 			Qubo		mQubo;
 			Nodes		mNodes;
 			Branches	mBranches;
+			double		mChainStrength = 0;
 		};
 
 		// Send a string representation of Nodes or Branches into an output stream

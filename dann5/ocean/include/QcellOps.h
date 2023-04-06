@@ -569,6 +569,9 @@ namespace dann5 {
 			// and two inputs
 			~Qadder() {};
 
+			// Returns the largest number of Q bits of all its inputs
+			virtual std::size_t noqbs() const noexcept { return 1; };
+
 			// Return a Qdef's shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qadder(*this)); };
 
@@ -585,8 +588,11 @@ namespace dann5 {
 			// Qxor's shared pointer 
 			typedef shared_ptr<QxorAdder> Sp;
 
-			// Default constructor
+			// Default constructor for XOr
 			QxorAdder() : Qaddition(XorQT::cMark, 2) {};
+
+			// Constructor for Adder
+			QxorAdder(bool asAdder) : Qaddition(XorQT::cMark, 3) {};
 
 			// Copy constructor, Q xo-adder can have up to 3 inputs
 			QxorAdder(const Qxor& right) : Qaddition(right) {};
@@ -594,6 +600,9 @@ namespace dann5 {
 			// Destruct the Q xor instance with a shared pointer to its carry operand
 			// and two inputs
 			~QxorAdder() {};
+
+			// Returns the largest number of Q bits of all its inputs
+			virtual std::size_t noqbs() const noexcept { return 1; };
 
 			// Sets Q xor-adder inputs. If any of the inputs is Q xor-adder acting as an Q xor, 
 			// it will be upgraded into an adder by adding 3rd input.

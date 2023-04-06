@@ -126,6 +126,15 @@ void testSolver()
 
 int main(int argc, const char * argv[])
 {
+    for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
+    {
+        Qwhole x(nQbits, "x"), y(size_t(nQbits / 2), "y"), r("r", nQbits);
+        Qassign<Qwhole> xpr = r = x * y;
+        Qanalyzer a(xpr.qubo());
+        cout << xpr << endl << "  nodes: " << a.nodesNo() << " branches: " << a.branchesNo() << " chain-strenght: " << a.chainStrength();
+        cout << endl << xpr.qubo() << endl << xpr.solve() << endl;
+    }
+    /*
     Qwhole x (2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
     Qexpr<Qwhole> qwExpr = x * y, z_3Expr = _3 * z, qxxExpr = qwExpr * z_3Expr;
     Qubo qubo = qwExpr.qubo();
@@ -140,7 +149,7 @@ int main(int argc, const char * argv[])
     Qanalyzer anlyze(aQubo);
     cout << "Assignment # of nodes: " << anlyze.nodesNo() << " # of branches: " << anlyze.branchesNo() << endl;
     cout << endl << "Assignment:" << endl << qxxAssign << endl << qxxAssign.solve() << endl;
-
+    */
     UTestQbit utQbit;
 //    utQbit.runAll(cout);
     UTestQbool utQbool;
