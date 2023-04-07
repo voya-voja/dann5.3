@@ -610,7 +610,7 @@ PYBIND11_MODULE(d5o2, m) {
 			.def(py::self == py::self, "compares the contents")
 
 			.def("__setitem__", [](Bits& self, size_t index, bool val) { self[index] = val; })
-			.def("__getitem__", [](Bits& self, size_t index) { return self[index]; })
+            .def("__getitem__", [](Bits& self, size_t index) { return &self[index]; })
 
 			.def("all", &Bits::all, "checks if all of the bits are set to true")
 			.def("any", &Bits::any, "checks if any of the bits are set to true")
@@ -659,7 +659,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("solution", &Qbin::solution, "returns a solution for this object identified by id")
     
         .def("__setitem__", [](Qbin &self, size_t index, Qvalue val) { self[index].value(val); })
-        .def("__getitem__", [](Qbin &self, size_t index) { return self[index]; })
+        .def("__getitem__", [](Qbin &self, size_t index) { return &self[index]; })
 
 		/*** Assignments ***/
 		.def("_", static_cast<Qassign<Qbin> (Qbin::*)(const Qbin&)>(&Qbin::operator=), "assigns a value of right Q creates a Q bin assignment where this Q bin is an assignee")

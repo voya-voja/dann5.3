@@ -27,7 +27,6 @@
 		A2A5358E28C6C686002C4145 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5357528C6C686002C4145 /* Global.cpp */; };
 		A2A5358F28C6C686002C4145 /* Qbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5357928C6C686002C4145 /* Qbit.cpp */; };
 		A2A5359028C6C686002C4145 /* Qexpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5357A28C6C686002C4145 /* Qexpr.cpp */; };
-		A2A5359128C6C686002C4145 /* QwholeComp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5357C28C6C686002C4145 /* QwholeComp.cpp */; };
 		A2F3631D29567D9300BAB767 /* UTestQbool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2F3631B29567D9300BAB767 /* UTestQbool.cpp */; };
 		A2F363202957957800BAB767 /* UTestQbin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2F3631E2957957800BAB767 /* UTestQbin.cpp */; };
 /* End PBXBuildFile section */
@@ -48,6 +47,18 @@
 		A204977329494BE700F96DA4 /* UTestQbit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UTestQbit.h; path = ../../UTestQbit.h; sourceTree = "<group>"; };
 		A204977429494F1700F96DA4 /* UTestQbit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbit.cpp; path = ../../UTestQbit.cpp; sourceTree = "<group>"; };
 		A24FBD8B28C6D72F00E83138 /* d5o_ta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = d5o_ta.cpp; path = ../../d5o_ta.cpp; sourceTree = "<group>"; };
+		A27DBC4829DF8E6A004C99EC /* QwholeExpr.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QwholeExpr.cpp; path = ../../dann5/ocean/source/QwholeExpr.cpp; sourceTree = "<group>"; };
+		A27DBC4929DF8E6A004C99EC /* Qbinder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qbinder.cpp; path = ../../dann5/ocean/source/Qbinder.cpp; sourceTree = "<group>"; };
+		A27DBC4A29DF8E6A004C99EC /* Qstatement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qstatement.cpp; path = ../../dann5/ocean/source/Qstatement.cpp; sourceTree = "<group>"; };
+		A27DBC4B29DF8E6A004C99EC /* Qstatement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Qstatement.h; path = ../../dann5/ocean/include/Qstatement.h; sourceTree = "<group>"; };
+		A27DBC4C29DF8E6A004C99EC /* Qblock.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qblock.cpp; path = ../../dann5/ocean/source/Qblock.cpp; sourceTree = "<group>"; };
+		A27DBC4D29DF8E6A004C99EC /* QwholeExpr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QwholeExpr.h; path = ../../dann5/ocean/include/QwholeExpr.h; sourceTree = "<group>"; };
+		A27DBC4E29DF8E6A004C99EC /* Qbinder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Qbinder.h; path = ../../dann5/ocean/include/Qbinder.h; sourceTree = "<group>"; };
+		A27DBC4F29DF8E6A004C99EC /* QderivedOps.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QderivedOps.cpp; path = ../../dann5/ocean/source/QderivedOps.cpp; sourceTree = "<group>"; };
+		A27DBC5029DF8E6A004C99EC /* Qroutine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qroutine.cpp; path = ../../dann5/ocean/source/Qroutine.cpp; sourceTree = "<group>"; };
+		A27DBC5129DF8E6A004C99EC /* Qblock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Qblock.h; path = ../../dann5/ocean/include/Qblock.h; sourceTree = "<group>"; };
+		A27DBC5229DF8E6A004C99EC /* QderivedOps.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QderivedOps.h; path = ../../dann5/ocean/include/QderivedOps.h; sourceTree = "<group>"; };
+		A27DBC5329DF8E6A004C99EC /* Qroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Qroutine.h; path = ../../dann5/ocean/include/Qroutine.h; sourceTree = "<group>"; };
 		A2A5354428C6C5E8002C4145 /* d5o_ta_Xc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = d5o_ta_Xc; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2A5355028C6C627002C4145 /* Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Logger.cpp; path = ../../dann5/source/Logger.cpp; sourceTree = "<group>"; };
 		A2A5355128C6C627002C4145 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = ../../dann5/include/Logger.h; sourceTree = "<group>"; };
@@ -75,7 +86,6 @@
 		A2A5356B28C6C686002C4145 /* Qbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbit.h; path = ../../dann5/ocean/include/Qbit.h; sourceTree = "<group>"; };
 		A2A5356C28C6C686002C4145 /* Qmultiply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qmultiply.h; path = ../../dann5/ocean/include/Qmultiply.h; sourceTree = "<group>"; };
 		A2A5356D28C6C686002C4145 /* Qdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qdef.h; path = ../../dann5/ocean/include/Qdef.h; sourceTree = "<group>"; };
-		A2A5356E28C6C686002C4145 /* QwholeComp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QwholeComp.h; path = ../../dann5/ocean/include/QwholeComp.h; sourceTree = "<group>"; };
 		A2A5357028C6C686002C4145 /* Qop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qop.cpp; path = ../../dann5/ocean/source/Qop.cpp; sourceTree = "<group>"; };
 		A2A5357128C6C686002C4145 /* QcellOps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QcellOps.cpp; path = ../../dann5/ocean/source/QcellOps.cpp; sourceTree = "<group>"; };
 		A2A5357228C6C686002C4145 /* Qtype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qtype.h; path = ../../dann5/ocean/include/Qtype.h; sourceTree = "<group>"; };
@@ -88,7 +98,6 @@
 		A2A5357928C6C686002C4145 /* Qbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbit.cpp; path = ../../dann5/ocean/source/Qbit.cpp; sourceTree = "<group>"; };
 		A2A5357A28C6C686002C4145 /* Qexpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qexpr.cpp; path = ../../dann5/ocean/source/Qexpr.cpp; sourceTree = "<group>"; };
 		A2A5357B28C6C686002C4145 /* Qnary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qnary.h; path = ../../dann5/ocean/include/Qnary.h; sourceTree = "<group>"; };
-		A2A5357C28C6C686002C4145 /* QwholeComp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QwholeComp.cpp; path = ../../dann5/ocean/source/QwholeComp.cpp; sourceTree = "<group>"; };
 		A2A5357D28C6C686002C4145 /* Qint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qint.h; path = ../../dann5/ocean/include/Qint.h; sourceTree = "<group>"; };
 		A2F3631B29567D9300BAB767 /* UTestQbool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbool.cpp; path = ../../UTestQbool.cpp; sourceTree = "<group>"; };
 		A2F3631C29567D9300BAB767 /* UTestQbool.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = UTestQbool.hpp; path = ../../UTestQbool.hpp; sourceTree = "<group>"; };
@@ -142,6 +151,18 @@
 		A2A5354E28C6C5F3002C4145 /* dann5.ocean */ = {
 			isa = PBXGroup;
 			children = (
+				A27DBC4929DF8E6A004C99EC /* Qbinder.cpp */,
+				A27DBC4E29DF8E6A004C99EC /* Qbinder.h */,
+				A27DBC4C29DF8E6A004C99EC /* Qblock.cpp */,
+				A27DBC5129DF8E6A004C99EC /* Qblock.h */,
+				A27DBC4F29DF8E6A004C99EC /* QderivedOps.cpp */,
+				A27DBC5229DF8E6A004C99EC /* QderivedOps.h */,
+				A27DBC5029DF8E6A004C99EC /* Qroutine.cpp */,
+				A27DBC5329DF8E6A004C99EC /* Qroutine.h */,
+				A27DBC4A29DF8E6A004C99EC /* Qstatement.cpp */,
+				A27DBC4B29DF8E6A004C99EC /* Qstatement.h */,
+				A27DBC4829DF8E6A004C99EC /* QwholeExpr.cpp */,
+				A27DBC4D29DF8E6A004C99EC /* QwholeExpr.h */,
 				A2A5357528C6C686002C4145 /* Global.cpp */,
 				A2A5355E28C6C685002C4145 /* Qadd.cpp */,
 				A2A5355A28C6C685002C4145 /* Qadd.h */,
@@ -177,8 +198,6 @@
 				A2A5357828C6C686002C4145 /* Qubo.h */,
 				A2A5357328C6C686002C4145 /* Qwhole.cpp */,
 				A2A5355728C6C685002C4145 /* Qwhole.h */,
-				A2A5357C28C6C686002C4145 /* QwholeComp.cpp */,
-				A2A5356E28C6C686002C4145 /* QwholeComp.h */,
 			);
 			name = dann5.ocean;
 			sourceTree = "<group>";
@@ -268,7 +287,6 @@
 				A2A5358628C6C686002C4145 /* Qint.cpp in Sources */,
 				A2A5358528C6C686002C4145 /* Qbool.cpp in Sources */,
 				A2A5358228C6C686002C4145 /* Qnary.cpp in Sources */,
-				A2A5359128C6C686002C4145 /* QwholeComp.cpp in Sources */,
 				A204977529494F1700F96DA4 /* UTestQbit.cpp in Sources */,
 				A2A5358128C6C686002C4145 /* Qadd.cpp in Sources */,
 				A2A5358A28C6C686002C4145 /* Qop.cpp in Sources */,
