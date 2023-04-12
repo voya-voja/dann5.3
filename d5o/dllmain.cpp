@@ -5,6 +5,8 @@
 //
 #include <pybind11/pybind11.h>
 
+#include <ULint.h>
+
 #include <Qubo.h>
 
 #include <Qbit.h>
@@ -26,6 +28,7 @@
 //#include <pybind11/eigen.h>
 //#include <pybind11/embed.h>
 
+using namespace dann5;
 using namespace dann5::ocean;
 
 #define VERSION_INFO "2.1.3"
@@ -57,6 +60,27 @@ PYBIND11_MODULE(d5o2, m) {
 			Qexpression
 			Qassignment
     )pbdoc";
+
+
+/*--- Qwhole.h definitions ---*/
+    py::class_<ULint>(m, "ULint",
+        R"pbdoc( Unsigned Long Integer supports manipulation of whole numbers larger than operating system maximum, e.g. 64 bits.)pbdoc")
+
+        .def(py::init<>())
+        .def(py::init<const ULint&>())
+        .def(py::init<size_t>(), "Constructs unsigned long integer object ready to support at least specified number of bits")
+
+        .def("set", &ULint::set, "Sets bit at position 'at' to 1 if 'bit' is true, otherwise 0")
+
+        .def("toString", &ULint::toString, "Converts unsigned long integer to string presentation for base 10")
+        .def("toString", [](ULint& o, unsigned base ) { return o.toString(base); }, "Converts unsigned long integer to string presentation for given base")
+    
+        .def("at", (unsigned char&(ULint::*)(size_t)) & ULint::at, "Returns a reference of a byte (unsigned char) at position 'at'")
+        .def("at", (const unsigned char&(ULint::*)(size_t) const) & ULint::at, "Returns a constant reference of a byte (unsigned char) at position 'at'")
+    
+        .def("__setitem__", [](ULint& self, size_t index, unsigned char val) { self[index] = val; }, "Sets a a byte (unsigned char) at position 'index'")
+        .def("__getitem__", [](ULint& self, size_t index) { return &self[index]; }, "Returns a reference of a byte (unsigned char) at position 'index'");
+
 /*--- Qubo.h definitions ---*/
 	py::class_<Qkey>(m, "Qkey", R"pbdoc(Qubo key corresponds to an element of DWave's dimod.BinaryQuadraticModel class where
 		key pair with the same Quantum node name is a linear node and one with different Quantum node names is a quadratic element)pbdoc");
@@ -722,8 +746,8 @@ PYBIND11_MODULE(d5o2, m) {
 		.def(py::init<const string&, unsigned long long>())
 		.def(py::init<const string&, const Bits&, bool>())
 
-		.def("value", static_cast<unsigned long long (Qbin::*)()>(&Qwhole::operator unsigned long long), "get unsigned long long value")
-		.def("value", static_cast<const unsigned long long (Qbin::*)() const>(&Qwhole::operator const unsigned long long), "get unsigned long long value")
+		.def("value", static_cast<unsigned long long (Qwhole::*)()>(&Qwhole::operator unsigned long long), "get unsigned long long value")
+		.def("value", static_cast<const unsigned long long (Qwhole::*)() const>(&Qwhole::operator const unsigned long long), "get const unsigned long long value")
 
 		.def("toString", &Qwhole::toString, "returns string presentation of this Q whole object")
 		.def("toString", [](Qwhole& o, bool decomposed) { return o.toString(decomposed); })
@@ -731,6 +755,7 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("solution", &Qwhole::solution, "returns a solution for this object identified by id")
 		.def("results", &Qwhole::results, "Returns the list of assigned solutions as unsigned long long numbers")
+        .def("ulints", &Qwhole::ulints, "Returns the list of assigned solutions as unsigned long integer")
 
 
 		/*** Assignments ***/

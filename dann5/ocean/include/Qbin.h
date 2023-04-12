@@ -9,6 +9,7 @@
 
 namespace dann5 {
 	namespace ocean {
+    
 		// Quantum binary is a Q type supporting instantiation of and operations for 
 		// variables which can have one or more of Qbits. For example Qbin with 8
 		// Qbits would correspond to a Quantum byte

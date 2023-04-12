@@ -6,6 +6,8 @@
 
 #include <typeinfo>
 
+#include <Qwhole.h>
+
 #include <Qassign.h>
 #include <Qblock.h>
 #include <Qint.h>
@@ -19,6 +21,7 @@
 #include "UTestQbool.hpp"
 #include "UTestQbin.hpp"
 #include "UtestQwhole.hpp"
+#include <ULint.h>
 
 using namespace std;
 using namespace dann5::ocean;
@@ -122,11 +125,31 @@ void testSolver()
     fout.close();
 }
 
-#include <Qwhole.h>
-
 int main(int argc, const char * argv[])
 {
-    for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
+    ULint ulint(64);
+    unsigned long long value = 18009998321454363727;
+    std::bitset<64> bs(value);
+    cout << value << endl << bs << endl;
+    for(size_t at = 0; at < 64; at++)
+    {
+        ulint.set(at, bool(value % 2));
+        value >>= 1;
+    }
+    for(size_t at = 7; (at + 1) > 0; at--)
+    {
+        std::bitset<8> x1(ulint[at]);
+        cout << x1;
+    }
+    cout << endl << hex << bs.to_ullong() << dec << endl;
+    cout << ulint.toString(2) << endl;
+    cout << ulint.toString(8) << endl;
+    cout << ulint.toString() << endl;
+    cout << ulint.toString(10) << endl;
+    cout << ulint.toString(16) << endl;
+    cout << ulint.toString(3) << endl;
+
+/*    for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
     {
         Qwhole x(nQbits, "x"), y(size_t(nQbits / 2), "y"), r("r", nQbits);
         Qassign<Qwhole> xpr = r = x * y;
@@ -134,14 +157,24 @@ int main(int argc, const char * argv[])
         cout << xpr << endl << "  nodes: " << a.nodesNo() << " branches: " << a.branchesNo() << " chain-strenght: " << a.chainStrength();
         cout << endl << xpr.qubo() << endl << xpr.solve() << endl;
     }
-    /*
+  */
     Qwhole x (2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
-    Qexpr<Qwhole> qwExpr = x * y, z_3Expr = _3 * z, qxxExpr = qwExpr * z_3Expr;
+    Qexpr<Qwhole> qwExpr = x * y;//, z_3Expr = _3 * z, qxxExpr = qwExpr * z_3Expr;
     Qubo qubo = qwExpr.qubo();
     Qanalyzer anlyzeE(qubo);
     cout << "Expression # of nodes: " << anlyzeE.nodesNo() << " # of branches: " << anlyzeE.branchesNo() << endl;
-    cout << endl << "Expression:" << endl << qxxExpr << endl << qxxExpr.solve() << endl;
-
+    cout << endl << "Expression:" << endl << qwExpr << endl << qwExpr.solve() << endl;
+    Qsolver::Samples samples = qwExpr.compute();
+    Qbinder binder;
+    binder = x, y;
+    binder.add(samples);
+    cout << binder << endl;
+    vector<ULint> xSolutions = dynamic_pointer_cast<Qwhole>(binder["x"])->ulints();
+    vector<ULint> ySolutions = dynamic_pointer_cast<Qwhole>(binder["y"])->ulints();
+    cout << "sample x  y" << endl;
+    for(size_t at = 0; at < samples.size(); at++)
+        cout << at << ":     " << xSolutions[at].toString() << "  " << ySolutions[at].toString() << endl;
+/*
     qxxExpr.reset();
     Qwhole R("R", 6);
     Qassign<Qwhole> qxxAssign = R = qxxExpr;

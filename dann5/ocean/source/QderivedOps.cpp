@@ -23,9 +23,6 @@ QderivedOp::QderivedOp(const QderivedOp& right)
 	: QcellOp(right), mEq(right.mEq)
 {}
 
-QderivedOp::~QderivedOp()
-{}
-
 void QderivedOp::output(const Qdef::Sp& pOut, size_t forBit)
 {
 	QcellOp::output(pOut, forBit);

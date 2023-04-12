@@ -36,6 +36,7 @@ void Qwhole::resize(size_t size, Qvalue value)
 	else
 		Qbin::resize(size, 0);
 }
+
 string Qwhole::toString(bool decomposed, size_t forBit) const
 {
 	if (decomposed) return Qnary::toString(decomposed, forBit);
@@ -79,6 +80,24 @@ vector<unsigned long long>  Qwhole::results() const
 		rslts.push_back(value.to_ullong());
 	}
 	return rslts;
+}
+
+vector<ULint>  Qwhole::ulints() const
+{
+    const Qcells& _cells = cells();
+    size_t size = noqbs();
+    size_t noSolutions = _cells[0]->solutions().size();
+    vector<ULint> rslts;
+    for (size_t sampleId = 0; sampleId < noSolutions; sampleId++)
+    {
+        ULint value(size);
+        for (size_t at = 0; at < size; at++)
+        {
+            value.set(at, _cells[at]->solutionValue(sampleId));
+        }
+        rslts.push_back(value);
+    }
+    return rslts;
 }
 
 Qassign<Qwhole> Qwhole::operator=(const Qwhole& right) const

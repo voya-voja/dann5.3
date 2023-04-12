@@ -10,6 +10,9 @@
 namespace dann5 {
 	namespace ocean {
 
+        // Quantum boolean is a Q cell type supporting instantiation of and operations
+        // for variables which can have values 'T'-rue (value 84), 'F'-alse (value 71)
+        // and 'S'-uperposition (value 83)
 		class Qbool : public Qcell, public Qtype
 		{
 		public:

@@ -31,7 +31,7 @@ namespace dann5 {
 			QderivedOp(const QderivedOp& right);
 
 			// Destruct the Q subtractition instance with a shared pointer to its carry operand
-			~QderivedOp();
+            ~QderivedOp() {};
 
 			// Returns the number of Q bits that the Q binary holds
 //			virtual size_t noqbs() const noexcept { return mEq.noqbs(); };

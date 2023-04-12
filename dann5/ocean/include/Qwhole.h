@@ -5,16 +5,16 @@
 
 #include <Qbin.h>
 #include <Qexpr.h>
+#include <ULint.h>
 
 #include <vector>
 #include <bitset>
 
 using namespace std;
+using namespace dann5;
 
 namespace dann5 {
 	namespace ocean {
-
-		class Qint;
 
 		// Quantum whole is a Q type, subtype of Qbin supporting instantiation of 
 		// and operations for positive whole number variables. As Qbianry, Q whole
@@ -72,8 +72,11 @@ namespace dann5 {
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
 
-			// Returns the list of assigned solutions as unsigned long long numbers
-			vector<unsigned long long> results() const;
+            // Returns the list of assigned solutions as unsigned long long numbers
+            vector<unsigned long long> results() const;
+
+            // Returns the list of assigned solutions as unsigned long integer
+            vector<ULint> ulints() const;
 
 			// Return a Qdef's shared pointer pointing to a copy of this object 
 			virtual Qdef::Sp clone() const { return Qdef::Sp(new Qwhole(*this)); };
