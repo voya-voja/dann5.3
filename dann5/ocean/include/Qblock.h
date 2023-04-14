@@ -130,6 +130,9 @@ namespace dann5 {
 			Qstatements mStatements;	// a list of Q block statements
 		};
 
+		// Insert string representation of a Q block into an output stream
+		std::ostream& operator << (std::ostream&, const Qblock&);
+
 		// An std::vector containing a list of Q blocks
 		typedef vector<Qblock::Sp> Qblocks;
 	};

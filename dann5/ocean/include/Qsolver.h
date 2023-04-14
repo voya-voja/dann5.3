@@ -60,7 +60,7 @@ namespace dann5 {
 			typedef map<string, Qvalue> Sample;
 			struct SampleEng
 			{
-                SampleEng() {};
+                SampleEng() :mEnergy(0) {};
                 SampleEng(Sample sample, double energy): mSample(sample), mEnergy(energy) {};
                 SampleEng(double energy, Sample sample): mSample(sample), mEnergy(energy) {};
                 

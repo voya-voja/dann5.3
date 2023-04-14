@@ -132,6 +132,9 @@ namespace dann5 {
 			Qexpression::Sp		mpExpr;		// A pointer to the expression
 		};
 
+		// Send a string representation of a Q expression into an output stream
+		std::ostream& operator << (std::ostream&, const Qassignment&);
+
 		// A templated Q assign for all Q types
 		template <typename Q_Type = Qtype>
 		class Qassign : public Qassignment
@@ -165,7 +168,8 @@ namespace dann5 {
 			};
 
 			// Qstatement cast operator
-			operator Qstatement() { return *this; };
+			operator Qstatement&() { return *this; };
+			operator Qstatement::Sp() { return Qstatement::Sp(this); };
 
 			/*** Assignments ***/
 			// Update Q assignment with a new Q expression

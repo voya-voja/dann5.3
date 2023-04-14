@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h" />
     <ClInclude Include="..\dann5\include\Logger.h" />
+    <ClInclude Include="..\dann5\include\ULint.h" />
     <ClInclude Include="..\dann5\include\Utility.h" />
     <ClInclude Include="..\dann5\ocean\include\Qadd.h" />
     <ClInclude Include="..\dann5\ocean\include\Qassign.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />
+    <ClCompile Include="..\dann5\source\ULint.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

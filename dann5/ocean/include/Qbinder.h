@@ -126,6 +126,10 @@ namespace dann5 {
 			Qdefs				mOperands;	// A list of operands
 		};
 
+		// Inserts a string representation of a Q binder into an output
+		// stream
+		std::ostream& operator << (std::ostream&, const Qbinder&);
+
 		// An std::vector containing a list of Q binders
 		typedef vector<Qbinder::Sp> Qbinders;
 	};

@@ -145,6 +145,9 @@ namespace dann5{
 			MatrixXd		mElements;	// Qubo Table value matrix
 		};
 
+		// Sends a representation of QuboTable into output stream
+		std::ostream& operator << (std::ostream&, const QuboTable&);
+
 		// Operator specialization of QuboTable has one input and one output port
 		class OperatorQT : public QuboTable
 		{

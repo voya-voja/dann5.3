@@ -116,6 +116,11 @@ namespace dann5 {
 			Qsolver::Samples	mSolutions;	// A sample set
 		};
 
+		// Send a string representation of a Q expression into an output
+		// stream
+		std::ostream& operator << (std::ostream&,
+			const Qexpression&);
+
 		// A templated Q expression for Q types
 		template <typename Q_Type = Qtype>
 		class Qexpr : public Qexpression

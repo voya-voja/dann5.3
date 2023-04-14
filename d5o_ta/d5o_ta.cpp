@@ -161,6 +161,7 @@ int main(int argc, const char * argv[])
     Qwhole x (2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
     Qexpr<Qwhole> qwExpr = x * y;//, z_3Expr = _3 * z, qxxExpr = qwExpr * z_3Expr;
     Qubo qubo = qwExpr.qubo();
+    cout << qubo / 2 << endl;
     Qanalyzer anlyzeE(qubo);
     cout << "Expression # of nodes: " << anlyzeE.nodesNo() << " # of branches: " << anlyzeE.branchesNo() << endl;
     cout << endl << "Expression:" << endl << qwExpr << endl << qwExpr.solve() << endl;

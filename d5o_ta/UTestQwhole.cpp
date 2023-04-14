@@ -426,7 +426,7 @@ void UTestQwhole::comparison(ostream& out)
     Qwhole x1(2, "x"), y1(2, "y"), z1(2, "z"), w1(2, "w");
     Qexpr<Qwhole> comp = x1 + y1 == z1 * w1;
     out << endl << comp << endl << endl << comp.toString(true) << endl;
-    out << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() / 2 << endl;
+    out << endl << "*** Qubo ***" << endl << comp.qubo(false) << endl << comp.qubo() << endl;
     Qanalyzer analyzeM(comp.qubo());
     out << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
     comp.solve();
@@ -435,7 +435,7 @@ void UTestQwhole::comparison(ostream& out)
     Qwhole x2(2, "x"), y2(2, "y"), z2(2, "z"), w2(2, "w");
     Qexpr<Qwhole> comp2 = x2 + y2 != z2 + w2;
     out << endl << comp2 << endl << endl << comp2.toString(true) << endl;
-    out << endl << "*** Qubo ***" << endl << comp2.qubo(false) << endl << comp2.qubo() / 2 << endl;
+    out << endl << "*** Qubo ***" << endl << comp2.qubo(false) << endl << comp2.qubo() << endl;
     Qanalyzer analyzeM2(comp2.qubo());
     out << endl << "# of nodes: " << analyzeM2.nodesNo() << "\t# of branches: " << analyzeM2.branchesNo() << endl;
     comp2.solve();

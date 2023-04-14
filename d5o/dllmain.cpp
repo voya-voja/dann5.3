@@ -92,15 +92,25 @@ PYBIND11_MODULE(d5o2, m) {
 		as an upper-diagonal matrix Q, where diagonal terms (graph nodes) are the linear
 		coefficients and the nonzero off-diagonal terms are quadratic coefficients (graph branches)pbdoc")
 		.def("union", [](const Qubo& l, const Qubo& r) { return l + r; })
+		.def("__add__", [](const Qubo& l, const Qubo& r) { return l + r; })
 		.def("expand", [](Qubo& l, const Qubo& r) { return l += r; })
+		.def("__iadd__", [](Qubo& l, const Qubo& r) { return l += r; })
 		.def("add", [](const Qubo& q, double offset) { return q + offset; })
+		.def("__add__", [](const Qubo& q, double offset) { return q + offset; })
 		.def("up", [](Qubo& q, double offset) { return q += offset; })
+		.def("__iadd__", [](Qubo& q, double offset) { return q += offset; })
 		.def("sub", [](const Qubo& q, double offset) { return q - offset; })
+		.def("__sub__", [](const Qubo& q, double offset) { return q - offset; })
 		.def("down", [](Qubo& q, double offset) { return q -= offset; })
+		.def("__isub__", [](Qubo& q, double offset) { return q - offset; })
 		.def("mul", [](const Qubo& q, double scalar) { return q * scalar; })
+		.def("__mul__", [](const Qubo& q, double scalar) { return q * scalar; })
 		.def("scaleUp", [](Qubo& q, double scalar) { return q *= scalar; })
+		.def("__mul__", [](Qubo& q, double scalar) { return q *= scalar; })
 		.def("div", [](const Qubo& q, double scalar) { return q / scalar; })
-		.def("scaleDown", [](Qubo& q, double scalar) { return q /= scalar; });
+		.def("__truediv__", [](const Qubo& q, double scalar) { return q / scalar; })
+		.def("scaleDown", [](Qubo& q, double scalar) { return q /= scalar; })
+		.def("__itruediv__", [](Qubo& q, double scalar) { return q /= scalar; });
 
 	m.def("Qvalue", []() { return char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S(uperposition)}.)pbdoc");
 
@@ -633,8 +643,8 @@ PYBIND11_MODULE(d5o2, m) {
 
 			.def(py::self == py::self, "compares the contents")
 
-			.def("__setitem__", [](Bits& self, size_t index, bool val) { self[index] = val; })
-            .def("__getitem__", [](Bits& self, size_t index) { return &self[index]; })
+			.def("__setitem__", [](Bits& self, size_t index, bool val) { self[index] = val; }, "Sets a value at the position 'index'")
+			.def("__getitem__", [](Bits& self, size_t index) { return self[index]; }, "Returns a bit at the position 'index'")
 
 			.def("all", &Bits::all, "checks if all of the bits are set to true")
 			.def("any", &Bits::any, "checks if any of the bits are set to true")

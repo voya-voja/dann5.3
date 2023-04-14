@@ -134,5 +134,8 @@ namespace dann5 {
 		private:
 			Qblock	mBlock;
 		};
+
+		// Insert string representation of a Q routine into an output stream
+		std::ostream& operator << (std::ostream&, const Qroutine&);
 	};
 };

@@ -168,6 +168,7 @@
     <ClCompile Include="..\dann5\ocean\source\Qwhole.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QwholeExpr.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />
+    <ClCompile Include="..\dann5\source\ULint.cpp" />
     <ClCompile Include="d5o_ta.cpp" />
     <ClCompile Include="UTestQbin.cpp" />
     <ClCompile Include="UTestQbit.cpp" />
@@ -177,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h" />
     <ClInclude Include="..\dann5\include\Logger.h" />
+    <ClInclude Include="..\dann5\include\ULint.h" />
     <ClInclude Include="..\dann5\include\Utility.h" />
     <ClInclude Include="..\dann5\ocean\include\Qadd.h" />
     <ClInclude Include="..\dann5\ocean\include\Qassign.h" />
