@@ -201,7 +201,7 @@ Qsolver::Samples Qsolver::solution()
 
 void  Qsolver::solve()
 {
-	if (nodesNo() == 0) throw logic_error("Nothing to solve!");
+	if (nodesNo() == 0) throw logic_error("Error@Qsolve: Nothing to solve!");
 
 	std::vector<std::thread> threads;
 	std::vector<Qsolve*> solvePtrs;

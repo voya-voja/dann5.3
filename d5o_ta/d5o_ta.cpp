@@ -20,7 +20,7 @@
 #include "UTestQbit.h"
 #include "UTestQbool.hpp"
 #include "UTestQbin.hpp"
-#include "UtestQwhole.hpp"
+#include "UTestQwhole.hpp"
 #include <ULint.h>
 
 using namespace std;
@@ -128,7 +128,7 @@ void testSolver()
 int main(int argc, const char * argv[])
 {
     ULint ulint(64);
-    unsigned long long value = 18009998321454363727;
+    unsigned long long value = 1800999832145436372;
     std::bitset<64> bs(value);
     cout << value << endl << bs << endl;
     for(size_t at = 0; at < 64; at++)

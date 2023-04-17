@@ -38,7 +38,7 @@ void Qassignment::bind()
 			// if Qnary result, size result to have same # of Q bits as expression
 			pAssignee->resize(exprSize);
 		else
-			throw std::logic_error("The Q equation result and expression are of different type!");
+			throw std::logic_error("Error@Qassignment: The Q equation result and expression are of different type!");
 	}
 	else if(exprSize < asgnSize)
 	{ // if expression has less Q bits, remaining Q bits of the result will become 0 bitwise logic

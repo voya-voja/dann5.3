@@ -7,6 +7,7 @@
 
 #include <ULint.h>
 #include <cmath>
+#include <climits>
 
 using namespace dann5;
 

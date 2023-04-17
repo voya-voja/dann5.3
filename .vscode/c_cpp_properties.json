@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/eigen3",
+                "/usr/include/python3.10",
+                "/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
+                "${workspaceFolder}/dann5/include",
+                "${workspaceFolder}/dann5/ocean/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/g++-11",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

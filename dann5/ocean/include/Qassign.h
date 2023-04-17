@@ -168,7 +168,6 @@ namespace dann5 {
 			};
 
 			// Qstatement cast operator
-			operator Qstatement&() { return *this; };
 			operator Qstatement::Sp() { return Qstatement::Sp(this); };
 
 			/*** Assignments ***/

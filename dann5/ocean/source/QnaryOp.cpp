@@ -114,7 +114,7 @@ Qubo QnaryOp::qubo(bool finalized, size_t forBit) const
 		if (pCellOp != nullptr)
 			return pCellOp->qubo(finalized);
 		else
-			throw logic_error("The cell is not an operation");
+			throw logic_error("Error@QnaryOp: The cell is not an operation");
 	}
 	size_t size = noqbs();
 	Qubo aQubo;
@@ -124,7 +124,7 @@ Qubo QnaryOp::qubo(bool finalized, size_t forBit) const
 		if (pCellOp != nullptr)
 			aQubo += pCellOp->qubo(finalized);
 		else
-			throw logic_error("The cell is not an operation");
+			throw logic_error("Error@QnaryOp: The cell is not an operation");
 	}
 	return aQubo;
 }

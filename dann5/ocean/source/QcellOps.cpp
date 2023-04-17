@@ -47,7 +47,7 @@ void QcellOp::value(Qvalue v)
 	if (pOut != nullptr)
 		pOut->value(v);
 	else
-		throw std::logic_error("Setting value of a Qcell operation without output argument!");
+		throw std::logic_error("Error@QcellOp: Setting value of a Qcell operation without output argument!");
 }
 
 Qvalue QcellOp::value() const
