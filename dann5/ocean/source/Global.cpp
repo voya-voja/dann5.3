@@ -16,11 +16,12 @@ using namespace dann5::ocean;
 unique_ptr<Logger> Logger::mpSingleton;
 
 /**** A global instance of Qubo Table Factory singleton ****/
-//#ifdef _WINDOWS
+#ifdef _WINDOWS // error LNK2001: unresolved external symbol "private: static class dann5::Factory<string,QuboTable> dann5::Factory<string,QuboTable>::gFactory"
+Factory<string, QuboTable> Factory<string, QuboTable>::gFactory;
+#else
 template class Factory<string, QuboTable>;
 template class Factory<string, QuboTable>::Creator<string, QuboTable>;
-// template Factory<string, QuboTable> Factory<string, QuboTable>::gFactory;
-//#endif
+#endif
 
 /**** Equal operator Qubo Table ****/
 
@@ -188,9 +189,10 @@ const string AdderQT::Carry::cName = "carry";
 
 /*** Quantum Cell Operations Factory ***/
 #ifdef _WINDOWS
+Factory<string, QcellOp> Factory<string, QcellOp>::gFactory;
+#else
 template class Factory<string, QcellOp>;
 template class Factory<string, QcellOp>::Creator<string, QcellOp>;
-//template Factory<string, QcellOp> Factory<string, QcellOp>::gFactory;
 #endif
 
 DefaultCreator<string, QcellOp, Qeq> gEqualOperatorCreator_m(EqQT::cMark);
@@ -241,9 +243,10 @@ DefaultCreator<string, QcellOp, Qadder> gAdderOpCreator(AdderQT::cName);
 
 /*** Quantum-nary Operations Factory ***/
 #ifdef _WINDOWS
+Factory<string, QnaryOp> Factory<string, QnaryOp>::gFactory;
+#else
 template class Factory<string, QnaryOp>;
 template class Factory<string, QnaryOp>::Creator<string, QnaryOp>;
-//template Factory<string, QnaryOp> Factory<string, QnaryOp>::gFactory;
 #endif
 
 /**** Addition binary operation ****/

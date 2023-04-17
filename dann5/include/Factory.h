@@ -89,12 +89,12 @@ namespace dann5 {
 				throw std::logic_error("Error@Factory: try to use a same 'key' to registed a new 'creator'!");
 			mCreators.emplace(aKey, pCreator);
 		};
-//#ifdef _WINDOWS
-//		static Factory<KEY, BASE>		gFactory;
-//#else
 		// Factory singeton instance is a global variable
-		static inline Factory<KEY, BASE>		gFactory;
-//#endif
+#ifdef _WINDOWS // error C2512: 'dann5::Factory<string,QuboTable>': no appropriate default constructor available
+		static			Factory<KEY, BASE>		gFactory;
+#else
+		static inline	Factory<KEY, BASE>		gFactory;
+#endif
 		// A map of Factor::Creator pointers associated with their keys
 		std::map<KEY, Creator<KEY, BASE> * >	mCreators;
 	};
