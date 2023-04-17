@@ -13,13 +13,12 @@
 				"${workspaceFolder}/dann5/ocean/source/*.cpp",
 				"${workspaceFolder}/d5o_ta/*.cpp",
 				"-o",
-				"${workspaceFolder}/d5o_ta/build/d5o_ta",
+				"${workspaceFolder}/../build/d5o_ta",
 				"-I/usr/include/eigen3",
 				"-I/usr/include/python3.10",
 				"-I/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
 				"-I${workspaceFolder}/dann5/include",
 				"-I${workspaceFolder}/dann5/ocean/include",
-				"-fpermissive",
 				"-L/usr/lib/x86_64-linux-gnu/",
 				"-lpython3.10"
 			],
@@ -66,13 +65,12 @@
 				"-c",
 				"${file}",
 				"-o",
-				"${workspaceFolder}/d5o_ta/build/${fileBasenameNoExtension}.o",
+				"${workspaceFolder}/../build/obj/${fileBasenameNoExtension}.o",
 				"-I/usr/include/eigen3",
 				"-I/usr/include/python3.10",
 				"-I/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
 				"-I${workspaceFolder}/dann5/include",
-				"-I${workspaceFolder}/dann5/ocean/include",
-				"-fpermissive"
+				"-I${workspaceFolder}/dann5/ocean/include"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}/d5o_ta"
