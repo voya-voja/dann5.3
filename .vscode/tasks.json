@@ -9,7 +9,6 @@
 				"-fdiagnostics-color=always",
 				"-std=c++17",
 				"-g",
-				"-D_WINDOWS",
 				"${workspaceFolder}/dann5/source/*.cpp",
 				"${workspaceFolder}/dann5/ocean/source/*.cpp",
 				"${workspaceFolder}/d5o_ta/*.cpp",
