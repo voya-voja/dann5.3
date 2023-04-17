@@ -1,6 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 
-// pybind11 — Seamless operability between C++11 and Python
+// pybind11 ï¿½ Seamless operability between C++11 and Python
 // https://pybind11.readthedocs.io/en/stable/index.html
 //
 #include <pybind11/pybind11.h>
@@ -31,7 +31,7 @@
 using namespace dann5;
 using namespace dann5::ocean;
 
-#define VERSION_INFO "2.1.3"
+#define VERSION_INFO "2.2.0"
 
 namespace py = pybind11;
 

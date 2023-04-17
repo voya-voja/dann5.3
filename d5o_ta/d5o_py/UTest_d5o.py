@@ -12,8 +12,8 @@ from dann5.d5o2 import Qwhole, Qbin, Qblock, Qanalyzer
 from PrimeNumberGenerator import PNGen
 
 def main():
+    solvers = Solvers(1000)
     """
-    solvers = DwaveSolvers(1000, None)
     #solvers = None
     x = Qwhole(2, "x"); y = Qwhole(2, "y"); z = Qwhole(2, "z");
     _3 = Qwhole("_3", 3);
@@ -43,10 +43,10 @@ def main():
         qxxAssign.add(samples)
         print(qxxAssign.toString() + "\n" + qxxAssign.solutions())
 
-
+    """ 
     test = UTestQwhole(solvers)
     test.runAll(0)
-"""    """
+    """
     png = PNGen(16)
     png.prime6()
 
