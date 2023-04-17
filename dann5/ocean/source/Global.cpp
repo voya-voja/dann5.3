@@ -19,8 +19,8 @@ unique_ptr<Logger> Logger::mpSingleton;
 #ifdef _WINDOWS // error LNK2001: unresolved external symbol "private: static class dann5::Factory<string,QuboTable> dann5::Factory<string,QuboTable>::gFactory"
 Factory<string, QuboTable> Factory<string, QuboTable>::gFactory;
 #else
-template class Factory<string, QuboTable>;
-template class Factory<string, QuboTable>::Creator<string, QuboTable>;
+template class dann5::Factory<string, QuboTable>;
+template class dann5::Factory<string, QuboTable>::Creator<string, QuboTable>;
 #endif
 
 /**** Equal operator Qubo Table ****/
@@ -191,8 +191,8 @@ const string AdderQT::Carry::cName = "carry";
 #ifdef _WINDOWS
 Factory<string, QcellOp> Factory<string, QcellOp>::gFactory;
 #else
-template class Factory<string, QcellOp>;
-template class Factory<string, QcellOp>::Creator<string, QcellOp>;
+template class dann5::Factory<string, QcellOp>;
+template class dann5::Factory<string, QcellOp>::Creator<string, QcellOp>;
 #endif
 
 DefaultCreator<string, QcellOp, Qeq> gEqualOperatorCreator_m(EqQT::cMark);
@@ -245,8 +245,8 @@ DefaultCreator<string, QcellOp, Qadder> gAdderOpCreator(AdderQT::cName);
 #ifdef _WINDOWS
 Factory<string, QnaryOp> Factory<string, QnaryOp>::gFactory;
 #else
-template class Factory<string, QnaryOp>;
-template class Factory<string, QnaryOp>::Creator<string, QnaryOp>;
+template class dann5::Factory<string, QnaryOp>;
+template class dann5::Factory<string, QnaryOp>::Creator<string, QnaryOp>;
 #endif
 
 /**** Addition binary operation ****/
