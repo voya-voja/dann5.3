@@ -395,3 +395,4 @@ pypi_package/dist/dann5-2.1.1.tar.gz
 d5o2.xcworkspace/xcuserdata/nvojinov.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 /pypi_package/dist
 d5o_ta/build/Global.o
+pypi_package/build/lib/dann5/d5o2.so

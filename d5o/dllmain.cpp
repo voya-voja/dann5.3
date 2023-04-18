@@ -61,6 +61,8 @@ PYBIND11_MODULE(d5o2, m) {
 			Qassignment
     )pbdoc";
 
+	m.def("version", []() { return VERSION_INFO; }, R"pbdoc(Returns version of dann5 d5o2 library.)pbdoc");
+
 
 /*--- Qwhole.h definitions ---*/
     py::class_<ULint>(m, "ULint",
