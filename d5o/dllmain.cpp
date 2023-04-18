@@ -644,7 +644,8 @@ PYBIND11_MODULE(d5o2, m) {
 			.def(py::self == py::self, "compares the contents")
 
 			.def("__setitem__", [](Bits& self, size_t index, bool val) { self[index] = val; }, "Sets a value at the position 'index'")
-			.def("__getitem__", [](Bits& self, size_t index) { return &self[index]; }, "Returns a bit at the position 'index'")
+			.def("__getitem__", [](Bits& self, size_t index) { return Bits::reference(self[index]); }, "Returns a bitset::reference at the position 'index'")
+			.def("test", &Bits::test, "Returns the value of the bit at the position pos (counting from 0). Unlike operator[], performs a bounds check and throws std::out_of_range if pos does not correspond to a valid position in the bitset.")
 
 			.def("all", &Bits::all, "checks if all of the bits are set to true")
 			.def("any", &Bits::any, "checks if any of the bits are set to true")
