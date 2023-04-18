@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = empty-project-type
-recent_files = ['basic_types.py', 'shipping-sample.py', 'qiskitBasic.py', 'qiskitQUBO.py', 'd5az.py', 'd5qskt.py', 'qbit_test.py', 'd5o2_tests.py', 'DwaveSolvers.py', 'UTestQwhole.py', 'UTest_d5o.py', 'PrimeNumberGenerator.py']
+recent_files = ['..\\..\\..\\..\\..\\.spyder-py3\\temp.py', 'basic_types.py', 'shipping-sample.py', 'qiskitBasic.py', 'qiskitQUBO.py', 'd5az.py', 'd5qskt.py', 'qbit_test.py', 'd5o2_tests.py', 'DwaveSolvers.py', 'UTestQwhole.py', 'UTest_d5o.py', 'UTestQwhole.txt', 'PrimeNumberGenerator.py', '..\\..\\pypi_package\\dann5\\dwave.py']
 
 [main]
 version = 0.2.0
