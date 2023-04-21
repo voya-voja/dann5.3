@@ -27,7 +27,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='dann5',    # This is the name of your PyPI-package.
-    version='2.2.0',                          # Update the version number for new releases
+    version='2.2.1',                          # Update the version number for new releases
     author="voya-voja",
     author_email="nebojsa@nand5.onmicrosoft.com",
     description="A Library of Quantum computing types for programming",

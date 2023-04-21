@@ -31,7 +31,7 @@
 using namespace dann5;
 using namespace dann5::ocean;
 
-#define VERSION_INFO "2.2.0"
+#define VERSION_INFO "2.2.1"
 
 namespace py = pybind11;
 
