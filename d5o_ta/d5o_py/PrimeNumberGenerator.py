@@ -6,10 +6,10 @@ Created on Mon Mar 27 11:28:10 2023
 """
 
 from dann5.dwave import Solvers
-from dann5.d5o2 import Qwhole, Qblock, Qanalyzer, Qbinder, SampleEng
+from dann5.d5o2 import Qwhole, Qblock, Qanalyzer, Qbinder, SampleEng, ULint
 
 class PNGen:
-    def __init__(self, noQBs):
+    def __init__(self, noQBs, justHybrid = True):
         self.noQBs = noQBs
         self.prime = Qwhole(noQBs, "p")
         if(noQBs < 4):
@@ -22,9 +22,9 @@ class PNGen:
         #self.min = Qwhole("m", 2**(noQBs-1))
         self.mPNs = []
         self.qVars = Qbinder() << self.prime << self.factor #<< self.min
-        self.solvers = Solvers(1000, None)
-        self.primes = [3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,181,233]
-
+        self.solvers = Solvers(1000)
+        self.primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,181,233]
+        self.useHybrid = justHybrid
         
     def prime6(self):
         finished = False
@@ -34,9 +34,14 @@ class PNGen:
             blck = Qblock() << xPrime6m1 #<< xPrimeMin
             print(blck.toString())
             samples = self.execute(blck)
-            finished = self.likePrime(samples)
+            finished = self.likePrime(samples)                
         self.qVars.add(samples)
-        print(self.qVars.solutions())
+        prmSltns = self.qVars["p"].ulints()
+        print("Prime #'s: ")
+        [print(prmSln) for prmSln in prmSltns]
+        #fctrSltns = self.qVars["f"].ulints()
+        #print("Factor #'s: ")
+        #[print(fctrSln) for fctrSltns in prmSltns]
         
         finished = False
         while not finished:
@@ -47,7 +52,12 @@ class PNGen:
             samples = self.execute(blck)
             finished = self.likePrime(samples)
         self.qVars.add(samples)
-        print(self.qVars.solutions())
+        prmSltns = self.qVars["p"].ulints()
+        print("Prime #'s: ")
+        [print(prmSln) for prmSln in prmSltns]
+        #fctrSltns = self.qVars["f"].ulints()
+        #print("Factor #'s: ")
+        #[print(fctrSln) for fctrSltns in prmSltns]
         
     def execute(self, qCode) -> SampleEng:
         qubo = qCode.qubo()
@@ -55,24 +65,27 @@ class PNGen:
         noNodes = anlyzeD2.nodesNo()
         print(" # of nodes: " + str(noNodes))
         print(" # of branches: " + str(anlyzeD2.branchesNo()) + "\n");
-        if noNodes < 31:
+        if self.useHybrid or noNodes >= 500:
+            samples = self.solvers.solve('Hybrid', qubo)
+        elif noNodes < 31:
             samples = qCode.compute()
         elif noNodes < 200:
             samples = self.solvers.solve('Advantage2', qubo)
-        elif noNodes < 500:
+        else: #noNodes < 500
             samples = self.solvers.solve('Advantage', qubo)
-        else:
-            samples = self.solvers.solve('Hybrid', qubo)
         return samples
     
     def likePrime(self, samples) -> bool:
         prm = Qwhole(self.prime)
         prm.add(samples)
-        for result in prm.results():
-            for prm in self.primes:
-                if result % prm == 0:
+        results = prm.ulints()
+        for result in results:
+            for prmV in self.primes:
+                prmVl = ULint(prmV, True)
+                if result % prmVl == 0:
+                    print("NOT Prime number {} devisible by {}".format(result, prm))
                     return False
-            #return self.factorTest(result)
+        #return self.factorTest(result)
         return True
 
     def factorTest(self, result) -> bool:
@@ -83,7 +96,9 @@ class PNGen:
         factorSamples = self.execute(asFactor)
         factors = Qbinder() << r << m << n
         factors.add(factorSamples)
-        print(factors.solutions())
+        #fctrSltns = self.qVars["f"].ulints()
+        #print("Factor #'s: ")
+        #[print(fctrSln) for fctrSltns in prmSltns]
         if len(factorSamples) > 1:
             return False
         n.add(factorSamples)

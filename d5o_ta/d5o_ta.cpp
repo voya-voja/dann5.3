@@ -127,27 +127,113 @@ void testSolver()
 
 int main(int argc, const char * argv[])
 {
-    ULint ulint(64);
+    ULint prm(40437, true), _a3(3, true), _a4(4, true);
+
+    ULint a = prm + _a3,
+        s = prm - _a3,
+        m = prm * _a3,
+        d = prm / _a3,
+        r = prm % _a3;
+
+    cout << "add: " << a << endl
+        << "sub: " << s << endl
+        << "mul: " << m << endl
+        << "div: " << d << endl
+        << "rem: " << r << endl;
+    cout << "r == 0: " << (r == ULint(0, true)) << endl
+        << "a > s: " << (a > s) << endl
+        << "a >= m: " << (a > m) << endl
+        << "m < d: " << (m < d) << endl
+        << "d <= s: " << (d <= s) << endl;
+
+    a = prm + _a4;
+    s = prm - _a4;
+    m = prm * _a4;
+    d = prm / _a4;
+    r = prm % _a4;
+
+    cout << "add: " << a << endl
+        << "sub: " << s << endl
+        << "mul: " << m << endl
+        << "div: " << d << endl
+        << "rem: " << r << endl
+        << "r == 0: " << (r == ULint(0, true)) << endl
+        << "a > s: " << (a > s) << endl
+        << "a >= m: " << (a > m) << endl
+        << "m < d: " << (m < d) << endl
+        << "d <= s: " << (d <= s) << endl;
+
+    std::bitset<9> b(52415993);
+    
+    ULint u(52415993, true);
+    ULint ten = ULint(10, true);
+    ULint five = ULint(5, true);
+    bool gt = ten > ten;
+    bool g = ten > five;
+    bool t = five > ten;
+    ULint three(3, true);
+    u = ten * three;
+    u *= five;
+    u %= three;
+/*    cout << b << endl << u.toString(2) << endl;
+    cout << endl << oct << b.to_ullong() << endl << u << endl;
+    cout << dec << b.to_ullong() << endl << u << endl;
+    cout << hex << b.to_ullong() << endl  << u << endl << dec;
+*/
     unsigned long long value = 1800999832145436372;
     std::bitset<64> bs(value);
     cout << value << endl << bs << endl;
-    for(size_t at = 0; at < 64; at++)
-    {
-        ulint.set(at, bool(value % 2));
-        value >>= 1;
-    }
+    ULint ulint(1800999832145436372, true);
+//    ulint /= three;
     for(size_t at = 7; (at + 1) > 0; at--)
     {
         std::bitset<8> x1(ulint[at]);
         cout << x1;
     }
-    cout << endl << hex << bs.to_ullong() << dec << endl;
-    cout << ulint.toString(2) << endl;
-    cout << ulint.toString(8) << endl;
-    cout << ulint.toString() << endl;
-    cout << ulint.toString(10) << endl;
-    cout << ulint.toString(16) << endl;
+    cout << endl << ulint.toString(2) << endl;
+    cout << oct << bs.to_ullong() << endl << ulint << endl;
+    cout << dec << bs.to_ullong() << endl << ulint << endl << ulint.toString(10) << endl;
+    cout << endl << hex << bs.to_ullong() << endl << ulint << endl << dec;
     cout << ulint.toString(3) << endl;
+
+    ULint assgn(257, true), assgnmnt;
+    assgnmnt = assgn;
+    cout << assgnmnt << " = " << assgn << endl;
+    cout << "assignment: " << assgnmnt.toString(2) << endl;
+
+    ULint assgn1(513, true), assgnmnt1(1025,true);
+    cout << assgnmnt1 << " = " << assgn1 << endl;
+    cout << "assignment: " << assgnmnt1.toString(2) << " = " << assgn1.toString(2) << endl;
+
+    ULint assgn2(512, true), assgnmnt2(1024, true), a3(256,true);
+    cout << assgnmnt2 << " = " << assgn2 << " & " << a3 << endl;
+    cout << "assignment: " << assgnmnt2.toString(2) << endl;
+
+    assgnmnt >>= 3;
+    cout << assgnmnt << " >>= " << 3 << endl;
+    cout << "assignment: " << assgnmnt.toString(2) << endl;
+
+    assgnmnt <<= 5;
+    cout << assgnmnt << " <<= " << 5 << endl;
+    cout << "assignment: " << assgnmnt.toString(2) << endl;
+
+    assgnmnt += assgn;
+    cout << assgnmnt << " += " << assgn << endl;
+    cout << "assignment: " << assgnmnt.toString(2) << endl;
+
+    assgnmnt -= assgn;
+    assgnmnt -= assgn;
+    cout << assgnmnt << " -= 2 * " << assgn << endl;
+
+    assgn *= assgn;
+    cout << assgn << " *= " << assgn << endl;
+
+    ULint dvdnd(210862, true), dvsr(358, true);
+    ULint qtnt = dvdnd / dvsr;
+    cout << qtnt << " = " << dvdnd << " / " << dvsr << endl;
+
+    assgnmnt = ulint % assgn;
+    cout << assgnmnt << " = "<< ulint << " % " << assgn << endl;
 
 /*    for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
     {

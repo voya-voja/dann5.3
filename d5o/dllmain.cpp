@@ -70,18 +70,54 @@ PYBIND11_MODULE(d5o2, m) {
 
         .def(py::init<>())
         .def(py::init<const ULint&>())
-        .def(py::init<size_t>(), "Constructs unsigned long integer object ready to support at least specified number of bits")
+        .def(py::init<size_t, bool>(), "Constructs unsigned long integer object. When isValue is true, argument contains initialization value. Otherwise, zero with the number of bits specified by argument")
 
         .def("set", &ULint::set, "Sets bit at position 'at' to 1 if 'bit' is true, otherwise 0")
 
         .def("toString", &ULint::toString, "Converts unsigned long integer to string presentation for base 10")
         .def("toString", [](ULint& o, unsigned base ) { return o.toString(base); }, "Converts unsigned long integer to string presentation for given base")
-    
+		.def("__str__", [](ULint& o) { return o.toString(); })
+
+		.def("noBytes", &ULint::noBytes, "Returns number of containing bytes.")
+		.def("noBits", &ULint::noBits, "Returns number of containing bits.")
+
         .def("at", (unsigned char&(ULint::*)(size_t)) & ULint::at, "Returns a reference of a byte (unsigned char) at position 'at'")
         .def("at", (const unsigned char&(ULint::*)(size_t) const) & ULint::at, "Returns a constant reference of a byte (unsigned char) at position 'at'")
     
         .def("__setitem__", [](ULint& self, size_t index, unsigned char val) { self[index] = val; }, "Sets a a byte (unsigned char) at position 'index'")
-        .def("__getitem__", [](ULint& self, size_t index) { return &self[index]; }, "Returns a reference of a byte (unsigned char) at position 'index'");
+        .def("__getitem__", [](ULint& self, size_t index) { return &self[index]; }, "Returns a reference of a byte (unsigned char) at position 'index'")
+		
+		/*** Assignment operattors ***/
+		.def("_", static_cast<ULint & (ULint::*)(const ULint&)>(&ULint::operator=), "Assigns the value on the right to the variable on the left")
+		.def("as", static_cast<ULint & (ULint::*)(const ULint&)>(&ULint::operator=), "Assigns the value on the right to the variable on the left")
+
+		.def(py::self >>= size_t(), "Shifts the value to right by the number of bits specified by the right operand and then assigns the result to the variable on the left.")
+		.def(py::self <<= size_t(), "Shifts the value to left by the number of bits specified by the right operand and then assigns the result to the variable on the left.")
+
+		.def(py::self += py::self, "First adds the current value of the variable on left to the value on the right and then assigns the result to the variable on the left.")
+		.def(py::self -= py::self, "First subtracts the value on the right from the current value of the variable on left and then assign the result to the variable on the left.")
+		.def(py::self *= py::self, "First multiplies the current value of the variable on left to the value on the right and then assign the result to the variable on the left.")
+		.def(py::self /= py::self, "First divides the current value of the variable on left by the value on the right and then assign the result to the variable on the left.")
+		.def(py::self %= py::self, "First calculates mode of the current value of the variable on left by the value on the right and then assign the result to the variable on the left.")
+
+		/*** Bitwise operattors ***/
+		.def(py::self >> size_t(), "Shifts the value to right by the number of bits specified by the right operand.")
+		.def(py::self << size_t(), "Shifts the value to left by the number of bits specified by the right operand.")
+
+		/*** Arithmetic operattors ***/
+		.def(py::self + py::self, "Returns addition of two operands.")
+		.def(py::self - py::self, "Returns subtraction of second operand from the first.")
+		.def(py::self * py::self, "Returns multiplication of two operands.")
+		.def(py::self / py::self, "Returns division of the first operand by the second operand.")
+		.def(py::self % py::self, "Returns calculated mode, i.e. returns the remainder an integer division of first operand by the second operand.")
+
+		/*** Relational operattors ***/
+		.def(py::self == py::self, "Checks if both operands are equal.")
+		.def(py::self != py::self, "Checks if both operands are not equal.")
+		.def(py::self > py::self, "Checks if first operand is greater than the second operand.")
+		.def(py::self >= py::self, "Checks if first operand is greater than or equal to the second operand.")
+		.def(py::self < py::self, "Checks if first operand is lesser than the second operand.")
+		.def(py::self <= py::self, "Checks if first operand is lesser than or equal to the second operand.");
 
 /*--- Qubo.h definitions ---*/
 	py::class_<Qkey>(m, "Qkey", R"pbdoc(Qubo key corresponds to an element of DWave's dimod.BinaryQuadraticModel class where
@@ -205,6 +241,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qexpression::toString, "returns string presentation of this Q expression object")
 		.def("toString", [](Qexpression& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qexpression& o) { return o.toString(); })
+		.def("__str__", [](Qexpression& o) { return o.toString(); })
 
 		.def("add", &Qexpression::add, "Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
 		.def("solutions", &Qexpression::solutions, "For existing samples, returns a string with all solutions of this Q expression")
@@ -373,6 +410,7 @@ PYBIND11_MODULE(d5o2, m) {
 	py::class_<Qassignment>(m, "Qassignment",
 		R"pbdoc( Quantum assignment of an expression to a result)pbdoc")
 		.def("_", &Qassignment::assign, "Assign a Q expression to Q defintion assignee. Use without inputs to remove (one or boath) Q assignment members")
+		.def("as", &Qassignment::assign, "Assign a Q expression to Q defintion assignee. Use without inputs to remove (one or boath) Q assignment members")
 
 		.def("assignee", static_cast<const Qdef::Sp& (Qassignment::*)() const>(&Qassignment::assignee), "returns a reference to the Q assignee")
 		.def("assignee", static_cast<void (Qassignment::*)(const Qdef::Sp&)>(&Qassignment::assignee), "set a Q definition pointer to a new assignee")
@@ -390,6 +428,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qassignment::toString, "returns string presentation of this Q assignment object")
 		.def("toString", [](Qassignment& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qassignment& o) { return o.toString(); })
+		.def("__str__", [](Qassignment& o) { return o.toString(); })
 
 		.def("add", &Qassignment::add, "Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
 		.def("solutions", &Qassignment::solutions, "For existing samples, returns a string with all solutions of this Q assignment")
@@ -449,6 +488,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qblock::toString, "returns string presentation of this Q block object")
 		.def("toString", [](Qblock& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qblock& o) { return o.toString(); })
+		.def("__str__", [](Qblock& o) { return o.toString(); })
 
 		.def("add", &Qblock::add, "Set a sample set with a node list defined by qubo() of this Q block the combination of node values should be different for each sample")
 		.def("solutions", &Qblock::solutions, "For existing samples, returns a string with all solutions of this Q block")
@@ -502,6 +542,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qbit::toString, "returns string presentation of this Q bit object")
 		.def("toString", [](Qbit& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qbit& o) { return o.toString(); })
+		.def("__str__", [](Qbit& o) { return o.toString(); })
 
 		.def("add", &Qbit::add, "adds solutions to this object")
 		.def("solution", &Qbit::solution, "returns a solution for this object identified by id")
@@ -592,13 +633,16 @@ PYBIND11_MODULE(d5o2, m) {
 			.def("toString", &Qbool::toString, "returns string presentation of this Q bit object")
 			.def("toString", [](Qbool& o, bool decomposed) { return o.toString(decomposed); })
 			.def("toString", [](Qbool& o) { return o.toString(); })
+			.def("__str__", [](Qbool& o) { return o.toString(); })
 
 			.def("add", &Qbool::add, "adds solutions to this object")
 			.def("solution", &Qbool::solution, "returns a solution for this object identified by id")
 
 			/*** Assignments ***/
 			.def("_", static_cast<Qassign<Qbool>(Qbool::*)(const Qbool&)>(&Qbool::operator=), "assigns a value of right Q bit to this Q bit")
+			.def("as", static_cast<Qassign<Qbool>(Qbool::*)(const Qbool&)>(&Qbool::operator=), "assigns a value of right Q bit to this Q bit")
 			.def("_", static_cast<Qassign<Qbool>(Qbool::*)(const Qexpr<Qbool>&)>(&Qbool::operator=), "assignment of an Q expression creates a Q bit assignment where this Q bit is an assignee")
+			.def("as", static_cast<Qassign<Qbool>(Qbool::*)(const Qexpr<Qbool>&)>(&Qbool::operator=), "assignment of an Q expression creates a Q bit assignment where this Q bit is an assignee")
 
 
 			/*** Compound Assignments ***/
@@ -688,6 +732,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qbin::toString, "returns string presentation of this Q bin object")
 		.def("toString", [](Qbin& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qbin& o) { return o.toString(); })
+		.def("__str__", [](Qbin& o) { return o.toString(); })
 
 		.def("toQbits", [](Qbin& o) { return o.operator Qbits(); })
 		.def("toBits", [](Qbin& o) { return o.operator Bits(); })
@@ -699,8 +744,10 @@ PYBIND11_MODULE(d5o2, m) {
         .def("__getitem__", [](Qbin &self, size_t index) { return &self[index]; })
 
 		/*** Assignments ***/
-		.def("_", static_cast<Qassign<Qbin> (Qbin::*)(const Qbin&)>(&Qbin::operator=), "assigns a value of right Q creates a Q bin assignment where this Q bin is an assignee")
+		.def("_", static_cast<Qassign<Qbin>(Qbin::*)(const Qbin&)>(&Qbin::operator=), "assigns a value of right Q creates a Q bin assignment where this Q bin is an assignee")
+		.def("as", static_cast<Qassign<Qbin>(Qbin::*)(const Qbin&)>(&Qbin::operator=), "assigns a value of right Q creates a Q bin assignment where this Q bin is an assignee")
 		.def("_", static_cast<Qassign<Qbin>(Qbin::*)(const Qexpr<Qbin>&)>(&Qbin::operator=), "assignment of an Q expression creates a Q bin assignment where this Q bin is an assignee")
+		.def("as", static_cast<Qassign<Qbin>(Qbin::*)(const Qexpr<Qbin>&)>(&Qbin::operator=), "assignment of an Q expression creates a Q bin assignment where this Q bin is an assignee")
 
 		/*** Compound Assignments ***/
 		.def(py::self &= py::self, "change value of this object as result of and operation between this and right Q bin")
@@ -765,6 +812,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qwhole::toString, "returns string presentation of this Q whole object")
 		.def("toString", [](Qwhole& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qwhole& o) { return o.toString(); })
+		.def("__str__", [](Qwhole& o) { return o.toString(); })
 
 		.def("solution", &Qwhole::solution, "returns a solution for this object identified by id")
 		.def("results", &Qwhole::results, "Returns the list of assigned solutions as unsigned long long numbers")
@@ -772,8 +820,10 @@ PYBIND11_MODULE(d5o2, m) {
 
 
 		/*** Assignments ***/
-		.def("_", static_cast<Qassign<Qwhole> (Qwhole::*)(const Qwhole&) const>(&Qwhole::operator=), "assigns a value of right Q whole to this Q whole")
-		.def("_", static_cast<Qassign<Qwhole> (Qwhole::*)(const Qexpr<Qwhole>&) const>(&Qwhole::operator=), "assignment of an Q expression creates a Q whole assignment where this Q whole is an assignee")
+		.def("_", static_cast<Qassign<Qwhole>(Qwhole::*)(const Qwhole&) const>(&Qwhole::operator=), "assigns a value of right Q whole to this Q whole")
+		.def("as", static_cast<Qassign<Qwhole>(Qwhole::*)(const Qwhole&) const>(&Qwhole::operator=), "assigns a value of right Q whole to this Q whole")
+		.def("_", static_cast<Qassign<Qwhole>(Qwhole::*)(const Qexpr<Qwhole>&) const>(&Qwhole::operator=), "assignment of an Q expression creates a Q whole assignment where this Q whole is an assignee")
+		.def("as", static_cast<Qassign<Qwhole>(Qwhole::*)(const Qexpr<Qwhole>&) const>(&Qwhole::operator=), "assignment of an Q expression creates a Q whole assignment where this Q whole is an assignee")
 
 		/*** Compound Assignments ***/
 		.def(py::self += py::self, "change value of this object as result of add operation between this and right Q whole")
@@ -844,13 +894,16 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qint::toString, "returns string presentation of this Q integer object")
 		.def("toString", [](Qint& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qint& o) { return o.toString(); })
+		.def("__str__", [](Qint& o) { return o.toString(); })
 
 		.def("solution", &Qint::solution, "returns a solution for this object identified by id")
 
 
 		/*** Assignments ***/
 		.def("_", static_cast<Qint& (Qint::*)(const Qint&)>(&Qint::operator=), "assigns a value of right Q integer to this Q bin")
+		.def("as", static_cast<Qint& (Qint::*)(const Qint&)>(&Qint::operator=), "assigns a value of right Q integer to this Q bin")
 		.def("_", static_cast<Qassign<Qint>(Qint::*)(const Qexpr<Qint>&)>(&Qint::operator=), "assignment of an Q expression creates a Q integer assignment where this Q bin is an assignee")
+		.def("as", static_cast<Qassign<Qint>(Qint::*)(const Qexpr<Qint>&)>(&Qint::operator=), "assignment of an Q expression creates a Q integer assignment where this Q bin is an assignee")
 
 		/*** Compound Assignments ***/
 		.def(py::self += py::self, "change value of this object as result of add operation between this and right Q integer")
@@ -913,6 +966,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qroutine::toString, "returns string presentation of this Q routine object")
 		.def("toString", [](Qroutine& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qroutine& o) { return o.toString(); })
+		.def("__str__", [](Qroutine& o) { return o.toString(); })
 
 		.def("add", &Qroutine::add, "Set a sample set with a node list defined by qubo() of this Q routine the combination of node values should be different for each sample")
 		.def("solution", &Qroutine::solution, "For added sample set(s), returns a string represnting 'at' solution of operands of statements within this Q routine")
@@ -945,6 +999,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", &Qbinder::toString, "returns string presentation of this Q binder object")
 		.def("toString", [](Qbinder& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qbinder& o) { return o.toString(); })
+		.def("__str__", [](Qbinder& o) { return o.toString(); })
 
 		.def("add", &Qbinder::add, "Set a sample set with a node list defined by qubo() of this Q binder the combination of node values should be different for each sample")
 		.def("solution", &Qbinder::solution, "For added sample set(s), returns a string represnting 'at' solution of operands of statements within this Q binder")
