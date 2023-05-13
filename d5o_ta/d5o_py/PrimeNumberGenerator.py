@@ -79,7 +79,7 @@ class PNGen:
         prm = Qwhole(self.prime)
         prm.add(samples)
         results = prm.ulints()
-        ulint0 = ULint(0)
+        ulint0 = ULint(0, True)
         for result in results:
             for prmV in self.primes:
                 prmVl = ULint(prmV, True)
