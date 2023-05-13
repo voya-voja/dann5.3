@@ -79,10 +79,11 @@ class PNGen:
         prm = Qwhole(self.prime)
         prm.add(samples)
         results = prm.ulints()
+        ulint0 = ULint(0)
         for result in results:
             for prmV in self.primes:
                 prmVl = ULint(prmV, True)
-                if result % prmVl == 0:
+                if result % prmVl == ulint0:
                     print("NOT Prime number {} devisible by {}".format(result, prm))
                     return False
         #return self.factorTest(result)
