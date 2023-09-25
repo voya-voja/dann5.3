@@ -125,9 +125,43 @@ void testSolver()
     fout.close();
 }
 
+void testPNfile()
+{
+    ifstream pnFstream;
+    char line[800];
+    vector<ULint> primes;
+    pnFstream.open("..//.//d5o_ta//d5o_py//primeNumbersAll.txt");
+    bool fo = pnFstream.is_open();
+    while (pnFstream.getline(line, 800))
+    {
+        cout << line << endl;
+        ULint prime(line);
+        cout << prime.toString() << endl;
+        primes.push_back(prime);
+    }
+    ULint zero;
+    for (auto candidate : primes)
+    {
+        for (auto prime : primes)
+        {
+            if (prime == candidate)
+            {
+                cout << candidate.toString() << " is PRIME" << endl;
+                break;
+            }
+            if (candidate % prime == zero)
+            {
+                cout  << "**** NOT a PRIME: " << candidate.toString() << " **** divisable with: " << prime.toString() << endl;
+                break;
+            }
+        }
+    }
+    pnFstream.close();
+}
+
 int main(int argc, const char * argv[])
 {
-    ULint prm(40437, true), _a3(3, true), _a4(4, true);
+/*    ULint prm(40437, true), _a3(3, true), _a4(4, true);
 
     ULint a = prm + _a3,
         s = prm - _a3,
@@ -180,12 +214,12 @@ int main(int argc, const char * argv[])
     cout << dec << b.to_ullong() << endl << u << endl;
     cout << hex << b.to_ullong() << endl  << u << endl << dec;
 */
-    unsigned long long value = 1800999832145436372;
+/*    unsigned long long value = 1800999832145436372;
     std::bitset<64> bs(value);
     cout << value << endl << bs << endl;
     ULint ulint(1800999832145436372, true);
 //    ulint /= three;
-    for(size_t at = 7; (at + 1) > 0; at--)
+    for (size_t at = 7; (at + 1) > 0; at--)
     {
         std::bitset<8> x1(ulint[at]);
         cout << x1;
@@ -244,7 +278,7 @@ int main(int argc, const char * argv[])
         cout << endl << xpr.qubo() << endl << xpr.solve() << endl;
     }
   */
-    Qwhole x (2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
+/*    Qwhole x(2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
     Qexpr<Qwhole> qwExpr = x * y;//, z_3Expr = _3 * z, qxxExpr = qwExpr * z_3Expr;
     Qubo qubo = qwExpr.qubo();
     cout << qubo / 2 << endl;
@@ -275,6 +309,7 @@ int main(int argc, const char * argv[])
     UTestQbool utQbool;
 //    utQbool.runAll(cout);
     UTestQbin utQbin;
+//    utQbin.friends_enemies(cout);
 //    utQbin.runAll(cout);
     UTestQwhole utQwhole;
 //    utQwhole.runAll(cout); 
@@ -282,6 +317,17 @@ int main(int argc, const char * argv[])
 //    pymain();
 
 //    testSolver();
+
+//    testPNfile();
+//    ULint x("15305780290961646443858803558983811673237734933575719864519459714368164464027");
+//    cout << "15305780290961646443858803558983811673237734933575719864519459714368164464027\n" << x.toString();
+    ULint x1("4933575719864519459714368164464027"), ten(10, true), zero;
+    cout  << hex << "\n4933575719864519459714368164464027\n" << dec << x1.toString(16);
+    while (x1 != zero)
+    {
+        x1 /= ten;
+        cout << "\n" << x1.toString(16) << "\t" << x1.toString();
+    }
 
     return 0;
 }

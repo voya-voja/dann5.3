@@ -23,8 +23,31 @@ class PNGen:
         self.mPNs = []
         self.qVars = Qbinder() << self.prime << self.factor #<< self.min
         self.solvers = Solvers(1000)
-        self.primes = [2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,181,233]
         self.useHybrid = justHybrid
+        self.loadPrimes()
+        
+    def loadPrimes(self):
+        filePrimes = open("primeNumbers.txt", "r")
+        self.primes = []
+        for primeStr in filePrimes:
+            self.primes.append(int(primeStr))
+        print(self.primes)
+        filePrimes.close()
+        
+    def addPrimes(self, prmSltns):
+        for prmSltn in prmSltns:
+            prmSltnStr = str(prmSltn)
+            newPrime = True
+            filePrimes = open("primeNumbersAll.txt", "r")
+            for primeStr in filePrimes:
+                if primeStr == prmSltnStr:
+                    newPrime = False
+                    break
+            filePrimes.close()    
+            if newPrime:
+                filePrimes = open("primeNumbersAll.txt", "a")
+                filePrimes.write("\n{}".format(prmSltnStr))
+                filePrimes.close()
         
     def prime6(self):
         finished = False
@@ -35,8 +58,10 @@ class PNGen:
             print(blck.toString())
             samples = self.execute(blck)
             finished = self.likePrime(samples)                
-        self.qVars.add(samples)
-        prmSltns = self.qVars["p"].ulints()
+        #self.qVars.add(samples)
+        #prmSltns = self.qVars["p"].ulints()
+        self.prime.add(samples)
+        prmSltns = self.prime.ulints()
         print("Prime #'s: ")
         [print(prmSln) for prmSln in prmSltns]
         #fctrSltns = self.qVars["f"].ulints()
@@ -51,10 +76,13 @@ class PNGen:
             print(blck.toString())
             samples = self.execute(blck)
             finished = self.likePrime(samples)
-        self.qVars.add(samples)
-        prmSltns = self.qVars["p"].ulints()
+        #self.qVars.add(samples)
+        #prmSltns = self.qVars["p"].ulints()
+        self.prime.add(samples)
+        prmSltns = self.prime.ulints()
         print("Prime #'s: ")
         [print(prmSln) for prmSln in prmSltns]
+        self.addPrimes(prmSltns)
         #fctrSltns = self.qVars["f"].ulints()
         #print("Factor #'s: ")
         #[print(fctrSln) for fctrSltns in prmSltns]
@@ -65,13 +93,13 @@ class PNGen:
         noNodes = anlyzeD2.nodesNo()
         print(" # of nodes: " + str(noNodes))
         print(" # of branches: " + str(anlyzeD2.branchesNo()) + "\n");
-        if self.useHybrid or noNodes >= 500:
+        if self.useHybrid or noNodes >= 4000:
             samples = self.solvers.solve('Hybrid', qubo)
         elif noNodes < 31:
             samples = qCode.compute()
         elif noNodes < 200:
             samples = self.solvers.solve('Advantage2', qubo)
-        else: #noNodes < 500
+        else: #noNodes < 4000
             samples = self.solvers.solve('Advantage', qubo)
         return samples
     
@@ -83,8 +111,10 @@ class PNGen:
         for result in results:
             for prmV in self.primes:
                 prmVl = ULint(prmV, True)
+                if result == prmVl:
+                    break
                 if result % prmVl == ulint0:
-                    print("NOT Prime number {} devisible by {}".format(result, prm))
+                    print("NOT Prime number {} devisible by {}".format(result, prmV))
                     return False
         #return self.factorTest(result)
         return True

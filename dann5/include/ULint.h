@@ -37,6 +37,10 @@ namespace dann5
         // Otherwise, zero with the number of bits specified by argument
         ULint(size_t argument, bool isValue = false);
         
+        // Constructs unsigned long integer object by
+        // converting a string argument for given base
+        ULint(string argument, Byte base = 10);
+
         // destructor
         ~ULint() {};
         

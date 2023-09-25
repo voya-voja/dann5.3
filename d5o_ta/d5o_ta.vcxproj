@@ -170,6 +170,7 @@
     <ClCompile Include="..\dann5\source\Logger.cpp" />
     <ClCompile Include="..\dann5\source\ULint.cpp" />
     <ClCompile Include="d5o_ta.cpp" />
+    <ClCompile Include="PNGen.cpp" />
     <ClCompile Include="UTestQbin.cpp" />
     <ClCompile Include="UTestQbit.cpp" />
     <ClCompile Include="UTestQbool.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\Qwhole.h" />
     <ClInclude Include="..\dann5\ocean\include\QwholeExpr.h" />
+    <ClInclude Include="PNGen.h" />
     <ClInclude Include="UTestQbin.hpp" />
     <ClInclude Include="UTestQbit.h" />
     <ClInclude Include="UTestQbool.hpp" />

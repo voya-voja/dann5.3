@@ -85,7 +85,7 @@ PYBIND11_MODULE(d5o2, m) {
         .def("at", (const unsigned char&(ULint::*)(size_t) const) & ULint::at, "Returns a constant reference of a byte (unsigned char) at position 'at'")
     
         .def("__setitem__", [](ULint& self, size_t index, unsigned char val) { self[index] = val; }, "Sets a a byte (unsigned char) at position 'index'")
-        .def("__getitem__", [](ULint& self, size_t index) { return &self[index]; }, "Returns a reference of a byte (unsigned char) at position 'index'")
+        .def("__getitem__", [](ULint& self, size_t index) { return self[index]; }, "Returns a value of a byte (unsigned char) at position 'index'")
 		
 		/*** Assignment operattors ***/
 		.def("_", static_cast<ULint & (ULint::*)(const ULint&)>(&ULint::operator=), "Assigns the value on the right to the variable on the left")
@@ -690,7 +690,8 @@ PYBIND11_MODULE(d5o2, m) {
 			.def(py::self == py::self, "compares the contents")
 
 			.def("__setitem__", [](Bits& self, size_t index, bool val) { self[index] = val; }, "Sets a value at the position 'index'")
-            .def("__getitem__", [](Bits& self, size_t index) { return bool(self[index]); }, "Returns bit value at 'index' position as a boolean.")
+			.def("__getitem__", [](Bits& self, size_t index) { return bool(self[index]); }, "Returns bit value at 'index' position as a boolean.")
+			.def("__len__", [](Bits& self) { return self.size(); }, "Returns size (lenght) of the bitset.")
 			.def("test", &Bits::test, "Returns the value of the bit at the position pos (counting from 0). Unlike operator[], performs a bounds check and throws std::out_of_range if pos does not correspond to a valid position in the bitset.")
 
 			.def("all", &Bits::all, "checks if all of the bits are set to true")
@@ -741,7 +742,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("solution", &Qbin::solution, "returns a solution for this object identified by id")
     
         .def("__setitem__", [](Qbin &self, size_t index, Qvalue val) { self[index].value(val); })
-        .def("__getitem__", [](Qbin &self, size_t index) { return &self[index]; })
+		.def("__getitem__", [](Qbin& self, size_t index) { return self[index]; }, "Returns Qbit object at 'index' position.")
 
 		/*** Assignments ***/
 		.def("_", static_cast<Qassign<Qbin>(Qbin::*)(const Qbin&)>(&Qbin::operator=), "assigns a value of right Q creates a Q bin assignment where this Q bin is an assignee")
@@ -1011,6 +1012,8 @@ PYBIND11_MODULE(d5o2, m) {
 		.def(py::self << Qbin())
 		.def(py::self << Qwhole())
 		
+//		.def("__getitem__", [](Qbinder& self, size_t at) { return self[at].get(); })
+//		.def("__getitem__", [](Qbinder& self, string id) { return self[id].get(); });
 		.def("__getitem__", [](Qbinder& self, size_t at) { return &(*self[at]); })
 		.def("__getitem__", [](Qbinder& self, string id) { return &(*self[id]); });
 

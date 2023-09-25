@@ -10,6 +10,8 @@
 #include <climits>
 #include <stdexcept>
 
+#include <iostream>
+
 using namespace std;
 using namespace dann5;
 
@@ -19,6 +21,21 @@ ULint::ULint(size_t argument, bool isValue)
         initValue(argument);
     else
         initBytes(argument);
+}
+
+dann5::ULint::ULint(string argument, Byte base)
+{
+    size_t noDigits = argument.size();
+    ULint b(base, true);
+    initBytes(noDigits * size_t(log2(base)) + 1);
+    for (size_t at = 0; at < noDigits; at++)
+    {
+        Byte digit = argument[at] - '0';
+        ULint d(digit, true);
+        (*this) = (*this) * b + d;
+    }
+    while (mValue[mValue.size() - 1] == 0)
+        mValue.pop_back();
 }
 
 void ULint::initBytes(size_t noBits)
@@ -74,6 +91,7 @@ string ULint::toString(Byte base) const
             digit += '0';
         sValue.insert(sValue.begin(), digit);
         value /= bs;
+//        cout << sValue<< " : \n"; //  << value.toString();
         byte = value[0];
         } while(value.noBytes() > 1 || byte != 0);
     return sValue;

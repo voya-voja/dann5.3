@@ -26,7 +26,9 @@ string Qbinder::toString(bool decomposed, size_t forBit) const
 	{
 		blockStr += pOperand->toString(decomposed, forBit) + " ";
 	}
-	blockStr += "\n}";
+	string sltnsSrt = solutions();
+	if(!sltnsSrt.empty())
+		blockStr += "{\n" + sltnsSrt +"}";
 	return(blockStr);
 }
 
