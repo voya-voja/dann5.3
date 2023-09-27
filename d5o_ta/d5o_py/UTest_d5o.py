@@ -17,7 +17,7 @@ def main():
     #test = UTestQwhole(solvers)
     #test.runAll(0)
     
-    png = PNGen(32, False)
+    png = PNGen(5, False)
     png.prime6()
 """
     solvers = Solvers(1000)

@@ -318,6 +318,10 @@ namespace dann5
 
         vector<Byte> mValue;   // array of ULint bytes
     };
+
+    // Inserts into the output stream ULint value as a string, formated
+    // according to the preset stream base flag (oct, dec or hex).
+    std::ostream& operator << (std::ostream& output, const ULint& value);
 };
 
 #endif /* Lint_h */
