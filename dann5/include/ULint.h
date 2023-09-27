@@ -13,6 +13,7 @@
 #include <string>
 #include <cstddef>  // std::byte
 #include <ostream>
+#include <cmath>
 
 using namespace std;
 
@@ -82,11 +83,11 @@ namespace dann5
         };
 
         // increment operators
-        ULint& operator++() { (*this) += 1; };
+        ULint& operator++() { (*this) += 1; return(*this); };
         ULint& operator++(int) { return ++(*this); };
 
         // decrement operators
-        ULint& operator--() { (*this) -= 1; };
+        ULint& operator--() { (*this) -= 1; return(*this); };
         ULint& operator--(int) { return --(*this); };
 
         /*** Assignment operattors ***/

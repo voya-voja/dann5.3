@@ -97,7 +97,7 @@ class PNGen:
             samples = self.solvers.solve('Hybrid', qubo)
         elif noNodes < 31:
             samples = qCode.compute()
-        elif noNodes < 200:
+        elif noNodes < 250:
             samples = self.solvers.solve('Advantage2', qubo)
         else: #noNodes < 4000
             samples = self.solvers.solve('Advantage', qubo)
