@@ -95,7 +95,7 @@ class PNGen:
         print(" # of branches: " + str(anlyzeD2.branchesNo()) + "\n");
         if self.useHybrid or noNodes >= 4000:
             samples = self.solvers.solve('Hybrid', qubo)
-        elif noNodes < 40:
+        elif noNodes < 32:
             samples = qCode.compute()
         elif noNodes < 250:
             samples = self.solvers.solve('Advantage2', qubo)
