@@ -27,7 +27,7 @@ dann5::ULint::ULint(string argument, Byte base)
 {
     size_t noDigits = argument.size();
     ULint b(base, true);
-    initBytes(noDigits * size_t(log2(base)) + 1);
+    initBytes(noDigits * size_t(log2(base) + 1));
     for (size_t at = 0; at < noDigits; at++)
     {
         Byte digit = argument[at] - '0';
@@ -165,6 +165,8 @@ ULint& ULint::operator+=(const ULint & right)
         value >>= 8;
         carry = Byte(value);
     }
+    if (carry > 0)
+        mValue.push_back(carry);
     return(*this);
 }
 

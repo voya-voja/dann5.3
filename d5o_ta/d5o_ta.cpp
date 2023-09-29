@@ -321,14 +321,46 @@ int main(int argc, const char * argv[])
 //    testPNfile();
 //    ULint x("15305780290961646443858803558983811673237734933575719864519459714368164464027");
 //    cout << "15305780290961646443858803558983811673237734933575719864519459714368164464027\n" << x.toString();
+    
     ULint x1("4933575719864519459714368164464027"), ten(10, true), zero;
     cout  << hex << "\n4933575719864519459714368164464027\n" << dec << x1.toString(16);
+
+    ULint br("255");//br("ff", 16);
+    cout << endl << br << ", " << br.toString(16) << "\n";
+    br += ten;
+    cout << endl << br << ", " << br.toString(16) << "\n";
+
+
     while (x1 != zero)
     {
         x1 /= ten;
         cout << "\n" << x1.toString(16) << "\t" << x1.toString();
     }
+    ULint x10th("493357571986451945971436816446402");
+    cout << "\n" << x10th.toString(16) << "\t" << x10th.toString();
+    while (x10th != zero)
+    {
+        x10th /= ten;
+        cout << "\n" << x10th.toString(16) << "\t" << x10th.toString();
+    }
+    ULint x100th("49335757198645194597143681644640");
+    cout << "\n" << x100th.toString(16) << "\t" << x100th.toString() << "\n" << x100th.toString(2) << "\n";   //incorrect
+/*    while (x100th != zero)
+    {
+        x100th /= ten;
+        cout << "\n" << x100th.toString(16) << "\t" << x100th.toString();
+    }
+*/    ULint x1000th("4933575719864519459714368164464");
+    cout << "\n" << x1000th.toString(16) << "\t" << x1000th.toString() << "\n" << x1000th.toString(2) << "\n"; // correct
+    ULint x(x1000th * ten);
+    cout << "\n" << x.toString(16) << "\t" << x.toString() << "\n" << x.toString(2) << "\n"; //
 
+/*    while (x1000th != zero)
+    {
+        x1000th /= ten;
+        cout << "\n" << x1000th.toString(16) << "\t" << x1000th.toString();
+    }
+*/
     return 0;
 }
 
