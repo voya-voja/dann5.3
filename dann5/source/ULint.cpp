@@ -30,7 +30,13 @@ dann5::ULint::ULint(string argument, Byte base)
     initBytes(noDigits * size_t(log2(base) + 1));
     for (size_t at = 0; at < noDigits; at++)
     {
-        Byte digit = argument[at] - '0';
+        Byte digit = argument[at];
+        if(digit >= 'a')
+            digit = digit - 'a' + 10;
+        else if(digit >= 'A')
+            digit = digit - 'A' + 10;
+        else
+            digit -= '0';
         ULint d(digit, true);
         (*this) = (*this) * b + d;
     }

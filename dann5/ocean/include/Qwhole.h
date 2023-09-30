@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <pybind11/pybind11.h>
 
 #include <Qbin.h>
@@ -43,7 +42,7 @@ namespace dann5 {
 			// Initialize Q whole with a given id and value as a Qbit vector
 			Qwhole(const string& id, const Qbits& value) : Qbin(id, value) {};
 
-			// Initialize Q whole with a given id and value as a Qbit vector
+			// Initialize Q whole with a given id and value as a 64 bit unsigned integer
 			Qwhole(const string& id, unsigned long long value) : Qbin(id, value) {};
 
 			// Initialize Q whole with a given id and a deterministic value as a bitset

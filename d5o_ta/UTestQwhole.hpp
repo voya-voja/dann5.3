@@ -1,27 +1,25 @@
-#pragma once
 //
-//  UTestQbool.hpp
-//  d5o_ta
-//
-//  Created by Nebojsa Vojinovic on 2023-01-07.
+// UTestQwhole.hpp
+// d5o_ta
 //
 
 #ifndef UTestQwhole_hpp
 #define UTestQwhole_hpp
 
 #include <stdio.h>
-
 #include <iostream>
 
 using namespace std;
 
 namespace dann5
 {
-    // Unit tests of Qbit operations
+    // Unit tests of Qwhole operations
     class UTestQwhole
     {
     public:
         UTestQwhole() {};
+        
+        void test(ostream& out);
 
         // execute all unit tests
         void runAll(ostream& out);
@@ -35,6 +33,7 @@ namespace dann5
         // test Qwhole arithmetic operations and expressions
         void arithmetic(ostream& out);
         // test Qwhole comparison operations and expressions
+        void comparisonLogic(ostream& out);
         void comparison(ostream& out);
  
         // use Qwhole to solve factorial problem
@@ -43,12 +42,6 @@ namespace dann5
         void prime(ostream& out);
         // use (6 * Qwhole +/- 1) algorithm to calculate prime numbers
         void prime6(ostream& out);
-
-
-    protected:
-    private:
     };
 };
-
 #endif /* UTestQwhole_hpp */
-

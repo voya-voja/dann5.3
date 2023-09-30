@@ -161,115 +161,8 @@ void testPNfile()
 
 int main(int argc, const char * argv[])
 {
-/*    ULint prm(40437, true), _a3(3, true), _a4(4, true);
-
-    ULint a = prm + _a3,
-        s = prm - _a3,
-        m = prm * _a3,
-        d = prm / _a3,
-        r = prm % _a3;
-
-    cout << "add: " << a << endl
-        << "sub: " << s << endl
-        << "mul: " << m << endl
-        << "div: " << d << endl
-        << "rem: " << r << endl;
-    cout << "r == 0: " << (r == ULint(0, true)) << endl
-        << "a > s: " << (a > s) << endl
-        << "a >= m: " << (a > m) << endl
-        << "m < d: " << (m < d) << endl
-        << "d <= s: " << (d <= s) << endl;
-
-    a = prm + _a4;
-    s = prm - _a4;
-    m = prm * _a4;
-    d = prm / _a4;
-    r = prm % _a4;
-
-    cout << "add: " << a << endl
-        << "sub: " << s << endl
-        << "mul: " << m << endl
-        << "div: " << d << endl
-        << "rem: " << r << endl
-        << "r == 0: " << (r == ULint(0, true)) << endl
-        << "a > s: " << (a > s) << endl
-        << "a >= m: " << (a > m) << endl
-        << "m < d: " << (m < d) << endl
-        << "d <= s: " << (d <= s) << endl;
-
-    std::bitset<9> b(52415993);
-    
-    ULint u(52415993, true);
-    ULint ten = ULint(10, true);
-    ULint five = ULint(5, true);
-    bool gt = ten > ten;
-    bool g = ten > five;
-    bool t = five > ten;
-    ULint three(3, true);
-    u = ten * three;
-    u *= five;
-    u %= three;
-/*    cout << b << endl << u.toString(2) << endl;
-    cout << endl << oct << b.to_ullong() << endl << u << endl;
-    cout << dec << b.to_ullong() << endl << u << endl;
-    cout << hex << b.to_ullong() << endl  << u << endl << dec;
-*/
-/*    unsigned long long value = 1800999832145436372;
-    std::bitset<64> bs(value);
-    cout << value << endl << bs << endl;
-    ULint ulint(1800999832145436372, true);
-//    ulint /= three;
-    for (size_t at = 7; (at + 1) > 0; at--)
-    {
-        std::bitset<8> x1(ulint[at]);
-        cout << x1;
-    }
-    cout << endl << ulint.toString(2) << endl;
-    cout << oct << bs.to_ullong() << endl << ulint << endl;
-    cout << dec << bs.to_ullong() << endl << ulint << endl << ulint.toString(10) << endl;
-    cout << endl << hex << bs.to_ullong() << endl << ulint << endl << dec;
-    cout << ulint.toString(3) << endl;
-
-    ULint assgn(257, true), assgnmnt;
-    assgnmnt = assgn;
-    cout << assgnmnt << " = " << assgn << endl;
-    cout << "assignment: " << assgnmnt.toString(2) << endl;
-
-    ULint assgn1(513, true), assgnmnt1(1025,true);
-    cout << assgnmnt1 << " = " << assgn1 << endl;
-    cout << "assignment: " << assgnmnt1.toString(2) << " = " << assgn1.toString(2) << endl;
-
-    ULint assgn2(512, true), assgnmnt2(1024, true), a3(256,true);
-    cout << assgnmnt2 << " = " << assgn2 << " & " << a3 << endl;
-    cout << "assignment: " << assgnmnt2.toString(2) << endl;
-
-    assgnmnt >>= 3;
-    cout << assgnmnt << " >>= " << 3 << endl;
-    cout << "assignment: " << assgnmnt.toString(2) << endl;
-
-    assgnmnt <<= 5;
-    cout << assgnmnt << " <<= " << 5 << endl;
-    cout << "assignment: " << assgnmnt.toString(2) << endl;
-
-    assgnmnt += assgn;
-    cout << assgnmnt << " += " << assgn << endl;
-    cout << "assignment: " << assgnmnt.toString(2) << endl;
-
-    assgnmnt -= assgn;
-    assgnmnt -= assgn;
-    cout << assgnmnt << " -= 2 * " << assgn << endl;
-
-    assgn *= assgn;
-    cout << assgn << " *= " << assgn << endl;
-
-    ULint dvdnd(210862, true), dvsr(358, true);
-    ULint qtnt = dvdnd / dvsr;
-    cout << qtnt << " = " << dvdnd << " / " << dvsr << endl;
-
-    assgnmnt = ulint % assgn;
-    cout << assgnmnt << " = "<< ulint << " % " << assgn << endl;
-
-/*    for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
+/*
+    for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
     {
         Qwhole x(nQbits, "x"), y(size_t(nQbits / 2), "y"), r("r", nQbits);
         Qassign<Qwhole> xpr = r = x * y;
@@ -277,8 +170,7 @@ int main(int argc, const char * argv[])
         cout << xpr << endl << "  nodes: " << a.nodesNo() << " branches: " << a.branchesNo() << " chain-strenght: " << a.chainStrength();
         cout << endl << xpr.qubo() << endl << xpr.solve() << endl;
     }
-  */
-/*    Qwhole x(2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
+    Qwhole x(2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
     Qexpr<Qwhole> qwExpr = x * y;//, z_3Expr = _3 * z, qxxExpr = qwExpr * z_3Expr;
     Qubo qubo = qwExpr.qubo();
     cout << qubo / 2 << endl;
@@ -295,7 +187,7 @@ int main(int argc, const char * argv[])
     cout << "sample x  y" << endl;
     for(size_t at = 0; at < samples.size(); at++)
         cout << at << ":     " << xSolutions[at].toString() << "  " << ySolutions[at].toString() << endl;
-/*
+
     qxxExpr.reset();
     Qwhole R("R", 6);
     Qassign<Qwhole> qxxAssign = R = qxxExpr;
@@ -303,7 +195,7 @@ int main(int argc, const char * argv[])
     Qanalyzer anlyze(aQubo);
     cout << "Assignment # of nodes: " << anlyze.nodesNo() << " # of branches: " << anlyze.branchesNo() << endl;
     cout << endl << "Assignment:" << endl << qxxAssign << endl << qxxAssign.solve() << endl;
-    */
+
     UTestQbit utQbit;
 //    utQbit.runAll(cout);
     UTestQbool utQbool;
@@ -319,47 +211,6 @@ int main(int argc, const char * argv[])
 //    testSolver();
 
 //    testPNfile();
-//    ULint x("15305780290961646443858803558983811673237734933575719864519459714368164464027");
-//    cout << "15305780290961646443858803558983811673237734933575719864519459714368164464027\n" << x.toString();
-    
-    ULint x1("4933575719864519459714368164464027"), ten(10, true), zero;
-    cout  << hex << "\n4933575719864519459714368164464027\n" << dec << x1.toString(16);
-
-    ULint br("255");//br("ff", 16);
-    cout << endl << br << ", " << br.toString(16) << "\n";
-    br += ten;
-    cout << endl << br << ", " << br.toString(16) << "\n";
-
-
-    while (x1 != zero)
-    {
-        x1 /= ten;
-        cout << "\n" << x1.toString(16) << "\t" << x1.toString();
-    }
-    ULint x10th("493357571986451945971436816446402");
-    cout << "\n" << x10th.toString(16) << "\t" << x10th.toString();
-    while (x10th != zero)
-    {
-        x10th /= ten;
-        cout << "\n" << x10th.toString(16) << "\t" << x10th.toString();
-    }
-    ULint x100th("49335757198645194597143681644640");
-    cout << "\n" << x100th.toString(16) << "\t" << x100th.toString() << "\n" << x100th.toString(2) << "\n";   //incorrect
-/*    while (x100th != zero)
-    {
-        x100th /= ten;
-        cout << "\n" << x100th.toString(16) << "\t" << x100th.toString();
-    }
-*/    ULint x1000th("4933575719864519459714368164464");
-    cout << "\n" << x1000th.toString(16) << "\t" << x1000th.toString() << "\n" << x1000th.toString(2) << "\n"; // correct
-    ULint x(x1000th * ten);
-    cout << "\n" << x.toString(16) << "\t" << x.toString() << "\n" << x.toString(2) << "\n"; //
-
-/*    while (x1000th != zero)
-    {
-        x1000th /= ten;
-        cout << "\n" << x1000th.toString(16) << "\t" << x1000th.toString();
-    }
 */
     return 0;
 }
