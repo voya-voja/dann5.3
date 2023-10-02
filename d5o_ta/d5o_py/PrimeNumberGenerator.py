@@ -38,14 +38,14 @@ class PNGen:
         for prmSltn in prmSltns:
             prmSltnStr = str(prmSltn)
             newPrime = True
-            filePrimes = open("primeNumbersAll.txt", "r")
+            filePrimes = open("pnCandidates.txt", "r")
             for primeStr in filePrimes:
                 if primeStr == prmSltnStr:
                     newPrime = False
                     break
             filePrimes.close()    
             if newPrime:
-                filePrimes = open("primeNumbersAll.txt", "a")
+                filePrimes = open("pnCandidates.txt", "a")
                 filePrimes.write("\n{}".format(prmSltnStr))
                 filePrimes.close()
         

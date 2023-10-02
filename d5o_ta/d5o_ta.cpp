@@ -23,6 +23,8 @@
 #include "UTestQwhole.hpp"
 #include <ULint.h>
 
+#include <algorithm>
+
 using namespace std;
 using namespace dann5::ocean;
 using namespace dann5;
@@ -130,7 +132,11 @@ void testPNfile()
     ifstream pnFstream;
     char line[800];
     vector<ULint> primes;
-    pnFstream.open("..//.//d5o_ta//d5o_py//primeNumbersAll.txt");
+#ifdef _WINDOWS
+    pnFstream.open("..//.//d5o_ta//d5o_py//pnCandidates.txt");
+#else
+    pnFstream.open("//System//Volumes//Data//Developer//Work//d5o2//d5o_ta//d5o_py//pnCandidates.txt");
+#endif
     bool fo = pnFstream.is_open();
     while (pnFstream.getline(line, 800))
     {
@@ -139,6 +145,14 @@ void testPNfile()
         cout << prime.toString() << endl;
         primes.push_back(prime);
     }
+    sort(primes.begin(), primes.end());
+    pnFstream.close();
+    ofstream spnFstream;
+#ifdef _WINDOWS
+    spnFstream.open("..//.//d5o_ta//d5o_py//pnsSorted.txt");
+#else
+    spnFstream.open("//System//Volumes//Data//Developer//Work//d5o2//d5o_ta//d5o_py//pnsSorted.txt");
+#endif
     ULint zero;
     for (auto candidate : primes)
     {
@@ -147,6 +161,7 @@ void testPNfile()
             if (prime == candidate)
             {
                 cout << candidate.toString() << " is PRIME" << endl;
+                spnFstream << candidate.toString() << endl;
                 break;
             }
             if (candidate % prime == zero)
@@ -156,7 +171,7 @@ void testPNfile()
             }
         }
     }
-    pnFstream.close();
+    spnFstream.close();
 }
 
 int main(int argc, const char * argv[])
@@ -205,13 +220,13 @@ int main(int argc, const char * argv[])
 //    utQbin.runAll(cout);
     UTestQwhole utQwhole;
 //    utQwhole.runAll(cout); 
- 
+*/
 //    pymain();
 
 //    testSolver();
 
-//    testPNfile();
-*/
+    testPNfile();
+
     return 0;
 }
 
