@@ -70,13 +70,17 @@ PYBIND11_MODULE(d5o2, m) {
 
         .def(py::init<>())
         .def(py::init<const ULint&>())
+        .def(py::init<size_t>(), "Constructs unsigned long integer object with the number of bits specified by argument initialized to 0 value.")
         .def(py::init<size_t, bool>(), "Constructs unsigned long integer object. When isValue is true, argument contains initialization value. Otherwise, zero with the number of bits specified by argument")
+        .def(py::init<string>(), "Constructs unsigned long integer object by converting a string argument using base 10.")
+        .def(py::init<string, Byte>(), "Constructs unsigned long integer object by converting a string argument for given base.")
 
         .def("set", &ULint::set, "Sets bit at position 'at' to 1 if 'bit' is true, otherwise 0")
 
         .def("toString", &ULint::toString, "Converts unsigned long integer to string presentation for base 10")
         .def("toString", [](ULint& o, unsigned base ) { return o.toString(base); }, "Converts unsigned long integer to string presentation for given base")
 		.def("__str__", [](ULint& o) { return o.toString(); })
+        .def("__repr__", [](ULint& o) { return o.toString(); })
 
 		.def("noBytes", &ULint::noBytes, "Returns number of containing bytes.")
 		.def("noBits", &ULint::noBits, "Returns number of containing bits.")

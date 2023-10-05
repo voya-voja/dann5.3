@@ -31,6 +31,7 @@ dann5::ULint::ULint(string argument, Byte base)
     for (size_t at = 0; at < noDigits; at++)
     {
         Byte digit = argument[at];
+        if(digit == '\n') break;
         if(digit >= 'a')
             digit = digit - 'a' + 10;
         else if(digit >= 'A')

@@ -9,7 +9,7 @@ from UTestQwhole import UTestQwhole
 from dann5.dwave import Solvers
 #from dann5.dwave import DwaveSolvers
 from dann5.d5o2 import Qwhole, Qbin, Qblock, Qanalyzer
-from PrimeNumberGenerator import PNGen
+from PrimeNumberGenerator import PNGen, PNGen6
 import time
 
 def prime(p0, p1):
@@ -46,12 +46,22 @@ def main():
     #test = UTestQwhole(solvers)
     #test.runAll(0)
     start = time.process_time()
+    png = PNGen6(16)
+    png.generate()
+    finish = time.process_time()
+    print("PN candidate generation takes", finish - start, "seconds")
+"""    
+    start = time.process_time()
     png = PNGen(4, False)
-    png.prime6()
+    png.generate()
+    finish = time.process_time()
+    print("PN candidate generation takes", finish - start, "seconds")
+    start = time.process_time()
+    png = PNGen(4, False, 3, 5, 1)
+    png.generate()
     finish = time.process_time()
     print("PN candidate generation takes", finish - start, "seconds")
 
-"""    
     solvers = Solvers(1000)
     for nQbits in range(2,22,2):
         x = Qwhole(nQbits, "x"); y = Qwhole(int(nQbits / 2), "y"); r = Qwhole("r", nQbits);

@@ -79,7 +79,7 @@ class Solvers:
         - '2000Q' => DWave qpu with chimera topology
         - 'Hybrid' => DWave hybrid BQM solver
     """
-    def solve(self, solverType, qubo):
+    def solve(self, solverType, qubo, exact = True):
         if solverType == 'dann5':
             solver = Qsolver(qubo)
             return solver.solution()
@@ -93,6 +93,16 @@ class Solvers:
             sampleset = solver.sample_qubo(qubo, **self.mKwargs)
         else:
             sampleset = solver.sample_qubo(qubo)
-        lowEnergy = sampleset.lowest().record['energy'][0]
-        samples = [SampleEng(dict(sample), lowEnergy) for sample in sampleset.lowest().samples()]
+        if exact:
+            lowEnergy = sampleset.lowest().record['energy'][0]
+            samples = [SampleEng(dict(sample), lowEnergy) for sample in sampleset.lowest().samples()]
+        else:
+            rowSamples = sampleset.samples()
+            energies = sampleset.data_vectors['energy']
+            #samples = [SampleEng(dict(rowSamples[i]), energies[i]) for i in range(len(rowSamples))]            
+            samples = []
+            for i in range(len(rowSamples)):
+                sample = dict(rowSamples[i])
+                energy = energies[i]
+                samples.append(SampleEng(sample, energy))
         return samples
