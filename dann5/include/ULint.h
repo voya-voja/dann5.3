@@ -34,9 +34,7 @@ namespace dann5
         ULint(const ULint& right): mValue(right.mValue) {};
         
         // Constructs unsigned long integer object
-        // When isValue is true, argument contains initialization value
-        // Otherwise, zero with the number of bits specified by argument
-        ULint(size_t argument, bool isValue = false);
+        ULint(unsigned long long value);
         
         // Constructs unsigned long integer object by
         // converting a string argument for given base
@@ -315,6 +313,9 @@ namespace dann5
 
         // initalized ULint object with value 
         void initValue(unsigned long long value);
+
+        // Trim's all leading 0 bytes
+        void trim();
 
         vector<Byte> mValue;   // array of ULint bytes
     };

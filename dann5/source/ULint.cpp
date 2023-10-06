@@ -15,18 +15,15 @@
 using namespace std;
 using namespace dann5;
 
-ULint::ULint(size_t argument, bool isValue)
+ULint::ULint(size_t argument)
 {
-    if (isValue)
-        initValue(argument);
-    else
-        initBytes(argument);
+    initValue(argument);
 }
 
 dann5::ULint::ULint(string argument, Byte base)
 {
     size_t noDigits = argument.size();
-    ULint b(base, true);
+    ULint b(base);
     initBytes(noDigits * size_t(log2(base) + 1));
     for (size_t at = 0; at < noDigits; at++)
     {
@@ -38,16 +35,15 @@ dann5::ULint::ULint(string argument, Byte base)
             digit = digit - 'A' + 10;
         else
             digit -= '0';
-        ULint d(digit, true);
+        ULint d(digit);
         (*this) = (*this) * b + d;
     }
-    while (mValue[mValue.size() - 1] == 0)
-        mValue.pop_back();
+    trim();
 }
 
 void ULint::initBytes(size_t noBits)
 {
-    size_t noBytes = size_t(noBits / 8);
+    size_t noBytes = size_t(noBits / 8) - mValue.size();
     const Byte zero = 0;
     if (noBits % 8 != 0) noBytes++;
     for (size_t at = 0; at < noBytes; at++)
@@ -78,8 +74,29 @@ void ULint::set(size_t at, bool bit)
     size_t atByte = at / 8;
     size_t atBit = at % 8;
     char value = 1 << atBit;
-    if(bit) mValue[atByte] |= value;
-    else mValue[atByte] &= ~value;
+    bool resize = false;
+    if(bit)
+    {
+        if (atByte >= mValue.size())
+        {
+            initBytes(at + 1);
+        }
+        mValue[atByte] |= value;
+    }
+    else if (atByte < mValue.size())
+    {
+        mValue[atByte] &= ~value;
+    }
+}
+
+void ULint::trim()
+{
+    size_t size = mValue.size();
+    while (size > 1 && mValue[size - 1] == 0)
+    {
+        mValue.pop_back();
+        size = mValue.size();
+    }
 }
 
 string ULint::toString(Byte base) const
@@ -88,7 +105,7 @@ string ULint::toString(Byte base) const
 
     string sValue = "";
     Byte byte;
-    ULint value(*this), bs(base,true);
+    ULint value(*this), bs(base);
     do{
         ULint dgt = value % bs;
         Byte digit = dgt[0];
@@ -110,6 +127,7 @@ ULint& ULint::operator=(const ULint& right)
     mValue = right.mValue;
     return(*this);
 }
+
 ULint& ULint::operator>>= (size_t noBits)
 {
     size_t size = mValue.size();
@@ -126,8 +144,7 @@ ULint& ULint::operator>>= (size_t noBits)
             carry = c;
         }
     }
-    while (mValue[mValue.size() - 1] == 0)
-        mValue.pop_back();
+    trim();
     return(*this);
 }
 
@@ -186,11 +203,7 @@ ULint& ULint::operator-=(const ULint & right)
     ULint r(right);
     Range tR(*this, 0, noBits()), rR(r, 0, right.noBits());
     tR -= rR;
-    while (size > 1 && mValue[size - 1] == 0)
-    {
-        mValue.pop_back();
-        size = mValue.size();
-    }
+    trim();
     return(*this);
 }
 

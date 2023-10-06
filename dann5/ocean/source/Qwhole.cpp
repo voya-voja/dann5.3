@@ -90,7 +90,7 @@ vector<ULint>  Qwhole::ulints() const
     vector<ULint> rslts;
     for (size_t sampleId = 0; sampleId < noSolutions; sampleId++)
     {
-        ULint value(size);
+		ULint value;
         for (size_t at = 0; at < size; at++)
         {
             value.set(at, _cells[at]->solutionValue(sampleId));

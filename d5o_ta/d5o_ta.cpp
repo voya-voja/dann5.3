@@ -174,6 +174,121 @@ void testPNfile()
     spnFstream.close();
 }
 
+void debugSamples()
+{
+    ifstream samplesFstream;
+    char line[8000];
+#ifdef _WINDOWS
+    samplesFstream.open("..//.//d5o_ta//d5o_py//Sample.txt");
+#else
+    pnFstream.open("//System//Volumes//Data//Developer//Work//d5o2//d5o_ta//d5o_py//Sample.txt");
+#endif
+    bool fo = samplesFstream.is_open();
+    Qwhole p16b(16, "p"), p17b(17, "p");
+    Qsolver::Samples samples;
+    while (samplesFstream.getline(line, 8000))
+    {
+//        cout << line << endl;
+        string l(line);
+        size_t lEnd = l.size();
+        double energy = 0;
+        size_t smplBgn = l.find("{"), smplEnd = l.find("},"), eOff = smplEnd + 2, elmntBgn = smplBgn;
+        string eStr = l.substr(eOff, lEnd - eOff), sStr = l.substr(smplBgn, smplEnd - smplBgn);
+        if (eStr.compare(" ") != 0) energy = stod(eStr);
+        Qsolver::Sample sample;
+        do
+        {
+            size_t elmntNmBgn = sStr.find('\'', elmntBgn) + 1, elmntNmEnd = sStr.find('\'', elmntNmBgn);
+            size_t elmntVlBgn = sStr.find(':', elmntBgn) + 2, elmntEnd = sStr.find(',', elmntVlBgn);
+            elmntBgn = elmntEnd;
+            if (elmntEnd == string::npos)
+                elmntEnd = sStr.size();
+            string key = sStr.substr(elmntNmBgn, elmntNmEnd - elmntNmBgn), elmntVlS = sStr.substr(elmntVlBgn, elmntEnd - elmntVlBgn);
+            Qvalue vl = elmntVlS[0] - '0';
+            sample[key] = vl;
+        } while (elmntBgn != string::npos);
+        Qsolver::SampleEng se(energy, sample);
+        samples.push_back(se);
+    }
+    p16b.add(samples);
+    p17b.add(samples);
+    samplesFstream.close();
+    vector<ULint> p16ulis = p16b.ulints(), p17ulis = p17b.ulints();
+    size_t nSltns =samples.size();
+    for (size_t i = 0; i < nSltns; i++)
+    {
+        //p16:3395
+        string p16s = p16b.solution(i), p16v = p16s.substr(5, p16s.size() - 6);
+        string p17s = p17b.solution(i), p17v = p17s.substr(5, p17s.size() - 6);
+        size_t v16 = size_t(stod(p16v)), v17 = size_t(stod(p17v));
+        if (v16 < 256)
+        {
+            cout << "-----> " << i << " - " << p16s << p17s << " E = " << samples[i].mEnergy << endl;
+            cout << "-----> " << p16ulis[i] << ", " << p17ulis[i] << endl;
+        }
+//        if (v16 != v17)
+//            cout << i << " - " << p16s << p17s << endl;
+    }
+}
+
+void debugSamplesSmall()
+{
+    ifstream samplesFstream;
+    char line[8000];
+#ifdef _WINDOWS
+    samplesFstream.open("..//.//d5o_ta//d5o_py//Sample.txt");
+#else
+    pnFstream.open("//System//Volumes//Data//Developer//Work//d5o2//d5o_ta//d5o_py//Sample.txt");
+#endif
+    bool fo = samplesFstream.is_open();
+    Qwhole p16b(16, "p"), p17b(17, "p");
+    Qsolver::Samples samples;
+    if (samplesFstream.getline(line, 8000))
+    {
+        //        cout << line << endl;
+        string l(line);
+        size_t lEnd = l.size();
+        double energy = 0;
+        size_t smplBgn = l.find("{"), smplEnd = l.find("},"), eOff = smplEnd + 2, elmntBgn = smplBgn;
+        string eStr = l.substr(eOff, lEnd - eOff), sStr = l.substr(smplBgn, smplEnd - smplBgn);
+        if (eStr.compare(" ") != 0) energy = stod(eStr);
+        Qsolver::Sample sample;
+        do
+        {
+            size_t elmntNmBgn = sStr.find('\'', elmntBgn) + 1, elmntNmEnd = sStr.find('\'', elmntNmBgn);
+            size_t elmntVlBgn = sStr.find(':', elmntBgn) + 2, elmntEnd = sStr.find(',', elmntVlBgn);
+            elmntBgn = elmntEnd;
+            if (elmntEnd == string::npos)
+                elmntEnd = sStr.size();
+            string key = sStr.substr(elmntNmBgn, elmntNmEnd - elmntNmBgn), elmntVlS = sStr.substr(elmntVlBgn, elmntEnd - elmntVlBgn);
+            Qvalue vl = elmntVlS[0] - '0';
+            sample[key] = vl;
+        } while (elmntBgn != string::npos);
+        Qsolver::SampleEng se(energy, sample);
+        samples.push_back(se);
+    }
+    p16b.add(samples);
+    p17b.add(samples);
+    samplesFstream.close();
+    vector<ULint> p16ulis = p16b.ulints(), p17ulis = p17b.ulints();
+    size_t nSltns = samples.size();
+    for (size_t i = 0; i < nSltns; i++)
+    {
+        //p16:3395
+        string p16s = p16b.solution(i), p16v = p16s.substr(5, p16s.size() - 6);
+        string p17s = p17b.solution(i), p17v = p17s.substr(5, p17s.size() - 6);
+        size_t v16 = size_t(stod(p16v)), v17 = size_t(stod(p17v));
+        cout << p16ulis[i] << ", " << p17ulis[i] << endl;
+        if (v16 < 256)
+        {
+            cout << "-----> " << i << " - " << p16s << p17s << " E = " << samples[i].mEnergy << endl;
+            cout << "-----> " << p16ulis[i] << ", " << p17ulis[i] << endl;
+        }
+        //        if (v16 != v17)
+        //            cout << i << " - " << p16s << p17s << endl;
+    }
+}
+
 int main(int argc, const char * argv[])
 {
 /*
@@ -225,8 +340,9 @@ int main(int argc, const char * argv[])
 
 //    testSolver();
 
-    testPNfile();
+//    testPNfile();
 
+    debugSamples();
     return 0;
 }
 
