@@ -8,14 +8,6 @@ Created on Mon Mar 27 11:28:10 2023
 from dann5.dwave import Solvers
 from dann5.d5o2 import Qwhole, Qblock, Qanalyzer, Qbinder, SampleEng, ULint
 
-def write(samples):
-    fileSamples = open("Sample.txt", "a")
-    i = 0
-    for sample in samples:
-        fileSamples.write("{}: {}, {}\n".format(i, sample.sample(), sample.energy()))
-        i += 1
-    fileSamples.close()
-    
 # An abstraction of prime number quantum generator
 class PNGenerator:
     # to initialize provide number of prime number qbits and optionally
