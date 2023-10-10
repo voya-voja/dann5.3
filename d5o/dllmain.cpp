@@ -70,8 +70,7 @@ PYBIND11_MODULE(d5o2, m) {
 
         .def(py::init<>())
         .def(py::init<const ULint&>())
-        .def(py::init<size_t>(), "Constructs unsigned long integer object with the number of bits specified by argument initialized to 0 value.")
-        .def(py::init<size_t, bool>(), "Constructs unsigned long integer object. When isValue is true, argument contains initialization value. Otherwise, zero with the number of bits specified by argument")
+        .def(py::init<unsigned long long>(), "Constructs unsigned long integer object initialized with the unsigned long long value.")
         .def(py::init<string>(), "Constructs unsigned long integer object by converting a string argument using base 10.")
         .def(py::init<string, Byte>(), "Constructs unsigned long integer object by converting a string argument for given base.")
 
@@ -744,7 +743,8 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("add", &Qbin::add, "adds solutions to this object")
 		.def("solution", &Qbin::solution, "returns a solution for this object identified by id")
-    
+        .def("reset", &Qbin::reset, "Reset the quantum variable into its initial state without solutions by clearing all solution samples")
+
         .def("__setitem__", [](Qbin &self, size_t index, Qvalue val) { self[index].value(val); })
 		.def("__getitem__", [](Qbin& self, size_t index) { return self[index]; }, "Returns Qbit object at 'index' position.")
 

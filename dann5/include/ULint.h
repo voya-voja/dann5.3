@@ -33,7 +33,8 @@ namespace dann5
         // copy constructor
         ULint(const ULint& right): mValue(right.mValue) {};
         
-        // Constructs unsigned long integer object
+        // Constructs unsigned long integer object initialized with the
+        // unsigned long long value
         ULint(unsigned long long value);
         
         // Constructs unsigned long integer object by

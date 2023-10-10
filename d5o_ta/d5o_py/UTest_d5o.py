@@ -10,15 +10,8 @@ from dann5.dwave import Solvers
 #from dann5.dwave import DwaveSolvers
 from dann5.d5o2 import Qwhole, Qbin, Qblock, Qanalyzer
 from PrimeNumberGenerator import PNGen, PNGen6
-import time
 
-def prime(p0, p1):
-    for k in range(p0):
-        for f in range(1, 100, 2):
-            p = f * p0 * p1 - 2 ** (k + 1)
-            print(p)
-            p = f * p0 * p1 + 2 ** (k + 1)
-            print(p)
+import time
 
 def rsa(primeP, primeQ, message):
     publikkeyN = primeP * primeQ
@@ -45,8 +38,12 @@ def main():
 
     #test = UTestQwhole(solvers)
     #test.runAll(0)
+    
+    #x = Qwhole(16, "x")
+    #qbsNo = x.noqbs()    # ERROR
+    
     start = time.process_time()
-    png = PNGen6(16)
+    png = PNGen(119, debug = False)
     png.generate()
     finish = time.process_time()
     print("PN candidate generation takes", finish - start, "seconds")

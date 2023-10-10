@@ -21,7 +21,7 @@ void UTestULint::runAll(ostream& out)
     cout << endl << dc.toString(2) << ", " << dc.toString(3) << ", " << dc.toString(8) << ", " << bn << ", " << dc.toString(16);
     cout << endl << hx.toString(2) << ", " << hx.toString(3) << ", " << hx.toString(8) << ", " << hx << ", " << hx.toString(16);
 
-    ULint prm(40437, true), _a3(3, true), _a4(4, true);
+    ULint prm(40437), _a3(3), _a4(4);
 
     ULint a = prm + _a3,
         s = prm - _a3,
@@ -59,13 +59,13 @@ void UTestULint::runAll(ostream& out)
 
     std::bitset<9> b(52415993);
     
-    ULint u(52415993, true);
-    ULint ten = ULint(10, true);
-    ULint five = ULint(5, true);
+    ULint u(52415993);
+    ULint ten = ULint(10);
+    ULint five = ULint(5);
     bool gt = ten > ten;
     bool g = ten > five;
     bool t = five > ten;
-    ULint three(3, true);
+    ULint three(3);
     u = ten * three;
     u *= five;
     u %= three;
@@ -77,7 +77,7 @@ void UTestULint::runAll(ostream& out)
     unsigned long long value = 1800999832145436372;
     std::bitset<64> bs(value);
     out << value << endl << bs << endl;
-    ULint ulint(1800999832145436372, true);
+    ULint ulint(1800999832145436372);
     ulint /= three;
     for (size_t at = 7; (at + 1) > 0; at--)
     {
@@ -90,16 +90,16 @@ void UTestULint::runAll(ostream& out)
     out << endl << hex << bs.to_ullong() << endl << ulint << endl << dec;
     out << ulint.toString(3) << endl;
 
-    ULint assgn(257, true), assgnmnt;
+    ULint assgn(257), assgnmnt;
     assgnmnt = assgn;
     out << assgnmnt << " = " << assgn << endl;
     out << "assignment: " << assgnmnt.toString(2) << endl;
 
-    ULint assgn1(513, true), assgnmnt1(1025,true);
+    ULint assgn1(513), assgnmnt1(1025);
     out << assgnmnt1 << " = " << assgn1 << endl;
     out << "assignment: " << assgnmnt1.toString(2) << " = " << assgn1.toString(2) << endl;
 
-    ULint assgn2(512, true), assgnmnt2(1024, true), a3(256,true);
+    ULint assgn2(512), assgnmnt2(1024), a3(256);
     out << assgnmnt2 << " = " << assgn2 << " & " << a3 << endl;
     out << "assignment: " << assgnmnt2.toString(2) << endl;
 
@@ -122,7 +122,7 @@ void UTestULint::runAll(ostream& out)
     assgn *= assgn;
     out << assgn << " *= " << assgn << endl;
 
-    ULint dvdnd(210862, true), dvsr(358, true);
+    ULint dvdnd(210862), dvsr(358);
     ULint qtnt = dvdnd / dvsr;
     out << qtnt << " = " << dvdnd << " / " << dvsr << endl;
 

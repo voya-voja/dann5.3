@@ -15,9 +15,9 @@
 using namespace std;
 using namespace dann5;
 
-ULint::ULint(size_t argument)
+ULint::ULint(unsigned long long value)
 {
-    initValue(argument);
+    initValue(value);
 }
 
 dann5::ULint::ULint(string argument, Byte base)
