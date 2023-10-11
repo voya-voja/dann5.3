@@ -8,6 +8,7 @@
 #include "UTestULint.hpp"
 
 #include <ULint.h>
+#include <bitset>
 
 using namespace dann5;
 

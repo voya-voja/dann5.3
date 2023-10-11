@@ -57,10 +57,10 @@ class Log:
     def finish(self):
         self.primesNo = len(self.pnRecs)
         self.duration = time.process_time() - self.start
-        fileCandidates = open("pnRecs.txt", "a")
+        fileCandidates = open("pnRecs.csv", "a")
         [fileCandidates.write("{}\n".format(pnRec)) for pnRec in self.pnRecs]
         fileCandidates.close()
-        fileCandidates = open("pnLog.txt", "a")
+        fileCandidates = open("pnLog.csv", "a")
         fileCandidates.write("{}\n".format(self))
         fileCandidates.close()
 
@@ -240,11 +240,11 @@ class PNGen(PNGenerator):
     # 2 ** offsetExponent is prime number offset from multiplied factor
     # when leaving default values it is the same as PNGen6
     def __init__(self, noQBs, nRuns = 1, justHybrid = False, prime0 = 2, \
-                 prime1 = 3, offsetExponent = 0, debug = False):
+                 prime1 = 3, offst2onExpnnt = 0, debug = False):
         super().__init__(noQBs, nRuns, justHybrid, debug)
         b = prime0 * prime1
         self.base = Qwhole("{}_".format(b), b)
-        o = 2 ** offsetExponent
+        o = 2 ** offst2onExpnnt
         self.offset = Qwhole("{}_".format(o), o)
         #self.min = Qwhole("m", 2**(noQBs-1))
         

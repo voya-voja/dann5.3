@@ -24,7 +24,7 @@ def rsa(primeP, primeQ, message):
     secretD = int((baseFI + 1) / publickKeyE)
     encrypt = (message ** publickKeyE) % publikkeyN
     decrypt = (encrypt ** secretD) % publikkeyN
-    print("N: {}, base-D: {}, e: {}, d: {}, encrypt: {}, decrypt: {}".format(publikkeyN, baseD, publickKeyE, secretD, encrypt, decrypt))
+    print("N: {}, base-D: {}, e: {}, d: {}, encrypt: {}, decrypt: {}".format(publikkeyN, baseFI, publickKeyE, secretD, encrypt, decrypt))
     
     
     
@@ -43,7 +43,7 @@ def main():
     #qbsNo = x.noqbs()    # ERROR
     
     start = time.process_time()
-    png = PNGen(119, debug = False)
+    png = PNGen(16, 4, debug = False)
     png.generate()
     finish = time.process_time()
     print("PN candidate generation takes", finish - start, "seconds")
