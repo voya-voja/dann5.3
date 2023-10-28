@@ -997,7 +997,7 @@ PYBIND11_MODULE(d5o2, m) {
 				 quantum statements organized as Q block)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qbinder&>())
-		.def(py::init<const Qsolver::Samples&>())
+		.def(py::init<const Qevaluations&>())
 
 		.def("noqbs", &Qbinder::noqbs, "Returns the number of Q bits that the Q binder holds")
 
@@ -1024,27 +1024,37 @@ PYBIND11_MODULE(d5o2, m) {
 
 /*--- Qsolver.h definitions ---*/
 	py::class_<Qanalyzer>(m, "Qanalyzer")
-		.def(py::init<const Qubo&>())
+		.def(py::init<const Qubo&>(), "Quantum analyzer is initialized with a QUBO instance")
 
-		.def("nodes", &Qanalyzer::nodes)
-		.def("branches", &Qanalyzer::branches)
-		.def("nodesNo", &Qanalyzer::nodesNo)
-		.def("branchesNo", &Qanalyzer::branchesNo)
-		.def("qubo", &Qanalyzer::qubo)
-		.def("chainStrength", &Qanalyzer::chainStrength);
+		.def("nodes", &Qanalyzer::nodes, "returns a list of linear nodes")
+		.def("branches", &Qanalyzer::branches, "returns a list of branches, i.e. binary lements")
+		.def("nodesNo", &Qanalyzer::nodesNo, "returns a number of linear nodes in a given QUBO instance")
+		.def("branchesNo", &Qanalyzer::branchesNo, "returns a number of branches, i.e. binary QUBO elements")
+		.def("qubo", &Qanalyzer::qubo, "returns the given QUBO instance")
+		.def("chainStrength", &Qanalyzer::chainStrength, "returns suggested chain streinght for a given QUBO instance");
 
 	// specify C++ class->baseclass specialization
 	py::class_<Qsolver, Qanalyzer>(m, "Qsolver")
-		.def(py::init<const Qubo&>())
-		.def(py::init<const Qubo&, bool>())
-		.def("solution", static_cast<Qsolver::Samples(Qsolver::*)()>(&Qsolver::solution), "return Samples with minimal energy as solution set");
+		.def(py::init<const Qubo&>(), "Initialize quantum solver simulator with a qubo problem to be solved")
+		.def(py::init<const Qubo&, bool>(), "Initialize quantum solver simulator with a qubo problem to be solved. Optionally specify if solver should return just the qubo function minimum, i.e. quantum evaluations with lowest assessed energy")
+    
+		.def("solution", static_cast<Qevaluations (Qsolver::*)()>(&Qsolver::solution), "return quantum evaluations, the Qevaluations can be just those with lowes assessed energy or the full set of all evaluations, depending on Qsolver initialization")
+        .def("minEnergy", &Qsolver::minEnergy, "returns minimal evaluated energy");
 
-    py::class_<Qsolver::SampleEng>(m, "SampleEng")
+    py::class_<Qevaluation>(m, "Qevaluation")
         .def(py::init<>())
-        .def(py::init<Qsolver::Sample, double>())
-        .def(py::init<double, Qsolver::Sample>())
-        .def("sample", [](Qsolver::SampleEng& o) { return o.mSample; })
-        .def("energy", [](Qsolver::SampleEng& o) { return o.mEnergy; });
+        .def(py::init<const Qevaluation&>())
+        .def(py::init<const Qsample&, double>())
+        .def(py::init<double, const Qsample&>())
+    
+        .def("reset", &Qevaluation::reset, "Reset this evaluation to initial values")
+        .def("isValid", &Qevaluation::isValid, "The evaluation is valid if the sample set has elements")
+    
+        .def(py::self += py::self, "Merge this and right evaluation with same or different elements")
+        .def(py::self + py::self, "Return a quantum evaluation with merge elements from this and right object")
+
+        .def("sample", [](const Qevaluation& o) { return o.sample(); })
+        .def("energy", [](const Qevaluation& o) { return o.energy(); });
 
 #ifdef VERSION_INFO
 	m.attr("__version__") = VERSION_INFO;

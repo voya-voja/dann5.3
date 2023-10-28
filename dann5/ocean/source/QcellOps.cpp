@@ -76,9 +76,9 @@ Qvalue QcellOp::value()
 	return(as_const(*this).value());
 }
 
-void QcellOp::add(const Qsolver::Samples& samples)
+void QcellOp::add(const Qevaluations& evaluations)
 {
-	Qop::add(samples);
+	Qop::add(evaluations);
 }
 
 string QcellOp::solution(size_t sampleId) const

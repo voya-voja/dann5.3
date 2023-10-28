@@ -25,8 +25,8 @@ namespace dann5 {
 			// default constructor
 			Qbinder() {};
 
-			// creates a Q binder with a given list of Q solutions
-			Qbinder(const Qsolver::Samples& solutions) 
+			// creates a Q binder with a given list of Q evaluations
+			Qbinder(const Qevaluations& solutions)
 				:mSolutions(solutions) {};
 
 			// Copy constructor
@@ -52,9 +52,9 @@ namespace dann5 {
 			virtual string toString(bool decomposed = false, 
 									size_t forBit = cAllBits) const;
 
-			// Adds a sample set of solutions to existing sample set and to
+			// Adds a evaluation set of solutions to existing evaluation set and to
 			// added operands
-			virtual void add(const Qsolver::Samples& samples);
+			virtual void add(const Qevaluations& samples);
 
 			// For added sample set(s), returns a string represnting all
 			// solutions of operands contained in the Q binder
@@ -122,8 +122,8 @@ namespace dann5 {
 			// to the added operand
 			void addOperand(const Qdef& right);
 
-			Qsolver::Samples	mSolutions;	// A sample set of solutions
-			Qdefs				mOperands;	// A list of operands
+			Qevaluations	mSolutions;	// A sample set of solutions
+			Qdefs			mOperands;	// A list of operands
 		};
 
 		// Inserts a string representation of a Q binder into an output

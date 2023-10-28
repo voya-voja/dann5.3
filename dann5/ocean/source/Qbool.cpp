@@ -39,15 +39,15 @@ string Qbool::toString(bool decomposed, size_t forBit) const
 	return id + "\\" + valueStr + "\\";
 }
 
-void Qbool::add(const Qsolver::Samples& samples)
+void Qbool::add(const Qevaluations& evaluations)
 {
 	if (value() != cSuperposition) return;
 
 	Qvalues& sltns = Qcell::solutions();
 	string identity = id();
-	for (auto sample : samples)
+	for (auto evltn : evaluations)
 	{
-		Qvalue v = sample.mSample[identity];
+		Qvalue v = evltn.sample()[identity];
 		if(v == 0)
 			sltns.push_back(Qbool::cFalse);
 		else

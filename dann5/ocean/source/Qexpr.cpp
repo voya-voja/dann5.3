@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <Qexpr.h>
+#include <Qsolver.h>
 #include <Factory.h>
 
 #include <Logger.h>
@@ -24,6 +25,31 @@ Qubo Qexpression::qubo(bool finalized, size_t forBit) const
 	return aQubo;
 }
 
+Qubos Qexpression::qubos(size_t noNodes) const
+{
+    size_t size = mpRoot->noqbs();
+    Qubos qubos;
+    size_t nodeCnt = 0;
+    Qubo subQubo;
+    for (size_t at = 0; at < size; at++)
+    {
+        Qubo qubo = mpRoot->qubo(true, at);
+        Qanalyzer anlzr(qubo);
+        size_t ndsNo = anlzr.nodesNo();
+        nodeCnt += ndsNo;
+        if(nodeCnt > noNodes)
+        {
+            qubos.push_back(subQubo);
+            subQubo.clear();
+            nodeCnt = ndsNo;
+        }
+        subQubo += qubo;
+    }
+    qubos.push_back(subQubo);
+    return qubos;
+}
+
+
 string Qexpression::toString(bool decomposed, size_t forBit) const
 {
 	if (!decomposed) return mpRoot->toString(decomposed, forBit);
@@ -38,10 +64,10 @@ string Qexpression::toString(bool decomposed, size_t forBit) const
 	return tStr;
 }
 
-void Qexpression::add(const Qsolver::Samples& samples)
+void Qexpression::add(const Qevaluations& evaluations)
 {
-	mSolutions.insert(mSolutions.end(), samples.begin(), samples.end());
-	root().add(samples);
+	mSolutions.insert(mSolutions.end(), evaluations.begin(), evaluations.end());
+	root().add(evaluations);
 }
 
 string Qexpression::solutions() const
@@ -55,14 +81,14 @@ string Qexpression::solutions() const
 	return asStr;
 }
 
-Qsolver::Samples Qexpression::compute()
+Qevaluations Qexpression::compute()
 {
 	if(mSolutions.size() != 0)
 		reset();
 	Qubo q = qubo();
 	Qsolver solver(q);
-	Qsolver::Samples samples = solver.solution();
-	return samples;
+	Qevaluations evaluations = solver.solution();
+	return evaluations;
 }
 
 void Qexpression::reset()

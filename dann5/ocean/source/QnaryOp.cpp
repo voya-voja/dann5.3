@@ -129,14 +129,14 @@ Qubo QnaryOp::qubo(bool finalized, size_t forBit) const
 	return aQubo;
 }
 
-void QnaryOp::add(const Qsolver::Samples& samples)
+void QnaryOp::add(const Qevaluations& evaluations)
 {
-	Qop::add(samples);
+	Qop::add(evaluations);
 }
 
-string QnaryOp::solution(size_t sampleId) const
+string QnaryOp::solution(size_t evaluationId) const
 {
-	return Qop::solution(sampleId);
+	return Qop::solution(evaluationId);
 }
 
 void QnaryOp::reset()

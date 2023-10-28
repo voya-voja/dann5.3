@@ -148,11 +148,11 @@ string Qnary::toString(bool decomposed, size_t forBit) const
 	return id + "\\" + to_string(size) + "b:" + valueStr + "\\";
 }
 
-void Qnary::add(const Qsolver::Samples& samples)
+void Qnary::add(const Qevaluations& evaluations)
 {
 	Qcells& _cells = cells();
 	for (auto pCell : _cells)
-		pCell->add(samples);
+		pCell->add(evaluations);
 }
 
 string Qnary::solution(size_t sampleId) const

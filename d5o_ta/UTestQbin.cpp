@@ -277,7 +277,7 @@ void UTestQbin::friends_enemies(ostream& out)
     out << endl << "*** Dwave's friends & enemies problem equation:" << endl << aWXfYZe.toString() << endl;
     out << endl << "*** Dwave's friends & enemies problem solutions:" << endl << aWXfYZe.solve() << endl;
 
-    Qsolver::Samples solutions = aWXfYZe.compute();
+    Qevaluations solutions = aWXfYZe.compute();
     Qbinder wxyzBinder(solutions);
     wxyzBinder = w, x, y, z;
     out << endl << wxyzBinder << endl;
@@ -294,7 +294,7 @@ void UTestQbin::friends_enemies(ostream& out)
     out << endl << "*** Friends & enemies problem qubo:" << endl << qPrFnE << endl;
     Qanalyzer analysePrFnE(qPrFnE);
     out << endl << "*** Friends & enemies problem # of nodes: " << analysePrFnE.nodesNo() << " # of branches: " << analysePrFnE.branchesNo() << endl;
-    Qsolver::Samples prFnEsltns = prFnE.compute();
+    Qevaluations prFnEsltns = prFnE.compute();
     Qbinder wxystBinder;
     wxystBinder = w, x, y, s, t;
     wxystBinder.add(prFnEsltns);

@@ -56,6 +56,13 @@ Qubo Qassignment::qubo(bool finalized, size_t forBit) const
 	return(mpExpr->qubo(finalized, forBit));
 }
 
+Qubos Qassignment::qubos(size_t noNodes) const
+{
+    if (mpExpr == nullptr)
+        return Qubos();
+    return(mpExpr->qubos(noNodes));
+}
+
 string Qassignment::toString(bool decomposed, size_t forBit) const
 {
 	string sAssignment = "";
@@ -67,9 +74,9 @@ string Qassignment::toString(bool decomposed, size_t forBit) const
 	return sAssignment;
 }
 
-void Qassignment::add(const Qsolver::Samples& samples) 
+void Qassignment::add(const Qevaluations& evaluations)
 { 
-	mpExpr->add(samples);
+	mpExpr->add(evaluations);
 }
 
 string Qassignment::solutions() const
@@ -77,7 +84,7 @@ string Qassignment::solutions() const
 	return mpExpr->solutions();
 }
 
-Qsolver::Samples Qassignment::compute()
+Qevaluations Qassignment::compute()
 {
 	return mpExpr->compute();
 }

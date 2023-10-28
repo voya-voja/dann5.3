@@ -46,6 +46,11 @@ namespace dann5 {
 			virtual Qubo qubo(bool finalized = true, 
 								size_t forBit = cAllBits) const = 0;
 
+            // Override to return a Qubos vector containing qubo representation
+            // of this Q statement fractionate into sub-qubos with no more than
+            // specified number of nodes
+            virtual Qubos qubos(size_t noNodes) const = 0;
+            
 			// Override to return a string representation of this Q statement, 
 			// if not decomposed, return a statement as initially specified
 			// if decomposed, return bit-level logic of the statement
@@ -60,14 +65,14 @@ namespace dann5 {
 
 			// Override to solve this Q statement and return a Qsolver::Samples
 			// with all solutions
-			virtual Qsolver::Samples compute() = 0;
+			virtual Qevaluations compute() = 0;
 
 			// Updates the number of added samples to this Qs statement.
 			// The sample set nodes have to correspond to the Q statement 
 			// operands.
 			// Override to apply the list of solutions samples values to 
 			// Q statement's operands,
-			virtual void add(const Qsolver::Samples& samples);
+			virtual void add(const Qevaluations& samples);
 
 			// Returns a string representation of all solutions calculated by
 			// compute method

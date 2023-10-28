@@ -60,8 +60,8 @@ namespace dann5 {
 			// return Qubo presentation of this Q operation
 			virtual Qubo qubo(bool finalized = true, size_t forBit = cAllBits) const;
 
-			// Override to set solution values from the sample set for this deffinition
-			virtual void add(const Qsolver::Samples& samples);
+			// Override to set solution values from the evaluation set for this deffinition
+			virtual void add(const Qevaluations& samples);
 
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;

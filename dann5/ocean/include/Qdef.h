@@ -57,7 +57,7 @@ namespace dann5 {
 			};
 
 			// Override to set solution values from the sample set for this deffinition
-			virtual void add(const Qsolver::Samples& samples) = 0;
+			virtual void add(const Qevaluations& evaluations) = 0;
 
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const = 0;

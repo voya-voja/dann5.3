@@ -79,7 +79,7 @@ namespace dann5 {
 			~Qsolve();
 
 			double energy() { return mMinEnergy; };
-			Qsolver::Samples solution() { return mSolution; }
+            Qevaluations solution() { return mSolution; }
 			void run();
 
 		protected:
@@ -95,7 +95,7 @@ namespace dann5 {
 
 			bool				mLowest;
 			double				mMinEnergy;
-			Qsolver::Samples	mSolution;
+			Qevaluations	mSolution;
 		};
 	};
 };
@@ -139,11 +139,11 @@ void Qsolve::solve(std::size_t at, Qvalue value)
 		}
 		if (!mLowest || mpSample[at].valuesXenergySum == mMinEnergy)
 		{
-			Qsolver::SampleEng sample;
+			Qevaluation evltn;
 			for (std::size_t index = 0; index <= mLast; index++)
-				sample.mSample[mpSample[index].pNode->first] = mpSample[index].value;
-			sample.mEnergy = mpSample[at].valuesXenergySum;
-			mSolution.push_back(sample);
+                evltn.sample()[mpSample[index].pNode->first] = mpSample[index].value;
+            evltn.energy() = mpSample[at].valuesXenergySum;
+			mSolution.push_back(evltn);
 		}
 	}
 	else
@@ -178,6 +178,69 @@ inline Qsolver::RawElement* Qsolve::clone(Qsolver::RawElement* pSample)
 	return pClone;
 }
 
+/**** Q evaluation ****/
+
+Qevaluation& Qevaluation::operator+=(const Qevaluation& right)
+{
+    mEnergy += right.mEnergy;
+    bool mergeable = true;
+    Qsample::const_iterator dEnd = mSample.cend();
+    for(auto elmntR : right.sample())
+    {   // if left and right evaluation have the same element their values should be the same
+        Qsample::const_iterator at = mSample.find(elmntR.first);
+        bool dffrntElmnt =  at == dEnd;
+        mergeable = dffrntElmnt || (*at).second == elmntR.second;
+        if(!mergeable)
+        {
+            reset();
+            break;
+        }
+        if(dffrntElmnt) // when mergable and different element
+            mSample[elmntR.first] = elmntR.second;
+    }
+    return(*this);
+}
+
+Qevaluation Qevaluation::operator+(const Qevaluation& right) const
+{
+    Qevaluation rslt(*this);
+    rslt += right;
+    return(rslt);
+}
+
+Qevaluations dann5::ocean::operator+(const Qevaluations& left, const Qevaluations& right)
+{
+    Qevaluations evaltns;
+    for(auto evltnL : left)
+        for(auto evltnR : right)
+        {
+            Qevaluation evltn = evltnL + evltnR;
+            if(evltn.isValid())
+                evaltns.push_back(evltn);
+        }
+    return evaltns;
+}
+
+std::ostream& dann5::ocean::operator << (std::ostream& out, const Qevaluations& evaluations)
+{
+    bool tableHeader = true;
+    for (auto evltn : evaluations)
+    {
+        out << endl;
+        if (tableHeader)
+        {
+            for (auto element : evltn.sample())
+                out << element.first << " ";
+            out << endl;
+            tableHeader = false;
+        }
+        for (auto element : evltn.sample())
+            out << to_string(element.second) << " ";
+        out << "--> " << evltn.energy();
+    }
+    return out;
+}
+
 /**** Q Solver ****/
 
 Qsolver::Qsolver(const Qubo& qubo, bool lowest)
@@ -189,7 +252,7 @@ Qsolver::~Qsolver()
 {
 }
 
-Qsolver::Samples Qsolver::solution()
+Qevaluations Qsolver::solution()
 {
 	if (mSolution.size() == 0)
 	{
@@ -247,7 +310,7 @@ void  Qsolver::solve()
 		}
 		else if (!mLowest || energy == mMinEnergy)
 		{
-			Samples solutons = pSolve->solution();
+			Qevaluations solutons = pSolve->solution();
 			mSolution.insert(mSolution.end(), solutons.begin(), solutons.end());
 		}
 		delete pSolve;
@@ -295,19 +358,5 @@ void Qsolver::solution(ostream& out)
 {
 	if (mSolution.size() == 0)
 		solution();
-	bool tableHeader = true;
-	for (auto sample : mSolution)
-	{
-		out << endl;
-		if (tableHeader)
-		{
-			for (auto element : sample.mSample)
-				out << element.first << " ";
-			out << endl;
-			tableHeader = false;
-		}
-		for (auto element : sample.mSample)
-			out << to_string(element.second) << " ";
-		out << "--> " << sample.mEnergy;
-	}
+    out << mSolution;
 }

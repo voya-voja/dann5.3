@@ -55,7 +55,7 @@ void qintNegativeAdd_test()
     aA.solve();
     Qubo q = aA.qubo();
     Qsolver s0(q, false);
-    Qsolver::Samples samples = s0.solution();
+    Qevaluations samples = s0.solution();
     cout << endl << aA.solutions() << endl << "min Energy : " << s0.minEnergy() << endl;
     s0.solution(cout);
 }
@@ -225,8 +225,69 @@ int main(int argc, const char * argv[])
 
 //    testSolver();
 
-    testPNcandidates();
+//    testPNcandidates();
 
+    Qwhole a(2,"a"), b(2,"b"), A("A", 6);
+    Qassign<Qwhole> addAsgn = A = a * b;
+    cout << addAsgn << endl << addAsgn.toString(true) << endl;
+    Qubo q = addAsgn.qubo();
+    cout << addAsgn.qubo(false) << endl << q << endl;
+    Qsolver slvr(q, false);
+    cout << slvr.nodesNo() << " nodes with " << slvr.branchesNo() << " branches." << endl;
+    slvr.solution(cout);
+/*
+    Qubo q0o, q1o;    // a break to 2 arbitrary qubos is not working
+    size_t count = 0;
+    for(auto elmnt : q)
+    {
+        if(count < 12)
+            q0o[elmnt.first] = elmnt.second;
+        else
+            q1o[elmnt.first] = elmnt.second;
+        count++;
+    }
+
+    Qbit a0("a0"), a1("a1"), b0("b0"), b1("b1"), A0("A0"), A1("A1"), A2("A2"),  hA0("#[A0]"), hA1("#[A0]");
+    QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(AdderQT::cMark);
+    pOp->inputs({ a1.clone(), b1.clone(), hA0.clone() });
+    pOp->output(A1.clone());
+    Qassign<Qbit>   add0 = A0 = a0 ^ b0,
+                    add1 = A1 = Qexpr<Qbit>(pOp),
+                    add2 = A2 = hA1;
+    Qubo q0 = add0.qubo(), q1 = add1.qubo(), q2 = add2.qubo(), q1p = Qubo();
+    for(auto elmnt : q1)
+    {
+        Qkey key = elmnt.first;
+        if(key.first == "#[A1]")
+            key.first = "A2";
+        if(elmnt.first.second == "#[A1]")
+            key.second = "A2";
+        q1p[key] = elmnt.second;
+    }
+    cout << endl << q0 << endl << q1p << endl << q2 << endl;
+    Qsolver slvr0(q0, false), slvr1(q1p, false);
+    cout << endl << slvr0.nodesNo() << " nodes with " << slvr0.branchesNo() << " branches." << endl;
+    slvr0.solution(cout);
+    Qevaluations evltns0 = slvr0.solution();
+    cout << endl << slvr1.nodesNo() << " nodes with " << slvr1.branchesNo() << " branches." << endl;
+    slvr1.solution(cout);
+    Qevaluations evltns1 = slvr1.solution();
+
+    Qevaluations evltns = evltns0 + evltns1;
+    cout << evltns << endl;
+ */
+    Qubos qubos = addAsgn.qubos(10);
+    Qevaluations evaluations;
+    for(auto qubo : qubos)
+    {
+        Qsolver solver(qubo, false);
+        Qevaluations evs = solver.solution();
+        if(evaluations.size() == 0)
+            evaluations = evs;
+        else
+            evaluations = evaluations + evs;
+    }
+    cout << endl << "**** Evaluations ****:" << endl << evaluations << endl;
     return 0;
 }
 

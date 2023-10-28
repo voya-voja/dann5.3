@@ -44,8 +44,8 @@ namespace dann5{
 		// Returns a Qubo object as result of a sclara shift of a Qubo object
 		Qubo operator-(const Qubo& left, double scalar);
 
-		// Scalar multiplication function returns a reference of an updated left operand
-		// with coeficients multiplied for the right scalar value.
+		// Scalar multiplication function returns a reference of an updated left
+		// operand with coeficients multiplied for the right scalar value.
 		Qubo& operator*=(Qubo& left, double scalar);
 		// Returns a Qubo object as result of a sclara multiplication of a Qubo object
 		Qubo operator*(double scalar, const Qubo& right);
@@ -60,7 +60,17 @@ namespace dann5{
 		// Sends a representation of Qubo into output stream
 		std::ostream& operator << (std::ostream&, const Qubo&);
 
-
+    
+        // an array of Qubo objects
+        typedef vector<Qubo> Qubos;
+        // Addition function returns a reference of an updated left operand
+        // with added elements of right Qubos vector at its end.
+        Qubos& operator+=(Qubos& left, const Qubos& right);
+        // Returns a Qubos vector that resluts in concatenation of left and
+        // right Qubos vectors
+        Qubos operator+(const Qubos& left, const Qubos& right);
+    
+    
 		// Quantum value is in S-uperposition state for any value except 0 and 1 
 		typedef unsigned char Qvalue;
 

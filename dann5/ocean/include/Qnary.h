@@ -84,8 +84,8 @@ namespace dann5 {
 			virtual string toString(bool decomposed = false,
 								size_t forBit = cAllBits) const;
 
-			// Override to set solution values from the sample set for this deffinition
-			virtual void add(const Qsolver::Samples& samples);
+			// Override to set solution values from the evaluation set for this deffinition
+			virtual void add(const Qevaluations& samples);
 
 			// Override to return a string representation of a solution value for a sample id
 			virtual string solution(size_t sampleId) const;
@@ -151,7 +151,7 @@ namespace dann5 {
 				virtual Qvalue value() const { return 0; };
 				virtual Qvalue value() { return 0; };
 
-				virtual void add(const Qsolver::Samples& samples) {};
+				virtual void add(const Qevaluations& samples) {};
 
 				virtual Qdef::Sp clone() const { return Qdef::Sp(new Value0cell(*this)); };
 

@@ -20,15 +20,15 @@ Qstatement::~Qstatement()
 {
 }
 
-void Qstatement::add(const Qsolver::Samples& samples)
+void Qstatement::add(const Qevaluations& samples)
 {
 	mNoSolutions += samples.size();
 }
 
 string Qstatement::solve()
 {
-	Qsolver::Samples samples = compute();
-	add(samples);
+    Qevaluations evltns = compute();
+	add(evltns);
 	return solutions();
 }
 

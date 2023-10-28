@@ -32,12 +32,12 @@ string Qbinder::toString(bool decomposed, size_t forBit) const
 	return(blockStr);
 }
 
-void Qbinder::add(const Qsolver::Samples& samples)
+void Qbinder::add(const Qevaluations& evltns)
 {
-	mSolutions.insert(mSolutions.end(), samples.begin(), samples.end());
+	mSolutions.insert(mSolutions.end(), evltns.begin(), evltns.end());
 	for (auto pOperand : mOperands)
 	{
-		pOperand->add(samples);
+		pOperand->add(evltns);
 	}
 }
 

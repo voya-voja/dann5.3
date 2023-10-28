@@ -12,14 +12,14 @@ string Qcell::toString(bool decomposed, size_t forBit) const
 	return id + "\\" + valueStr + "\\";
 }
 
-void Qcell::add(const Qsolver::Samples& samples)
+void Qcell::add(const Qevaluations& evaluations)
 {
 	if (value() != cSuperposition) return;
 
 	string identity = id();
-	for (auto sample : samples)
+	for (auto evltn : evaluations)
 	{
-		mSolutions.push_back(sample.mSample[identity]);
+		mSolutions.push_back(evltn.sample()[identity]);
 	}
 }
 

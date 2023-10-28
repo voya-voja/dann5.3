@@ -76,6 +76,11 @@ namespace dann5 {
 			// returns qubo only  for the specified bit level
 			virtual Qubo qubo(bool finalized = true, 
 							size_t forBit = cAllBits) const;
+            
+            // Returns a Qubos vector containing qubo representation
+            // of this Q expresssion fractionate into sub-qubos with no more than
+            // specified number of nodes
+            virtual Qubos qubos(size_t noNodes) const;
 
 			// Returns a string representation of this Q expression, 
 			// if not decomposed, returns a statement as initially specified
@@ -85,9 +90,9 @@ namespace dann5 {
 			string toString(bool decomposed = false, 
 								size_t forBit = cAllBits) const;
 
-			// Adds a sample set containing nodes with solutions values, the
+			// Adds a evaluation set containing nodes with solutions values, the
 			// nodes should correspond to operands of this Q expression
-			virtual void add(const Qsolver::Samples& samples);
+			virtual void add(const Qevaluations& samples);
 
 			// For added sample set(s), returns a string representation of all
 			// solutions of operands of this Q expression
@@ -98,8 +103,8 @@ namespace dann5 {
 			virtual string solution(size_t at) const 
 						{ return root()->solution(at);  };
 
-			// Return computed sample set with all solutions of the expression
-			virtual Qsolver::Samples compute();
+			// Return computed evaluation set with all solutions of the expression
+			virtual Qevaluations compute();
 
 			// Reset the quantum expression into its initial state without 
 			// solutions by reseting its operations and operands
@@ -112,8 +117,8 @@ namespace dann5 {
 
 		protected:
 		private:
-			Qop::Sp				mpRoot;		// A pointer to the root operation
-			Qsolver::Samples	mSolutions;	// A sample set
+			Qop::Sp			mpRoot;		// A pointer to the root operation
+			Qevaluations	mSolutions;	// A evaluation set
 		};
 
 		// Send a string representation of a Q expression into an output

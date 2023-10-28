@@ -214,13 +214,13 @@ string Qop::toString(bool decomposed, size_t forBit) const
 	return rStr;
 }
 
-void Qop::add(const Qsolver::Samples& samples)
+void Qop::add(const Qevaluations& evaluations)
 {
 	for (auto pInput : mInputs)
 	{
-		pInput->add(samples);
+		pInput->add(evaluations);
 	}
-	mpOutput->add(samples);
+	mpOutput->add(evaluations);
 }
 
 string Qop::solution(size_t sampleId) const

@@ -69,20 +69,20 @@ namespace dann5 {
 			virtual string toString(bool decomposed = false, 
 										size_t forBit = cAllBits) const;
 
-			// Adds a sample set containing nodes with solutions values, the 
+			// Adds a evaluation set containing nodes with solutions values, the
 			// nodes should correspond to operands of statements within this 
 			// Q routine
-			virtual void add(const Qsolver::Samples& samples)
-										{ mBlock.add(samples); };
+			virtual void add(const Qevaluations& evaluations)
+										{ mBlock.add(evaluations); };
 
 			// For added sample set(s), returns a string represnting 'at'
 			// solution of operands of statements within this Q routine
 			virtual string solution(size_t at) const 
 									{ return mBlock.solution(at); };
 
-			// Returns computed sample set with all solutions for the Q block
+			// Returns computed evaluation set with all solutions for the Q block
 			// logic
-			virtual Qsolver::Samples compute() { return mBlock.compute(); };
+			virtual Qevaluations compute() { return mBlock.compute(); };
 
 			// Resets Q block statements into their initial state without 
 			// added solutions

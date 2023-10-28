@@ -41,7 +41,17 @@ Qubo Qblock::qubo(bool finalized, size_t forBit) const
 	return(qubo);
 }
 
-void Qblock::add(const Qsolver::Samples& samples)
+Qubos Qblock::qubos(size_t noNodes) const
+{
+    Qubos qubos;
+    for (auto pStatement : mStatements)
+    {
+        qubos += pStatement->qubos(noNodes);
+    }
+    return(qubos);
+}
+
+void Qblock::add(const Qevaluations& samples)
 {
 	Qstatement::add(samples);
 	for (auto pStatement : mStatements)
@@ -71,7 +81,7 @@ string Qblock::solutions() const
 	return(strSols);
 }
 
-Qsolver::Samples Qblock::compute()
+Qevaluations Qblock::compute()
 {
 	if (noSolutions() != 0)
 		reset();
@@ -81,8 +91,8 @@ Qsolver::Samples Qblock::compute()
 		qubo += pStatement->qubo();
 	}
 	Qsolver solver(qubo);
-	Qsolver::Samples samples = solver.solution();
-	return samples;
+    Qevaluations evltns = solver.solution();
+	return evltns;
 }
 
 void Qblock::reset()

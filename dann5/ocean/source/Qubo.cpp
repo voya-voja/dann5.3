@@ -117,6 +117,21 @@ Qubo dann5::ocean::operator/(const Qubo& left, double scalar)
 	return result;
 }
 
+/**** Qubos ****/
+
+Qubos& dann5::ocean::operator+=(Qubos& left, const Qubos& right)
+{
+    left.insert( left.end(), right.begin(), right.end() );
+    return left;
+}
+
+Qubos dann5::ocean::operator+(const Qubos& left, const Qubos& right)
+{
+    Qubos result(left);
+    result += right;
+    return result;
+}
+
 /**** Qubo Table ****/
 
 QuboTable::QuboTable(Size size)

@@ -401,7 +401,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     dann5::ocean::operator<<(out, neBlck.qubo());
     out << "'" << endl << " resulting in :" << endl << neBlck.solve() << endl;
 
-    Qsolver::Samples solutions = neBlck.compute();
+    Qevaluations solutions = neBlck.compute();
     Qbinder xyBinder(solutions);
     xyBinder = x, y;
     out << endl << xyBinder << endl;
@@ -419,7 +419,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     dann5::ocean::operator<<(out, blck2.qubo());
     out << "'" << endl << " resulting in :" << endl << blck2.solve() << endl;
 
-    Qsolver::Samples solutions2 = blck2.compute();
+    Qevaluations solutions2 = blck2.compute();
     Qbinder xyBinder2(solutions2);
     xyBinder2 = x2, y2;
     out << endl << xyBinder2 << endl;
@@ -437,7 +437,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     dann5::ocean::operator<<(out, blck3.qubo());
     out << "'" << endl << " resulting in :" << endl << blck3.solve() << endl;
 
-    Qsolver::Samples solutions3 = blck3.compute();
+    Qevaluations solutions3 = blck3.compute();
     Qbinder xyBinder3(solutions3);
     xyBinder3 = x3, y3;
     out << endl << xyBinder3 << endl;
@@ -455,7 +455,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     dann5::ocean::operator<<(out, blck1.qubo());
     out << "'" << endl << " resulting in :" << endl << blck1.solve() << endl;
 
-    Qsolver::Samples solutions1 = blck1.compute();
+    Qevaluations solutions1 = blck1.compute();
     Qbinder xyBinder1(solutions1);
     xyBinder1 = x1, y1;
     out << endl << xyBinder1 << endl;
@@ -473,7 +473,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     dann5::ocean::operator<<(out, blck4.qubo());
     out << "'" << endl << " resulting in :" << endl << blck4.solve() << endl;
 
-    Qsolver::Samples solutions4 = blck4.compute();
+    Qevaluations solutions4 = blck4.compute();
     Qbinder xyBinder4(solutions4);
     xyBinder4 = x4, y4;
     out << endl << xyBinder4 << endl;
@@ -565,7 +565,7 @@ void UTestQwhole::comparison(ostream& out)
     Qanalyzer anlyze(xpr.qubo());
     out << endl << " # of nodes: " << anlyze.nodesNo()
         << " # of branches: " << anlyze.branchesNo() << endl << endl;
-    Qsolver::Samples solutions = xpr.compute();
+    Qevaluations solutions = xpr.compute();
     Qbinder xyBinder(solutions);
     xyBinder = x1, y1, z1;
     out << endl << xyBinder << endl;
@@ -748,7 +748,7 @@ void UTestQwhole::prime(ostream& out)
     out << endl << "*** Prime number p = s2 + 2t2, p mod 8 = 3, gcd(s,t) = 1 has: "
         << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
 //    out << " resulting in :" << endl << primeNo.solve() << endl;
-    Qsolver::Samples solution = primeNo.compute();
+    Qevaluations solution = primeNo.compute();
     Qbinder pst(solution);
     pst = prime, s, t;
     out << " resulting in :" << endl << pst << endl;
@@ -776,7 +776,7 @@ void UTestQwhole::prime6(ostream& out)
     Qanalyzer analyse(qPrime);
     out << endl << "*** Prime number p = 6s - 1 has: "
         << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
-    Qsolver::Samples solution = prime6m1.compute();
+    Qevaluations solution = prime6m1.compute();
     Qbinder pst(solution);
     pst = prime, s, t, mod;
     out << " resulting in :" << endl << pst << endl;
@@ -799,7 +799,7 @@ void UTestQwhole::prime6(ostream& out)
     Qanalyzer analyse2(qPrime);
     out << endl << "*** Prime number p = 6s + 1 has: "
         << analyse2.nodesNo() << " # of node and # of branches: " << analyse2.branchesNo() << endl;
-    Qsolver::Samples solution2 = prime6p1.compute();
+    Qevaluations solution2 = prime6p1.compute();
     Qbinder pst2(solution2);
     pst2 = prime, s, t, mod;
     out << " resulting in :" << endl << pst2 << endl;
