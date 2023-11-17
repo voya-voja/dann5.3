@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include <typeinfo>
+#include <algorithm>
 
 #include <Qwhole.h>
 
@@ -14,7 +15,7 @@
 #include <Qbinder.h>
 #include <Qroutine.h>
 
-#include <Qsolver.h>
+#include <D5QuboSolver.h>
 #include <Utility.h>
 
 #include "UTestQbit.h"
@@ -23,7 +24,9 @@
 #include "UTestQwhole.hpp"
 #include <ULint.h>
 
-#include <algorithm>
+#include <Qubo.h>
+#include <D5QuboSolver.h>
+#include <QuboCompiler.h>
 
 using namespace std;
 using namespace dann5::ocean;
@@ -47,17 +50,17 @@ void qintNegativeAdd_test()
     cout << endl << "aA.A = " << static_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
 
     cout << endl << aA << endl << endl << aA.toString(true) << endl;
-    cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
+//    cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
 
-    Qanalyzer analyzeA(aA.qubo());
-    cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
+//    Qanalyzer analyzeA(aA.qubo());
+//    cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
 
     aA.solve();
-    Qubo q = aA.qubo();
-    Qsolver s0(q, false);
-    Qevaluations samples = s0.solution();
-    cout << endl << aA.solutions() << endl << "min Energy : " << s0.minEnergy() << endl;
-    s0.solution(cout);
+//    Qubo q = aA.qubo();
+//    D5QuboSolver s0(q, false);
+//    Qevaluations samples = s0.solution();
+//    cout << endl << aA.solutions() << endl << "min Energy : " << s0.minEnergy() << endl;
+//    s0.solution(cout);
 }
 
 void qintPositiveAdd_test()
@@ -72,10 +75,10 @@ void qintPositiveAdd_test()
     cout << endl << "aA.A = " << static_pointer_cast<Qbin>(as_const(aA).assignee())->Qbin::toString() << endl;
 
     cout << endl << aA << endl << endl << aA.toString(true) << endl;
-    cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
+//    cout << endl << "*** Qubo ***" << endl << aA.qubo(false) << endl << aA.qubo() << endl;
 
-    Qanalyzer analyzeA(aA.qubo());
-    cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
+//    Qanalyzer analyzeA(aA.qubo());
+//    cout << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
 
     aA.solve();
     cout << endl << aA.solutions();
@@ -102,29 +105,29 @@ void testSolver()
     ofstream fout("testSolver.txt");
     Qbit a("a"), b("b"), N("N");
     Qassign<Qbit> aN = N = a & b;
-    Qsolver sN(aN.qubo(), false);
-    fout << endl << "Nodes #: " << sN.nodesNo() << ", Threds #: " << size_t(pow(2, int(log2(sN.nodesNo()) - 0.1)) / 2) << endl;
-    sN.solution(fout);
+//    D5QuboSolver sN(aN.qubo(), false);
+//    fout << endl << "Nodes #: " << sN.nodesNo() << ", Threds #: " << size_t(pow(2, int(log2(sN.nodesNo()) - 0.1)) / 2) << endl;
+//    sN.solution(fout);
 
     Qint i1(2, "a"), i2(2, "b"), A(2, "A");
     fout << endl << endl << "A =>" << A.toString(true) << endl;
     Qassign<Qint> aA = A = i1 + i2;
     fout << "A =>" << aA.assignee()->toString(true) << endl;
-    fout << endl << aA << endl << aA.qubo() << endl;
+//    fout << endl << aA << endl << aA.qubo() << endl;
     clock_t begin_time = clock();
     aA.solve();
     clock_t end_time = clock();
     fout << endl << "Running time: " << to_string(float(end_time - begin_time) / CLOCKS_PER_SEC) << "s" << endl;
     fout << aA.solutions();
 
-    Qsolver sA(aA.qubo(), false);
+/*    D5QuboSolver sA(aA.qubo(), false);
     fout << endl << "Nodes #: " << sA.nodesNo() << ", Threds #: " << size_t(pow(2, int(log2(sA.nodesNo()) - 0.1)) / 2) << endl;
     begin_time = clock();
     sA.solution();
     end_time = clock();
     fout << endl << "Running time: " << to_string(float(end_time - begin_time) / CLOCKS_PER_SEC) << "s" << endl;
     sA.solution(fout);
-    fout.close();
+*/    fout.close();
 }
 
 void testPNcandidates()
@@ -176,7 +179,33 @@ void testPNcandidates()
 
 int main(int argc, const char * argv[])
 {
-/*
+    Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
+    
+    Qwhole l(2, "l"), _0("0_"), n(2,"n");
+    Qexpr<Qwhole> expr((l+_0) != n), comp(l != n);
+    cout << expr << endl << expr.toString(true) << endl << expr.solve();
+    cout << comp << endl << comp.toString(true) << endl << comp.solve();
+    
+    Qbit x("x"), y("y"), z("z"), r("r", 1);
+    Qassign<Qbit> qbAssgn(r = (x & y) ^ (x & z));
+    cout << endl << qbAssgn << endl << qbAssgn.solve();
+    QuboCompiler compiler(false);
+    qbAssgn.compile(compiler);
+    cout << endl << compiler.qubo() << endl;
+
+    Qbin o(2, "o"), p(2, "p"), s(2, "s"), t("t", 1);
+//    t[1].value(0);
+    Qassign<Qbin> qbnAssgn(t = (o & p)/* ^ (o & s)*/);
+    cout << qbnAssgn << endl << qbnAssgn.toString(true) << endl;
+    cout << qbnAssgn.solve();
+    QuboCompiler bnCmplr(false);
+    qbnAssgn.compile(bnCmplr);
+    cout << endl << bnCmplr.qubo() << endl;
+    bnCmplr.finalized(true);
+    qbnAssgn.compile(bnCmplr);
+    cout << endl << bnCmplr.qubo() << endl;
+    
+    /*
     for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
     {
         Qwhole x(nQbits, "x"), y(size_t(nQbits / 2), "y"), r("r", nQbits);
@@ -227,15 +256,15 @@ int main(int argc, const char * argv[])
 
 //    testPNcandidates();
 
-    Qwhole a(2,"a"), b(2,"b"), A("A", 6);
-    Qassign<Qwhole> addAsgn = A = a * b;
-    cout << addAsgn << endl << addAsgn.toString(true) << endl;
-    Qubo q = addAsgn.qubo();
+    Qwhole a(2,"a"), b(3,"b"), A("A", 6);
+    Qassign<Qwhole> addAsgn = A = a + b;
+    cout << endl << addAsgn << endl << addAsgn.toString(true) << endl << addAsgn.solve();
+/*    Qubo q = addAsgn.qubo();
     cout << addAsgn.qubo(false) << endl << q << endl;
-    Qsolver slvr(q, false);
+    D5QuboSolver slvr(q, false);
     cout << slvr.nodesNo() << " nodes with " << slvr.branchesNo() << " branches." << endl;
     slvr.solution(cout);
-/*
+
     Qubo q0o, q1o;    // a break to 2 arbitrary qubos is not working
     size_t count = 0;
     for(auto elmnt : q)
@@ -275,12 +304,11 @@ int main(int argc, const char * argv[])
 
     Qevaluations evltns = evltns0 + evltns1;
     cout << evltns << endl;
- */
     Qubos qubos = addAsgn.qubos(10);
     Qevaluations evaluations;
     for(auto qubo : qubos)
     {
-        Qsolver solver(qubo, false);
+        D5QuboSolver solver(qubo, false);
         Qevaluations evs = solver.solution();
         if(evaluations.size() == 0)
             evaluations = evs;
@@ -288,6 +316,7 @@ int main(int argc, const char * argv[])
             evaluations = evaluations + evs;
     }
     cout << endl << "**** Evaluations ****:" << endl << evaluations << endl;
+ */
     return 0;
 }
 

@@ -7,58 +7,68 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A20507D52AFF001A00165038 /* Qsolver.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507D32AFF001A00165038 /* Qsolver.h */; };
+		A20507DC2AFF067C00165038 /* D5QuboSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507DA2AFF067C00165038 /* D5QuboSolver.cpp */; };
+		A20507DD2AFF067C00165038 /* D5QuboSolver.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507DB2AFF067C00165038 /* D5QuboSolver.h */; };
+		A20507E02AFF0C5800165038 /* Qvalue.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507DF2AFF0C5700165038 /* Qvalue.h */; };
+		A20507EF2B00368100165038 /* Qexpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507E12B00368000165038 /* Qexpr.cpp */; };
+		A20507F02B00368100165038 /* Qcell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507E22B00368000165038 /* Qcell.cpp */; };
+		A20507F12B00368100165038 /* Qassign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507E32B00368000165038 /* Qassign.cpp */; };
+		A20507F22B00368100165038 /* Qbool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507E42B00368000165038 /* Qbool.cpp */; };
+		A20507F32B00368100165038 /* QcellOps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507E52B00368000165038 /* QcellOps.cpp */; };
+		A20507F42B00368100165038 /* Qop.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507E62B00368000165038 /* Qop.h */; };
+		A20507F52B00368100165038 /* Qblock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507E72B00368000165038 /* Qblock.cpp */; };
+		A20507F62B00368100165038 /* QderivedOps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507E82B00368000165038 /* QderivedOps.cpp */; };
+		A20507F72B00368100165038 /* Qstatement.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507E92B00368000165038 /* Qstatement.h */; };
+		A20507F82B00368100165038 /* Qbinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20507EA2B00368000165038 /* Qbinder.cpp */; };
+		A20507F92B00368100165038 /* Qbit.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507EB2B00368000165038 /* Qbit.h */; };
+		A20507FA2B00368100165038 /* Qbool.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507EC2B00368000165038 /* Qbool.h */; };
+		A20507FB2B00368100165038 /* Qdef.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507ED2B00368000165038 /* Qdef.h */; };
+		A20507FC2B00368100165038 /* Qroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507EE2B00368100165038 /* Qroutine.h */; };
+		A20508192B00371200165038 /* Qint.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507FE2B00371100165038 /* Qint.h */; };
+		A205081A2B00371200165038 /* Qbin.h in Headers */ = {isa = PBXBuildFile; fileRef = A20507FF2B00371100165038 /* Qbin.h */; };
+		A205081B2B00371200165038 /* Qcell.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508002B00371100165038 /* Qcell.h */; };
+		A205081C2B00371200165038 /* QnaryOp.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508012B00371100165038 /* QnaryOp.h */; };
+		A205081D2B00371200165038 /* Qwhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508022B00371100165038 /* Qwhole.cpp */; };
+		A205081E2B00371200165038 /* Qbinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508032B00371100165038 /* Qbinder.h */; };
+		A205081F2B00371200165038 /* Qtype.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508042B00371100165038 /* Qtype.h */; };
+		A20508202B00371200165038 /* Qwhole.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508052B00371100165038 /* Qwhole.h */; };
+		A20508212B00371200165038 /* Qroutine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508062B00371100165038 /* Qroutine.cpp */; };
+		A20508222B00371200165038 /* Qnary.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508072B00371100165038 /* Qnary.h */; };
+		A20508232B00371200165038 /* Qint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508082B00371100165038 /* Qint.cpp */; };
+		A20508242B00371200165038 /* Qmultiply.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508092B00371100165038 /* Qmultiply.h */; };
+		A20508252B00371200165038 /* Qassign.h in Headers */ = {isa = PBXBuildFile; fileRef = A205080A2B00371100165038 /* Qassign.h */; };
+		A20508262B00371200165038 /* Qglbls_fctrs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205080B2B00371100165038 /* Qglbls_fctrs.cpp */; };
+		A20508272B00371200165038 /* QcellOps.h in Headers */ = {isa = PBXBuildFile; fileRef = A205080C2B00371100165038 /* QcellOps.h */; };
+		A20508282B00371200165038 /* Qbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205080D2B00371200165038 /* Qbit.cpp */; };
+		A20508292B00371200165038 /* Qbin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205080E2B00371200165038 /* Qbin.cpp */; };
+		A205082A2B00371200165038 /* Qop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205080F2B00371200165038 /* Qop.cpp */; };
+		A205082B2B00371200165038 /* Qnary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508102B00371200165038 /* Qnary.cpp */; };
+		A205082C2B00371200165038 /* QderivedOps.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508112B00371200165038 /* QderivedOps.h */; };
+		A205082D2B00371200165038 /* Qblock.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508122B00371200165038 /* Qblock.h */; };
+		A205082E2B00371200165038 /* Qadd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508132B00371200165038 /* Qadd.cpp */; };
+		A205082F2B00371200165038 /* Qexpr.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508142B00371200165038 /* Qexpr.h */; };
+		A20508302B00371200165038 /* Qmultiply.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508152B00371200165038 /* Qmultiply.cpp */; };
+		A20508312B00371200165038 /* Qstatement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508162B00371200165038 /* Qstatement.cpp */; };
+		A20508322B00371200165038 /* Qadd.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508172B00371200165038 /* Qadd.h */; };
+		A20508332B00371200165038 /* QnaryOp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508182B00371200165038 /* QnaryOp.cpp */; };
+		A205083C2B017E0E00165038 /* Qubo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205083A2B017E0E00165038 /* Qubo.cpp */; };
+		A205083D2B017E0E00165038 /* Qubo.h in Headers */ = {isa = PBXBuildFile; fileRef = A205083B2B017E0E00165038 /* Qubo.h */; };
+		A205083F2B017E7D00165038 /* QTfactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205083E2B017E7D00165038 /* QTfactories.cpp */; };
+		A20508422B01956C00165038 /* Qcompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508402B01956C00165038 /* Qcompiler.cpp */; };
+		A20508452B0195CD00165038 /* Qcompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508442B0195CD00165038 /* Qcompiler.h */; };
+		A20508482B0197C500165038 /* QuboCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508462B0197C500165038 /* QuboCompiler.cpp */; };
+		A205084B2B01980900165038 /* QuboCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = A205084A2B01980900165038 /* QuboCompiler.h */; };
 		A218D4B629E750DB0028F469 /* ULint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A218D4B429E750DB0028F469 /* ULint.cpp */; };
 		A218D4B729E750DB0028F469 /* ULint.h in Headers */ = {isa = PBXBuildFile; fileRef = A218D4B529E750DB0028F469 /* ULint.h */; };
-		A27DBC6029DF8EB2004C99EC /* QderivedOps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27DBC5429DF8EB1004C99EC /* QderivedOps.cpp */; };
-		A27DBC6129DF8EB2004C99EC /* Qblock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27DBC5529DF8EB1004C99EC /* Qblock.cpp */; };
-		A27DBC6229DF8EB2004C99EC /* Qstatement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27DBC5629DF8EB1004C99EC /* Qstatement.cpp */; };
-		A27DBC6329DF8EB2004C99EC /* QwholeExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27DBC5729DF8EB1004C99EC /* QwholeExpr.cpp */; };
-		A27DBC6429DF8EB2004C99EC /* QwholeExpr.h in Headers */ = {isa = PBXBuildFile; fileRef = A27DBC5829DF8EB1004C99EC /* QwholeExpr.h */; };
-		A27DBC6529DF8EB2004C99EC /* QderivedOps.h in Headers */ = {isa = PBXBuildFile; fileRef = A27DBC5929DF8EB1004C99EC /* QderivedOps.h */; };
-		A27DBC6629DF8EB2004C99EC /* Qroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = A27DBC5A29DF8EB1004C99EC /* Qroutine.h */; };
-		A27DBC6729DF8EB2004C99EC /* Qroutine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27DBC5B29DF8EB1004C99EC /* Qroutine.cpp */; };
-		A27DBC6829DF8EB2004C99EC /* Qbinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A27DBC5C29DF8EB1004C99EC /* Qbinder.h */; };
-		A27DBC6929DF8EB2004C99EC /* Qblock.h in Headers */ = {isa = PBXBuildFile; fileRef = A27DBC5D29DF8EB1004C99EC /* Qblock.h */; };
-		A27DBC6A29DF8EB2004C99EC /* Qbinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A27DBC5E29DF8EB1004C99EC /* Qbinder.cpp */; };
-		A27DBC6B29DF8EB2004C99EC /* Qstatement.h in Headers */ = {isa = PBXBuildFile; fileRef = A27DBC5F29DF8EB1004C99EC /* Qstatement.h */; };
+		A2A39AF62B04436600BAFFEF /* Qevaluation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A39AF42B04436600BAFFEF /* Qevaluation.cpp */; };
+		A2A39AF72B04436600BAFFEF /* Qevaluation.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A39AF52B04436600BAFFEF /* Qevaluation.h */; };
+		A2A39B062B07EB3100BAFFEF /* QuboAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A39B042B07EB3100BAFFEF /* QuboAnalyzer.cpp */; };
+		A2A39B072B07EB3100BAFFEF /* QuboAnalyzer.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A39B052B07EB3100BAFFEF /* QuboAnalyzer.h */; };
+		A2A39B092B07EBA200BAFFEF /* QnaryOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A39B082B07EBA200BAFFEF /* QnaryOperation.h */; };
 		A2A534D328C6C09F002C4145 /* d5o_Xc.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A2A534D228C6C09E002C4145 /* d5o_Xc.hpp */; };
 		A2A534D528C6C09F002C4145 /* d5o_XcPriv.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A2A534D428C6C09F002C4145 /* d5o_XcPriv.hpp */; };
 		A2A534D728C6C09F002C4145 /* d5o_Xc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534D628C6C09F002C4145 /* d5o_Xc.cpp */; };
-		A2A5350828C6C138002C4145 /* Qint.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534DF28C6C136002C4145 /* Qint.h */; };
-		A2A5350928C6C138002C4145 /* Qmultiply.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534E028C6C136002C4145 /* Qmultiply.cpp */; };
-		A2A5350A28C6C138002C4145 /* Qnary.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534E128C6C137002C4145 /* Qnary.h */; };
-		A2A5350B28C6C138002C4145 /* QnaryOp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534E228C6C137002C4145 /* QnaryOp.cpp */; };
-		A2A5350C28C6C138002C4145 /* Qop.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534E328C6C137002C4145 /* Qop.h */; };
-		A2A5350D28C6C138002C4145 /* Qassign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534E428C6C137002C4145 /* Qassign.cpp */; };
-		A2A5350E28C6C138002C4145 /* QcellOps.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534E528C6C137002C4145 /* QcellOps.h */; };
-		A2A5350F28C6C138002C4145 /* Qbool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534E628C6C137002C4145 /* Qbool.cpp */; };
-		A2A5351028C6C138002C4145 /* Qop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534E728C6C137002C4145 /* Qop.cpp */; };
-		A2A5351128C6C138002C4145 /* Global.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534E828C6C137002C4145 /* Global.cpp */; };
-		A2A5351228C6C138002C4145 /* Qbin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534E928C6C137002C4145 /* Qbin.cpp */; };
-		A2A5351328C6C138002C4145 /* Qdef.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534EA28C6C137002C4145 /* Qdef.h */; };
-		A2A5351428C6C138002C4145 /* Qcell.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534EB28C6C137002C4145 /* Qcell.h */; };
-		A2A5351528C6C138002C4145 /* QcellOps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534EC28C6C137002C4145 /* QcellOps.cpp */; };
-		A2A5351928C6C138002C4145 /* Qmultiply.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534F028C6C137002C4145 /* Qmultiply.h */; };
-		A2A5351A28C6C138002C4145 /* Qbool.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534F128C6C137002C4145 /* Qbool.h */; };
-		A2A5351C28C6C138002C4145 /* Qadd.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534F328C6C137002C4145 /* Qadd.cpp */; };
-		A2A5351D28C6C138002C4145 /* Qbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534F428C6C137002C4145 /* Qbit.cpp */; };
-		A2A5351E28C6C138002C4145 /* Qcell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534F528C6C137002C4145 /* Qcell.cpp */; };
-		A2A5351F28C6C138002C4145 /* Qassign.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534F628C6C137002C4145 /* Qassign.h */; };
-		A2A5352028C6C138002C4145 /* Qbit.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534F728C6C137002C4145 /* Qbit.h */; };
-		A2A5352128C6C138002C4145 /* QnaryOp.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534F828C6C137002C4145 /* QnaryOp.h */; };
-		A2A5352228C6C138002C4145 /* Qsolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534F928C6C137002C4145 /* Qsolver.cpp */; };
-		A2A5352328C6C138002C4145 /* Qubo.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534FA28C6C137002C4145 /* Qubo.h */; };
-		A2A5352428C6C138002C4145 /* Qbin.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534FB28C6C137002C4145 /* Qbin.h */; };
-		A2A5352528C6C138002C4145 /* Qexpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534FC28C6C137002C4145 /* Qexpr.cpp */; };
-		A2A5352628C6C138002C4145 /* Qwhole.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534FD28C6C137002C4145 /* Qwhole.h */; };
-		A2A5352728C6C138002C4145 /* Qtype.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534FE28C6C137002C4145 /* Qtype.h */; };
-		A2A5352828C6C138002C4145 /* Qsolver.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A534FF28C6C137002C4145 /* Qsolver.h */; };
-		A2A5352928C6C138002C4145 /* Qexpr.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A5350028C6C137002C4145 /* Qexpr.h */; };
-		A2A5352A28C6C138002C4145 /* Qubo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5350128C6C137002C4145 /* Qubo.cpp */; };
-		A2A5352B28C6C138002C4145 /* Qint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5350228C6C137002C4145 /* Qint.cpp */; };
-		A2A5352C28C6C138002C4145 /* Qwhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5350328C6C137002C4145 /* Qwhole.cpp */; };
-		A2A5352D28C6C138002C4145 /* Qnary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5350428C6C137002C4145 /* Qnary.cpp */; };
-		A2A5353028C6C138002C4145 /* Qadd.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A5350728C6C138002C4145 /* Qadd.h */; };
 		A2A5353528C6C16B002C4145 /* Logger.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A5353128C6C16B002C4145 /* Logger.h */; };
 		A2A5353628C6C16B002C4145 /* Utility.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A5353228C6C16B002C4145 /* Utility.h */; };
 		A2A5353728C6C16B002C4145 /* Factory.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A5353328C6C16B002C4145 /* Factory.h */; };
@@ -67,59 +77,69 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A20507D32AFF001A00165038 /* Qsolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qsolver.h; path = ../../dann5/include/Qsolver.h; sourceTree = "<group>"; };
+		A20507DA2AFF067C00165038 /* D5QuboSolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = D5QuboSolver.cpp; path = ../../dann5/ocean/source/D5QuboSolver.cpp; sourceTree = "<group>"; };
+		A20507DB2AFF067C00165038 /* D5QuboSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = D5QuboSolver.h; path = ../../dann5/ocean/include/D5QuboSolver.h; sourceTree = "<group>"; };
+		A20507DF2AFF0C5700165038 /* Qvalue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qvalue.h; path = ../../dann5/include/Qvalue.h; sourceTree = "<group>"; };
+		A20507E12B00368000165038 /* Qexpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qexpr.cpp; path = ../../dann5/source/Qexpr.cpp; sourceTree = "<group>"; };
+		A20507E22B00368000165038 /* Qcell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qcell.cpp; path = ../../dann5/source/Qcell.cpp; sourceTree = "<group>"; };
+		A20507E32B00368000165038 /* Qassign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qassign.cpp; path = ../../dann5/source/Qassign.cpp; sourceTree = "<group>"; };
+		A20507E42B00368000165038 /* Qbool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbool.cpp; path = ../../dann5/source/Qbool.cpp; sourceTree = "<group>"; };
+		A20507E52B00368000165038 /* QcellOps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QcellOps.cpp; path = ../../dann5/source/QcellOps.cpp; sourceTree = "<group>"; };
+		A20507E62B00368000165038 /* Qop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qop.h; path = ../../dann5/include/Qop.h; sourceTree = "<group>"; };
+		A20507E72B00368000165038 /* Qblock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qblock.cpp; path = ../../dann5/source/Qblock.cpp; sourceTree = "<group>"; };
+		A20507E82B00368000165038 /* QderivedOps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QderivedOps.cpp; path = ../../dann5/source/QderivedOps.cpp; sourceTree = "<group>"; };
+		A20507E92B00368000165038 /* Qstatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qstatement.h; path = ../../dann5/include/Qstatement.h; sourceTree = "<group>"; };
+		A20507EA2B00368000165038 /* Qbinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbinder.cpp; path = ../../dann5/source/Qbinder.cpp; sourceTree = "<group>"; };
+		A20507EB2B00368000165038 /* Qbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbit.h; path = ../../dann5/include/Qbit.h; sourceTree = "<group>"; };
+		A20507EC2B00368000165038 /* Qbool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbool.h; path = ../../dann5/include/Qbool.h; sourceTree = "<group>"; };
+		A20507ED2B00368000165038 /* Qdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qdef.h; path = ../../dann5/include/Qdef.h; sourceTree = "<group>"; };
+		A20507EE2B00368100165038 /* Qroutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qroutine.h; path = ../../dann5/include/Qroutine.h; sourceTree = "<group>"; };
+		A20507FE2B00371100165038 /* Qint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qint.h; path = ../../dann5/include/Qint.h; sourceTree = "<group>"; };
+		A20507FF2B00371100165038 /* Qbin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbin.h; path = ../../dann5/include/Qbin.h; sourceTree = "<group>"; };
+		A20508002B00371100165038 /* Qcell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qcell.h; path = ../../dann5/include/Qcell.h; sourceTree = "<group>"; };
+		A20508012B00371100165038 /* QnaryOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QnaryOp.h; path = ../../dann5/include/QnaryOp.h; sourceTree = "<group>"; };
+		A20508022B00371100165038 /* Qwhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qwhole.cpp; path = ../../dann5/source/Qwhole.cpp; sourceTree = "<group>"; };
+		A20508032B00371100165038 /* Qbinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbinder.h; path = ../../dann5/include/Qbinder.h; sourceTree = "<group>"; };
+		A20508042B00371100165038 /* Qtype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qtype.h; path = ../../dann5/include/Qtype.h; sourceTree = "<group>"; };
+		A20508052B00371100165038 /* Qwhole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qwhole.h; path = ../../dann5/include/Qwhole.h; sourceTree = "<group>"; };
+		A20508062B00371100165038 /* Qroutine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qroutine.cpp; path = ../../dann5/source/Qroutine.cpp; sourceTree = "<group>"; };
+		A20508072B00371100165038 /* Qnary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qnary.h; path = ../../dann5/include/Qnary.h; sourceTree = "<group>"; };
+		A20508082B00371100165038 /* Qint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qint.cpp; path = ../../dann5/source/Qint.cpp; sourceTree = "<group>"; };
+		A20508092B00371100165038 /* Qmultiply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qmultiply.h; path = ../../dann5/include/Qmultiply.h; sourceTree = "<group>"; };
+		A205080A2B00371100165038 /* Qassign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qassign.h; path = ../../dann5/include/Qassign.h; sourceTree = "<group>"; };
+		A205080B2B00371100165038 /* Qglbls_fctrs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qglbls_fctrs.cpp; path = ../../dann5/source/Qglbls_fctrs.cpp; sourceTree = "<group>"; };
+		A205080C2B00371100165038 /* QcellOps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QcellOps.h; path = ../../dann5/include/QcellOps.h; sourceTree = "<group>"; };
+		A205080D2B00371200165038 /* Qbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbit.cpp; path = ../../dann5/source/Qbit.cpp; sourceTree = "<group>"; };
+		A205080E2B00371200165038 /* Qbin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbin.cpp; path = ../../dann5/source/Qbin.cpp; sourceTree = "<group>"; };
+		A205080F2B00371200165038 /* Qop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qop.cpp; path = ../../dann5/source/Qop.cpp; sourceTree = "<group>"; };
+		A20508102B00371200165038 /* Qnary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qnary.cpp; path = ../../dann5/source/Qnary.cpp; sourceTree = "<group>"; };
+		A20508112B00371200165038 /* QderivedOps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QderivedOps.h; path = ../../dann5/include/QderivedOps.h; sourceTree = "<group>"; };
+		A20508122B00371200165038 /* Qblock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qblock.h; path = ../../dann5/include/Qblock.h; sourceTree = "<group>"; };
+		A20508132B00371200165038 /* Qadd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qadd.cpp; path = ../../dann5/source/Qadd.cpp; sourceTree = "<group>"; };
+		A20508142B00371200165038 /* Qexpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qexpr.h; path = ../../dann5/include/Qexpr.h; sourceTree = "<group>"; };
+		A20508152B00371200165038 /* Qmultiply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qmultiply.cpp; path = ../../dann5/source/Qmultiply.cpp; sourceTree = "<group>"; };
+		A20508162B00371200165038 /* Qstatement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qstatement.cpp; path = ../../dann5/source/Qstatement.cpp; sourceTree = "<group>"; };
+		A20508172B00371200165038 /* Qadd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qadd.h; path = ../../dann5/include/Qadd.h; sourceTree = "<group>"; };
+		A20508182B00371200165038 /* QnaryOp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QnaryOp.cpp; path = ../../dann5/source/QnaryOp.cpp; sourceTree = "<group>"; };
+		A205083A2B017E0E00165038 /* Qubo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qubo.cpp; path = ../../dann5/ocean/source/Qubo.cpp; sourceTree = "<group>"; };
+		A205083B2B017E0E00165038 /* Qubo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qubo.h; path = ../../dann5/ocean/include/Qubo.h; sourceTree = "<group>"; };
+		A205083E2B017E7D00165038 /* QTfactories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QTfactories.cpp; path = ../../dann5/ocean/source/QTfactories.cpp; sourceTree = "<group>"; };
+		A20508402B01956C00165038 /* Qcompiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qcompiler.cpp; path = ../../dann5/source/Qcompiler.cpp; sourceTree = "<group>"; };
+		A20508442B0195CD00165038 /* Qcompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qcompiler.h; path = ../../dann5/include/Qcompiler.h; sourceTree = "<group>"; };
+		A20508462B0197C500165038 /* QuboCompiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QuboCompiler.cpp; path = ../../dann5/ocean/source/QuboCompiler.cpp; sourceTree = "<group>"; };
+		A205084A2B01980900165038 /* QuboCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuboCompiler.h; path = ../../dann5/ocean/include/QuboCompiler.h; sourceTree = "<group>"; };
 		A218D4B429E750DB0028F469 /* ULint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ULint.cpp; path = ../../dann5/source/ULint.cpp; sourceTree = "<group>"; };
 		A218D4B529E750DB0028F469 /* ULint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ULint.h; path = ../../dann5/include/ULint.h; sourceTree = "<group>"; };
-		A27DBC5429DF8EB1004C99EC /* QderivedOps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QderivedOps.cpp; path = ../../dann5/ocean/source/QderivedOps.cpp; sourceTree = "<group>"; };
-		A27DBC5529DF8EB1004C99EC /* Qblock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qblock.cpp; path = ../../dann5/ocean/source/Qblock.cpp; sourceTree = "<group>"; };
-		A27DBC5629DF8EB1004C99EC /* Qstatement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qstatement.cpp; path = ../../dann5/ocean/source/Qstatement.cpp; sourceTree = "<group>"; };
-		A27DBC5729DF8EB1004C99EC /* QwholeExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QwholeExpr.cpp; path = ../../dann5/ocean/source/QwholeExpr.cpp; sourceTree = "<group>"; };
-		A27DBC5829DF8EB1004C99EC /* QwholeExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QwholeExpr.h; path = ../../dann5/ocean/include/QwholeExpr.h; sourceTree = "<group>"; };
-		A27DBC5929DF8EB1004C99EC /* QderivedOps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QderivedOps.h; path = ../../dann5/ocean/include/QderivedOps.h; sourceTree = "<group>"; };
-		A27DBC5A29DF8EB1004C99EC /* Qroutine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qroutine.h; path = ../../dann5/ocean/include/Qroutine.h; sourceTree = "<group>"; };
-		A27DBC5B29DF8EB1004C99EC /* Qroutine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qroutine.cpp; path = ../../dann5/ocean/source/Qroutine.cpp; sourceTree = "<group>"; };
-		A27DBC5C29DF8EB1004C99EC /* Qbinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbinder.h; path = ../../dann5/ocean/include/Qbinder.h; sourceTree = "<group>"; };
-		A27DBC5D29DF8EB1004C99EC /* Qblock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qblock.h; path = ../../dann5/ocean/include/Qblock.h; sourceTree = "<group>"; };
-		A27DBC5E29DF8EB1004C99EC /* Qbinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbinder.cpp; path = ../../dann5/ocean/source/Qbinder.cpp; sourceTree = "<group>"; };
-		A27DBC5F29DF8EB1004C99EC /* Qstatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qstatement.h; path = ../../dann5/ocean/include/Qstatement.h; sourceTree = "<group>"; };
+		A2A39AF42B04436600BAFFEF /* Qevaluation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qevaluation.cpp; path = ../../dann5/source/Qevaluation.cpp; sourceTree = "<group>"; };
+		A2A39AF52B04436600BAFFEF /* Qevaluation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qevaluation.h; path = ../../dann5/include/Qevaluation.h; sourceTree = "<group>"; };
+		A2A39B042B07EB3100BAFFEF /* QuboAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuboAnalyzer.cpp; path = ../../dann5/ocean/source/QuboAnalyzer.cpp; sourceTree = "<group>"; };
+		A2A39B052B07EB3100BAFFEF /* QuboAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuboAnalyzer.h; path = ../../dann5/ocean/include/QuboAnalyzer.h; sourceTree = "<group>"; };
+		A2A39B082B07EBA200BAFFEF /* QnaryOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QnaryOperation.h; path = ../../dann5/include/QnaryOperation.h; sourceTree = "<group>"; };
 		A2A534CF28C6C09E002C4145 /* d5o2.cpython-310-darwin.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "d5o2.cpython-310-darwin.so"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2A534D228C6C09E002C4145 /* d5o_Xc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = d5o_Xc.hpp; sourceTree = "<group>"; };
 		A2A534D428C6C09F002C4145 /* d5o_XcPriv.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = d5o_XcPriv.hpp; sourceTree = "<group>"; };
 		A2A534D628C6C09F002C4145 /* d5o_Xc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = d5o_Xc.cpp; sourceTree = "<group>"; };
-		A2A534DF28C6C136002C4145 /* Qint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qint.h; path = ../../dann5/ocean/include/Qint.h; sourceTree = "<group>"; };
-		A2A534E028C6C136002C4145 /* Qmultiply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qmultiply.cpp; path = ../../dann5/ocean/source/Qmultiply.cpp; sourceTree = "<group>"; };
-		A2A534E128C6C137002C4145 /* Qnary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qnary.h; path = ../../dann5/ocean/include/Qnary.h; sourceTree = "<group>"; };
-		A2A534E228C6C137002C4145 /* QnaryOp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QnaryOp.cpp; path = ../../dann5/ocean/source/QnaryOp.cpp; sourceTree = "<group>"; };
-		A2A534E328C6C137002C4145 /* Qop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qop.h; path = ../../dann5/ocean/include/Qop.h; sourceTree = "<group>"; };
-		A2A534E428C6C137002C4145 /* Qassign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qassign.cpp; path = ../../dann5/ocean/source/Qassign.cpp; sourceTree = "<group>"; };
-		A2A534E528C6C137002C4145 /* QcellOps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QcellOps.h; path = ../../dann5/ocean/include/QcellOps.h; sourceTree = "<group>"; };
-		A2A534E628C6C137002C4145 /* Qbool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbool.cpp; path = ../../dann5/ocean/source/Qbool.cpp; sourceTree = "<group>"; };
-		A2A534E728C6C137002C4145 /* Qop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qop.cpp; path = ../../dann5/ocean/source/Qop.cpp; sourceTree = "<group>"; };
-		A2A534E828C6C137002C4145 /* Global.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Global.cpp; path = ../../dann5/ocean/source/Global.cpp; sourceTree = "<group>"; };
-		A2A534E928C6C137002C4145 /* Qbin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbin.cpp; path = ../../dann5/ocean/source/Qbin.cpp; sourceTree = "<group>"; };
-		A2A534EA28C6C137002C4145 /* Qdef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qdef.h; path = ../../dann5/ocean/include/Qdef.h; sourceTree = "<group>"; };
-		A2A534EB28C6C137002C4145 /* Qcell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qcell.h; path = ../../dann5/ocean/include/Qcell.h; sourceTree = "<group>"; };
-		A2A534EC28C6C137002C4145 /* QcellOps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QcellOps.cpp; path = ../../dann5/ocean/source/QcellOps.cpp; sourceTree = "<group>"; };
-		A2A534F028C6C137002C4145 /* Qmultiply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qmultiply.h; path = ../../dann5/ocean/include/Qmultiply.h; sourceTree = "<group>"; };
-		A2A534F128C6C137002C4145 /* Qbool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbool.h; path = ../../dann5/ocean/include/Qbool.h; sourceTree = "<group>"; };
-		A2A534F328C6C137002C4145 /* Qadd.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qadd.cpp; path = ../../dann5/ocean/source/Qadd.cpp; sourceTree = "<group>"; };
-		A2A534F428C6C137002C4145 /* Qbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qbit.cpp; path = ../../dann5/ocean/source/Qbit.cpp; sourceTree = "<group>"; };
-		A2A534F528C6C137002C4145 /* Qcell.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qcell.cpp; path = ../../dann5/ocean/source/Qcell.cpp; sourceTree = "<group>"; };
-		A2A534F628C6C137002C4145 /* Qassign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qassign.h; path = ../../dann5/ocean/include/Qassign.h; sourceTree = "<group>"; };
-		A2A534F728C6C137002C4145 /* Qbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbit.h; path = ../../dann5/ocean/include/Qbit.h; sourceTree = "<group>"; };
-		A2A534F828C6C137002C4145 /* QnaryOp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QnaryOp.h; path = ../../dann5/ocean/include/QnaryOp.h; sourceTree = "<group>"; };
-		A2A534F928C6C137002C4145 /* Qsolver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qsolver.cpp; path = ../../dann5/ocean/source/Qsolver.cpp; sourceTree = "<group>"; };
-		A2A534FA28C6C137002C4145 /* Qubo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qubo.h; path = ../../dann5/ocean/include/Qubo.h; sourceTree = "<group>"; };
-		A2A534FB28C6C137002C4145 /* Qbin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qbin.h; path = ../../dann5/ocean/include/Qbin.h; sourceTree = "<group>"; };
-		A2A534FC28C6C137002C4145 /* Qexpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qexpr.cpp; path = ../../dann5/ocean/source/Qexpr.cpp; sourceTree = "<group>"; };
-		A2A534FD28C6C137002C4145 /* Qwhole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qwhole.h; path = ../../dann5/ocean/include/Qwhole.h; sourceTree = "<group>"; };
-		A2A534FE28C6C137002C4145 /* Qtype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qtype.h; path = ../../dann5/ocean/include/Qtype.h; sourceTree = "<group>"; };
-		A2A534FF28C6C137002C4145 /* Qsolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qsolver.h; path = ../../dann5/ocean/include/Qsolver.h; sourceTree = "<group>"; };
-		A2A5350028C6C137002C4145 /* Qexpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qexpr.h; path = ../../dann5/ocean/include/Qexpr.h; sourceTree = "<group>"; };
-		A2A5350128C6C137002C4145 /* Qubo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qubo.cpp; path = ../../dann5/ocean/source/Qubo.cpp; sourceTree = "<group>"; };
-		A2A5350228C6C137002C4145 /* Qint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qint.cpp; path = ../../dann5/ocean/source/Qint.cpp; sourceTree = "<group>"; };
-		A2A5350328C6C137002C4145 /* Qwhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qwhole.cpp; path = ../../dann5/ocean/source/Qwhole.cpp; sourceTree = "<group>"; };
-		A2A5350428C6C137002C4145 /* Qnary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qnary.cpp; path = ../../dann5/ocean/source/Qnary.cpp; sourceTree = "<group>"; };
-		A2A5350728C6C138002C4145 /* Qadd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qadd.h; path = ../../dann5/ocean/include/Qadd.h; sourceTree = "<group>"; };
 		A2A5353128C6C16B002C4145 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logger.h; path = ../../dann5/include/Logger.h; sourceTree = "<group>"; };
 		A2A5353228C6C16B002C4145 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utility.h; path = ../../dann5/include/Utility.h; sourceTree = "<group>"; };
 		A2A5353328C6C16B002C4145 /* Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Factory.h; path = ../../dann5/include/Factory.h; sourceTree = "<group>"; };
@@ -170,11 +190,59 @@
 		A2A534DD28C6C0C1002C4145 /* dann5 */ = {
 			isa = PBXGroup;
 			children = (
-				A218D4B429E750DB0028F469 /* ULint.cpp */,
-				A218D4B529E750DB0028F469 /* ULint.h */,
+				A2A39B082B07EBA200BAFFEF /* QnaryOperation.h */,
 				A2A5353328C6C16B002C4145 /* Factory.h */,
 				A2A5353428C6C16B002C4145 /* Logger.cpp */,
 				A2A5353128C6C16B002C4145 /* Logger.h */,
+				A20508132B00371200165038 /* Qadd.cpp */,
+				A20508172B00371200165038 /* Qadd.h */,
+				A20507E32B00368000165038 /* Qassign.cpp */,
+				A205080A2B00371100165038 /* Qassign.h */,
+				A205080E2B00371200165038 /* Qbin.cpp */,
+				A20507FF2B00371100165038 /* Qbin.h */,
+				A20507EA2B00368000165038 /* Qbinder.cpp */,
+				A20508032B00371100165038 /* Qbinder.h */,
+				A205080D2B00371200165038 /* Qbit.cpp */,
+				A20507EB2B00368000165038 /* Qbit.h */,
+				A20507E72B00368000165038 /* Qblock.cpp */,
+				A20508122B00371200165038 /* Qblock.h */,
+				A20507E42B00368000165038 /* Qbool.cpp */,
+				A20507EC2B00368000165038 /* Qbool.h */,
+				A20507E22B00368000165038 /* Qcell.cpp */,
+				A20508002B00371100165038 /* Qcell.h */,
+				A20507E52B00368000165038 /* QcellOps.cpp */,
+				A205080C2B00371100165038 /* QcellOps.h */,
+				A20508402B01956C00165038 /* Qcompiler.cpp */,
+				A20508442B0195CD00165038 /* Qcompiler.h */,
+				A20507ED2B00368000165038 /* Qdef.h */,
+				A20507E82B00368000165038 /* QderivedOps.cpp */,
+				A20508112B00371200165038 /* QderivedOps.h */,
+				A2A39AF42B04436600BAFFEF /* Qevaluation.cpp */,
+				A2A39AF52B04436600BAFFEF /* Qevaluation.h */,
+				A20507E12B00368000165038 /* Qexpr.cpp */,
+				A20508142B00371200165038 /* Qexpr.h */,
+				A205080B2B00371100165038 /* Qglbls_fctrs.cpp */,
+				A20508082B00371100165038 /* Qint.cpp */,
+				A20507FE2B00371100165038 /* Qint.h */,
+				A20508152B00371200165038 /* Qmultiply.cpp */,
+				A20508092B00371100165038 /* Qmultiply.h */,
+				A20508102B00371200165038 /* Qnary.cpp */,
+				A20508072B00371100165038 /* Qnary.h */,
+				A20508182B00371200165038 /* QnaryOp.cpp */,
+				A20508012B00371100165038 /* QnaryOp.h */,
+				A205080F2B00371200165038 /* Qop.cpp */,
+				A20507E62B00368000165038 /* Qop.h */,
+				A20508062B00371100165038 /* Qroutine.cpp */,
+				A20507EE2B00368100165038 /* Qroutine.h */,
+				A20507D32AFF001A00165038 /* Qsolver.h */,
+				A20508162B00371200165038 /* Qstatement.cpp */,
+				A20507E92B00368000165038 /* Qstatement.h */,
+				A20508042B00371100165038 /* Qtype.h */,
+				A20508022B00371100165038 /* Qwhole.cpp */,
+				A20508052B00371100165038 /* Qwhole.h */,
+				A20507DF2AFF0C5700165038 /* Qvalue.h */,
+				A218D4B429E750DB0028F469 /* ULint.cpp */,
+				A218D4B529E750DB0028F469 /* ULint.h */,
 				A2A5353228C6C16B002C4145 /* Utility.h */,
 			);
 			name = dann5;
@@ -183,53 +251,15 @@
 		A2A534DE28C6C0D8002C4145 /* dann5.ocean */ = {
 			isa = PBXGroup;
 			children = (
-				A27DBC5E29DF8EB1004C99EC /* Qbinder.cpp */,
-				A27DBC5C29DF8EB1004C99EC /* Qbinder.h */,
-				A27DBC5529DF8EB1004C99EC /* Qblock.cpp */,
-				A27DBC5D29DF8EB1004C99EC /* Qblock.h */,
-				A27DBC5429DF8EB1004C99EC /* QderivedOps.cpp */,
-				A27DBC5929DF8EB1004C99EC /* QderivedOps.h */,
-				A27DBC5B29DF8EB1004C99EC /* Qroutine.cpp */,
-				A27DBC5A29DF8EB1004C99EC /* Qroutine.h */,
-				A27DBC5629DF8EB1004C99EC /* Qstatement.cpp */,
-				A27DBC5F29DF8EB1004C99EC /* Qstatement.h */,
-				A27DBC5729DF8EB1004C99EC /* QwholeExpr.cpp */,
-				A27DBC5829DF8EB1004C99EC /* QwholeExpr.h */,
-				A2A534E828C6C137002C4145 /* Global.cpp */,
-				A2A534F328C6C137002C4145 /* Qadd.cpp */,
-				A2A5350728C6C138002C4145 /* Qadd.h */,
-				A2A534E428C6C137002C4145 /* Qassign.cpp */,
-				A2A534F628C6C137002C4145 /* Qassign.h */,
-				A2A534E928C6C137002C4145 /* Qbin.cpp */,
-				A2A534FB28C6C137002C4145 /* Qbin.h */,
-				A2A534F428C6C137002C4145 /* Qbit.cpp */,
-				A2A534F728C6C137002C4145 /* Qbit.h */,
-				A2A534E628C6C137002C4145 /* Qbool.cpp */,
-				A2A534F128C6C137002C4145 /* Qbool.h */,
-				A2A534F528C6C137002C4145 /* Qcell.cpp */,
-				A2A534EB28C6C137002C4145 /* Qcell.h */,
-				A2A534EC28C6C137002C4145 /* QcellOps.cpp */,
-				A2A534E528C6C137002C4145 /* QcellOps.h */,
-				A2A534EA28C6C137002C4145 /* Qdef.h */,
-				A2A534FC28C6C137002C4145 /* Qexpr.cpp */,
-				A2A5350028C6C137002C4145 /* Qexpr.h */,
-				A2A5350228C6C137002C4145 /* Qint.cpp */,
-				A2A534DF28C6C136002C4145 /* Qint.h */,
-				A2A534E028C6C136002C4145 /* Qmultiply.cpp */,
-				A2A534F028C6C137002C4145 /* Qmultiply.h */,
-				A2A5350428C6C137002C4145 /* Qnary.cpp */,
-				A2A534E128C6C137002C4145 /* Qnary.h */,
-				A2A534E228C6C137002C4145 /* QnaryOp.cpp */,
-				A2A534F828C6C137002C4145 /* QnaryOp.h */,
-				A2A534E728C6C137002C4145 /* Qop.cpp */,
-				A2A534E328C6C137002C4145 /* Qop.h */,
-				A2A534F928C6C137002C4145 /* Qsolver.cpp */,
-				A2A534FF28C6C137002C4145 /* Qsolver.h */,
-				A2A534FE28C6C137002C4145 /* Qtype.h */,
-				A2A5350128C6C137002C4145 /* Qubo.cpp */,
-				A2A534FA28C6C137002C4145 /* Qubo.h */,
-				A2A5350328C6C137002C4145 /* Qwhole.cpp */,
-				A2A534FD28C6C137002C4145 /* Qwhole.h */,
+				A2A39B042B07EB3100BAFFEF /* QuboAnalyzer.cpp */,
+				A2A39B052B07EB3100BAFFEF /* QuboAnalyzer.h */,
+				A20507DA2AFF067C00165038 /* D5QuboSolver.cpp */,
+				A20507DB2AFF067C00165038 /* D5QuboSolver.h */,
+				A205083E2B017E7D00165038 /* QTfactories.cpp */,
+				A205083A2B017E0E00165038 /* Qubo.cpp */,
+				A205083B2B017E0E00165038 /* Qubo.h */,
+				A20508462B0197C500165038 /* QuboCompiler.cpp */,
+				A205084A2B01980900165038 /* QuboCompiler.h */,
 			);
 			name = dann5.ocean;
 			sourceTree = "<group>";
@@ -241,36 +271,42 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2A5352928C6C138002C4145 /* Qexpr.h in Headers */,
-				A27DBC6829DF8EB2004C99EC /* Qbinder.h in Headers */,
-				A27DBC6429DF8EB2004C99EC /* QwholeExpr.h in Headers */,
+				A20508222B00371200165038 /* Qnary.h in Headers */,
+				A205082C2B00371200165038 /* QderivedOps.h in Headers */,
+				A20508322B00371200165038 /* Qadd.h in Headers */,
+				A20508252B00371200165038 /* Qassign.h in Headers */,
+				A205081F2B00371200165038 /* Qtype.h in Headers */,
+				A20507F42B00368100165038 /* Qop.h in Headers */,
+				A20508272B00371200165038 /* QcellOps.h in Headers */,
+				A205081B2B00371200165038 /* Qcell.h in Headers */,
+				A20507F72B00368100165038 /* Qstatement.h in Headers */,
+				A20507FB2B00368100165038 /* Qdef.h in Headers */,
+				A205081E2B00371200165038 /* Qbinder.h in Headers */,
+				A20507F92B00368100165038 /* Qbit.h in Headers */,
+				A20507FA2B00368100165038 /* Qbool.h in Headers */,
+				A20508452B0195CD00165038 /* Qcompiler.h in Headers */,
+				A2A39AF72B04436600BAFFEF /* Qevaluation.h in Headers */,
 				A218D4B729E750DB0028F469 /* ULint.h in Headers */,
-				A2A5351328C6C138002C4145 /* Qdef.h in Headers */,
-				A2A5351F28C6C138002C4145 /* Qassign.h in Headers */,
+				A20507FC2B00368100165038 /* Qroutine.h in Headers */,
 				A2A5353728C6C16B002C4145 /* Factory.h in Headers */,
-				A27DBC6929DF8EB2004C99EC /* Qblock.h in Headers */,
-				A2A5350A28C6C138002C4145 /* Qnary.h in Headers */,
-				A2A5352328C6C138002C4145 /* Qubo.h in Headers */,
-				A2A5353028C6C138002C4145 /* Qadd.h in Headers */,
+				A2A39B092B07EBA200BAFFEF /* QnaryOperation.h in Headers */,
+				A20508242B00371200165038 /* Qmultiply.h in Headers */,
+				A20507D52AFF001A00165038 /* Qsolver.h in Headers */,
+				A20508202B00371200165038 /* Qwhole.h in Headers */,
+				A2A39B072B07EB3100BAFFEF /* QuboAnalyzer.h in Headers */,
+				A205082D2B00371200165038 /* Qblock.h in Headers */,
+				A205081A2B00371200165038 /* Qbin.h in Headers */,
+				A205084B2B01980900165038 /* QuboCompiler.h in Headers */,
+				A205082F2B00371200165038 /* Qexpr.h in Headers */,
 				A2A5353528C6C16B002C4145 /* Logger.h in Headers */,
-				A2A5350E28C6C138002C4145 /* QcellOps.h in Headers */,
-				A27DBC6B29DF8EB2004C99EC /* Qstatement.h in Headers */,
-				A2A5351928C6C138002C4145 /* Qmultiply.h in Headers */,
-				A2A5352728C6C138002C4145 /* Qtype.h in Headers */,
 				A2A5353628C6C16B002C4145 /* Utility.h in Headers */,
 				A2A534D328C6C09F002C4145 /* d5o_Xc.hpp in Headers */,
-				A2A5352128C6C138002C4145 /* QnaryOp.h in Headers */,
-				A2A5351A28C6C138002C4145 /* Qbool.h in Headers */,
 				A2A534D528C6C09F002C4145 /* d5o_XcPriv.hpp in Headers */,
-				A27DBC6629DF8EB2004C99EC /* Qroutine.h in Headers */,
-				A2A5350828C6C138002C4145 /* Qint.h in Headers */,
-				A2A5351428C6C138002C4145 /* Qcell.h in Headers */,
-				A27DBC6529DF8EB2004C99EC /* QderivedOps.h in Headers */,
-				A2A5352628C6C138002C4145 /* Qwhole.h in Headers */,
-				A2A5352028C6C138002C4145 /* Qbit.h in Headers */,
-				A2A5352428C6C138002C4145 /* Qbin.h in Headers */,
-				A2A5350C28C6C138002C4145 /* Qop.h in Headers */,
-				A2A5352828C6C138002C4145 /* Qsolver.h in Headers */,
+				A20508192B00371200165038 /* Qint.h in Headers */,
+				A205081C2B00371200165038 /* QnaryOp.h in Headers */,
+				A205083D2B017E0E00165038 /* Qubo.h in Headers */,
+				A20507E02AFF0C5800165038 /* Qvalue.h in Headers */,
+				A20507DD2AFF067C00165038 /* D5QuboSolver.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,33 +367,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A27DBC6729DF8EB2004C99EC /* Qroutine.cpp in Sources */,
-				A2A5351528C6C138002C4145 /* QcellOps.cpp in Sources */,
-				A2A5351028C6C138002C4145 /* Qop.cpp in Sources */,
-				A2A5350F28C6C138002C4145 /* Qbool.cpp in Sources */,
-				A2A5351C28C6C138002C4145 /* Qadd.cpp in Sources */,
-				A27DBC6A29DF8EB2004C99EC /* Qbinder.cpp in Sources */,
-				A2A5351128C6C138002C4145 /* Global.cpp in Sources */,
-				A2A5352A28C6C138002C4145 /* Qubo.cpp in Sources */,
-				A27DBC6329DF8EB2004C99EC /* QwholeExpr.cpp in Sources */,
-				A27DBC6229DF8EB2004C99EC /* Qstatement.cpp in Sources */,
-				A2A5351E28C6C138002C4145 /* Qcell.cpp in Sources */,
+				A205083C2B017E0E00165038 /* Qubo.cpp in Sources */,
+				A20507EF2B00368100165038 /* Qexpr.cpp in Sources */,
+				A205082B2B00371200165038 /* Qnary.cpp in Sources */,
+				A205082E2B00371200165038 /* Qadd.cpp in Sources */,
+				A20507F62B00368100165038 /* QderivedOps.cpp in Sources */,
+				A20507DC2AFF067C00165038 /* D5QuboSolver.cpp in Sources */,
+				A20508482B0197C500165038 /* QuboCompiler.cpp in Sources */,
+				A2A39AF62B04436600BAFFEF /* Qevaluation.cpp in Sources */,
+				A20508332B00371200165038 /* QnaryOp.cpp in Sources */,
 				A218D4B629E750DB0028F469 /* ULint.cpp in Sources */,
-				A2A5351228C6C138002C4145 /* Qbin.cpp in Sources */,
-				A2A5352C28C6C138002C4145 /* Qwhole.cpp in Sources */,
-				A27DBC6029DF8EB2004C99EC /* QderivedOps.cpp in Sources */,
-				A2A5352D28C6C138002C4145 /* Qnary.cpp in Sources */,
-				A2A5352B28C6C138002C4145 /* Qint.cpp in Sources */,
 				A2A5353A28C6C183002C4145 /* dllmain.cpp in Sources */,
-				A2A5351D28C6C138002C4145 /* Qbit.cpp in Sources */,
-				A2A5350B28C6C138002C4145 /* QnaryOp.cpp in Sources */,
-				A27DBC6129DF8EB2004C99EC /* Qblock.cpp in Sources */,
-				A2A5352528C6C138002C4145 /* Qexpr.cpp in Sources */,
+				A20508312B00371200165038 /* Qstatement.cpp in Sources */,
+				A20507F22B00368100165038 /* Qbool.cpp in Sources */,
+				A20507F02B00368100165038 /* Qcell.cpp in Sources */,
+				A205083F2B017E7D00165038 /* QTfactories.cpp in Sources */,
+				A20508282B00371200165038 /* Qbit.cpp in Sources */,
+				A20508262B00371200165038 /* Qglbls_fctrs.cpp in Sources */,
+				A20508232B00371200165038 /* Qint.cpp in Sources */,
+				A20508212B00371200165038 /* Qroutine.cpp in Sources */,
 				A2A534D728C6C09F002C4145 /* d5o_Xc.cpp in Sources */,
-				A2A5352228C6C138002C4145 /* Qsolver.cpp in Sources */,
+				A20508422B01956C00165038 /* Qcompiler.cpp in Sources */,
+				A205082A2B00371200165038 /* Qop.cpp in Sources */,
+				A20507F82B00368100165038 /* Qbinder.cpp in Sources */,
+				A20508292B00371200165038 /* Qbin.cpp in Sources */,
+				A205081D2B00371200165038 /* Qwhole.cpp in Sources */,
+				A20508302B00371200165038 /* Qmultiply.cpp in Sources */,
+				A2A39B062B07EB3100BAFFEF /* QuboAnalyzer.cpp in Sources */,
 				A2A5353828C6C16B002C4145 /* Logger.cpp in Sources */,
-				A2A5350D28C6C138002C4145 /* Qassign.cpp in Sources */,
-				A2A5350928C6C138002C4145 /* Qmultiply.cpp in Sources */,
+				A20507F52B00368100165038 /* Qblock.cpp in Sources */,
+				A20507F12B00368100165038 /* Qassign.cpp in Sources */,
+				A20507F32B00368100165038 /* QcellOps.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

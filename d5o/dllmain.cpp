@@ -7,8 +7,6 @@
 
 #include <ULint.h>
 
-#include <Qubo.h>
-
 #include <Qbit.h>
 #include <Qbool.h>
 #include <Qbin.h>
@@ -21,6 +19,7 @@
 #include <Qroutine.h>
 #include <Qbinder.h>
 
+#include <Qevaluation.h>
 #include <Qsolver.h>
 
 #include <pybind11/stl.h>
@@ -29,7 +28,6 @@
 //#include <pybind11/embed.h>
 
 using namespace dann5;
-using namespace dann5::ocean;
 
 #define VERSION_INFO "2.2.3"
 
@@ -50,8 +48,6 @@ PYBIND11_MODULE(d5o2, m) {
         .. autosummary::
            :toctree: _generate
 
-			Qubo
-			QuboTable
 			Qbit
 			Qbool
 			Qbin
@@ -122,111 +118,13 @@ PYBIND11_MODULE(d5o2, m) {
 		.def(py::self < py::self, "Checks if first operand is lesser than the second operand.")
 		.def(py::self <= py::self, "Checks if first operand is lesser than or equal to the second operand.");
 
-/*--- Qubo.h definitions ---*/
-	py::class_<Qkey>(m, "Qkey", R"pbdoc(Qubo key corresponds to an element of DWave's dimod.BinaryQuadraticModel class where
-		key pair with the same Quantum node name is a linear node and one with different Quantum node names is a quadratic element)pbdoc");
-
-	py::class_<Qubo>(m, "Qubo", R"pbdoc(Qubo model dictionary of a problem binary objective
-		function where a node pair is a Qubo key mapped into node-pair bias, which
-		corespondes to Quantum energy values for that node-pair 
-		Qubo corresponds to DWave's dimod.BinaryQuadraticModel class, represented 
-		as an upper-diagonal matrix Q, where diagonal terms (graph nodes) are the linear
-		coefficients and the nonzero off-diagonal terms are quadratic coefficients (graph branches)pbdoc")
-		.def("union", [](const Qubo& l, const Qubo& r) { return l + r; })
-		.def("__add__", [](const Qubo& l, const Qubo& r) { return l + r; })
-		.def("expand", [](Qubo& l, const Qubo& r) { return l += r; })
-		.def("__iadd__", [](Qubo& l, const Qubo& r) { return l += r; })
-		.def("add", [](const Qubo& q, double offset) { return q + offset; })
-		.def("__add__", [](const Qubo& q, double offset) { return q + offset; })
-		.def("up", [](Qubo& q, double offset) { return q += offset; })
-		.def("__iadd__", [](Qubo& q, double offset) { return q += offset; })
-		.def("sub", [](const Qubo& q, double offset) { return q - offset; })
-		.def("__sub__", [](const Qubo& q, double offset) { return q - offset; })
-		.def("down", [](Qubo& q, double offset) { return q -= offset; })
-		.def("__isub__", [](Qubo& q, double offset) { return q - offset; })
-		.def("mul", [](const Qubo& q, double scalar) { return q * scalar; })
-		.def("__mul__", [](const Qubo& q, double scalar) { return q * scalar; })
-		.def("scaleUp", [](Qubo& q, double scalar) { return q *= scalar; })
-		.def("__mul__", [](Qubo& q, double scalar) { return q *= scalar; })
-		.def("div", [](const Qubo& q, double scalar) { return q / scalar; })
-		.def("__truediv__", [](const Qubo& q, double scalar) { return q / scalar; })
-		.def("scaleDown", [](Qubo& q, double scalar) { return q /= scalar; })
-		.def("__itruediv__", [](Qubo& q, double scalar) { return q /= scalar; });
-
+/*--- Qvalue.h definitions ---*/
 	m.def("Qvalue", []() { return char(); }, R"pbdoc( Q value is unsigned char. Valid values are {0, 1, S(uperposition)}.)pbdoc");
 
 	m.def("Superposition", []() { return cSuperposition; }, R"pbdoc(Default quantum superposition value. 
 		Though any Q bit value except 0 and 1 will be considered superposition.)pbdoc");
 
 	py::class_<Qvalues>(m, "Qvalues", R"pbdoc(An array of Quantum values)pbdoc");
-
-	py::class_<QuboTable>(m, "QuboTable", R"pbdoc(A Qubo table abstraction)pbdoc")
-		.def("qubo", (Qubo(QuboTable::*)() const) & QuboTable::qubo, "Default Qubo qubo")
-		.def("qubo", (Qubo(QuboTable::*)(const QuboTable::IoPorts&, bool) const) & QuboTable::qubo, "Qubo qubo with the input list of arguments");
-
-	// specify C++ class->baseclass specialization
-	py::class_<EqQT, QuboTable>(m, "EqQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<NeqQT, QuboTable>(m, "NeqQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<LtQT, QuboTable>(m, "LtQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<LeQT, QuboTable>(m, "LeQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<GtQT, QuboTable>(m, "GtQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<GeQT, QuboTable>(m, "GeQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<AndQT, QuboTable>(m, "AndQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<NandQT, QuboTable>(m, "NandQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<OrQT, QuboTable>(m, "OrQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<NorQT, QuboTable>(m, "NorQubo")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<NotLeftOrRightQT, QuboTable>(m, "NotLeftOrRightQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<DwNotLeftOrRightQT, QuboTable>(m, "DwNotLeftOrRightQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<NxorQT, QuboTable>(m, "NxorQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<XorQT, QuboTable>(m, "XorQT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<Adder05QT, XorQT>(m, "Adder05QT")
-		.def(py::init<>());
-
-	// specify C++ class->baseclass specialization
-	py::class_<AdderQT, QuboTable>(m, "AdderQT")
-		.def(py::init<>());
 
 /*--- Qexpr.h definitions ---*/
 	py::class_<Qexpression>(m, "Qexpression",
@@ -236,17 +134,15 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("noqbs", &Qexpression::noqbs, "Returns the number of Q bits that the Q expression holds")
 
-		.def("qubo", &Qexpression::qubo,
-			"Returns a qubo representation of this Q expression, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
-		.def("qubo", [](Qexpression& o, bool finalized) { return o.qubo(finalized); })
-		.def("qubo", [](Qexpression& o) { return o.qubo(); })
+		.def("compile", &Qexpression::compile,
+			"Compiles this Q expression to generate quantum solver code")
 
 		.def("toString", &Qexpression::toString, "returns string presentation of this Q expression object")
 		.def("toString", [](Qexpression& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qexpression& o) { return o.toString(); })
 		.def("__str__", [](Qexpression& o) { return o.toString(); })
 
-		.def("add", &Qexpression::add, "Set a sample set with a node list defined by qubo() of this Q expression the combination of node values should be different for each sample")
+		.def("add", &Qexpression::add, "Add a quantum evaluation to this quantum expression.")
 		.def("solutions", &Qexpression::solutions, "For existing samples, returns a string with all solutions of this Q expression")
 		.def("solve", &Qexpression::solve, "Solve this Q expression and return a string with all solutions")
 		.def("compute", &Qexpression::compute, "Returns computed sample set with all solutions for the Q expression logic")
@@ -423,17 +319,15 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("noqbs", &Qassignment::noqbs, "Returns the number of Q bits that the Q assignment holds")
 
-		.def("qubo", &Qassignment::qubo,
-			"Returns a qubo representation of this Q assignment, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
-		.def("qubo", [](Qassignment& o, bool finalized) { return o.qubo(finalized); })
-		.def("qubo", [](Qassignment& o) { return o.qubo(); })
+        .def("compile", &Qassignment::compile,
+            "Compiles this quantum assignment to generate quantum solver code")
 
 		.def("toString", &Qassignment::toString, "returns string presentation of this Q assignment object")
 		.def("toString", [](Qassignment& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qassignment& o) { return o.toString(); })
 		.def("__str__", [](Qassignment& o) { return o.toString(); })
 
-		.def("add", &Qassignment::add, "Set a sample set with a node list defined by qubo() of this Q assignment the combination of node values should be different for each sample")
+		.def("add", &Qassignment::add, "Add a quantum evaluation to this Q assignment.")
 		.def("solutions", &Qassignment::solutions, "For existing samples, returns a string with all solutions of this Q assignment")
 		.def("solve", &Qassignment::solve, "Solve this Q assignment and return a string with all solutions")
 		.def("compute", &Qassignment::compute, "Returns computed sample set with all solutions for the Q assignment logic")
@@ -483,17 +377,15 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("noqbs", &Qblock::noqbs, "Returns the number of Q bits that the Q block holds")
 
-		.def("qubo", &Qblock::qubo,
-			"Returns a qubo representation of this Q block, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
-		.def("qubo", [](Qblock& o, bool finalized) { return o.qubo(finalized); })
-		.def("qubo", [](Qblock& o) { return o.qubo(); })
+        .def("compile", &Qblock::compile,
+            "Compiles this quantum block to generate quantum solver code")
 
 		.def("toString", &Qblock::toString, "returns string presentation of this Q block object")
 		.def("toString", [](Qblock& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qblock& o) { return o.toString(); })
 		.def("__str__", [](Qblock& o) { return o.toString(); })
 
-		.def("add", &Qblock::add, "Set a sample set with a node list defined by qubo() of this Q block the combination of node values should be different for each sample")
+		.def("add", &Qblock::add, "Add a quantum evaluation to this Q block.")
 		.def("solutions", &Qblock::solutions, "For existing samples, returns a string with all solutions of this Q block")
 		.def("solve", &Qblock::solve, "Solve this Q block and return a string with all solutions")
 		.def("compute", &Qblock::compute, "Returns computed sample set with all solutions for the Q block logic")
@@ -963,17 +855,15 @@ PYBIND11_MODULE(d5o2, m) {
 
 		.def("noqbs", &Qroutine::noqbs, "Returns the number of Q bits that the Q routine holds")
 
-		.def("qubo", &Qroutine::qubo,
-			"Returns a qubo representation of this Q routine, if not finalized, returns a full qubo definition representation if finalized, returns an expression that replaces symbols with values of Q bits in deterministic state")
-		.def("qubo", [](Qroutine& o, bool finalized) { return o.qubo(finalized); })
-		.def("qubo", [](Qroutine& o) { return o.qubo(); })
+        .def("compile", &Qroutine::compile,
+            "Compiles this quantum block to generate quantum solver code")
 
 		.def("toString", &Qroutine::toString, "returns string presentation of this Q routine object")
 		.def("toString", [](Qroutine& o, bool decomposed) { return o.toString(decomposed); })
 		.def("toString", [](Qroutine& o) { return o.toString(); })
 		.def("__str__", [](Qroutine& o) { return o.toString(); })
 
-		.def("add", &Qroutine::add, "Set a sample set with a node list defined by qubo() of this Q routine the combination of node values should be different for each sample")
+		.def("add", &Qroutine::add, "Add a quantum evaluation to this Q routine.")
 		.def("solution", &Qroutine::solution, "For added sample set(s), returns a string represnting 'at' solution of operands of statements within this Q routine")
 		.def("compute", &Qroutine::compute, "Returns computed sample set with all solutions for the Q routine logic")
 		.def("reset", &Qroutine::reset, "Clear all solution samples")
@@ -1006,7 +896,7 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("toString", [](Qbinder& o) { return o.toString(); })
 		.def("__str__", [](Qbinder& o) { return o.toString(); })
 
-		.def("add", &Qbinder::add, "Set a sample set with a node list defined by qubo() of this Q binder the combination of node values should be different for each sample")
+		.def("add", &Qbinder::add, "Add a quantum evaluation to this Q binder the combination of node values should be different for each sample")
 		.def("solution", &Qbinder::solution, "For added sample set(s), returns a string represnting 'at' solution of operands of statements within this Q binder")
 		.def("solutions", &Qbinder::solutions, "For added sample set(s), returns a string represnting all solutions of operands contained in the Q binder")
 		.def("reset", &Qbinder::reset, "Clear all solution samples")
@@ -1023,24 +913,6 @@ PYBIND11_MODULE(d5o2, m) {
 
 
 /*--- Qsolver.h definitions ---*/
-	py::class_<Qanalyzer>(m, "Qanalyzer")
-		.def(py::init<const Qubo&>(), "Quantum analyzer is initialized with a QUBO instance")
-
-		.def("nodes", &Qanalyzer::nodes, "returns a list of linear nodes")
-		.def("branches", &Qanalyzer::branches, "returns a list of branches, i.e. binary lements")
-		.def("nodesNo", &Qanalyzer::nodesNo, "returns a number of linear nodes in a given QUBO instance")
-		.def("branchesNo", &Qanalyzer::branchesNo, "returns a number of branches, i.e. binary QUBO elements")
-		.def("qubo", &Qanalyzer::qubo, "returns the given QUBO instance")
-		.def("chainStrength", &Qanalyzer::chainStrength, "returns suggested chain streinght for a given QUBO instance");
-
-	// specify C++ class->baseclass specialization
-	py::class_<Qsolver, Qanalyzer>(m, "Qsolver")
-		.def(py::init<const Qubo&>(), "Initialize quantum solver simulator with a qubo problem to be solved")
-		.def(py::init<const Qubo&, bool>(), "Initialize quantum solver simulator with a qubo problem to be solved. Optionally specify if solver should return just the qubo function minimum, i.e. quantum evaluations with lowest assessed energy")
-    
-		.def("solution", static_cast<Qevaluations (Qsolver::*)()>(&Qsolver::solution), "return quantum evaluations, the Qevaluations can be just those with lowes assessed energy or the full set of all evaluations, depending on Qsolver initialization")
-        .def("minEnergy", &Qsolver::minEnergy, "returns minimal evaluated energy");
-
     py::class_<Qevaluation>(m, "Qevaluation")
         .def(py::init<>())
         .def(py::init<const Qevaluation&>())
@@ -1055,6 +927,12 @@ PYBIND11_MODULE(d5o2, m) {
 
         .def("sample", [](const Qevaluation& o) { return o.sample(); })
         .def("energy", [](const Qevaluation& o) { return o.energy(); });
+
+	py::class_<Qsolver>(m, "Qsolver")
+        .def_static("Active", static_cast<void (*)(Qsolver::Sp)>(&Qsolver::Active))
+//		.def(py::init<>(), "Quantum analyzer is initialized with a QUBO instance")
+
+		.def("solution", &Qsolver::solution, "Override to return quantum evaluations for a compiled quantum statement");
 
 #ifdef VERSION_INFO
 	m.attr("__version__") = VERSION_INFO;

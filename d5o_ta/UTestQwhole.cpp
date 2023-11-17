@@ -10,6 +10,7 @@
 #include <Qblock.h>
 #include <Qroutine.h>
 #include <Qbinder.h>
+#include <Qubo.h>
 
 using namespace dann5;
 using namespace dann5::ocean;
@@ -75,14 +76,14 @@ void UTestQwhole::bitwise(ostream& out)
     out << "Expression '~x', INVERT (not) x is: " << xI << endl
         << " decomposed logic: " << xI.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, xI.qubo());
+//    dann5::ocean::operator<<(out, xI.qubo());
     out << "'" << endl
         << " resulting in :" << endl << xI.solve() << endl;
 
     out << "Expression AND: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo());
+//    dann5::ocean::operator<<(out, qbExpr.qubo());
     out << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -90,7 +91,7 @@ void UTestQwhole::bitwise(ostream& out)
     out << "Expression NAND: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo());
+//    dann5::ocean::operator<<(out, qbExpr.qubo());
     out << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -102,7 +103,7 @@ void UTestQwhole::bitwise(ostream& out)
     out << "Expression OR: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo());
+//    dann5::ocean::operator<<(out, qbExpr.qubo());
     out << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -110,7 +111,7 @@ void UTestQwhole::bitwise(ostream& out)
     out << "Expression NOR: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo());
+//    dann5::ocean::operator<<(out, qbExpr.qubo());
     out << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -122,7 +123,7 @@ void UTestQwhole::bitwise(ostream& out)
     out << "Expression UNLIKE (XOR): " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo());
+//    dann5::ocean::operator<<(out, qbExpr.qubo());
     out << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -130,7 +131,7 @@ void UTestQwhole::bitwise(ostream& out)
     out << "Expression ALIKE (NXOR): " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo());
+//    dann5::ocean::operator<<(out, qbExpr.qubo());
     out << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -143,9 +144,9 @@ void UTestQwhole::bitwise(ostream& out)
     out << "Complex Expression" << endl << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qbExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qbExpr.qubo());
+//    dann5::ocean::operator<<(out, qbExpr.qubo());
     out << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 }
@@ -157,9 +158,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 
@@ -167,9 +168,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 
@@ -177,9 +178,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qwwExpr << endl
         << " decomposed logic: " << qwwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwwExpr.qubo());
     out << "'" << endl;
     out << " resulting in :" << endl << qwwExpr.solve() << endl;
 
@@ -188,9 +189,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qxwExpr << endl
         << " decomposed logic: " << qxwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qxwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qxwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qxwExpr.qubo());
+//    dann5::ocean::operator<<(out, qxwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
     qwExpr = x + y;
@@ -198,9 +199,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qxwExpr << endl
         << " decomposed logic: " << qxwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qxwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qxwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qxwExpr.qubo());
+//    dann5::ocean::operator<<(out, qxwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
     Qexpr<Qwhole> z_3Expr = z + _3;
@@ -208,9 +209,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo());
+//    dann5::ocean::operator<<(out, qwxExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwxExpr.solve() << endl;
 
     qwExpr = x + y;
@@ -219,9 +220,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qxxExpr << endl
         << " decomposed logic: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qxxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qxxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qxxExpr.qubo());
+//    dann5::ocean::operator<<(out, qxxExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qxxExpr.solve() << endl;
 
     qwExpr = x + y;
@@ -230,18 +231,18 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Addition Expression" << endl << qxxExpr << endl
         << " decomposed logic: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qxxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qxxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qxxExpr.qubo());
+//    dann5::ocean::operator<<(out, qxxExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qxxExpr.solve() << endl;
 
     qwExpr = y - x;
     out << "Subtraction Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 /* Issue #6
     qwExpr.reset();
@@ -257,9 +258,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Subtraction Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 /* Issue #6 
         qwExpr.reset();
@@ -274,9 +275,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Multiplication Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr.reset();
@@ -284,9 +285,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Multiplication Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo());
+//    dann5::ocean::operator<<(out, qwxExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwxExpr.solve() << endl;
 
     qwExpr.reset();
@@ -294,9 +295,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Multiplication Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo());
+//    dann5::ocean::operator<<(out, qwxExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwxExpr.solve() << endl;
 
     qwExpr = x * y;
@@ -305,25 +306,25 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Multiplication Expression" << endl << qxxExpr << endl
         << " decomposed logic: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qxxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qxxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qxxExpr.qubo());
-    Qanalyzer anlyze(qxxExpr.qubo());
-    out << "'" << endl << endl << " # of nodes: " << anlyze.nodesNo()
-        << " # of branches: " << anlyze.branchesNo() << endl << endl;
+//    dann5::ocean::operator<<(out, qxxExpr.qubo());
+//    Qanalyzer anlyze(qxxExpr.qubo());
+//    out << "'" << endl << endl << " # of nodes: " << anlyze.nodesNo()
+//        << " # of branches: " << anlyze.branchesNo() << endl << endl;
 
     qwExpr.reset();
     qwExpr = y / x;
     out << "Division Expression" << endl << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl;
-    Qanalyzer anlyzeD(qwExpr.qubo());
-    out << endl << " # of nodes: " << anlyzeD.nodesNo()
-        << " # of branches: " << anlyzeD.branchesNo() << endl << endl;
+//    Qanalyzer anlyzeD(qwExpr.qubo());
+//    out << endl << " # of nodes: " << anlyzeD.nodesNo()
+//        << " # of branches: " << anlyzeD.branchesNo() << endl << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr.reset();
@@ -332,9 +333,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Division Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo());
+//    dann5::ocean::operator<<(out, qwxExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwxExpr.solve() << endl;
 
     qwExpr.reset();
@@ -344,9 +345,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Division Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo());
+//    dann5::ocean::operator<<(out, qwxExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwxExpr.solve() << endl;
 
     qwExpr.reset();
@@ -356,13 +357,13 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Division Expression" << endl << qwxExpr << endl
         << " decomposed logic: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
+//    dann5::ocean::operator<<(out, qwxExpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qwxExpr.qubo());
+//    dann5::ocean::operator<<(out, qwxExpr.qubo());
     out << "'" << endl;
-    Qanalyzer anlyzeD2(qwxExpr.qubo());
-    out << endl << " # of nodes: " << anlyzeD2.nodesNo()
-        << " # of branches: " << anlyzeD2.branchesNo() << endl << endl;
+//    Qanalyzer anlyzeD2(qwxExpr.qubo());
+//    out << endl << " # of nodes: " << anlyzeD2.nodesNo()
+//        << " # of branches: " << anlyzeD2.branchesNo() << endl << endl;
 //    out << " resulting in :" << endl << qwxExpr.solve() << endl;
 
     Qwhole  r("r", 6), k(2, "k");
@@ -372,9 +373,9 @@ void UTestQwhole::arithmetic(ostream& out)
     out << "Subtraction Expression" << endl << blck << endl
         << " decomposed logic: " << blck.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, blck.qubo(false));
+//    dann5::ocean::operator<<(out, blck.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, blck.qubo());
+//    dann5::ocean::operator<<(out, blck.qubo());
     out << "'" << endl << " resulting in :" << endl << blck.solve() << endl;
 }
 
@@ -396,9 +397,9 @@ void UTestQwhole::comparisonLogic(ostream& out)
     out << "Qwhole x != y " << endl << neBlck << endl
         << " decomposed logic: " << neBlck.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, neBlck.qubo(false));
+//    dann5::ocean::operator<<(out, neBlck.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, neBlck.qubo());
+//    dann5::ocean::operator<<(out, neBlck.qubo());
     out << "'" << endl << " resulting in :" << endl << neBlck.solve() << endl;
 
     Qevaluations solutions = neBlck.compute();
@@ -414,9 +415,9 @@ void UTestQwhole::comparisonLogic(ostream& out)
     out << "Qwhole x < y " << endl << blck2 << endl
         << " decomposed logic: " << blck2.toString(true) << endl
         << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, blck2.qubo(false));
+//    dann5::ocean::operator<<(out, blck2.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, blck2.qubo());
+//    dann5::ocean::operator<<(out, blck2.qubo());
     out << "'" << endl << " resulting in :" << endl << blck2.solve() << endl;
 
     Qevaluations solutions2 = blck2.compute();
@@ -432,9 +433,9 @@ void UTestQwhole::comparisonLogic(ostream& out)
     out << "Qwhole x >= y " << endl << blck3 << endl
         << " decomposed logic: " << blck3.toString(true) << endl;
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, blck3.qubo(false));
+//    dann5::ocean::operator<<(out, blck3.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, blck3.qubo());
+//    dann5::ocean::operator<<(out, blck3.qubo());
     out << "'" << endl << " resulting in :" << endl << blck3.solve() << endl;
 
     Qevaluations solutions3 = blck3.compute();
@@ -450,9 +451,9 @@ void UTestQwhole::comparisonLogic(ostream& out)
     out << "Qwhole x <= y " << endl << blck1 << endl
         << " decomposed logic: " << blck1.toString(true) << endl;
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, blck1.qubo(false));
+//    dann5::ocean::operator<<(out, blck1.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, blck1.qubo());
+//    dann5::ocean::operator<<(out, blck1.qubo());
     out << "'" << endl << " resulting in :" << endl << blck1.solve() << endl;
 
     Qevaluations solutions1 = blck1.compute();
@@ -468,9 +469,9 @@ void UTestQwhole::comparisonLogic(ostream& out)
     out << "Qwhole x > y " << endl << blck4 << endl
         << " decomposed logic: " << blck4.toString(true) << endl;
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, blck4.qubo(false));
+//    dann5::ocean::operator<<(out, blck4.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, blck4.qubo());
+//    dann5::ocean::operator<<(out, blck4.qubo());
     out << "'" << endl << " resulting in :" << endl << blck4.solve() << endl;
 
     Qevaluations solutions4 = blck4.compute();
@@ -487,27 +488,27 @@ void UTestQwhole::comparison(ostream& out)
         xXnYeZ1 = (x != y) == z, xXnYeZ2 = x != (y == z);
 
     out << xEq.toString() << " decomposed: " << xEq.toString(true) << endl << "Qubo: ";
-    dann5::ocean::operator<<(out, xEq.qubo());
+//    dann5::ocean::operator<<(out, xEq.qubo());
     out << endl << xEq.solve() << endl;
     out << xNe.toString() << " decomposed: " << xNe.toString(true) << endl << "Qubo: ";
-    dann5::ocean::operator<<(out, xNe.qubo());
+//    dann5::ocean::operator<<(out, xNe.qubo());
     out << endl << xNe.solve() << endl;
 //ERROR ->    out << "x != y == z decomposed: " << xXnYeZ0.toString(true) << endl << "Qubo: " << xXnYeZ0.qubo() << endl << xXnYeZ0.solve() << endl;
 //    out << xXnYeZ1.toString() << " decomposed: " << xXnYeZ1.toString(true) << endl << "Qubo: " << xXnYeZ1.qubo() << endl << xXnYeZ1.solve() << endl;
     out << xXnYeZ2.toString() << " decomposed: " << xXnYeZ2.toString(true) << endl << "Qubo: ";
-    dann5::ocean::operator<<(out, xXnYeZ2.qubo());
+//    dann5::ocean::operator<<(out, xXnYeZ2.qubo());
     out << endl << xXnYeZ2.solve() << endl;
 
     Qwhole x1(2, "x"), y1(2, "y"), z1(2, "z"), w1(2, "w");
     Qexpr<Qwhole> comp = x1 + y1 == z1 * w1;
     out << endl << comp << endl << endl << comp.toString(true) << endl;
     out << endl << "*** Qubo ***" << endl;
-    dann5::ocean::operator<<(out, comp.qubo(false));
+//    dann5::ocean::operator<<(out, comp.qubo(false));
     out << endl;
-    dann5::ocean::operator<<(out, comp.qubo());
+//    dann5::ocean::operator<<(out, comp.qubo());
     out << endl;
-    Qanalyzer analyzeM(comp.qubo());
-    out << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
+//    Qanalyzer analyzeM(comp.qubo());
+//    out << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
     comp.solve();
     out << endl << comp.solutions();
 
@@ -515,12 +516,12 @@ void UTestQwhole::comparison(ostream& out)
     Qexpr<Qwhole> comp2 = x2 + y2 != z2 + w2;
     out << endl << comp2 << endl << endl << comp2.toString(true) << endl;
     out << endl << "*** Qubo ***" << endl;
-    dann5::ocean::operator<<(out, comp2.qubo(false));
+//    dann5::ocean::operator<<(out, comp2.qubo(false));
     out << endl;
-    dann5::ocean::operator<<(out, comp2.qubo());
+//    dann5::ocean::operator<<(out, comp2.qubo());
     out << endl;
-    Qanalyzer analyzeM2(comp2.qubo());
-    out << endl << "# of nodes: " << analyzeM2.nodesNo() << "\t# of branches: " << analyzeM2.branchesNo() << endl;
+//    Qanalyzer analyzeM2(comp2.qubo());
+//    out << endl << "# of nodes: " << analyzeM2.nodesNo() << "\t# of branches: " << analyzeM2.branchesNo() << endl;
     comp2.solve();
     out << endl << comp2.solutions() << endl << "ERROR: [QwholeExpr] != [right] issue needs to be fixed!";
 
@@ -528,28 +529,28 @@ void UTestQwhole::comparison(ostream& out)
     out << "Expression > (GT): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr = y < x;
     out << "Reversed expression > (GT): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr = x >= y;
     out << "Expression >= (GE): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr = y <= x;
     out << "Reversed expression >= (GE): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     Qwhole  x3(3, "x"), y3(2, "y"), z3(1, "z");
@@ -557,14 +558,14 @@ void UTestQwhole::comparison(ostream& out)
     out << "Qwhole x <= y + z " << endl << xpr << endl
         << " decomposed logic: " << xpr.toString(true) << endl;
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, xpr.qubo(false));
+//    dann5::ocean::operator<<(out, xpr.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, xpr.qubo());
+//    dann5::ocean::operator<<(out, xpr.qubo());
     out << "'" << endl;
     //    out << " resulting in :" << endl << xpr.solve() << endl;
-    Qanalyzer anlyze(xpr.qubo());
-    out << endl << " # of nodes: " << anlyze.nodesNo()
-        << " # of branches: " << anlyze.branchesNo() << endl << endl;
+//    Qanalyzer anlyze(xpr.qubo());
+//    out << endl << " # of nodes: " << anlyze.nodesNo()
+//        << " # of branches: " << anlyze.branchesNo() << endl << endl;
     Qevaluations solutions = xpr.compute();
     Qbinder xyBinder(solutions);
     xyBinder = x1, y1, z1;
@@ -574,28 +575,28 @@ void UTestQwhole::comparison(ostream& out)
     out << "Expression < (LT): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr = y > x;
     out << "Reversed Expression < (LT): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr = x <= y;
     out << "Expression <= (LE): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 
     qwExpr = y >= x;
     out << "Reversed expression <= (LE): " << qwExpr << endl
         << " decomposed logic: " << qwExpr.toString(true) << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwExpr.qubo());
+//    dann5::ocean::operator<<(out, qwExpr.qubo());
     out << "'" << endl << " resulting in :" << endl << qwExpr.solve() << endl;
 }
 
@@ -606,7 +607,7 @@ void UTestQwhole::assignment(ostream& out)
 
     out << "Assignment 'r = x' creats logic => " << qwholeAssign << endl
     << " It's finalized (execution ready) Qubo is '";
-    dann5::ocean::operator<<(out, qwholeAssign.qubo());
+//    dann5::ocean::operator<<(out, qwholeAssign.qubo());
     out << "'" << endl;
     out << "resulting in solutions:" << endl;
     qwholeAssign.solve();
@@ -615,7 +616,7 @@ void UTestQwhole::assignment(ostream& out)
     qwholeAssign = r += x;
     out << endl << "Assignment 'r += x' creats logic => " << qwholeAssign << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwholeAssign.qubo());
+//    dann5::ocean::operator<<(out, qwholeAssign.qubo());
     out << "'" << endl;
     out << "resulting in solutions:" << endl;
     qwholeAssign.solve();
@@ -624,7 +625,7 @@ void UTestQwhole::assignment(ostream& out)
     qwholeAssign = r -= x;
     out << endl << "Assignment 'r -= x' creats logic => " << qwholeAssign << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwholeAssign.qubo());
+//    dann5::ocean::operator<<(out, qwholeAssign.qubo());
     out << "'" << endl;
     out << "resulting in solutions:" << endl;
     qwholeAssign.solve();
@@ -633,7 +634,7 @@ void UTestQwhole::assignment(ostream& out)
     qwholeAssign = r *= x;
     out << endl << "Assignment 'r *= x' creats logic => " << qwholeAssign << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwholeAssign.qubo());
+//    dann5::ocean::operator<<(out, qwholeAssign.qubo());
     out << "'" << endl;
     out << "resulting in solutions:" << endl;
     qwholeAssign.solve();
@@ -642,11 +643,11 @@ void UTestQwhole::assignment(ostream& out)
     qwholeAssign = r /= x;
     out << endl << "Assignment 'r /= x' creats logic => " << qwholeAssign << endl
         << " It's Qubo is '";
-    dann5::ocean::operator<<(out, qwholeAssign.qubo());
+//    dann5::ocean::operator<<(out, qwholeAssign.qubo());
     out << "'" << endl;
     out << "resulting in solutions:" << endl;
-    Qanalyzer analyzeAd(qwholeAssign.qubo());
-    out << endl << "# of nodes: " << analyzeAd.nodesNo() << "\t# of branches: " << analyzeAd.branchesNo() << endl;
+//    Qanalyzer analyzeAd(qwholeAssign.qubo());
+//    out << endl << "# of nodes: " << analyzeAd.nodesNo() << "\t# of branches: " << analyzeAd.branchesNo() << endl;
 //    qwholeAssign.solve();
 //    out << qwholeAssign.solutions() << endl;
 
@@ -657,9 +658,9 @@ void UTestQwhole::assignment(ostream& out)
     out << "Subtraction Expression" << endl << blck << endl
         << " decomposed logic: " << blck.toString(true) << endl;
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, blck.qubo(false));
+//    dann5::ocean::operator<<(out, blck.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, blck.qubo());
+//    dann5::ocean::operator<<(out, blck.qubo());
     out << "'" << endl  << " resulting in :" << endl << blck.solve() << endl;
 
     out << "Dann5.ocean Tests Qwhole addition!\n";
@@ -667,12 +668,12 @@ void UTestQwhole::assignment(ostream& out)
     Qassign<Qwhole> aA = A = a + b + c + d + _1;// 
     out << endl << aA << endl << endl << aA.toString(true) << endl;
     out << endl << "*** Qubo ***" << endl;
-    dann5::ocean::operator<<(out, aA.qubo(false));
+//    dann5::ocean::operator<<(out, aA.qubo(false));
     out << endl;
-    dann5::ocean::operator<<(out, aA.qubo());
+//    dann5::ocean::operator<<(out, aA.qubo());
     out << endl;
-    Qanalyzer analyzeA(aA.qubo());
-    out << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
+//    Qanalyzer analyzeA(aA.qubo());
+//    out << endl << "# of nodes: " << analyzeA.nodesNo() << "\t# of branches: " << analyzeA.branchesNo() << endl;
     aA.solve();
     out << endl << aA.solutions();
 
@@ -680,12 +681,12 @@ void UTestQwhole::assignment(ostream& out)
     Qwhole ax(3, "a"), b1(2, "b"), A1("A", 7), c1(3, "c"), d1(2, "d"), Ae1("Ae", 7);
     Qassign<Qwhole> aA1 = A1 = ax + b1;
     out << endl << aA1.toString() << endl << aA1.solve() << endl;
-    Qanalyzer analyzeA1(aA1.qubo());
-    out << "Assignment # of nodes: " << analyzeA1.nodesNo() << "\t# of branches: " << analyzeA1.branchesNo() << endl;
+//    Qanalyzer analyzeA1(aA1.qubo());
+//    out << "Assignment # of nodes: " << analyzeA1.nodesNo() << "\t# of branches: " << analyzeA1.branchesNo() << endl;
     Qexpr<Qwhole> eA1 = Ae1 == c1 + d1;
     out << endl << eA1.toString() << endl << eA1.solve() << endl;
-    Qanalyzer analyzeE1(eA1.qubo());
-    out << "Equal expression # of nodes: " << analyzeE1.nodesNo() << "\t# of branches: " << analyzeE1.branchesNo() << endl;
+//    Qanalyzer analyzeE1(eA1.qubo());
+//    out << "Equal expression # of nodes: " << analyzeE1.nodesNo() << "\t# of branches: " << analyzeE1.branchesNo() << endl;
 
 }
 
@@ -695,12 +696,12 @@ void UTestQwhole::factorial(ostream& out)
     Qassign<Qwhole> mM = M = p * q * r;
     out << endl << mM << endl << endl << mM.toString(true) << endl;
     out << endl << "*** Qubo ***" << endl;
-    dann5::ocean::operator<<(out, mM.qubo(false));
+//    dann5::ocean::operator<<(out, mM.qubo(false));
     out << endl;
-    dann5::ocean::operator<<(out, mM.qubo());
+//    dann5::ocean::operator<<(out, mM.qubo());
     out << endl;
-    Qanalyzer analyzeM(mM.qubo());
-    out << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
+//    Qanalyzer analyzeM(mM.qubo());
+//    out << endl << "# of nodes: " << analyzeM.nodesNo() << "\t# of branches: " << analyzeM.branchesNo() << endl;
     const clock_t begin_time = clock();
     mM.solve();
     clock_t end_time = clock();
@@ -714,8 +715,8 @@ void UTestQwhole::factorial(ostream& out)
     clock_t end_time2 = clock();
     out << endl << "Preparation time: " << to_string(float(end_time2 - begin_time2) / CLOCKS_PER_SEC) << "s";
     out << endl << mM1 << endl;
-    Qanalyzer analyzeM1(mM1.qubo());
-    out << endl << "# of nodes: " << analyzeM1.nodesNo() << "\t# of branches: " << analyzeM1.branchesNo() << endl;
+//    Qanalyzer analyzeM1(mM1.qubo());
+//    out << endl << "# of nodes: " << analyzeM1.nodesNo() << "\t# of branches: " << analyzeM1.branchesNo() << endl;
 
 }
 
@@ -738,15 +739,15 @@ void UTestQwhole::prime(ostream& out)
     primeNo = p_s2_2t2, p3mod8, s1mod2, t1mod2, gcd1;
     out << "Prime Number\n Code" << endl << primeNo << endl
         << " Logic: " << primeNo.toString(true) << endl;
-    Qubo qPrime = primeNo.qubo();
+//    Qubo qPrime = primeNo.qubo();
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, primeNo.qubo(false));
+//    dann5::ocean::operator<<(out, primeNo.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qPrime);
+//    dann5::ocean::operator<<(out, qPrime);
     out << "'" << endl;
-    Qanalyzer analyse(qPrime);
-    out << endl << "*** Prime number p = s2 + 2t2, p mod 8 = 3, gcd(s,t) = 1 has: "
-        << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
+//    Qanalyzer analyse(qPrime);
+//    out << endl << "*** Prime number p = s2 + 2t2, p mod 8 = 3, gcd(s,t) = 1 has: "
+//        << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
 //    out << " resulting in :" << endl << primeNo.solve() << endl;
     Qevaluations solution = primeNo.compute();
     Qbinder pst(solution);
@@ -767,15 +768,15 @@ void UTestQwhole::prime6(ostream& out)
 
     out << "Prime Number\n Code" << endl << prime6m1 << endl
         << " Logic: " << prime6m1.toString(true) << endl;
-    Qubo qPrime = prime6m1.qubo();
+//    Qubo qPrime = prime6m1.qubo();
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, prime6m1.qubo(false));
+//    dann5::ocean::operator<<(out, prime6m1.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qPrime);
+//    dann5::ocean::operator<<(out, qPrime);
     out << "'" << endl;
-    Qanalyzer analyse(qPrime);
-    out << endl << "*** Prime number p = 6s - 1 has: "
-        << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
+//    Qanalyzer analyse(qPrime);
+//    out << endl << "*** Prime number p = 6s - 1 has: "
+//        << analyse.nodesNo() << " # of node and # of branches: " << analyse.branchesNo() << endl;
     Qevaluations solution = prime6m1.compute();
     Qbinder pst(solution);
     pst = prime, s, t, mod;
@@ -790,15 +791,15 @@ void UTestQwhole::prime6(ostream& out)
 
     out << "Prime Number\n Code" << endl << prime6p1 << endl
         << " Logic: " << prime6p1.toString(true) << endl;
-    qPrime = prime6p1.qubo();
+//    qPrime = prime6p1.qubo();
     out << " It's generic Qubo is '";
-    dann5::ocean::operator<<(out, prime6p1.qubo(false));
+//    dann5::ocean::operator<<(out, prime6p1.qubo(false));
     out << "'" << endl << " & finalized Qubo is '";
-    dann5::ocean::operator<<(out, qPrime);
+//    dann5::ocean::operator<<(out, qPrime);
     out << "'" << endl;
-    Qanalyzer analyse2(qPrime);
-    out << endl << "*** Prime number p = 6s + 1 has: "
-        << analyse2.nodesNo() << " # of node and # of branches: " << analyse2.branchesNo() << endl;
+//    Qanalyzer analyse2(qPrime);
+//    out << endl << "*** Prime number p = 6s + 1 has: "
+//        << analyse2.nodesNo() << " # of node and # of branches: " << analyse2.branchesNo() << endl;
     Qevaluations solution2 = prime6p1.compute();
     Qbinder pst2(solution2);
     pst2 = prime, s, t, mod;

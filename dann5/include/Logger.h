@@ -18,7 +18,7 @@ namespace dann5 {
 
 	protected:
 	private:
-		static unique_ptr<Logger> mpSingleton;
+		static unique_ptr<Logger> gpSingleton;
 
 		Logger();
 		~Logger();

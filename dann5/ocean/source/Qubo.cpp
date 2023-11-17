@@ -1,9 +1,10 @@
 #include <Qubo.h>
+#include <QcellOps.h>
 
+using namespace dann5;
 using namespace dann5::ocean;
 
 /**** Qubo ****/
-
 std::ostream& dann5::ocean::operator<< (std::ostream& stream, const Qubo& right)
 {
 	for (auto at = right.cbegin(); at != right.cend(); at++)
@@ -224,21 +225,18 @@ OperatorQT::OperatorQT()
 }
 
 /**** Binary operation Qubo Table ****/
-
 BinaryOpQT::BinaryOpQT()
 	:QuboTable(QuboTable::Size(3))
 {
 }
 
 /**** Binary operation Qubo Table with two outputs ****/
-
 BinaryOp2OutQT::BinaryOp2OutQT()
 	:QuboTable(QuboTable::Size(4))
 {
 }
 
 /**** Equal operator Qubo Table ****/
-
 EqQT::EqQT()
 	:OperatorQT()
 {
@@ -248,7 +246,6 @@ EqQT::EqQT()
 }
 
 /**** Not equal operator Qubo Table ****/
-
 NeqQT::NeqQT()
 	:OperatorQT()
 {
@@ -258,7 +255,6 @@ NeqQT::NeqQT()
 }
 
 /**** Less-than operator Qubo Table ****/
-
 LtQT::LtQT()
 	:OperatorQT()
 {
@@ -270,7 +266,6 @@ LtQT::LtQT()
 }
 
 /**** Less-equal operator Qubo Table ****/
-
 LeQT::LeQT()
 	:OperatorQT()
 {
@@ -281,7 +276,6 @@ LeQT::LeQT()
 }
 
 /**** Greater-than operator Qubo Table ****/
-
 GtQT::GtQT()
 	:OperatorQT()
 {
@@ -291,7 +285,6 @@ GtQT::GtQT()
 }
 
 /**** Greater-equal operator Qubo Table ****/
-
 GeQT::GeQT()
 	:OperatorQT()
 {
@@ -301,7 +294,6 @@ GeQT::GeQT()
 }
 
 /**** And binary operation Qubo Table ****/
-
 AndQT::AndQT()
 	:BinaryOpQT()
 {
@@ -312,7 +304,6 @@ AndQT::AndQT()
 }
 
 /**** Nand binary operation Qubo Table with two outputs****/
-
 NandQT::NandQT()
 	:BinaryOp2OutQT()
 {
@@ -325,7 +316,6 @@ NandQT::NandQT()
 }
 
 /**** Or binary operation Qubo Table ****/
-
 OrQT::OrQT()
 	:BinaryOpQT()
 {
@@ -336,7 +326,6 @@ OrQT::OrQT()
 }
 
 /**** Nand binary operation Qubo Table with two outputs****/
-
 NorQT::NorQT()
 	:BinaryOp2OutQT()
 {
@@ -349,7 +338,6 @@ NorQT::NorQT()
 }
 
 /**** Not-left-or-right binary operation Qubo Table with two outputs****/
-
 NotLeftOrRightQT::NotLeftOrRightQT()
 	:BinaryOp2OutQT()
 {
@@ -361,7 +349,6 @@ NotLeftOrRightQT::NotLeftOrRightQT()
 }
 
 /**** DWave not-left-or-right binary operation Qubo Table with two outputs****/
-
 DwNotLeftOrRightQT::DwNotLeftOrRightQT()
 	:BinaryOp2OutQT()
 {
@@ -373,7 +360,6 @@ DwNotLeftOrRightQT::DwNotLeftOrRightQT()
 }
 
 /**** Xor binary operation Qubo Table with two outputs****/
-
 XorQT::XorQT()
 	:BinaryOp2OutQT()
 {
@@ -385,7 +371,6 @@ XorQT::XorQT()
 }
 
 /**** Nxor binary operation Qubo Table with two outputs****/
-
 NxorQT::NxorQT()
 	:BinaryOp2OutQT()
 {
@@ -403,7 +388,6 @@ NxorQT::NxorQT()
 }
 
 /**** Adder trinary operation Qubo Table with two outputs****/
-
 AdderQT::AdderQT()
 	:QuboTable(QuboTable::Size(5))
 {
@@ -421,17 +405,12 @@ QuboTable::Labels AdderQT::format(const QuboTable::Labels& args) const
 
 	QuboTable::Labels fAdderArgs(5);
 	if (args.rows() == 4)
-		fAdderArgs << args(0), args(1), args(2), args(3), Carry::Symbol(args(3));
+		fAdderArgs << args(0), args(1), args(2), args(3),
+                        Qaddition::Carry::Symbol(args(3));
 	else
-		fAdderArgs << args(0), args(1), Carry::Symbol(args(0)), args(2), Carry::Symbol(args(2));
+		fAdderArgs << args(0), args(1),
+                        Qaddition::Carry::Symbol(args(0)), args(2),
+                        Qaddition::Carry::Symbol(args(2));
 
 	return(fAdderArgs);
-}
-
-
-/*** AddderQT Carry operand ***/
-
-string AdderQT::Carry::Symbol(const string& addTag)
-{
-	return(cMark + "[" + addTag + "]");
 }

@@ -10,6 +10,8 @@
 #include <ULint.h>
 #include <bitset>
 
+using namespace dann5test;
+
 using namespace dann5;
 
 void UTestULint::runAll(ostream& out)

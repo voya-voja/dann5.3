@@ -5,9 +5,9 @@ using namespace dann5;
 
 Logger& Logger::Instance() 
 {
-	if (mpSingleton.get() == nullptr)
-		mpSingleton.reset(new Logger);
-	return(*mpSingleton);
+	if (gpSingleton.get() == nullptr)
+		gpSingleton.reset(new Logger);
+	return(*gpSingleton);
 }
 
 #ifdef _DANN5_LOG_INTO_CSV

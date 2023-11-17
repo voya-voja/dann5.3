@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace dann5
+namespace dann5test
 {
     // Unit tests of Qbit operations
     class UTestQbool

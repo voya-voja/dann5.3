@@ -10,6 +10,9 @@
 #include <Qbin.h>
 #include <Qblock.h>
 #include <Qbinder.h>
+#include <Qubo.h>
+
+using namespace dann5test;
 
 using namespace dann5;
 using namespace dann5::ocean;
@@ -108,29 +111,29 @@ void UTestQbin::assignment(ostream& out)
     Qassign<Qbin> qbinAssign = r = x;
     
     out << "Assignment 'r/2b:U/ = x/3b:U/' creats logic => " << qbinAssign << endl
-        << " It's finalized (execution ready) Qubo is '" << qbinAssign.qubo() << "'" << endl;
-    out << "resulting in solutions:"<< endl;
+//        << " It's finalized (execution ready) Qubo is '" << qbinAssign.qubo() << "'" << endl;
+        << "resulting in solutions:"<< endl;
     qbinAssign.solve();
     out << qbinAssign.solutions() << endl;
 
     qbinAssign = r &= x;
     out << endl << "Assignment 'r &= x' creats logic => " << qbinAssign << endl
-        << " It's Qubo is '" << qbinAssign.qubo() << "'" << endl;
-    out << "resulting in solutions:"<< endl;
+//        << " It's Qubo is '" << qbinAssign.qubo() << "'" << endl;
+        << "resulting in solutions:"<< endl;
     qbinAssign.solve();
     out << qbinAssign.solutions() << endl;
 
     qbinAssign = r |= x;
     out << endl << "Assignment 'r |= x' creats logic => " << qbinAssign << endl
-        << " It's Qubo is '" << qbinAssign.qubo() << "'" << endl;
-    out << "resulting in solutions:"<< endl;
+//        << " It's Qubo is '" << qbinAssign.qubo() << "'" << endl;
+        << "resulting in solutions:"<< endl;
     qbinAssign.solve();
     out << qbinAssign.solutions() << endl;
 
     qbinAssign = r ^= x;
     out << endl << "Assignment 'r ^= x' creats logic => " << qbinAssign << endl
-        << " It's Qubo is '" << qbinAssign.qubo() << "'" << endl;
-    out << "resulting in solutions:"<< endl;
+//        << " It's Qubo is '" << qbinAssign.qubo() << "'" << endl;
+        << "resulting in solutions:"<< endl;
     qbinAssign.solve();
     out << qbinAssign.solutions() << endl;
     
@@ -141,8 +144,8 @@ void UTestQbin::assignment(ostream& out)
     qbinAssign1.solve();
     out << "Assignment 1" << endl << qbinAssign1 << endl
         << " decomposed logic: " << qbinAssign1.toString(true) << endl
-        << " It's generic Qubo is '" << qbinAssign1.qubo(false) << "'" << endl
-        << " & finalized Qubo is '" << qbinAssign1.qubo() << "'" << endl
+//        << " It's generic Qubo is '" << qbinAssign1.qubo(false) << "'" << endl
+//        << " & finalized Qubo is '" << qbinAssign1.qubo() << "'" << endl
         << " resulting in :" << endl << qbinAssign1.solutions() << endl;
 
     Qassign<Qbin> qbinAssign2 = _1 = ((b & x) != z) | (z != (y ^ _0));
@@ -166,9 +169,9 @@ void UTestQbin::assignment(ostream& out)
     Qassign<Qbin> qbinA4 = _1 = (z.unlike(b & x) | z.alike(y ^ _0));
     out << "Assignment 4 using un/a-like operation: " << endl << qbinA4 << endl
         << " decomposed: " << qbinA4.toString(true) << endl;
-    Qanalyzer anlyze(qbinA4.qubo());
-    out << endl << " # of nodes: " << anlyze.nodesNo()
-        << " # of branches: " << anlyze.branchesNo()
+//    Qanalyzer anlyze(qbinA4.qubo());
+    out << endl
+//      << " # of nodes: " << anlyze.nodesNo()  << " # of branches: " << anlyze.branchesNo()
         << qbinA4.solve();
 
     Qassign<Qbin> qbinA3 = _1 = ((b & x).unlike(z)) | ((y ^ _0).alike(z));
@@ -184,18 +187,18 @@ void UTestQbin::bitwise(ostream& out)
 
     out << "Expression '~x', INVERT (not) x is: " << xI << endl
         << " decomposed logic: " << xI.toString(true) << endl
-        << " It's Qubo is '" << xI.qubo() << "'" << endl
+//        << " It's Qubo is '" << xI.qubo() << "'" << endl
         << " resulting in :" << endl << xI.solve() << endl;
 
     out << "Expression AND: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
-        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
+//        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     
     qbExpr = x.nand(y);
     out << "Expression NAND: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
-        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
+//        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
     x.resize(4);
@@ -205,13 +208,13 @@ void UTestQbin::bitwise(ostream& out)
     qbExpr = x | y;
     out << "Expression OR: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
-        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
+//        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     
     qbExpr = x.nor(y);
     out << "Expression NOR: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
-        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
+//        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
     x[3].value(1);
@@ -221,13 +224,13 @@ void UTestQbin::bitwise(ostream& out)
     qbExpr = x ^ y;
     out << "Expression UNLIKE (XOR): " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
-        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
+//        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
     qbExpr = x *= y;
     out << "Expression ALIKE (NXOR): " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
-        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
+//        << " It's Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
     x.resize(2); y.resize(2);
@@ -238,8 +241,8 @@ void UTestQbin::bitwise(ostream& out)
     qbExpr = (_1 & (x.nand(y))) ^ (_0 *= (y | x));
     out << "Complex Expression" << endl << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
-        << " It's generic Qubo is '" << qbExpr.qubo(false) << "'" << endl
-        << " & finalized Qubo is '" << qbExpr.qubo() << "'" << endl
+//        << " It's generic Qubo is '" << qbExpr.qubo(false) << "'" << endl
+//        << " & finalized Qubo is '" << qbExpr.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 }
 
@@ -250,11 +253,16 @@ void UTestQbin::comparison(ostream& out)
     Qexpr<Qbin> xEq = (x == y), xNe = (x != z), xXnYeZ0 = x != y == z,
                     xXnYeZ1= (x != y) == z, xXnYeZ2 = x != (y == z);
 
-    out << xEq.toString() << " decomposed: " << xEq.toString(true) << endl << "Qubo: " << xEq.qubo() << endl << xEq.solve() << endl
-        << xNe.toString() << " decomposed: " << xNe.toString(true) << endl << "Qubo: " << xNe.qubo() << endl << xNe.solve() << endl
-        << "x != y == z decomposed: " << xXnYeZ0.toString(true) << endl << "Qubo: " << xXnYeZ0.qubo() << endl << xXnYeZ0.solve() << endl
-        << xXnYeZ1.toString() << " decomposed: " << xXnYeZ1.toString(true) << endl << "Qubo: " << xXnYeZ1.qubo() << endl << xXnYeZ1.solve() << endl
-        << xXnYeZ2.toString() << " decomposed: " << xXnYeZ2.toString(true) << endl << "Qubo: " << xXnYeZ2.qubo() << endl << xXnYeZ2.solve() << endl;
+    out << xEq.toString() << " decomposed: " << xEq.toString(true) << endl //<< "Qubo: " << xEq.qubo()
+        << endl << xEq.solve() << endl
+        << xNe.toString() << " decomposed: " << xNe.toString(true) << endl //<< "Qubo: " << xNe.qubo()
+        << endl << xNe.solve() << endl
+        << "x != y == z decomposed: " << xXnYeZ0.toString(true) << endl //<< "Qubo: " << xXnYeZ0.qubo()
+        << endl << xXnYeZ0.solve() << endl
+        << xXnYeZ1.toString() << " decomposed: " << xXnYeZ1.toString(true) << endl //<< "Qubo: " << xXnYeZ1.qubo()
+        << endl << xXnYeZ1.solve() << endl
+        << xXnYeZ2.toString() << " decomposed: " << xXnYeZ2.toString(true) << endl //<< "Qubo: " << xXnYeZ2.qubo()
+        << endl << xXnYeZ2.solve() << endl;
 }
 
 void UTestQbin::eq_asign(ostream& out)
@@ -262,10 +270,10 @@ void UTestQbin::eq_asign(ostream& out)
     Qbin bn0("bn0", 03), bn1(3, "bn1"), bn2(4,"bn2"), bn3("bn3", 0b110), bn4(2, "bn4"), bnr("bnr", 0x5);
     Qassign<Qbin> qbinAssign = bnr = (bn0 & bn1) | ((bn2 ^ bn3) == bn4);
     out << endl << qbinAssign << endl << endl << qbinAssign.toString(true) << endl;
-    out << endl << "*** Generic Qubo ***" << endl << qbinAssign.qubo(false) << endl
-        << endl << "*** Finalized Qubo ***" << endl << qbinAssign.qubo() << endl;
-    Qanalyzer analyze(qbinAssign.qubo());
-    out << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
+//    out << endl << "*** Generic Qubo ***" << endl << qbinAssign.qubo(false) << endl
+//        << endl << "*** Finalized Qubo ***" << endl << qbinAssign.qubo() << endl;
+//    Qanalyzer analyze(qbinAssign.qubo());
+//    out << endl << "# of nodes: " << analyze.nodesNo() << "\t# of branches: " << analyze.branchesNo() << endl;
     qbinAssign.solve();
     out << endl << qbinAssign.solutions();
 }
@@ -290,10 +298,10 @@ void UTestQbin::friends_enemies(ostream& out)
     Qblock prFnE;
     prFnE = aWXfYe, aSTf, aSorW, aSorY;
     out << endl << "*** Friends & enemies problem block:" << endl << prFnE.toString() << endl;
-    Qubo qPrFnE = prFnE.qubo();
-    out << endl << "*** Friends & enemies problem qubo:" << endl << qPrFnE << endl;
-    Qanalyzer analysePrFnE(qPrFnE);
-    out << endl << "*** Friends & enemies problem # of nodes: " << analysePrFnE.nodesNo() << " # of branches: " << analysePrFnE.branchesNo() << endl;
+//    Qubo qPrFnE = prFnE.qubo();
+//    out << endl << "*** Friends & enemies problem qubo:" << endl << qPrFnE << endl;
+//    Qanalyzer analysePrFnE(qPrFnE);
+//    out << endl << "*** Friends & enemies problem # of nodes: " << analysePrFnE.nodesNo() << " # of branches: " << analysePrFnE.branchesNo() << endl;
     Qevaluations prFnEsltns = prFnE.compute();
     Qbinder wxystBinder;
     wxystBinder = w, x, y, s, t;
@@ -304,11 +312,11 @@ void UTestQbin::friends_enemies(ostream& out)
     Qblock xPrFnE;
     xPrFnE = aWXfYZe, aSTfUVe, aSorW, aSorY;
     out << endl << "*** Extended friends & enemies problem block:" << endl << xPrFnE.toString() << endl;
-    Qubo qXprFnE = xPrFnE.qubo();
-    out << endl << "*** Extended friends & enemies problem qubo:" << endl << qXprFnE << endl;
-    Qanalyzer analyseXprFnE(qXprFnE);
-    out << endl << "*** Extended friends & enemies problem # of nodes: " 
-        << analyseXprFnE.nodesNo() << ", # of branches: " << analyseXprFnE.branchesNo() << endl;
+//    Qubo qXprFnE = xPrFnE.qubo();
+//    out << endl << "*** Extended friends & enemies problem qubo:" << endl << qXprFnE << endl;
+//    Qanalyzer analyseXprFnE(qXprFnE);
+//    out << endl << "*** Extended friends & enemies problem # of nodes: "
+//        << analyseXprFnE.nodesNo() << ", # of branches: " << analyseXprFnE.branchesNo() << endl;
 }
 
 void UTestQbin::vertex(ostream& out)
@@ -335,10 +343,12 @@ void UTestQbin::vertex(ostream& out)
     Qassign<Qbit> problemAssignment = _1 = xbSV & xbTV;
     out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem statement:"
         << endl << problemAssignment.toString() << endl;
-    Qubo qPA = problemAssignment.qubo();
+//    Qubo qPA = problemAssignment.qubo();
     out << endl << "---- DWave square(a-b-c-d) + triangle (c-d-e) vertex problem qubo:"
-        << endl << qPA << endl;
-    Qanalyzer analysePA(qPA);
+//        << endl << qPA
+        << endl;
+//    Qanalyzer analysePA(qPA);
     out << endl << "*** DWave square(a-b-c-d) + triangle (c-d-e) vertex problem # of nodes: " 
-        << analysePA.nodesNo() << ", # of branches: " << analysePA.branchesNo() << endl;
+//        << analysePA.nodesNo() << ", # of branches: " << analysePA.branchesNo()
+    << endl;
 }
