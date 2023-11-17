@@ -6,6 +6,7 @@
 
 #include <QnaryOp.h>
 #include <QcellOps.h>
+#include <QnaryOperation.h>
 #include <Qcompiler.h>
 
 using namespace std;
@@ -13,7 +14,7 @@ using namespace std;
 namespace dann5 {
     // A Q derived operation is an abstract base for operations like quantum
     // subtraction or division. The QeqOp specializes a Qnary operation
-    class QderivedOp : public QcellOp
+    class QderivedOp : public QnaryOp
     {
     public:
         // QeqOp's shared pointer
@@ -41,7 +42,7 @@ namespace dann5 {
             size_t forBit = cAllBits) const
         {
             if (decomposed) return mEq.toString(decomposed, forBit);
-            return QcellOp::toString(decomposed, forBit);
+            return QnaryOp::toString(decomposed, forBit);
         };
 
         // return Qubo presentation of this Q operation
@@ -50,7 +51,7 @@ namespace dann5 {
             return mEq.compile(compiler);
         };
 
-        const Qeq& equalOp() const { return mEq; };
+        const QnaryOperation<Qeq>& equalOp() const { return mEq; };
         QnaryOp::Sp substituteOp() const
         {
             return static_pointer_cast<QnaryOp>(as_const(mEq).Qop::inputs()[0]);
@@ -62,7 +63,7 @@ namespace dann5 {
 
         virtual Qvalue calculate(const Qvalues& values) const;
     private:
-        Qeq mEq;	// Qeq operand is used to form derived expression
+        QnaryOperation<Qeq> mEq;	// Qeq operand is used to form derived expression
     };
 
     // A Q subtract is a specific implementation of a Q derived operation

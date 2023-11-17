@@ -21,6 +21,7 @@
 
 #include <Qevaluation.h>
 #include <Qsolver.h>
+#include <Qcompiler.h>
 
 #include <pybind11/stl.h>
 #include <pybind11/operators.h>
@@ -29,7 +30,7 @@
 
 using namespace dann5;
 
-#define VERSION_INFO "2.2.3"
+#define VERSION_INFO "3.0.0"
 
 namespace py = pybind11;
 
@@ -912,8 +913,9 @@ PYBIND11_MODULE(d5o2, m) {
 		.def("__getitem__", [](Qbinder& self, string id) { return &(*self[id]); });
 
 
-/*--- Qsolver.h definitions ---*/
-    py::class_<Qevaluation>(m, "Qevaluation")
+/*--- Qevaluation.h definitions ---*/
+    py::class_<Qevaluation>(m, "Qevaluation",
+                            R"pbdoc(A quantum sample is defined as a dictionary (map) of definition nodes and their values. The node names are defined by coresponding compiled quantum statement object sent to a quantum solver)pbdoc")
         .def(py::init<>())
         .def(py::init<const Qevaluation&>())
         .def(py::init<const Qsample&, double>())
@@ -928,11 +930,20 @@ PYBIND11_MODULE(d5o2, m) {
         .def("sample", [](const Qevaluation& o) { return o.sample(); })
         .def("energy", [](const Qevaluation& o) { return o.energy(); });
 
-	py::class_<Qsolver>(m, "Qsolver")
-        .def_static("Active", static_cast<void (*)(Qsolver::Sp)>(&Qsolver::Active))
-//		.def(py::init<>(), "Quantum analyzer is initialized with a QUBO instance")
+/*--- Qsolver.h definitions ---*/
+	py::class_<Qsolver>(m, "Qsolver",
+                        R"pbdoc(Quantum solver abstraction evaluates solutions for a compiled quantum statement.)pbdoc")
+    .def_static("Active", static_cast<void (*)(Qsolver::Sp)>(&Qsolver::Active),
+                "Sets an active quantum solver to be used as a default solver")
+    .def_static("Active", static_cast<Qsolver::Sp (*)()>(&Qsolver::Active),
+                "Returns an active quantum solver used as a default solver")
+    .def("solution", &Qsolver::solution,
+         "Override to return quantum evaluations for a compiled quantum statement");
 
-		.def("solution", &Qsolver::solution, "Override to return quantum evaluations for a compiled quantum statement");
+/*--- Qcompiler.h definitions ---*/
+    py::class_<Qcompiler>(m, "Qcompiler",
+                          R"pbdoc(An abstration of quantum operation compiler is an integration point for conversion of dann5 quantum peration to target quantum solver presentation, like qiskit in case of IBM or Qubo in case of D-Wave)pbdoc")
+        .def("compile", &Qcompiler::compile, "A method to be executed by active Qsolver when solving a quantum statement.");
 
 #ifdef VERSION_INFO
 	m.attr("__version__") = VERSION_INFO;

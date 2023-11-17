@@ -64,7 +64,7 @@ namespace dann5{
         // Sends a representation of Qubo into output stream
         ostream& operator << (ostream&, const Qubo&);
 
-        // an array of Qubo objects
+        // An array of Qubo objects
         typedef vector<Qubo> Qubos;
         // Addition function returns a reference of an updated left operand
         // with added elements of right Qubos vector at its end.

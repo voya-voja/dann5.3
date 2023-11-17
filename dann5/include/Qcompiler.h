@@ -12,11 +12,17 @@ namespace dann5
 {
     class Qop;
 
+    // An abstration of quantum operation compiler is an integration point
+    // for conversion of dann5 quantum peration to target quantum solver
+    // presentation, like qiskit in case of IBM or Qubo in case of D-Wave
     class Qcompiler
     {
     public:
+        // Default constructor
         Qcompiler() {};
         
+        // A method to be executed by active Qsolver when solving a quantum
+        // statement.
         virtual void compile(const Qop&) = 0;
 
     protected:

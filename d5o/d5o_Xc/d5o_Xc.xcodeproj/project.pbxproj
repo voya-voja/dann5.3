@@ -55,7 +55,6 @@
 		A205083C2B017E0E00165038 /* Qubo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205083A2B017E0E00165038 /* Qubo.cpp */; };
 		A205083D2B017E0E00165038 /* Qubo.h in Headers */ = {isa = PBXBuildFile; fileRef = A205083B2B017E0E00165038 /* Qubo.h */; };
 		A205083F2B017E7D00165038 /* QTfactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A205083E2B017E7D00165038 /* QTfactories.cpp */; };
-		A20508422B01956C00165038 /* Qcompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508402B01956C00165038 /* Qcompiler.cpp */; };
 		A20508452B0195CD00165038 /* Qcompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = A20508442B0195CD00165038 /* Qcompiler.h */; };
 		A20508482B0197C500165038 /* QuboCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A20508462B0197C500165038 /* QuboCompiler.cpp */; };
 		A205084B2B01980900165038 /* QuboCompiler.h in Headers */ = {isa = PBXBuildFile; fileRef = A205084A2B01980900165038 /* QuboCompiler.h */; };
@@ -125,7 +124,6 @@
 		A205083A2B017E0E00165038 /* Qubo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qubo.cpp; path = ../../dann5/ocean/source/Qubo.cpp; sourceTree = "<group>"; };
 		A205083B2B017E0E00165038 /* Qubo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qubo.h; path = ../../dann5/ocean/include/Qubo.h; sourceTree = "<group>"; };
 		A205083E2B017E7D00165038 /* QTfactories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QTfactories.cpp; path = ../../dann5/ocean/source/QTfactories.cpp; sourceTree = "<group>"; };
-		A20508402B01956C00165038 /* Qcompiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qcompiler.cpp; path = ../../dann5/source/Qcompiler.cpp; sourceTree = "<group>"; };
 		A20508442B0195CD00165038 /* Qcompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qcompiler.h; path = ../../dann5/include/Qcompiler.h; sourceTree = "<group>"; };
 		A20508462B0197C500165038 /* QuboCompiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QuboCompiler.cpp; path = ../../dann5/ocean/source/QuboCompiler.cpp; sourceTree = "<group>"; };
 		A205084A2B01980900165038 /* QuboCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuboCompiler.h; path = ../../dann5/ocean/include/QuboCompiler.h; sourceTree = "<group>"; };
@@ -212,7 +210,6 @@
 				A20508002B00371100165038 /* Qcell.h */,
 				A20507E52B00368000165038 /* QcellOps.cpp */,
 				A205080C2B00371100165038 /* QcellOps.h */,
-				A20508402B01956C00165038 /* Qcompiler.cpp */,
 				A20508442B0195CD00165038 /* Qcompiler.h */,
 				A20507ED2B00368000165038 /* Qdef.h */,
 				A20507E82B00368000165038 /* QderivedOps.cpp */,
@@ -387,7 +384,6 @@
 				A20508232B00371200165038 /* Qint.cpp in Sources */,
 				A20508212B00371200165038 /* Qroutine.cpp in Sources */,
 				A2A534D728C6C09F002C4145 /* d5o_Xc.cpp in Sources */,
-				A20508422B01956C00165038 /* Qcompiler.cpp in Sources */,
 				A205082A2B00371200165038 /* Qop.cpp in Sources */,
 				A20507F82B00368100165038 /* Qbinder.cpp in Sources */,
 				A20508292B00371200165038 /* Qbin.cpp in Sources */,

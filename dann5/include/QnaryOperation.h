@@ -8,6 +8,7 @@
 #ifndef QnaryOperation_h
 #define QnaryOperation_h
 
+#include <Factory.h>
 #include <QnaryOp.h>
 #include <QcellOps.h>
 

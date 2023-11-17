@@ -926,7 +926,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument with id 'x' the
         // expression root points to Qsubtract with [previous root] - 'x'
         Qexpr<Q_Type>& operator-(const Q_Type& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qsubtract::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qsubtract::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.clone() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());
@@ -938,7 +938,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument with id 'x' the
         // expression root points to to Qsubtract with [previous root] - 'x'
         Qexpr<Q_Type> operator-(const Q_Type& right) const {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qsubtract::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qsubtract::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.clone() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());
@@ -950,7 +950,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument [right] the
         // expression root points to to Qsubtract with [previous root] - [right root]
         Qexpr<Q_Type>& operator-(const Qexpr<Q_Type>& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qsubtract::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qsubtract::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());
@@ -962,7 +962,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument [right] the
         // expression root points to to Qsubtract with [previous root] - [right root]
         Qexpr<Q_Type> operator-(const Qexpr<Q_Type>& right) const {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qsubtract::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qsubtract::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());
@@ -1023,7 +1023,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument with id 'x' the
         // expression root points to Qsubtract with [previous root] / 'x'
         Qexpr<Q_Type>& operator/(const Q_Type& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qdivide::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qdivide::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.clone() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());
@@ -1035,7 +1035,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument with id 'x' the
         // expression root points to to Qsubtract with [previous root] / 'x'
         Qexpr<Q_Type> operator/(const Q_Type& right) const {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qdivide::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qdivide::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.clone() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());
@@ -1047,7 +1047,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument [right] the
         // expression root points to to Qsubtract with [previous root] / [right root]
         Qexpr<Q_Type>& operator/(const Qexpr<Q_Type>& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qdivide::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qdivide::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());
@@ -1059,7 +1059,7 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument [right] the
         // expression root points to to Qsubtract with [previous root] / [right root]
         Qexpr<Q_Type> operator/(const Qexpr<Q_Type>& right) const {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qdivide::cMark);
+            QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qdivide::cMark);
             pOp->inputs({ as_const(*this).rootDef(), right.rootDef() });
             Q_Type out(pOp->outId());
             pOp->output(out.clone());

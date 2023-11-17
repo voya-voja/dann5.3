@@ -13,18 +13,18 @@ using namespace dann5;
 /*** Quantum derived operation ***/
 
 QderivedOp::QderivedOp(const string& id, const QnaryOp& op)
-	:QcellOp(id, op.noInputs()), mEq()
+	:QnaryOp(id, op.noInputs()), mEq()
 {
 	mEq.inputs({ op.clone() });
 }
 
 QderivedOp::QderivedOp(const QderivedOp& right)
-	: QcellOp(right), mEq(right.mEq)
+	: QnaryOp(right), mEq(right.mEq)
 {}
 
 void QderivedOp::output(const Qdef::Sp& pOut, size_t forBit)
 {
-	QcellOp::output(pOut, forBit);
+    QnaryOp::output(pOut, forBit);
 	refresh();
 }
 
@@ -56,7 +56,7 @@ void QderivedOp::refresh()
 	}
 	mpSubstOp->inputs({ pOut, ins[1] });
 	mpSubstOp->output(out.clone());
-	mEq.QcellOp::output(ins[0]);
+	mEq.output(ins[0]);
 }
 
 Qvalue QderivedOp::calculate(const Qvalues& values) const

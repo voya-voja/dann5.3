@@ -162,7 +162,7 @@ void  D5QuboSolver::solve()
 	std::vector<std::thread> threads;
 	std::vector<Qsolve*> solvePtrs;
 
-	// for 4 solve threads the samples will be initialized to 0b00-0b11 and 
+	// for solve threads the samples will be initialized to 0b00-0b11 and
 	// respectfully have start update value 0 or 1
 	size_t noInitNodes = size_t(log2(nodesNo()) - 0.1);
 	size_t noSolveThreads = 1;
@@ -173,9 +173,10 @@ void  D5QuboSolver::solve()
 	}
 	size_t last = nodesNo() - 1;
 	RawElement* pSample = createSample();	// create sample 0b00...0
+    // initialize samples and start Qsolve threads ...
 	for (size_t at = 0; at < noSolveThreads; ++at)		// 
 	{
-		// set initial sample nodes values
+		// set initial sample nodes values, e.g. 0b00...0, 0b01...0, ...
 		size_t atNoBuffer = at;
 		for (size_t atNode = 0; atNode < noInitNodes; atNode++)
 		{
