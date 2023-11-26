@@ -153,21 +153,6 @@ namespace dann5 {
         };
 
         /*** Logical Operator ***/
-        // return Q expression reference with inversion logic, e.g. for
-        // Qbool with id 'x' the logic is '!x' != 'x'
-/*        Qexpr<Q_Type>& operator!()
-        {
-            Qdef::Sp pOut = as_const(*this).root()->output();
-            Qdef::Sp pInverted = pOut->clone();
-            pInverted->id("!" + pOut->id());
-            Qdef::Sp pRoot = as_const(*this).rootDef();
-            QcellOp::Sp pOp =
-                Factory<string, QcellOp>::Instance().create(Qneq::cMark);
-            pOp->operands(pInverted->clone(), {pRoot});
-            root(pOp);
-            return(*this);
-        }
-*/
         // instantiate Q expression with inversion/not logic, e.g. for
         // Qbool with id 'x' the logic is '!x' != 'x'
         Qexpr<Q_Type> operator!() const
@@ -184,20 +169,6 @@ namespace dann5 {
         }
 
         /*** Bitwise Operator ***/
-        // return Q expression reference with inversion logic, e.g. for Q
-        // bit with id 'x' the logic is '~x' != 'x'
-/*        Qexpr<Q_Type>& operator~()
-        {
-            Qdef::Sp pOut = as_const(*this).root()->output();
-            Qdef::Sp pInverted = pOut->clone();
-            pInverted->id("~" + pOut->id());
-            Qdef::Sp pRoot = as_const(*this).rootDef();
-            Qop::Sp pOp = createOpFor(pOut, Qneq::cMark);
-            pOp->operands(pInverted->clone(), {pRoot});
-            root(pOp);
-            return(*this);
-        }
-*/
         // instantiate Q expression with inversion/not logic, e.g. for
         // Qbit with id 'x' the logic is '~x' != 'x'
         Qexpr<Q_Type> operator~() const
@@ -217,33 +188,10 @@ namespace dann5 {
         /*** Bitwise + Logical  Operations ***/
         // Update Q expression with and logic, e.g. for an argument with id
         // 'x' the expression root points to QandOp with [previous root] & 'x'
-/*        Qexpr<Q_Type>& operator&(const Q_Type& right) {
-            Qdef::Sp pRdef = right.clone();
-            Qop::Sp pOp = createOpFor(pRdef, Qand::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with and logic, e.g. for an argument with id
-        // 'x' the expression root points to QandOp with [previous root] & 'x'
         Qexpr<Q_Type> operator&(const Q_Type& right) const {
             return bitwiselogicOp(right.clone(), Qand::cMark);
         };
 
-        // Update Q expression with and logic, e.g. for an argument [right]
-        // the expression root points to QandOp with
-        // [previous root] & [right root]
-/*        Qexpr<Q_Type>& operator&(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef();
-            Qop::Sp pOp = createOpFor(pRdef, Qand::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
         // Update Q expression with and logic, e.g. for an argument [right]
         // the expression root points to QandOp with
         // [previous root] & [right root]
@@ -254,34 +202,10 @@ namespace dann5 {
         // Update Q expression with and logic, e.g. for an argument with id
         // 'x' the expression root points to QandOp with
         // !([previous root] & 'x')
-/*        Qexpr<Q_Type>& nand(const Q_Type& right) {
-            Qdef::Sp pRdef = right.clone();
-            Qop::Sp pOp = createOpFor(pRdef, Qnand::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with and logic, e.g. for an argument with id
-        // 'x' the expression root points to QandOp with
-        // !([previous root] & 'x')
         Qexpr<Q_Type> nand(const Q_Type& right) const {
             return bitwiselogicOp(right.clone(), Qnand::cMark);
         };
-        
-        // Update Q expression with and logic, e.g. for an argument [right]
-        // the expression root points to QandOp with
-        // !([previous root] & [right root])
-/*        Qexpr<Q_Type>& nand(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef();
-            Qop::Sp pOp = createOpFor(pRdef, Qnand::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
+
         // Update Q expression with and logic, e.g. for an argument [right]
         // the expression root points to QandOp with
         // !([previous root] & [right root])
@@ -291,49 +215,16 @@ namespace dann5 {
 
         // Update Q expression with or logic, e.g. for an argument with id 'x'
         // the expression root points to QorOp with [previous root] | 'x'
-/*        Qexpr<Q_Type>& operator|(const Q_Type& right) {
-            Qdef::Sp pRdef = right.clone();
-            Qop::Sp pOp = createOpFor(pRdef, Qor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with or logic, e.g. for an argument with id 'x'
-        // the expression root points to QorOp with [previous root] | 'x'
         Qexpr<Q_Type> operator|(const Q_Type& right) const {
             return bitwiselogicOp(right.clone(), Qor::cMark);
         };
 
         // Update Q expression with or logic, e.g. for an argument [right] the
         // expression root points to QorOp with [previous root] | [right root]
-/*        Qexpr<Q_Type>& operator|(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef();
-            Qop::Sp pOp = createOpFor(pRdef, Qor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with or logic, e.g. for an argument [right] the
-        // expression root points to QorOp with [previous root] | [right root]
         Qexpr<Q_Type> operator|(const Qexpr<Q_Type>& right) const {
             return bitwiselogicOp(right.rootDef()->clone(), Qor::cMark);
         };
 
-        // Update Q expression with or logic, e.g. for an argument with id 'x'
-        // the expression root points to QnorOp with !([previous root] | 'x')
-/*        Qexpr<Q_Type>& nor(const Q_Type& right) {
-            Qdef::Sp pRdef = right.clone();
-            Qop::Sp pOp = createOpFor(pRdef, Qnor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
         // Update Q expression with or logic, e.g. for an argument with id 'x'
         // the expression root points to QnorOp with !([previous root] | 'x')
         Qexpr<Q_Type> nor(const Q_Type& right) const {
@@ -343,34 +234,10 @@ namespace dann5 {
         // Update Q expression with or logic, e.g. for an argument [right] the
         // expression root points to QnorOp with
         // !([previous root] | [right root])
-/*        Qexpr<Q_Type>& nor(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef();
-            Qop::Sp pOp = createOpFor(pRdef, Qnor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with or logic, e.g. for an argument [right] the
-        // expression root points to QnorOp with
-        // !([previous root] | [right root])
         Qexpr<Q_Type> nor(const Qexpr<Q_Type>& right) const {
             return bitwiselogicOp(right.rootDef()->clone(), Qnor::cMark);
         };
 
-        // Unlike Q expression with xor logic, e.g. for an argument with id 'x'
-        // the expression root points to QxorOp with [previous root] ^ 'x'
-/*        Qexpr<Q_Type>& unlike(const Q_Type& right) {
-            Qdef::Sp pRdef = right.clone();
-            Qop::Sp pOp = createOpFor(pRdef, Qxor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-        Qexpr<Q_Type>& operator^(const Q_Type& right) { return unlike(right); };
-*/
         // Update Q expression with xor logic, e.g. for an argument with id 'x'
         // the expression root points to QxorOp with [previous root] ^ 'x'
         Qexpr<Q_Type> unlike(const Q_Type& right) const {
@@ -381,38 +248,12 @@ namespace dann5 {
 
         // Update Q expression with xor logic, e.g. for an argument [right] the
         // expression root points to QxorOp with [previous root] ^ [right root]
-/*        Qexpr<Q_Type>& unlike(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef();
-            Qop::Sp pOp = createOpFor(pRdef, Qxor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-        Qexpr<Q_Type>& operator^(const Qexpr<Q_Type>& right)
-                                                    { return unlike(right); };
-*/
-        // Update Q expression with xor logic, e.g. for an argument [right] the
-        // expression root points to QxorOp with [previous root] ^ [right root]
         Qexpr<Q_Type> unlike(const Qexpr<Q_Type>& right) const {
             return bitwiselogicOp(right.rootDef()->clone(), Qxor::cMark);
         };
         Qexpr<Q_Type> operator^(const Qexpr<Q_Type>& right) const
                                                     { return unlike(right); };
 
-        // alike Q expression with nxor logic, e.g. for an argument with id 'x'
-        // the expression root points to QxorOp with [previous root] *= 'x'
-/*        Qexpr<Q_Type>& alike(const Q_Type& right) {
-            Qdef::Sp pRdef = right.clone();
-            Qop::Sp pOp = createOpFor(pRdef, Qnxor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-        Qexpr<Q_Type>& operator*=(const Q_Type& right) { return alike(right); };
-        Qexpr<Q_Type>& nxor(const Q_Type& right) { return alike(right); };
-*/
         // Update Q expression with nxor logic, e.g. for an argument with id 'x'
         // the expression root points to QxorOp with [previous root] *= 'x'
         Qexpr<Q_Type> alike(const Q_Type& right) const {
@@ -422,20 +263,6 @@ namespace dann5 {
                                                     { return alike(right); };
         Qexpr<Q_Type> nxor(const Q_Type& right) const { return alike(right); };
 
-        // Update Q expression with nxor logic, e.g. for an argument with id 'x'
-        // the expression root points to QxorOp with [previous root] *= 'x'
-/*        Qexpr<Q_Type>& alike(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef();
-            Qop::Sp pOp = createOpFor(pRdef, Qnxor::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-        Qexpr<Q_Type>& operator*=(const Qexpr<Q_Type>& right)
-                                                        { return alike(right);};
-        Qexpr<Q_Type>& nxor(const Qexpr<Q_Type>& right) { return alike(right);};
-*/
         // Update Q expression with nxor logic, e.g. for an argument with id 'x'
         // the expression root points to QxorOp with [previous root] *= 'x'
         Qexpr<Q_Type> alike(const Qexpr<Q_Type>& right) const {
@@ -520,52 +347,16 @@ namespace dann5 {
         /*** Arithmetic ***/
         // Update Q expression with addition, e.g. for an argument with id 'x'
         // the expression root points to Qadd with [previous root] + 'x'
-/*        Qexpr<Q_Type>& operator+(const Q_Type& right) {
-            QnaryOp::Sp pOp =
-                    Factory<string, QnaryOp>::Instance().create(Qadd::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(),
-                                    {as_const(*this).rootDef(), right.clone()});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with addition, e.g. for an argument with id 'x'
-        // the expression root points to Qadd with [previous root] + 'x'
         Qexpr<Q_Type> operator+(const Q_Type& right) const {
             return arithmeticOp(right.clone(), Qadd::cMark);
         };
 
         // Update Q expression with addition, e.g. for an argument [right] the
         // expression root points to Qadd with [previous root] ^ [right root]
-/*        Qexpr<Q_Type>& operator+(const Qexpr<Q_Type>& right) {
-            QnaryOp::Sp pOp =
-                    Factory<string, QnaryOp>::Instance().create(Qadd::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(),
-                                {as_const(*this).rootDef(), right.rootDef()});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with addition, e.g. for an argument [right] the
-        // expression root points to Qadd with [previous root] ^ [right root]
         Qexpr<Q_Type> operator+(const Qexpr<Q_Type>& right) const {
             return arithmeticOp(right.rootDef()->clone(), Qadd::cMark);
         };
 
-        // Update Q expression with subtration, e.g. for an argument with id 'x'
-        // the expression root points to Qsubtract with [previous root] - 'x'
-/*        Qexpr<Q_Type>& operator-(const Q_Type& right) {
-            QnaryOp::Sp pOp =
-                Factory<string, QnaryOp>::Instance().create(Qsubtract::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(),
-                                    {as_const(*this).rootDef(), right.clone()});
-            root(pOp);
-            return(*this);
-        };
-*/
         // Update Q expression with subtration, e.g. for an argument with id 'x'
         // the expression root points to to Qsubtract with [previous root] - 'x'
         Qexpr<Q_Type> operator-(const Q_Type& right) const {
@@ -575,38 +366,10 @@ namespace dann5 {
         // Update Q expression with subtration, e.g. for an argument [right] the
         // expression root points to to Qsubtract with
         // [previous root] - [right root]
-/*        Qexpr<Q_Type>& operator-(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef();
-            QnaryOp::Sp pOp =
-                Factory<string, QnaryOp>::Instance().create(Qsubtract::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(),
-                                {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with subtration, e.g. for an argument [right] the
-        // expression root points to to Qsubtract with
-        // [previous root] - [right root]
         Qexpr<Q_Type> operator-(const Qexpr<Q_Type>& right) const {
             return arithmeticOp(right.rootDef()->clone(), Qsubtract::cMark);
         };
 
-        // Update Q expression with multiplication, e.g. for an argument with id
-        // 'x' the expression root points to Qmultiply with
-        // [previous root] * 'x'
-/*        Qexpr<Q_Type>& operator*(const Q_Type& right) {
-            Qdef::Sp pRdef = right.clone();
-            QnaryOp::Sp pOp =
-                Factory<string, QnaryOp>::Instance().create(Qmultiply::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(),
-                                {as_const(*this).rootDef(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
         // Update Q expression with multiplication, e.g. for an argument with id
         // 'x' the expression root points to Qmultiply with [previous root] * 'x'
         Qexpr<Q_Type> operator*(const Q_Type& right) const {
@@ -616,55 +379,16 @@ namespace dann5 {
         // Update Q expression with multiplication, e.g. for an argument [right]
         // the expression root points to Qmultiply with
         // [previous root] * [right root]
-/*        Qexpr<Q_Type>& operator*(const Qexpr<Q_Type>& right) {
-            Qdef::Sp pRdef = right.rootDef()->clone();
-            QnaryOp::Sp pOp =
-                Factory<string, QnaryOp>::Instance().create(Qmultiply::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(),
-                                {as_const(*this).rootDef()->clone(), pRdef});
-            root(pOp);
-            return(*this);
-        };
-*/
-        // Update Q expression with multiplication, e.g. for an argument [right]
-        // the expression root points to Qmultiply with
-        // [previous root] * [right root]
         Qexpr<Q_Type> operator*(const Qexpr<Q_Type>& right) const {
             return arithmeticOp(right.rootDef()->clone(), Qmultiply::cMark);
         };
 
-
-        // Update Q expression with subtration, e.g. for an argument with id 'x'
-        // the expression root points to Qsubtract with [previous root] / 'x'
-/*        Qexpr<Q_Type>& operator/(const Q_Type& right) {
-            QnaryOp::Sp pOp =
-                    Factory<string, QnaryOp>::Instance().create(Qdivide::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(), {as_const(*this).rootDef(), right.clone()});
-            root(pOp);
-            return(*this);
-        };
-*/
         // Update Q expression with subtration, e.g. for an argument with id 'x'
         // the expression root points to to Qsubtract with [previous root] / 'x'
         Qexpr<Q_Type> operator/(const Q_Type& right) const {
             return arithmeticOp(right.clone(), Qdivide::cMark);
         };
 
-        // Update Q expression with subtration, e.g. for an argument [right] the
-        // expression root points to to Qsubtract with
-        // [previous root] / [right root]
-/*        Qexpr<Q_Type>& operator/(const Qexpr<Q_Type>& right) {
-            QnaryOp::Sp pOp =
-                    Factory<string, QnaryOp>::Instance().create(Qdivide::cMark);
-            Q_Type out(pOp->outId());
-            pOp->operands(out.clone(),
-                                {as_const(*this).rootDef(), right.rootDef()});
-            root(pOp);
-            return(*this);
-        };
-*/
         // Update Q expression with subtration, e.g. for an argument [right] the
         // expression root points to to Qsubtract with
         // [previous root] / [right root]
