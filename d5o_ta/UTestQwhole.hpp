@@ -6,20 +6,18 @@
 #ifndef UTestQwhole_hpp
 #define UTestQwhole_hpp
 
-#include <stdio.h>
 #include <iostream>
 
 using namespace std;
 
-namespace dann5
+namespace dann5test
 {
     // Unit tests of Qwhole operations
     class UTestQwhole
     {
     public:
+        // Default constructor
         UTestQwhole() {};
-        
-        void test(ostream& out);
 
         // execute all unit tests
         void runAll(ostream& out);

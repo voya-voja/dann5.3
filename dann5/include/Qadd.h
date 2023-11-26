@@ -37,8 +37,8 @@ namespace dann5 {
         // An Q addition has identity and should have at least two argument
         size_t& noLastCarryBit() { return mNoLastCarryBit; }
 
-        // Refreshes QnaryOp cells with the addition logic
-        virtual void refresh();
+        // Refreshes QnaryOp cells with the addition logic when inputs are added
+        virtual void refreshOnInputs();
 
         // Assignes the inputs to this additon and returns nullptr
         // Override if assignment of operands should triger creation of different

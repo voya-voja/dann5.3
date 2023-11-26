@@ -136,8 +136,7 @@ Qint& Qint::operator/=(const Qint& right)
 Qexpr<Qint> Qint::operator==(const Qint& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qeq::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+    pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -146,8 +145,7 @@ Qexpr<Qint> Qint::operator==(const Qint& right) const
 Qexpr<Qint> Qint::operator!=(const Qint& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qneq::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+    pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -156,8 +154,7 @@ Qexpr<Qint> Qint::operator!=(const Qint& right) const
 Qexpr<Qint> Qint::operator>(const Qint& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qgt::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+    pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -166,8 +163,7 @@ Qexpr<Qint> Qint::operator>(const Qint& right) const
 Qexpr<Qint> Qint::operator>=(const Qint& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qge::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+    pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -176,8 +172,7 @@ Qexpr<Qint> Qint::operator>=(const Qint& right) const
 Qexpr<Qint> Qint::operator<(const Qint& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qlt::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+    pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -186,8 +181,7 @@ Qexpr<Qint> Qint::operator<(const Qint& right) const
 Qexpr<Qint> Qint::operator<=(const Qint& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qle::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
+    pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -196,9 +190,8 @@ Qexpr<Qint> Qint::operator<=(const Qint& right) const
 Qexpr<Qint> Qint::operator+(const Qint& right) const
 {
 	Qop::Sp pOp(new QaddQints());
-	pOp->inputs({ clone(), right.clone() });
 	Qint out(pOp->outId());
-	pOp->output(out.clone());
+    pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -207,9 +200,8 @@ Qexpr<Qint> Qint::operator+(const Qint& right) const
 Qexpr<Qint> Qint::operator+(const Qexpr<Qint>& right) const
 {
 	Qop::Sp pOp(new QaddQints());
-	pOp->inputs({ clone(), right.rootDef() });
 	Qint out(pOp->outId());
-	pOp->output(out.clone());
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -218,9 +210,8 @@ Qexpr<Qint> Qint::operator+(const Qexpr<Qint>& right) const
 Qexpr<Qint> Qint::operator*(const Qint& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
-	pOp->inputs({ clone(), right.clone() });
-	Qint out(pOp->outId());
-	pOp->output(out.clone());
+    Qint out(pOp->outId());
+    pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -229,9 +220,8 @@ Qexpr<Qint> Qint::operator*(const Qint& right) const
 Qexpr<Qint> Qint::operator*(const Qexpr<Qint>& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
-	pOp->inputs({ clone(), right.rootDef() });
-	Qint out(pOp->outId());
-	pOp->output(out.clone());
+    Qint out(pOp->outId());
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;

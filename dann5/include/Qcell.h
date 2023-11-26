@@ -64,8 +64,18 @@ namespace dann5 {
         Qvalues	mSolutions;
     };
 
-    // Quantum vector of Q cell references
-    typedef vector<Qcell::Sp> Qcells;
+    // An std::vector containing a list of shared pointers pointing to
+    // Q-cell definitions
+    class Qcells : public vector<Qcell::Sp>
+    {
+    public:
+        Qcells() {};
+        Qcells(size_t size) :vector<Qcell::Sp>(size) {};
+        Qcells(const Qdefs& list){
+            for(auto pDef: list)
+                push_back(dynamic_pointer_cast<Qcell>(pDef));
+        };
+    };
 
     // Quantum Eigen vector of Q cell references
     typedef Matrix<Qcell::Sp, Dynamic, 1> QcellVector;

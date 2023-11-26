@@ -11,14 +11,15 @@
 using namespace std;
 
 namespace dann5 {
-    // A Quntum and is a binary operation
+    // A Quantum cell operation is a binary operation on a quantum cell level
     class QcellOp : public Qcell, public Qop
     {
     public:
-        // Qeq's shared pointer
+        // Quantum cell operation shared pointer
         typedef shared_ptr<QcellOp> Sp;
 
-        // Instantiate a Quantum cell operation instance with identity and number of inputs
+        // Instantiate a Quantum cell operation instance with identity and
+        // number of inputs
         QcellOp(const string& id, size_t size);
 
         // Copy constructor
@@ -41,25 +42,39 @@ namespace dann5 {
         virtual Qvalue value() const;
         virtual Qvalue value();
 
-        // convert Quantum cell operation expration into a string as any other operation
-        virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const {
+        // convert Quantum cell operation expration into a string as any other
+        // operation
+        virtual string toString(bool decomposed = false,
+                                size_t forBit = cAllBits) const {
             return Qop::toString(decomposed, forBit);
         };
 
-        // Override to set solution values from the sample set for this deffinition
+        // Override to set solution values from the sample set for this
+        // deffinition
         virtual void add(const Qevaluations& evaluations);
 
-        // Override to return a string representation of a solution value for a sample id
+        // Override to return a string representation of a solution value for a
+        // sample id
         virtual string solution(size_t sampleId) const;
 
-        // Reset the quantum operation into its initial state without solutions by clearing
-        // all solution samples
+        // Reset the quantum operation into its initial state without solutions
+        // by clearing all solution samples
         virtual void reset();
 
     protected:
         virtual Qvalue calculate(const Qvalues& values) const = 0;
-
     private:
+    };
+
+    // An std::vector containing a list of shared pointers pointing to
+    // Q-cell operations
+    class QcellOps : public vector <QcellOp::Sp>
+    {
+    public:
+        QcellOps(const Qdefs& list){
+            for(auto pDef: list)
+                push_back(dynamic_pointer_cast<QcellOp>(pDef));
+        };
     };
 
     // A Quntum null operation is an empty cell operation
@@ -79,10 +94,13 @@ namespace dann5 {
         ~QnullCellOp() {};
 
         // Return a Qdef's shared pointer pointing to a copy of this object
-        virtual Qdef::Sp clone() const { return Qdef::Sp(new QnullCellOp(*this)); };
+        virtual Qdef::Sp clone() const {
+            return Qdef::Sp(new QnullCellOp(*this));
+        };
 
-        virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const {
-            return ""; // representation of null cell operation is an empty string
+        virtual string toString(bool decomposed = false,
+                                size_t forBit = cAllBits) const {
+            return ""; // present a null cell operation as an empty string
         };
 
     protected:
@@ -91,11 +109,11 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum operator is an abstration of unnary operation
+    // A Quntum operator is an abstration of an unnary operation
     class Qoperator : public QcellOp
     {
     public:
-        // Qeq's shared pointer
+        // Quntum operator's shared pointer
         typedef shared_ptr<Qoperator> Sp;
 
         // Instantiate an Quantum operator instance with its identity
@@ -104,17 +122,17 @@ namespace dann5 {
         // Copy constructor
         Qoperator(const Qoperator& right) : QcellOp(right) {};
 
-        // Destruct Qeq with shared pointers to its Qdef
+        // Destruct Quntum operator
         ~Qoperator() {};
 
-        // overrides output getter to to return utput operand when operation is an output
+        // overrides output getter to  return output operand when operation is
+        // an output
         virtual Qdef::Sp output(size_t forBit = cAllBits) const;
 
         // convert Quantum operator expration into a string
-        virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
-
+        virtual string toString(bool decomposed = false,
+                                size_t forBit = cAllBits) const;
     protected:
-
     private:
     };
 
@@ -129,7 +147,7 @@ namespace dann5 {
         static const string cMark;    // "=="
         static const string cName;    // "equal"
 
-        // Instantiate Qeq instance with '&' identity
+        // Instantiate Qeq instance with '==' identity
         Qeq() : Qoperator(cMark) {};
 
         // Copy constructor
@@ -158,13 +176,13 @@ namespace dann5 {
         static const string cMark;    // "!="
         static const string cName;    // "notequal"
 
-        // Instantiate Qneq instance with '&' identity
+        // Instantiate Qneq instance with '!=' identity
         Qneq() : Qoperator(cMark) {};
 
         // Copy constructor
         Qneq(const Qneq& right) : Qoperator(right) {};
 
-        // Destruct Qneq with shared pointers to its Qdef
+        // Destruct quantum not-equal instance
         ~Qneq() {};
 
         // Return a Qdef's shared pointer pointing to a copy of this object
@@ -340,14 +358,20 @@ namespace dann5 {
 
         // Destruct Qeq with shared pointers to its Qdef
         ~Qcell2outOp() {};
-
-        // overrides output setter to add 2nd output
+        
+        // overrides operands setter to initialize 2nd output
+        virtual void operands(const Qdef::Sp& pOut, const Qdefs& ins);
+        
+        // overrides output setter to initialize 2nd output
         virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
         // Return Q addition result and carry outputs
         virtual Qdefs outputs() const;
 
     protected:
+        // initializes 2nd output
+        inline void initialize(const Qdef::Sp& pOut);
+        
     private:
         Qdef::Sp mpAuxiliary;
     };
@@ -506,11 +530,15 @@ namespace dann5 {
 
         // Destruct Qeq with shared pointers to its Qdef
         ~Qaddition() {};
+        
+        // overrides operands to sync carry output value with this operation
+        // inputs and to initialize carry output
+        virtual void operands(const Qdef::Sp& pOut, const Qdefs& ins);
 
         // overrided inputs setter to sync carry output value with this operation
         virtual void inputs(const Qdefs&);
 
-        // overrides output setter to add carry output
+        // overrides output setter to initialize carry output
         virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
         // Return Q addition result and carry outputs
@@ -522,6 +550,9 @@ namespace dann5 {
     protected:
         // get a reference to carry cell output
         Carry& carry() { return *mpCarry; };
+
+        // initializes carry output
+        inline void initialize();
 
     private:
         Carry::Sp	mpCarry;

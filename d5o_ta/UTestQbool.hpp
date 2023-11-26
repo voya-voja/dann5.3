@@ -8,8 +8,6 @@
 #ifndef UTestQbool_hpp
 #define UTestQbool_hpp
 
-#include <stdio.h>
-
 #include <iostream>
 
 using namespace std;
@@ -20,6 +18,7 @@ namespace dann5test
     class UTestQbool
     {
     public:
+        // Default constructor
         UTestQbool() {};
         
         // execute all unit tests

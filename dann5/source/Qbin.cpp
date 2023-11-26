@@ -120,107 +120,88 @@ Qexpr<Qbin> Qbin::operator~() const
 {
 	Qbin inverted(noqbs(), "~" + Qdef::id());
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qneq::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(inverted.clone());
-
-	Qexpr<Qbin> expr(pOp);
+	pOp->operands(inverted.clone(), {clone()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::operator&(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qand::cMark);
-	pOp->inputs({ clone(), right.clone() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(out.clone(), {clone(), right.clone()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::operator&(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qand::cMark);
-	pOp->inputs({ clone(), right.rootDef() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::nand(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qnand::cMark);
-	pOp->inputs({ clone(), right.clone() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+	pOp->operands(out.clone(), {clone(), right.clone()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::nand(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qnand::cMark);
-	pOp->inputs({ clone(), right.rootDef() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::operator|(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qor::cMark);
-	pOp->inputs({ clone(), right.clone() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(out.clone(), {clone(), right.clone()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::operator|(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qor::cMark);
-	pOp->inputs({ clone(), right.rootDef() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::nor(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qnor::cMark);
-	pOp->inputs({ clone(), right.clone() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+	pOp->operands(out.clone(), {clone(), right.clone()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::nor(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qnor::cMark);
-	pOp->inputs({ clone(), right.rootDef() });
 	Qbin out(pOp->outId());
-	pOp->output(out.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::unlike(const Qbin& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qxor::cMark);
-    pOp->inputs({ clone(), right.clone() });
     Qbin out(pOp->outId());
-    pOp->output(out.clone());
+    pOp->operands(out.clone(), {clone(), right.clone()});
 
     Qexpr<Qbin> expr(pOp);
     return expr;
@@ -229,9 +210,8 @@ Qexpr<Qbin> Qbin::unlike(const Qbin& right) const
 Qexpr<Qbin> Qbin::unlike(const Qexpr<Qbin>& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qxor::cMark);
-    pOp->inputs({ clone(), right.rootDef() });
     Qbin out(pOp->outId());
-    pOp->output(out.clone());
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
 
     Qexpr<Qbin> expr(pOp);
     return expr;
@@ -240,9 +220,8 @@ Qexpr<Qbin> Qbin::unlike(const Qexpr<Qbin>& right) const
 Qexpr<Qbin> Qbin::alike(const Qbin& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qnxor::cMark);
-    pOp->inputs({ clone(), right.clone() });
     Qbin out(pOp->outId());
-    pOp->output(out.clone());
+    pOp->operands(out.clone(), {clone(), right.clone()});
 
     Qexpr<Qbin> expr(pOp);
     return expr;
@@ -251,9 +230,8 @@ Qexpr<Qbin> Qbin::alike(const Qbin& right) const
 Qexpr<Qbin> Qbin::alike(const Qexpr<Qbin>& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qnxor::cMark);
-    pOp->inputs({ clone(), right.rootDef() });
     Qbin out(pOp->outId());
-    pOp->output(out.clone());
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
 
     Qexpr<Qbin> expr(pOp);
     return expr;
@@ -262,39 +240,31 @@ Qexpr<Qbin> Qbin::alike(const Qexpr<Qbin>& right) const
 Qexpr<Qbin> Qbin::operator==(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qeq::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(clone(), {right.clone()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::operator==(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qeq::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.rootDef());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(clone(), {right.rootDef()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::operator!=(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qneq::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.clone());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(clone(), {right.clone()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }
 
 Qexpr<Qbin> Qbin::operator!=(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qneq::cMark);
-	pOp->inputs({ clone() });
-	pOp->output(right.rootDef());
-
-	Qexpr<Qbin> expr(pOp);
+    pOp->operands(clone(), {right.rootDef()});
+    Qexpr<Qbin> expr(pOp);
 	return expr;
 }

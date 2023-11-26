@@ -7,6 +7,9 @@
 
 #ifndef QuboCompiler_h
 #define QuboCompiler_h
+#pragma once
+
+#include <pybind11/pybind11.h>
 
 #include <Qcompiler.h>
 

@@ -6,7 +6,7 @@
 
 #include <QnaryOp.h>
 #include <QcellOps.h>
-#include <QnaryOperation.h>
+#include <QnaryOps.h>
 #include <Qcompiler.h>
 
 using namespace std;
@@ -22,19 +22,13 @@ namespace dann5 {
 
         // An Q derived operation has identity and substitution operation
         //  to be used to perform quantum calculations
-        QderivedOp(const string& id, const QnaryOp& op);
+        QderivedOp(const string& id, const QnaryOp& substitueOp);
 
         // Copy constructor
         QderivedOp(const QderivedOp& right);
 
         // Destruct the Q subtractition instance with a shared pointer to its carry operand
         ~QderivedOp() {};
-
-        // Returns the number of Q bits that the Q binary holds
-//			virtual size_t noqbs() const noexcept { return mEq.noqbs(); };
-
-        // Overridden output setter to refresh mAdd object
-        virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits);
 
         // Return a Q add representation when decomposed.
         // Otherwise, return a string representation of a Q subbtract operation
@@ -45,25 +39,27 @@ namespace dann5 {
             return QnaryOp::toString(decomposed, forBit);
         };
 
-        // return Qubo presentation of this Q operation
-        virtual void compile(Qcompiler compiler) const
+        // Compiles this Qnary operation to generate quantum solver code
+        virtual void compile(Qcompiler& compiler) const
         {
             return mEq.compile(compiler);
         };
 
-        const QnaryOperation<Qeq>& equalOp() const { return mEq; };
+        const QnaryEq& equalOp() const { return mEq; };
+        
         QnaryOp::Sp substituteOp() const
         {
-            return static_pointer_cast<QnaryOp>(as_const(mEq).Qop::inputs()[0]);
+            return mpSubstituteOp;
         };
 
     protected:
-        // Refreshes QnaryOp cells with the subtractition logic
-        virtual void refresh();
+        // Refreshes QnaryOp cells with the subtractition logic when inputs are
+        // added
+        virtual void refreshOnInputs();
 
-        virtual Qvalue calculate(const Qvalues& values) const;
     private:
-        QnaryOperation<Qeq> mEq;	// Qeq operand is used to form derived expression
+        QnaryEq mEq;	// QnaryEq operand is used to form derived expression
+        QnaryOp::Sp  mpSubstituteOp;// The substitute operation
     };
 
     // A Q subtract is a specific implementation of a Q derived operation

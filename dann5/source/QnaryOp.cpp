@@ -25,17 +25,23 @@ void QnaryOp::resize(size_t size, Qvalue value)
 	}
 }
 
+void QnaryOp::operands(const Qdef::Sp& pOut, const Qdefs& ins)
+{
+    Qop::operands(pOut, ins);
+    refresh();
+}
+
 void QnaryOp::inputs(const Qdefs& args)
 {
 	Qop::inputs(args);
-	refresh();
+    refreshOnInputs();
 }
 
 void QnaryOp::append(Qdef::Sp argument)
 {
 	Qop::append(argument);
 	if (Qop::inputs().size() == noInputs())
-		refresh();
+		refreshOnInputs();
 }
 
 Qdef::Sp QnaryOp::output(size_t forBit) const
@@ -53,37 +59,46 @@ Qdef::Sp QnaryOp::output(size_t forBit) const
 void QnaryOp::output(const Qdef::Sp& pOut, size_t forBit)
 {
 	if (forBit == cAllBits)
-	{
 		Qop::output(pOut, forBit);
-		Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(pOut);
-		if (pNaryOut != nullptr)
-		{
-			Qcells& logic = cells();
-			size_t size = noqbs();
-			for (size_t atBit = 0; atBit < size; atBit++)
-			{
-				Qop::Sp pOp = dynamic_pointer_cast<Qop>(logic[atBit]);
-				if (pOp == nullptr)
-				{
-					QnullCellOp::Sp pNullOp(new QnullCellOp());
-					logic[atBit] = pNullOp;
-					pOp = pNullOp;
-				}
-				pOp->output(as_const(*pNaryOut)[atBit], atBit);
-			}
-		}
-	}
 	else
 	{
-		Qnary::Sp pNaryOutput = dynamic_pointer_cast<Qnary>(Qop::output());
-		pNaryOutput->set(dynamic_pointer_cast<Qcell>(pOut), forBit);
+		Qnary::Sp pNaryOutput = static_pointer_cast<Qnary>(Qop::output());
+        Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
+        if(pCellOut == nullptr)
+            throw logic_error("ERROR @QnaryOp: Output is not Qcell or is not defined!");
+		pNaryOutput->set(pCellOut, forBit);
 	}
+    refreshOnOutput();
+}
+
+void QnaryOp::refreshOnOutput()
+{
+    Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(Qop::output());
+    if (pNaryOut == nullptr)
+        throw logic_error("ERROR @QnaryOp: Output is not Qnary or is not defined!");
+    size_t size = noqbs(), outSize = pNaryOut->noqbs();
+    if(size > outSize)
+        pNaryOut->resize(size);
+    else
+        resize(outSize);
+    Qcells& logic = cells();
+    for (size_t atBit = 0; atBit < size; atBit++)
+    {
+        Qop::Sp pOp = dynamic_pointer_cast<Qop>(logic[atBit]);
+        if (pOp == nullptr)
+        {
+            QnullCellOp::Sp pNullOp(new QnullCellOp());
+            logic[atBit] = pNullOp;
+            pOp = pNullOp;
+        }
+        pOp->output(as_const(*pNaryOut)[atBit], atBit);
+    }
 }
 
 string QnaryOp::toString(bool decomposed, size_t forBit) const
 {
-	const Qcells& logic = cells();
-	if (!decomposed) return Qop::toString(decomposed, forBit);
+	if (!decomposed) return Qop::toString();
+    const Qcells& logic = cells();
 	if (forBit != cAllBits)
 	{
 		size_t size = logic.size();

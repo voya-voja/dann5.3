@@ -6,7 +6,7 @@
 #include <Qadd.h>
 #include <QderivedOps.h>
 #include <Qmultiply.h>
-#include <QnaryOperation.h>
+#include <QnaryOps.h>
 
 using namespace std;
 using namespace dann5;
@@ -39,8 +39,8 @@ const string Qneq::cMark = "!=";
 const string Qneq::cName = "notequal";
 
 /**** Factory Creator's of quantum not equal operator  ****/
-DefaultCreator<string, QcellOp, Qneq> gNotOperatorCreator_m(Qneq::cMark);
-DefaultCreator<string, QcellOp, Qneq> gNotOperatorCreator(Qneq::cName);
+DefaultCreator<string, QcellOp, Qneq> gNeOperatorCreator_m(Qneq::cMark);
+DefaultCreator<string, QcellOp, Qneq> gNeOperatorCreator(Qneq::cName);
 
 /**** Quantum less than operator identifiers  ****/
 const string Qlt::cMark = "<";
@@ -151,100 +151,100 @@ template class dann5::Factory<string, QnaryOp>::Creator<string, QnaryOp>;
 #endif
 
 /**** Quantum equal nary-operator identifiers  ****/
-template<> const string QnaryOperation<Qeq>::cMark = Qeq::cMark;
-template<> const string QnaryOperation<Qeq>::cName = Qeq::cName;
+const string QnaryEq::cMark = Qeq::cMark;
+const string QnaryEq::cName = Qeq::cName;
 
 /**** Factory Creator's of quantum equal nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qeq> > gEqualNaryOperatorCreator_m(QnaryOperation<Qeq>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qeq> > gEqualNaryOperatorCreator(QnaryOperation<Qeq>::cName);
+DefaultCreator<string, QnaryOp, QnaryEq> gNaryEqualOperatorCreator_m(QnaryEq::cMark);
+DefaultCreator<string, QnaryOp, QnaryEq> gNaryEqualOperatorCreator(QnaryEq::cName);
 
 /**** Quantum not equal nary-operator identifiers  ****/
-template<> const string QnaryOperation<Qneq>::cMark = Qneq::cMark;
-template<> const string QnaryOperation<Qneq>::cName = Qneq::cName;
+const string QnaryNeq::cMark = Qneq::cMark;
+const string QnaryNeq::cName = Qneq::cName;
 
 /**** Factory Creator's of quantum not equal nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qneq> > gNotNaryOperatorCreator_m(Qneq::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qneq> > gNotNaryOperatorCreator(Qneq::cName);
+DefaultCreator<string, QnaryOp, QnaryNeq> gNaryNeOperatorCreator_m(QnaryNeq::cMark);
+DefaultCreator<string, QnaryOp, QnaryNeq> gNaryNeOperatorCreator(QnaryNeq::cName);
 
 /**** Quantum less than nary-operator identifiers  ****/
-template<> const string QnaryOperation<Qlt>::cMark = Qlt::cMark;
-template<> const string QnaryOperation<Qlt>::cName = Qlt::cName;
+const string QnaryLt::cMark = Qlt::cMark;
+const string QnaryLt::cName = Qlt::cName;
 
 /**** Factory Creator's of quantum less than nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qlt> > gLtNaryOperatorCreator_m(QnaryOperation<Qlt>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qlt> > gLtNaryOperatorCreator(QnaryOperation<Qlt>::cName);
+DefaultCreator<string, QnaryOp, QnaryLt> gNaryLtOperatorCreator_m(QnaryLt::cMark);
+DefaultCreator<string, QnaryOp, QnaryLt> gNaryLtOperatorCreator(QnaryLt::cName);
 
 /**** Quantum less than or equal nary-operator identifiers  ****/
-template<> const string QnaryOperation<Qle>::cMark = Qle::cMark;
-template<> const string QnaryOperation<Qle>::cName = Qle::cName;
+const string QnaryLe::cMark = Qle::cMark;
+const string QnaryLe::cName = Qle::cName;
 
 /**** Factory Creator's of quantum less than or equal nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qle> > gLeNaryOperatorCreator_m(QnaryOperation<Qle>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qle> > gLeNaryOperatorCreator(QnaryOperation<Qle>::cName);
+DefaultCreator<string, QnaryOp, QnaryLe> gNaryLeOperatorCreator_m(QnaryLe::cMark);
+DefaultCreator<string, QnaryOp, QnaryLe> gNaryLeOperatorCreator(QnaryLe::cName);
 
 /**** Quantum greater than nary-operator identifiers  ****/
-template<> const string QnaryOperation<Qgt>::cMark = Qgt::cMark;
-template<> const string QnaryOperation<Qgt>::cName = Qgt::cName;
+template<> const string QnaryBiOp<Qgt>::cMark = Qgt::cMark;
+template<> const string QnaryBiOp<Qgt>::cName = Qgt::cName;
 
 /**** Factory Creator's of quantum greater than nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qgt> > gGtNaryOperatorCreator_m(QnaryOperation<Qgt>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qgt> > gGtNaryOperatorCreator(QnaryOperation<Qgt>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qgt> > gGtNaryOperatorCreator_m(QnaryBiOp<Qgt>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qgt> > gGtNaryOperatorCreator(QnaryBiOp<Qgt>::cName);
 
 /**** Quantum greater than or equal nary-operator identifiers  ****/
-template<> const string QnaryOperation<Qge>::cMark = Qge::cMark;
-template<> const string QnaryOperation<Qge>::cName = Qge::cName;
+template<> const string QnaryBiOp<Qge>::cMark = Qge::cMark;
+template<> const string QnaryBiOp<Qge>::cName = Qge::cName;
 
 /**** Factory Creator's of quantum greater than or equal nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qge> > gGeNaryOperatorCreator_m(QnaryOperation<Qge>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qge> > gGeNaryOperatorCreator(QnaryOperation<Qge>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qge> > gGeNaryOperatorCreator_m(QnaryBiOp<Qge>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qge> > gGeNaryOperatorCreator(QnaryBiOp<Qge>::cName);
 
 /**** Quantum and binary nary-operation identifiers  ****/
-template<> const string QnaryOperation<Qand>::cMark = Qand::cMark;
-template<> const string QnaryOperation<Qand>::cName = Qand::cName;
+template<> const string QnaryBiOp<Qand>::cMark = Qand::cMark;
+template<> const string QnaryBiOp<Qand>::cName = Qand::cName;
 
 /**** Factory Creator's of quantum and binary nary-operation ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qand> > gAndNaryOpCreator_m(QnaryOperation<Qand>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qand> > gAndNaryOpCreator(QnaryOperation<Qand>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qand> > gAndNaryOpCreator_m(QnaryBiOp<Qand>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qand> > gAndNaryOpCreator(QnaryBiOp<Qand>::cName);
 
 /**** Quantum nAnd binary nary-operation identifiers  ****/
-template<> const string QnaryOperation<Qnand>::cMark = Qnand::cMark;
-template<> const string QnaryOperation<Qnand>::cName = Qnand::cName;
+template<> const string QnaryBiOp<Qnand>::cMark = Qnand::cMark;
+template<> const string QnaryBiOp<Qnand>::cName = Qnand::cName;
 
 /**** Factory Creator's of quantum nAnd binary nary-operation ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qnand> > gNandNaryOpCreator_m(QnaryOperation<Qnand>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qnand> > gNandNaryOpCreator(QnaryOperation<Qnand>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qnand> > gNandNaryOpCreator_m(QnaryBiOp<Qnand>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qnand> > gNandNaryOpCreator(QnaryBiOp<Qnand>::cName);
 
 /**** Quantum or binary nary-operation identifiers  ****/
-template<> const string QnaryOperation<Qor>::cMark = Qor::cMark;
-template<> const string QnaryOperation<Qor>::cName = Qor::cName;
+template<> const string QnaryBiOp<Qor>::cMark = Qor::cMark;
+template<> const string QnaryBiOp<Qor>::cName = Qor::cName;
 
 /**** Factory Creator's of quantum or binary nary-operation ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qor> > gOrNaryOpCreator_m(QnaryOperation<Qor>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qor> > gOrNaryOpCreator(QnaryOperation<Qor>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qor> > gOrNaryOpCreator_m(QnaryBiOp<Qor>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qor> > gOrNaryOpCreator(QnaryBiOp<Qor>::cName);
 
 /**** Quantum nOr binary nary-operation identifiers  ****/
-template<> const string QnaryOperation<Qnor>::cMark = Qnor::cMark;
-template<> const string QnaryOperation<Qnor>::cName = Qnor::cName;
+template<> const string QnaryBiOp<Qnor>::cMark = Qnor::cMark;
+template<> const string QnaryBiOp<Qnor>::cName = Qnor::cName;
 
 /**** Factory Creator's of quantum nOr binary nary-operation ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qnor>> gNorNaryOpCreator_m(QnaryOperation<Qnor>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qnor>> gNorNaryOpCreator(QnaryOperation<Qnor>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qnor>> gNorNaryOpCreator_m(QnaryBiOp<Qnor>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qnor>> gNorNaryOpCreator(QnaryBiOp<Qnor>::cName);
 
 /**** Quantum xOr nary-addition identifiers  ****/
-template<> const string QnaryOperation<Qxor>::cMark = Qxor::cMark;
-template<> const string QnaryOperation<Qxor>::cName = Qxor::cName;
+template<> const string QnaryBiOp<Qxor>::cMark = Qxor::cMark;
+template<> const string QnaryBiOp<Qxor>::cName = Qxor::cName;
 
 /**** Factory Creator's of quantum xOr binary nary-addition ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qxor>> gXorNaryOpCreator_m(QnaryOperation<Qxor>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qxor>> gXorNaryOpCreator(QnaryOperation<Qxor>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qxor>> gXorNaryOpCreator_m(QnaryBiOp<Qxor>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qxor>> gXorNaryOpCreator(QnaryBiOp<Qxor>::cName);
 
 /**** Quantum nXor nary-addition identifiers  ****/
-template<> const string QnaryOperation<Qnxor>::cMark = Qnxor::cMark;
-template<> const string QnaryOperation<Qnxor>::cName = Qnxor::cName;
+template<> const string QnaryBiOp<Qnxor>::cMark = Qnxor::cMark;
+template<> const string QnaryBiOp<Qnxor>::cName = Qnxor::cName;
 
 /**** Factory Creator's of quantum nXor binary nary-addition ****/
-DefaultCreator<string, QnaryOp, QnaryOperation<Qnxor>> gNxorNaryOpCreator_m(QnaryOperation<Qnxor>::cMark);
-DefaultCreator<string, QnaryOp, QnaryOperation<Qnxor>> gNxorNaryOpCreator(QnaryOperation<Qnxor>::cName);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qnxor>> gNxorNaryOpCreator_m(QnaryBiOp<Qnxor>::cMark);
+DefaultCreator<string, QnaryOp, QnaryBiOp<Qnxor>> gNxorNaryOpCreator(QnaryBiOp<Qnxor>::cName);
 
 /**** Addition binary operation ****/
 

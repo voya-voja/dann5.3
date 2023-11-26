@@ -49,19 +49,30 @@ std::size_t Qop::noqbs() const noexcept
 	return(size);
 }
 
-void Qop::releaseArguments()
+void Qop::operands(const Qdef::Sp& pOut, const Qdefs& ins)
 {
-	while (mInputs.size() > 0)
-		mInputs.pop_back();
+    if (ins.size() != mNoInputs)
+        throw invalid_argument("ERROR @Qop: In operands number is " + to_string(ins.size())
+            + " instead of " + to_string(mNoInputs));
+    for (auto& pIn : ins)
+        mInputs.push_back(pIn);
+    mpOutput = pOut;
 }
 
-void Qop::inputs(const Qdefs& operands)
+void Qop::releaseOperands()
 {
-	if (operands.size() != mNoInputs)
-		throw invalid_argument("Arguments number is " + to_string(operands.size())
-			+ " instead of " + to_string(noInputs()));
-	for (auto& pOp : operands)
-		mInputs.push_back(pOp);
+    while (mInputs.size() > 0)
+        mInputs.pop_back();
+    mpOutput = nullptr;
+}
+
+void Qop::inputs(const Qdefs& ins)
+{
+	if (ins.size() != mNoInputs)
+		throw invalid_argument("ERROR @Qop: In operands number is " + to_string(ins.size())
+			+ " instead of " + to_string(mNoInputs));
+	for (auto& pIn : ins)
+		mInputs.push_back(pIn);
 }
 
 void Qop::append(Qdef::Sp argument)
@@ -86,12 +97,6 @@ void Qop::output(const Qdef::Sp& pOut, size_t forBit)
 	if (forBit == cAllBits)
 	{
 		mpOutput = pOut;
-		Qnary::Sp pNary = dynamic_pointer_cast<Qnary>(mpOutput);
-		size_t size = noqbs();
-		if (pNary != nullptr && size != pNary->noqbs())
-		{
-			pNary->resize(size);
-		}
 	}
 	else
 	{

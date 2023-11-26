@@ -7,6 +7,9 @@
 
 #ifndef Qcompiler_h
 #define Qcompiler_h
+#pragma once
+
+#include <pybind11/pybind11.h>
 
 namespace dann5
 {

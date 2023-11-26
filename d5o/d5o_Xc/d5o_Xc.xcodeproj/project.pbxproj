@@ -64,7 +64,7 @@
 		A2A39AF72B04436600BAFFEF /* Qevaluation.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A39AF52B04436600BAFFEF /* Qevaluation.h */; };
 		A2A39B062B07EB3100BAFFEF /* QuboAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A39B042B07EB3100BAFFEF /* QuboAnalyzer.cpp */; };
 		A2A39B072B07EB3100BAFFEF /* QuboAnalyzer.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A39B052B07EB3100BAFFEF /* QuboAnalyzer.h */; };
-		A2A39B092B07EBA200BAFFEF /* QnaryOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A39B082B07EBA200BAFFEF /* QnaryOperation.h */; };
+		A2A39B092B07EBA200BAFFEF /* QnaryOps.h in Headers */ = {isa = PBXBuildFile; fileRef = A2A39B082B07EBA200BAFFEF /* QnaryOps.h */; };
 		A2A534D328C6C09F002C4145 /* d5o_Xc.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A2A534D228C6C09E002C4145 /* d5o_Xc.hpp */; };
 		A2A534D528C6C09F002C4145 /* d5o_XcPriv.hpp in Headers */ = {isa = PBXBuildFile; fileRef = A2A534D428C6C09F002C4145 /* d5o_XcPriv.hpp */; };
 		A2A534D728C6C09F002C4145 /* d5o_Xc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A534D628C6C09F002C4145 /* d5o_Xc.cpp */; };
@@ -133,7 +133,7 @@
 		A2A39AF52B04436600BAFFEF /* Qevaluation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qevaluation.h; path = ../../dann5/include/Qevaluation.h; sourceTree = "<group>"; };
 		A2A39B042B07EB3100BAFFEF /* QuboAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuboAnalyzer.cpp; path = ../../dann5/ocean/source/QuboAnalyzer.cpp; sourceTree = "<group>"; };
 		A2A39B052B07EB3100BAFFEF /* QuboAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuboAnalyzer.h; path = ../../dann5/ocean/include/QuboAnalyzer.h; sourceTree = "<group>"; };
-		A2A39B082B07EBA200BAFFEF /* QnaryOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QnaryOperation.h; path = ../../dann5/include/QnaryOperation.h; sourceTree = "<group>"; };
+		A2A39B082B07EBA200BAFFEF /* QnaryOps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QnaryOps.h; path = ../../dann5/include/QnaryOps.h; sourceTree = "<group>"; };
 		A2A534CF28C6C09E002C4145 /* d5o2.cpython-310-darwin.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "d5o2.cpython-310-darwin.so"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2A534D228C6C09E002C4145 /* d5o_Xc.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = d5o_Xc.hpp; sourceTree = "<group>"; };
 		A2A534D428C6C09F002C4145 /* d5o_XcPriv.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = d5o_XcPriv.hpp; sourceTree = "<group>"; };
@@ -188,7 +188,6 @@
 		A2A534DD28C6C0C1002C4145 /* dann5 */ = {
 			isa = PBXGroup;
 			children = (
-				A2A39B082B07EBA200BAFFEF /* QnaryOperation.h */,
 				A2A5353328C6C16B002C4145 /* Factory.h */,
 				A2A5353428C6C16B002C4145 /* Logger.cpp */,
 				A2A5353128C6C16B002C4145 /* Logger.h */,
@@ -227,6 +226,7 @@
 				A20508072B00371100165038 /* Qnary.h */,
 				A20508182B00371200165038 /* QnaryOp.cpp */,
 				A20508012B00371100165038 /* QnaryOp.h */,
+				A2A39B082B07EBA200BAFFEF /* QnaryOps.h */,
 				A205080F2B00371200165038 /* Qop.cpp */,
 				A20507E62B00368000165038 /* Qop.h */,
 				A20508062B00371100165038 /* Qroutine.cpp */,
@@ -286,7 +286,7 @@
 				A218D4B729E750DB0028F469 /* ULint.h in Headers */,
 				A20507FC2B00368100165038 /* Qroutine.h in Headers */,
 				A2A5353728C6C16B002C4145 /* Factory.h in Headers */,
-				A2A39B092B07EBA200BAFFEF /* QnaryOperation.h in Headers */,
+				A2A39B092B07EBA200BAFFEF /* QnaryOps.h in Headers */,
 				A20508242B00371200165038 /* Qmultiply.h in Headers */,
 				A20507D52AFF001A00165038 /* Qsolver.h in Headers */,
 				A20508202B00371200165038 /* Qwhole.h in Headers */,

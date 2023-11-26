@@ -31,22 +31,29 @@ namespace dann5 {
         // Destruct Q operation with shared pointers to its inputs
         ~Qop();
 
-        // override to return true, if the operation needs to be treated just as a definition
+        // override to return true, if the operation needs to be treated just
+        // as a definition
         virtual bool asDefinition() { return false; };
+        
+        // Sets quantum operation output and the list of inputs
+        // throws invalid_argument exception when # of inputs in the list is not
+        // the same as value defined by noInputs() const
+        virtual void operands(const Qdef::Sp& pOut, const Qdefs& ins);
 
-        // The Qop's number of inputs
+        // Remove all the Qdefs from the list of inputs and
+        // set mpOutput to nullptr
+        void releaseOperands();
+
+        // The Qop's instantionation specification of the number of inputs
         size_t noInputs() const { return mNoInputs; }
 
         // Return Q operation inputs
         const Qdefs& inputs() const { return mInputs; };
 
-        // Set Q operation inputs
-        // throw invalid_argument exception when # of inputs in the list is not
+        // Sets Q operation inputs
+        // throws invalid_argument exception when # of inputs in the list is not
         // the same as value defined by noInputs() const
         virtual void inputs(const Qdefs&);
-
-        // Remove all the Qdefs from the list of inputs
-        void releaseArguments();
 
         // add Q operation input to the list of the inputs
         // throw invalid_argument exception preventing a new argument to be added to

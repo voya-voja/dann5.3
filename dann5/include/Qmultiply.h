@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <pybind11/pybind11.h>
 
 #include <utility>
@@ -33,8 +32,8 @@ namespace dann5 {
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qmultiply(*this)); };
 
     protected:
-        // Refreshes the multiplication logic
-        virtual void refresh();
+        // Refreshes the multiplication logic when inputs are added
+        virtual void refreshOnInputs();
 
         // Return Q bit definition matrix that is result of matrix multiplication
         // of two Q bit vectors, this and right Q expression objects

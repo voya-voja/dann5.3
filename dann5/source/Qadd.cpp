@@ -17,7 +17,7 @@ Qadd::Qadd(const Qadd& right)
 Qadd::~Qadd()
 {}
 
-void Qadd::refresh()
+void Qadd::refreshOnInputs()
 {
 	size_t size = Qop::noqbs() + mNoLastCarryBit;
 	Qcells& addCells = cells();

@@ -8,27 +8,43 @@ using namespace dann5;
 
 /*** Qblock of quantum statements ***/
 
-
 size_t Qblock::noqbs() const noexcept
 {
 	size_t size = 0;
 	for (auto pStatement : mStatements)
-	{
-		size_t atSize = pStatement->noqbs();
-		if (size < atSize) size = atSize;
-	}
+        size += pStatement->noqbs();
 	return(size);
 }
 
-
 string Qblock::toString(bool decomposed, size_t forBit) const
 {
-	string blockStr("{");
-	for (auto pStatement : mStatements)
-	{
-		blockStr += "\n\t" + pStatement->toString(decomposed, forBit);
-	}
-	blockStr += "\n}";
+    string blockStr("");
+    if(!decomposed)
+    {
+        blockStr = "{";
+        for (auto pStatement : mStatements)
+            blockStr += "\n\t" + pStatement->toString(decomposed, forBit);
+        blockStr += "\n}";
+    }
+    else
+    {
+        if(forBit == 0)
+            blockStr = "{";
+        size_t atBit = forBit;
+        for (auto pStatement : mStatements)
+        {
+            size_t stmntNoqbts = pStatement->noqbs();
+            if(atBit < stmntNoqbts)
+            {
+                blockStr += " " + pStatement->toString(decomposed, atBit);
+                break;
+            }
+            if(atBit >= stmntNoqbts)
+                atBit -= stmntNoqbts;
+        }
+        if(forBit == noqbs() - 1)
+            blockStr += " }";
+    }
 	return(blockStr);
 }
 
@@ -51,10 +67,14 @@ void Qblock::add(const Qevaluations& samples)
 
 string Qblock::solution(size_t forBit) const
 {
+    size_t atBit = forBit;
 	string strSol("");
 	for (auto pStatement : mStatements)
 	{
-		strSol += " " + pStatement->solution(forBit);
+        size_t stmntNoqbts = pStatement->noqbs();
+        if(atBit > stmntNoqbts)
+            atBit -= stmntNoqbts;
+        strSol += " " + pStatement->solution(atBit);
 	}
 	return strSol;
 }

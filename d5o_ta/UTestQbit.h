@@ -8,8 +8,6 @@
 #ifndef UTestQbit_h
 #define UTestQbit_h
 
-#include <stdio.h>
-
 #include <iostream>
 
 using namespace std;
@@ -20,6 +18,7 @@ namespace dann5test
     class UTestQbit
     {
     public:
+        // Default constructor
         UTestQbit() {};
         
         // execute all unit tests

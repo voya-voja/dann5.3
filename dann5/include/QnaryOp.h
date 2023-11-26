@@ -38,9 +38,15 @@ namespace dann5 {
         // is greater than the current container size, the content is expanded by
         // inserting at the end as many Q null operations as needed.
         virtual void resize(size_t size, Qvalue value = 0);
-
-        // Set Q operation inputs
-        // throw invalid_argument exception when # of inputs in the list is not
+        
+        // Set quantum operation output and the list of inputs and calls
+        // refresh() method
+        // throws invalid_argument exception when # of inputs in the list is not
+        // the same as value defined by noInputs() const
+        virtual void operands(const Qdef::Sp& pOut, const Qdefs& ins);
+        
+        // Set Q operation inputs and calls refresh() method
+        // throws invalid_argument exception when # of inputs in the list is not
         // the same as value defined by noInputs() const
         virtual void inputs(const Qdefs&);
 
@@ -72,8 +78,25 @@ namespace dann5 {
     protected:
         // Override to refresh the Q-nary operation cells according to the derived
         // operation logic
-        virtual void refresh() = 0;
+        virtual void refresh(){
+            refreshOnInputs();
+            refreshOnOutput();
+        };
 
+        virtual void refreshOnInputs() = 0;
+        virtual void refreshOnOutput();
     private:
     };
+
+    // An std::vector containing a list of shared pointers pointing to
+    // Q-nary operations
+    class QnaryOps : public vector <QnaryOp::Sp>
+    {
+    public:
+        QnaryOps(const Qdefs& list){
+            for(auto pDef: list)
+                push_back(dynamic_pointer_cast<QnaryOp>(pDef));
+        };
+    };
+
 };

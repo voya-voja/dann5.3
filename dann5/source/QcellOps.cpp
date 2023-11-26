@@ -38,7 +38,7 @@ void QcellOp::output(const Qdef::Sp& pOut, size_t forBit)
 				pCellOut->value(v);
 		}
 	}
-	Qop::output(pOut, forBit);
+	Qop::output(pOut);
 }
 
 void QcellOp::value(Qvalue v)
@@ -95,10 +95,10 @@ void QcellOp::reset()
 
 Qdef::Sp Qoperator::output(size_t forBit) const
 {
-	Qdef::Sp pOut = Qop::output(forBit);
+	Qdef::Sp pOut = Qop::output();
 	Qop::Sp pOop = dynamic_pointer_cast<Qop>(pOut);
 	if (pOop != nullptr)
-		pOut = pOop->output(forBit);
+		pOut = pOop->output();
 	return(pOut);
 }
 
@@ -106,39 +106,39 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 {
 	string str("?"), rest(""), rStr("");
 	if (!decomposed) rStr += "(";
-	Qdef::Sp pIn = Qop::inputs()[0];
-	if (pIn != nullptr)
-	{
-		str = pIn->toString(decomposed, forBit);
-		if (decomposed)
-		{
-			// if operand is a sub-operation
-			Qop::Sp pOp = dynamic_pointer_cast<Qop>(pIn);
-			if (pOp != nullptr)
-			{
-				rest += str;
-				str = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
-			}
-		}
-	}
+    Qdef::Sp pOut = Qop::output();
+    if (pOut != nullptr)
+    {
+        str = pOut->toString(decomposed);
+        if (decomposed)
+        {
+            // if operand is a sub-operation
+            Qop::Sp pOp = dynamic_pointer_cast<Qop>(pOut);
+            if (pOp != nullptr)
+            {
+                if (rest != "") rest += "; ";
+                rest += str;
+                str = pOp->output()->toString(decomposed); // extract sub-operation output
+            }
+        }
+    }
 	rStr += str + " " + identifier() + " ";
-	Qdef::Sp pOut = Qop::output();
-	if (pOut != nullptr)
-	{
-		str = pOut->toString(decomposed, forBit);
-		if (decomposed)
-		{
-			// if operand is a sub-operation
-			Qop::Sp pOp = dynamic_pointer_cast<Qop>(pOut);
-			if (pOp != nullptr)
-			{
-				if (rest != "") rest += "; ";
-				rest += str;
-				str = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
-			}
-		}
-		rStr += str;
-	}
+    Qdef::Sp pIn = Qop::inputs()[0];
+    if (pIn != nullptr)
+    {
+        str = pIn->toString(decomposed);
+        if (decomposed)
+        {
+            // if operand is a sub-operation
+            Qop::Sp pOp = dynamic_pointer_cast<Qop>(pIn);
+            if (pOp != nullptr)
+            {
+                rest += str;
+                str = pOp->output()->toString(decomposed); // extract sub-operation output
+            }
+        }
+        rStr += str;
+    }
 	if (!decomposed)
 		rStr += ")";
 	else if (rest != "")
@@ -219,15 +219,26 @@ Qcell2outOp::Qcell2outOp(const string& id, size_t size)
 	: QcellOp(id, size), mpAuxiliary(nullptr)
 {}
 
+void Qcell2outOp::operands(const Qdef::Sp& pOut, const Qdefs& ins)
+{
+    QcellOp::operands(pOut, ins);
+    // if aux output is not initialized, initialize it with same Q type as output
+    if (mpAuxiliary == nullptr)
+        initialize(pOut);
+}
+
 void Qcell2outOp::output(const Qdef::Sp& pOut, size_t forBit)
 {
-	QcellOp::output(pOut, forBit);
+	QcellOp::output(pOut);
 	// if aux output is not initialized, initialize it with same Q type as output
-	if (mpAuxiliary == nullptr)
-	{
-		mpAuxiliary = Qop::output()->clone();
-		mpAuxiliary->id("?" + id() + Qop::Id("?" + id()));
-	}
+    if (mpAuxiliary == nullptr)
+        initialize(pOut);
+}
+
+inline void Qcell2outOp::initialize(const Qdef::Sp& pOut)
+{
+    mpAuxiliary = Qop::output()->clone();
+    mpAuxiliary->id("?" + id() + Qop::Id("?" + id()));
 }
 
 Qdefs Qcell2outOp::outputs() const
@@ -258,7 +269,6 @@ Qvalue Qnor::calculate(const Qvalues& values) const
 	return(Qvalue(!(values[0] | values[1])));
 }
 
-
 /*** Q addition operation ***/
 
 Qaddition::Qaddition(const string& id, size_t size, const Qdef::Sp pOut, const Qaddition::Carry::Sp pCarry)
@@ -269,6 +279,12 @@ Qaddition::Qaddition(const string& id, size_t size, const Qdef::Sp pOut, const Q
 	pOut->id(outId());
 }
 
+void Qaddition::operands(const Qdef::Sp& pOut, const Qdefs& ins)
+{
+    QcellOp::operands(pOut, ins);
+    mpCarry->inputs(ins);
+    initialize();
+}
 
 void Qaddition::inputs(const Qdefs& ins)
 {
@@ -278,17 +294,8 @@ void Qaddition::inputs(const Qdefs& ins)
 
 void Qaddition::output(const Qdef::Sp& pOut, size_t forBit)
 {
-	QcellOp::output(pOut, forBit);
-	Qdef::Sp pAdditionOut = Qop::output();
-	// if carry output is not initialized, initialize it with same Q type as output
-	Qdef::Sp pCarryOut = mpCarry->Qop::output(forBit);
-	if(pCarryOut == nullptr)
-	{
-		pCarryOut = pAdditionOut->clone();
-		mpCarry->output(pCarryOut);
-	}
-	// refresh carry out id to be consistent with addition out id
-	pCarryOut->id(Carry::Symbol(pAdditionOut->id()));
+	QcellOp::output(pOut);
+    initialize();
 }
 
 Qdefs Qaddition::outputs() const
@@ -296,6 +303,20 @@ Qdefs Qaddition::outputs() const
 	Qdefs outs = QcellOp::outputs();
 	outs.push_back(mpCarry->Qop::output());
 	return outs;
+}
+
+inline void Qaddition::initialize()
+{
+    Qdef::Sp pAdditionOut = Qop::output();
+    // if carry output is not initialized, initialize it with same Q type as output
+    Qdef::Sp pCarryOut = mpCarry->Qop::output();
+    if(pCarryOut == nullptr)
+    {
+        pCarryOut = pAdditionOut->clone();
+        mpCarry->output(pCarryOut);
+    }
+    // refresh carry out id to be consistent with addition out id
+    pCarryOut->id(Carry::Symbol(pAdditionOut->id()));
 }
 
 /*** Carry Operation ***/
@@ -324,9 +345,8 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 {
 	if (decomposed)
 	{
-		string cStr = Qop::output()->toString(decomposed, forBit) + " = ";
+		string cStr = Qop::output()->toString(decomposed) + " = ";
 
-		Qcell::Sp pOut = static_pointer_cast<Qcell>(mpAddition->Qop::output(forBit));
 
 		Qvalue value = pOut->value();
 		string valueStr = "";
@@ -336,7 +356,7 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 		cStr += Symbol(pOut->id()) + "\\" + valueStr + "\\";
 		return cStr;
 	}
-	return Symbol(mpAddition->Qop::toString(decomposed, forBit));
+	return Symbol(mpAddition->Qop::toString(decomposed));
 }
 
 void Qaddition::Carry::addition(Qaddition* pAddition)

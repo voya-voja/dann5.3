@@ -168,4 +168,15 @@ namespace dann5 {
 
         Qcells mCells;
     };
+
+    // An std::vector containing a list of shared pointers pointing to
+    // Q-nary definitions
+    class Qnaries : public vector <Qnary::Sp>
+    {
+    public:
+        Qnaries(const Qdefs& list){
+            for(auto pDef: list)
+                push_back(dynamic_pointer_cast<Qnary>(pDef));
+        };
+    };
 };

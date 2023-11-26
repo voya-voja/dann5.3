@@ -5,7 +5,7 @@ using namespace dann5;
 
 /*** Multiplication ***/
 
-void Qmultiply::refresh()
+void Qmultiply::refreshOnInputs()
 {
 	const Qdefs& args = Qop::inputs();
 	QcellMatrix xMatrix = x(args);	// this * right vectors => xMatrix
@@ -25,9 +25,8 @@ QcellMatrix Qmultiply::x(const Qdefs& args) const
 		for (size_t atCol = 0; atCol < columns; atCol++)
 		{
 			QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark);
-			pOp->inputs({ (*pLeft)[atRow].clone(), (*pRight)[atCol].clone() });
 			Qbit out(pOp->outId());
-			pOp->output(out.clone());
+            pOp->operands(out.clone(), {(*pLeft)[atRow].clone(), (*pRight)[atCol].clone()});
 			xMatrix(atRow, atCol) = pOp;
 		}
 	}

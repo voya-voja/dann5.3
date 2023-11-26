@@ -31,7 +31,7 @@
 using namespace std;
 using namespace dann5::ocean;
 using namespace dann5;
-
+using namespace dann5test;
 
 void qintNegativeAdd_test()
 {
@@ -100,36 +100,6 @@ int pymain() {
     return 0;
 }
 
-void testSolver()
-{
-    ofstream fout("testSolver.txt");
-    Qbit a("a"), b("b"), N("N");
-    Qassign<Qbit> aN = N = a & b;
-//    D5QuboSolver sN(aN.qubo(), false);
-//    fout << endl << "Nodes #: " << sN.nodesNo() << ", Threds #: " << size_t(pow(2, int(log2(sN.nodesNo()) - 0.1)) / 2) << endl;
-//    sN.solution(fout);
-
-    Qint i1(2, "a"), i2(2, "b"), A(2, "A");
-    fout << endl << endl << "A =>" << A.toString(true) << endl;
-    Qassign<Qint> aA = A = i1 + i2;
-    fout << "A =>" << aA.assignee()->toString(true) << endl;
-//    fout << endl << aA << endl << aA.qubo() << endl;
-    clock_t begin_time = clock();
-    aA.solve();
-    clock_t end_time = clock();
-    fout << endl << "Running time: " << to_string(float(end_time - begin_time) / CLOCKS_PER_SEC) << "s" << endl;
-    fout << aA.solutions();
-
-/*    D5QuboSolver sA(aA.qubo(), false);
-    fout << endl << "Nodes #: " << sA.nodesNo() << ", Threds #: " << size_t(pow(2, int(log2(sA.nodesNo()) - 0.1)) / 2) << endl;
-    begin_time = clock();
-    sA.solution();
-    end_time = clock();
-    fout << endl << "Running time: " << to_string(float(end_time - begin_time) / CLOCKS_PER_SEC) << "s" << endl;
-    sA.solution(fout);
-*/    fout.close();
-}
-
 void testPNcandidates()
 {
     ifstream pnFstream;
@@ -180,143 +150,66 @@ void testPNcandidates()
 int main(int argc, const char * argv[])
 {
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
-    
-    Qwhole l(2, "l"), _0("0_"), n(2,"n");
-    Qexpr<Qwhole> expr((l+_0) != n), comp(l != n);
-    cout << expr << endl << expr.toString(true) << endl << expr.solve();
-    cout << comp << endl << comp.toString(true) << endl << comp.solve();
-    
-    Qbit x("x"), y("y"), z("z"), r("r", 1);
-    Qassign<Qbit> qbAssgn(r = (x & y) ^ (x & z));
-    cout << endl << qbAssgn << endl << qbAssgn.solve();
-    QuboCompiler compiler(false);
-    qbAssgn.compile(compiler);
-    cout << endl << compiler.qubo() << endl;
 
-    Qbin o(2, "o"), p(2, "p"), s(2, "s"), t("t", 1);
-//    t[1].value(0);
-    Qassign<Qbin> qbnAssgn(t = (o & p)/* ^ (o & s)*/);
-    cout << qbnAssgn << endl << qbnAssgn.toString(true) << endl;
-    cout << qbnAssgn.solve();
-    QuboCompiler bnCmplr(false);
-    qbnAssgn.compile(bnCmplr);
-    cout << endl << bnCmplr.qubo() << endl;
-    bnCmplr.finalized(true);
-    qbnAssgn.compile(bnCmplr);
-    cout << endl << bnCmplr.qubo() << endl;
+    Qwhole x(2, "x"), y(2, "y"), z(2, "z"), r(2,"r");
+    Qexpr<Qwhole> xp(x + y);
+    Qassign<Qwhole>
+        as0(r = x + y + z),
+        as2(r = xp + z),
+        as1(r = z + xp);
+    cout << as0 << endl << as0.toString(true) << endl << as0.solve();
+    cout << as1 << endl << as1.toString(true) << endl << as1.solve();
+    cout << as2 << endl << as2.toString(true) << endl << as2.solve();
+
+    Qwhole sub0(2, "_-0"), sub1(3, "_-1");
     
-    /*
-    for (size_t nQbits = 2; nQbits <= 6; nQbits += 1)
-    {
-        Qwhole x(nQbits, "x"), y(size_t(nQbits / 2), "y"), r("r", nQbits);
-        Qassign<Qwhole> xpr = r = x * y;
-        Qanalyzer a(xpr.qubo());
-        cout << xpr << endl << "  nodes: " << a.nodesNo() << " branches: " << a.branchesNo() << " chain-strenght: " << a.chainStrength();
-        cout << endl << xpr.qubo() << endl << xpr.solve() << endl;
-    }
-    Qwhole x(2, "x"), y(1, "y"), z(1, "z"), _3("_3", 3);
-    Qexpr<Qwhole> qwExpr = x * y;//, z_3Expr = _3 * z, qxxExpr = qwExpr * z_3Expr;
-    Qubo qubo = qwExpr.qubo();
-    cout << qubo / 2 << endl;
-    Qanalyzer anlyzeE(qubo);
-    cout << "Expression # of nodes: " << anlyzeE.nodesNo() << " # of branches: " << anlyzeE.branchesNo() << endl;
-    cout << endl << "Expression:" << endl << qwExpr << endl << qwExpr.solve() << endl;
-    Qsolver::Samples samples = qwExpr.compute();
-    Qbinder binder;
-    binder = x, y;
-    binder.add(samples);
-    cout << binder << endl;
-    vector<ULint> xSolutions = dynamic_pointer_cast<Qwhole>(binder["x"])->ulints();
-    vector<ULint> ySolutions = dynamic_pointer_cast<Qwhole>(binder["y"])->ulints();
-    cout << "sample x  y" << endl;
-    for(size_t at = 0; at < samples.size(); at++)
-        cout << at << ":     " << xSolutions[at].toString() << "  " << ySolutions[at].toString() << endl;
+    Qassign<Qwhole> a1(z = sub1 + y), a0(y = sub0 + x);
+    Qblock b;
+    b = a0, a1;
+    cout << b << endl << b.toString(true) << endl << b.solve();
 
-    qxxExpr.reset();
-    Qwhole R("R", 6);
-    Qassign<Qwhole> qxxAssign = R = qxxExpr;
-    Qubo aQubo = qxxAssign.qubo();
-    Qanalyzer anlyze(aQubo);
-    cout << "Assignment # of nodes: " << anlyze.nodesNo() << " # of branches: " << anlyze.branchesNo() << endl;
-    cout << endl << "Assignment:" << endl << qxxAssign << endl << qxxAssign.solve() << endl;
+    
+    Qexpr<Qwhole> xE0(y == sub0 + x);
+    cout << xE0 << endl << xE0.toString(true) << endl << xE0.solve();
+    Qexpr<Qwhole> xE1(z == sub1 + xE0);
+    cout << xE1 << endl << xE1.toString(true) << endl << xE1.solve();
 
+    Qexpr<Qwhole> qwExpr = y - x;
+    QuboCompiler noFnlCmplr(false); qwExpr.compile(noFnlCmplr);
+    QuboCompiler compiler; qwExpr.compile(compiler);
+    cout << "Subtraction Expression" << endl << qwExpr << endl
+        << " decomposed logic: " << qwExpr.toString(true) << endl
+        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
+    cout << "'" << endl << " & finalized Qubo is '"
+        << compiler.qubo()<< "'" << endl;
+    cout << " resulting in :" << endl << qwExpr.solve() << endl;
+/* Issue #6 */
+    Qexpr<Qwhole> qwxExpr = z - qwExpr;
+    noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
+    compiler.reset(); qwxExpr.compile(compiler);
+    cout << "Subtraction Expression" << endl << qwxExpr << endl
+        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
+    cout << "'" << endl << " & finalized Qubo is '"
+        << compiler.qubo()<< "'" << endl;
+    QuboAnalyzer analyzer(compiler.qubo());
+    cout << "# of nodes: " << analyzer.nodesNo() << ", # of branches: "
+         << analyzer.branchesNo() << endl;
+    cout << " resulting in :" << endl << qwxExpr.solve() << endl;
+    
     UTestQbit utQbit;
-//    utQbit.runAll(cout);
+    utQbit.runAll(cout);
     UTestQbool utQbool;
-//    utQbool.runAll(cout);
+    utQbool.runAll(cout);
     UTestQbin utQbin;
-//    utQbin.friends_enemies(cout);
-//    utQbin.runAll(cout);
+    utQbin.runAll(cout);
     UTestQwhole utQwhole;
-//    utQwhole.runAll(cout); 
-*/
-//    pymain();
+    utQwhole.runAll(cout);
 
-//    testSolver();
+//    pymain();
 
 //    testPNcandidates();
 
-    Qwhole a(2,"a"), b(3,"b"), A("A", 6);
-    Qassign<Qwhole> addAsgn = A = a + b;
-    cout << endl << addAsgn << endl << addAsgn.toString(true) << endl << addAsgn.solve();
-/*    Qubo q = addAsgn.qubo();
-    cout << addAsgn.qubo(false) << endl << q << endl;
-    D5QuboSolver slvr(q, false);
-    cout << slvr.nodesNo() << " nodes with " << slvr.branchesNo() << " branches." << endl;
-    slvr.solution(cout);
-
-    Qubo q0o, q1o;    // a break to 2 arbitrary qubos is not working
-    size_t count = 0;
-    for(auto elmnt : q)
-    {
-        if(count < 12)
-            q0o[elmnt.first] = elmnt.second;
-        else
-            q1o[elmnt.first] = elmnt.second;
-        count++;
-    }
-
-    Qbit a0("a0"), a1("a1"), b0("b0"), b1("b1"), A0("A0"), A1("A1"), A2("A2"),  hA0("#[A0]"), hA1("#[A0]");
-    QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(AdderQT::cMark);
-    pOp->inputs({ a1.clone(), b1.clone(), hA0.clone() });
-    pOp->output(A1.clone());
-    Qassign<Qbit>   add0 = A0 = a0 ^ b0,
-                    add1 = A1 = Qexpr<Qbit>(pOp),
-                    add2 = A2 = hA1;
-    Qubo q0 = add0.qubo(), q1 = add1.qubo(), q2 = add2.qubo(), q1p = Qubo();
-    for(auto elmnt : q1)
-    {
-        Qkey key = elmnt.first;
-        if(key.first == "#[A1]")
-            key.first = "A2";
-        if(elmnt.first.second == "#[A1]")
-            key.second = "A2";
-        q1p[key] = elmnt.second;
-    }
-    cout << endl << q0 << endl << q1p << endl << q2 << endl;
-    Qsolver slvr0(q0, false), slvr1(q1p, false);
-    cout << endl << slvr0.nodesNo() << " nodes with " << slvr0.branchesNo() << " branches." << endl;
-    slvr0.solution(cout);
-    Qevaluations evltns0 = slvr0.solution();
-    cout << endl << slvr1.nodesNo() << " nodes with " << slvr1.branchesNo() << " branches." << endl;
-    slvr1.solution(cout);
-    Qevaluations evltns1 = slvr1.solution();
-
-    Qevaluations evltns = evltns0 + evltns1;
-    cout << evltns << endl;
-    Qubos qubos = addAsgn.qubos(10);
-    Qevaluations evaluations;
-    for(auto qubo : qubos)
-    {
-        D5QuboSolver solver(qubo, false);
-        Qevaluations evs = solver.solution();
-        if(evaluations.size() == 0)
-            evaluations = evs;
-        else
-            evaluations = evaluations + evs;
-    }
-    cout << endl << "**** Evaluations ****:" << endl << evaluations << endl;
- */
     return 0;
 }
 

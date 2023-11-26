@@ -4,9 +4,9 @@
 
 #include <utility>
 
-#include <Qdef.h>
+#include <QnaryOp.h>
 #include <Qblock.h>
-#include <Qop.h>
+#include <Qbinder.h>
 
 using namespace std;
 
@@ -14,29 +14,29 @@ using namespace std;
 namespace dann5 {
     // Quantum routine is a Q definition with a sequence of logical
     // quantum statements organized as Q block
-    class Qroutine : public Qdef, public Qop
+    class Qroutine : public QnaryOp
     {
     public:
         // Qroutine's shared pointer
         typedef shared_ptr<Qroutine> Sp;
 
         // default constructor
-        Qroutine(size_t noArguments = 0) :Qdef(""), Qop(noArguments){};
+        Qroutine(size_t noArguments = 0) :QnaryOp("", noArguments){};
 
         // creates Q routine with a name
-        Qroutine(const string& id, size_t noArguments = 0) :Qdef(id), Qop(noArguments) {};
+        Qroutine(const string& id, size_t noArguments = 0) :QnaryOp(id, noArguments) {};
 
         // creates a named Q routine with a given Q block
         Qroutine(const string& id, const Qblock& block, size_t noArguments = 0)
-            :Qdef(id), Qop(noArguments), mBlock(block) {};
+            :QnaryOp(id, noArguments), mBlock(block) {};
 
         // creates a named Q routine with a given list of Q statements
         Qroutine(const string& id, const Qstatements& statements, size_t noArguments = 0)
-            :Qdef(id), Qop(noArguments), mBlock(statements) {};
+            :QnaryOp(id, noArguments), mBlock(statements) {};
 
         //copy constructor
         Qroutine(const Qroutine& right)
-            :Qdef(right), Qop(right), mBlock(right.mBlock) {};
+            :QnaryOp(right), mBlock(right.mBlock) {};
 
         // desruct the Q equation with its members
         ~Qroutine() {};
@@ -51,6 +51,9 @@ namespace dann5 {
         // Compiles this quantum operation to generate quantum solver code
         virtual void compile(Qcompiler& compiler) const;
 
+        // Returs routine declaration as a string
+        string declaration() const;
+        
         // Returns a string representation of Q routines statements
         // if not decomposed, returns statements as initially specified
         // if decomposed, returns bit-level logic of the statements
@@ -62,21 +65,19 @@ namespace dann5 {
         // Adds a evaluation set containing nodes with solutions values, the
         // nodes should correspond to operands of statements within this
         // Q routine
-        virtual void add(const Qevaluations& evaluations)
-                                    { mBlock.add(evaluations); };
+        virtual void add(const Qevaluations& evaluations);
 
         // For added sample set(s), returns a string represnting 'at'
         // solution of operands of statements within this Q routine
-        virtual string solution(size_t at) const
-                                { return mBlock.solution(at); };
+        virtual string solution(size_t at) const;
 
         // Returns computed evaluation set with all solutions for the Q block
         // logic
-        virtual Qevaluations compute() { return mBlock.compute(); };
+        virtual Qevaluations compute();
 
         // Resets Q block statements into their initial state without
         // added solutions
-        virtual void reset() { mBlock.reset(); };
+        virtual void reset();
 
         // An insertion operator (<<) to add a new statement into this
         // Q routine and returns the reference to 'this' object
@@ -106,6 +107,7 @@ namespace dann5 {
             };
 
         protected:
+            
         private:
             Qroutine* mpRoutine;	// pointer to Q routine object
         };
@@ -119,10 +121,21 @@ namespace dann5 {
         friend std::ostream& operator << (std::ostream&, const Qroutine&);
 
     protected:
+        // Returns reference to the quantum block
+        const Qblock& block() const { return mBlock; };
         Qblock& block() { return mBlock; };
+
+        // Override to refresh the Q-nary operation cells according to the derived
+        // operation logic when inputs are added
+        virtual void refreshOnInputs();
+
+        virtual void refreshOnOutput();
+        
+        virtual void updateLogic();
 
     private:
         Qblock	mBlock;
+        Qbinder mBinder;
     };
 
     // Insert string representation of a Q routine into an output stream

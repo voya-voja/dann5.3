@@ -57,7 +57,6 @@ Qubo QuboCompiler::qubo(const Qop& op, size_t forBit) const
         {
             // add sub-qubo from argument operand
             aQubo += parse(*pOp, forBit);
-            Qcell::Sp pOut = static_pointer_cast<Qcell>(pOp->output(forBit));
             ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
         }
         else

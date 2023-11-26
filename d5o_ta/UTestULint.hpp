@@ -8,8 +8,6 @@
 #ifndef UTestULint_hpp
 #define UTestULint_hpp
 
-#include <stdio.h>
-
 #include <iostream>
 
 using namespace std;
