@@ -347,6 +347,7 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 	{
 		string cStr = Qop::output()->toString(decomposed) + " = ";
 
+		Qcell::Sp pOut = static_pointer_cast<Qcell>(mpAddition->Qop::output());
 
 		Qvalue value = pOut->value();
 		string valueStr = "";
