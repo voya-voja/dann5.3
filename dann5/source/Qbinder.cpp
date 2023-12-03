@@ -10,9 +10,9 @@ using namespace dann5;
 size_t Qbinder::noqbs() const noexcept
 {
 	size_t size = 0;
-	for (auto pOperand : mOperands)
+	for (auto pElement : mElements)
 	{
-		size_t atSize = pOperand->noqbs();
+		size_t atSize = pElement->noqbs();
 		if (size < atSize) size = atSize;
 	}
 	return(size);
@@ -21,9 +21,9 @@ size_t Qbinder::noqbs() const noexcept
 string Qbinder::toString(bool decomposed, size_t forBit) const
 {
 	string blockStr("");
-	for (auto pOperand : mOperands)
+	for (auto pElement : mElements)
 	{
-		blockStr += pOperand->toString(decomposed, forBit) + " ";
+		blockStr += pElement->toString(decomposed, forBit) + " ";
 	}
 	string sltnsSrt = solutions();
 	if(!sltnsSrt.empty())
@@ -34,18 +34,18 @@ string Qbinder::toString(bool decomposed, size_t forBit) const
 void Qbinder::add(const Qevaluations& evltns)
 {
 	mSolutions.insert(mSolutions.end(), evltns.begin(), evltns.end());
-	for (auto pOperand : mOperands)
+	for (auto pElement : mElements)
 	{
-		pOperand->add(evltns);
+		pElement->add(evltns);
 	}
 }
 
 string Qbinder::solution(size_t atEvltn) const
 {
 	string strSol("");
-	for (auto pOperand : mOperands)
+	for (auto pElement : mElements)
 	{
-		strSol += pOperand->solution(atEvltn) + " ";
+		strSol += pElement->solution(atEvltn) + " ";
 	}
 	return strSol;
 }
@@ -63,37 +63,37 @@ string Qbinder::solutions() const
 
 void Qbinder::reset()
 {
-	for (auto pOperand : mOperands)
+	for (auto pElement : mElements)
 	{
-		pOperand->reset();
+		pElement->reset();
 	}
     mSolutions.clear();
 }
 
 Qbinder& Qbinder::operator<<(const Qdef& right)
 {
-	addOperand(right);
+	addElement(right);
 	return(*this);
 }
 
 Qbinder Qbinder::operator<<(const Qdef& statement) const
 {
 	Qbinder result(*this);
-	result.mOperands.push_back(statement.clone());
+	result.mElements.push_back(statement.clone());
 	return(result);
 }
 
 Qbinder::CommaOp Qbinder::operator=(const Qdef& right)
 {
-	addOperand(right);
+	addElement(right);
 	return(CommaOp(this));
 }
 
-Qdef::Sp Qbinder::operator[](string id)
+Qdef::Sp Qbinder::operator[](string id) const
 {
-	for (auto pOperand : mOperands)
-		if (pOperand->id() == id)
-			return pOperand;
+	for (auto pElement : mElements)
+		if (pElement->id() == id)
+			return pElement;
 	return nullptr;
 }
 
@@ -104,10 +104,10 @@ ostream& dann5::operator << (std::ostream& out, const Qbinder& r)
 }
 
 
-void Qbinder::addOperand(const Qdef& right)
+void Qbinder::addElement(const Qdef& right)
 {
-	Qdef::Sp pOperand = right.clone();
-	mOperands.push_back(pOperand);
+	Qdef::Sp pElement = right.clone();
+	mElements.push_back(pElement);
 	if (mSolutions.size() > 0)
-		pOperand->add(mSolutions);
+		pElement->add(mSolutions);
 }

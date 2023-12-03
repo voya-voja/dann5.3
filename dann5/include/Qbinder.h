@@ -22,12 +22,16 @@ namespace dann5 {
         Qbinder() {};
 
         // creates a Q binder with a given list of Q evaluations
+        Qbinder(const Qdefs& elements)
+            :mElements(elements) {};
+
+        // creates a Q binder with a given list of Q evaluations
         Qbinder(const Qevaluations& solutions)
             :mSolutions(solutions) {};
 
         // Copy constructor
         Qbinder(const Qbinder& right)
-            :mSolutions(right.mSolutions), mOperands(right.mOperands) {};
+            :mSolutions(right.mSolutions), mElements(right.mElements) {};
 
         // Destruct the Q addition instance with a shared pointer to its
         // carry operand
@@ -100,13 +104,19 @@ namespace dann5 {
         // be followed by list of other operand definitions separated by
         // comma operator
         CommaOp operator=(const Qdef& right);
+        
+        // Returns a constant reference to the list of edefinitions of its
+        // elements
+        const Qdefs& elements() const { return mElements; };
+        
+        size_t size() const { return mElements.size(); };
 
         // returns a pointer to operand's definition 'at' specified index
-        Qdef::Sp operator[](size_t at) { return mOperands[at]; };
+        Qdef::Sp operator[](size_t at) const { return mElements[at]; };
 
         // Returns a pointer to operand's definition with specified 'id'
         // Returns nullptr, if there is no operand with the 'id'
-        Qdef::Sp operator[](string id);
+        Qdef::Sp operator[](string id) const;
 
         // Inserts a string representation of a Q binder into an output
         // stream
@@ -114,12 +124,12 @@ namespace dann5 {
 
     protected:
     private:
-        // Adds operand to the mOperands list and adds existing solutions
-        // to the added operand
-        void addOperand(const Qdef& right);
+        // Adds elements to the list and adds existing solutions to the added
+        // element
+        void addElement(const Qdef& right);
 
-        Qevaluations	mSolutions;	// A sample set of solutions
-        Qdefs			mOperands;	// A list of operands
+        Qevaluations	mSolutions;	// An evaluation set of solutions
+        Qdefs			mElements;	// A list of elements
     };
 
     // Inserts a string representation of a Q binder into an output

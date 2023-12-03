@@ -31,11 +31,11 @@ namespace dann5 {
         // desruct the Q statement with its members
         ~Qstatement();
 
-        // Override to return a number of bit levels in this Q statement
-        virtual size_t noqbs() const = 0;
-
         // Override to compile this Q statement to generate quantum solver code
         virtual void compile(Qcompiler& compiler) const = 0;
+
+        // Override to return a number of bit levels in this Q statement
+        virtual size_t noqbs() const = 0;
 
         // Override to return a string representation of this Q statement,
         // if not decomposed, return a statement as initially specified
@@ -49,7 +49,7 @@ namespace dann5 {
         // Q statement
         virtual Qstatement::Sp clone() const = 0;
 
-        // Override to solve this Q statement and return a Qsolver::Samples
+        // Override to solve this Q statement and return a quantum evaluations
         // with all solutions
         virtual Qevaluations compute() = 0;
 

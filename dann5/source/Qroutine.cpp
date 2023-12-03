@@ -8,22 +8,15 @@
 using namespace dann5;
 
 /*** Qroutine ***/
-void Qroutine::compile(Qcompiler& compile) const
-{
-	return(mBlock.compile(compile));
-}
-
 string Qroutine::declaration() const
 {
-    Qdef::Sp pOut = Qop::output();
-    string dclrtn = pOut->toString() + " " + id() + " ";
+    string dclrtn = mName + " ";
     
-    Qnaries ins(Qop::inputs());
-    size_t size = ins.size();
+    size_t size = mArguments.size();
     if(size > 1) dclrtn += "(";
     for(size_t at = 0; at < size; at++)
     {
-        dclrtn += ins[at]->toString();
+        dclrtn += mArguments[at]->toString();
         if(at != size - 1) dclrtn += ", ";
     }
     if(size > 1) dclrtn += ")";
@@ -34,36 +27,46 @@ string Qroutine::toString(bool decomposed, size_t forBit) const
 {
     if(!decomposed)
     {
-        return(declaration() + ": " + mBlock.toString(decomposed, forBit));
+        return(declaration() + ": " + mLogic.toString(decomposed, forBit));
     }
-    return(mBlock.toString(decomposed, forBit));
+    return(mLogic.toString(decomposed, forBit));
 }
 
 void Qroutine::add(const Qevaluations& evaluations)
 {
-    mBinder.add(evaluations);
-    mBlock.add(evaluations);
-    QnaryOp::add(evaluations);
-}
-
-string Qroutine::solution(size_t atEvltn) const
-{
-//    string sltnStr = mBlock.solution(atEvltn);
-//    sltnStr += mBinder.solution(atEvltn);
-    string sltnStr = QnaryOp::solution(atEvltn);
-    return sltnStr;
+    mArguments.add(evaluations);
+    mLogic.add(evaluations);
+    Qstatement::add(evaluations);
 }
 
 void Qroutine::reset()
 {
-    mBinder.reset();
-    QnaryOp::reset();
+    mArguments.reset();
+    Qstatement::reset();
+}
+
+void Qroutine::arguments(const Qdefs& args)
+{
+    for(auto pArg: args)
+        mArguments << *pArg;
+}
+
+Qroutine& Qroutine::operator<<(const Qdef& arg)
+{
+    mArguments << arg;
+    return(*this);
+}
+
+Qroutine Qroutine::operator<<(const Qdef& arg) const
+{
+    Qroutine result(*this);
+    result << arg;
+    return(result);
 }
 
 Qroutine& Qroutine::operator<<(const Qstatement& statement)
 {
-	mBlock << statement;
-    updateLogic();
+	mLogic << statement;
 	return(*this);
 }
 
@@ -76,28 +79,8 @@ Qroutine Qroutine::operator<<(const Qstatement& statement) const
 
 Qroutine::CommaOp Qroutine::operator=(const Qstatement& statement)
 {
-	mBlock << statement;
-    updateLogic();
+	mLogic << statement;
 	return(CommaOp(this));
-}
-
-void Qroutine::refreshOnInputs()
-{
-    Qdefs ins(Qop::inputs());
-    for(auto pIn: ins)
-        mBinder << *pIn;
-}
-
-void Qroutine::refreshOnOutput()
-{
-    mBinder << *Qop::output();
-}
-
-void Qroutine::updateLogic()
-{
-    QlogicCompiler compiler;
-    mBlock.compile(compiler);
-    cells(compiler.logic());
 }
 
 ostream& dann5::operator << (std::ostream& out, const Qroutine& r)
