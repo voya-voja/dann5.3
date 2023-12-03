@@ -41,7 +41,7 @@ void UTestQbit::initialization(ostream& out)
     // supperposition value, plus initialize Q bit with a given id
     // and supperposition value
     Qbit dcQbit, idQbit("id");
-    out << "Qbit defualt constructor: " << dcQbit.toString()
+    out << "Qbit default constructor: " << dcQbit.toString()
         << ", creates an object with empty id, i.e. '',\n"
         << "and it is set to superposition state, i.e. S" << endl
         << "Qbit with an id only: " << idQbit.toString()
@@ -148,37 +148,54 @@ void UTestQbit::assignment(ostream& out)
 void UTestQbit::bitwise(ostream& out)
 {
     Qbit x("x"), y("y", 5), _0("_0", 0), _1("_1", 1);
+    
     Qexpr<Qbit> xI = ~x;
+    QuboCompiler compiler; xI.compile(compiler);
     out << "Expression '~x', NOT (invert) x is: " << xI << endl
         << " decomposed logic: " << xI.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << xI.solve() << endl;
     Qexpr<Qbit> qbExpr = x & y;
+    compiler.reset(); qbExpr.compile(compiler);
     out << "Expression AND: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     qbExpr = x.nand(y);
+    compiler.reset(); qbExpr.compile(compiler);
     out << "Expression NAND: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     qbExpr = x | y;
+    compiler.reset(); qbExpr.compile(compiler);
     out << "Expression OR: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     qbExpr = x.nor(y);
+    compiler.reset(); qbExpr.compile(compiler);
     out << "Expression NOR: " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     qbExpr = x ^ y;
+    compiler.reset(); qbExpr.compile(compiler);
     out << "Expression UNLIKE (XOR): " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     qbExpr = x *= y;
+    compiler.reset(); qbExpr.compile(compiler);
     out << "Expression ALIKE (NXOR): " << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     qbExpr = (_1 & (x.nand(y))) ^ (_0 *= (y | x));
+    compiler.reset(); qbExpr.compile(compiler);
     out << "Complex Expression" << endl << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " It's Qubo is '" << compiler.qubo() << "''" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 }
 
@@ -193,21 +210,37 @@ void UTestQbit::comparison(ostream& out)
     Qexpr<Qbit> xNeGt = (x != y) > z, xNeGe = (x != y) >= z,
                 xNeLt = (x != y) < z, xNeLe = (x != y) <= z;
 
+    QuboCompiler compiler; xGtNe.compile(compiler);
     out << xGtNe.toString() << " decomposed: " << xGtNe.toString(true) << endl
-        << xGtNe.solve() << endl
-        << xGeNe.toString() << " decomposed: " << xGeNe.toString(true) << endl
-        << xGeNe.solve() << endl
-        << xLtNe.toString() << " decomposed: " << xLtNe.toString(true) << endl
-        << xLtNe.solve() << endl
-        << xLeNe.toString() << " decomposed: " << xLeNe.toString(true) << endl
-        << xLeNe.solve() << endl
-        << xNeGt.toString() << " decomposed: " << xNeGt.toString(true) << endl
-        << xNeGt.solve() << endl
-        << xNeGe.toString() << " decomposed: " << xNeGe.toString(true) << endl
-        << xNeGe.solve() << endl
-        << xNeLt.toString() << " decomposed: " << xNeLt.toString(true) << endl
-        << xNeLt.solve() << endl
-        << xNeLe.toString() << " decomposed: " << xNeLe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
+        << xGtNe.solve() << endl;
+    compiler.reset(); xGeNe.compile(compiler);
+    out << xGeNe.toString() << " decomposed: " << xGeNe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
+        << xGeNe.solve() << endl;
+    compiler.reset(); xLtNe.compile(compiler);
+    out << xLtNe.toString() << " decomposed: " << xLtNe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
+        << xLtNe.solve() << endl;
+    compiler.reset(); xLeNe.compile(compiler);
+    out << xLeNe.toString() << " decomposed: " << xLeNe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
+        << xLeNe.solve() << endl;
+    compiler.reset(); xNeGt.compile(compiler);
+    out << xNeGt.toString() << " decomposed: " << xNeGt.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
+        << xNeGt.solve() << endl;
+    compiler.reset(); xNeGe.compile(compiler);
+    out << xNeGe.toString() << " decomposed: " << xNeGe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
+        << xNeGe.solve() << endl;
+    compiler.reset(); xNeLt.compile(compiler);
+    out << xNeLt.toString() << " decomposed: " << xNeLt.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
+        << xNeLt.solve() << endl;
+    compiler.reset(); xNeLe.compile(compiler);
+    out << xNeLe.toString() << " decomposed: " << xNeLe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl
         << xNeLe.solve() << endl;
 }
 
@@ -232,8 +265,8 @@ void UTestQbit::eq_asign(ostream& out)
         << endl << axEq.solve() << endl;
     compiler.reset(); xAl.compile(compiler);
     out << "Alike Expression " << xAl << "\n qubo: " << compiler.qubo()
-        << endl << axAl.solve() << endl;
-    compiler.reset(); xAl.compile(compiler);
+        << endl << xAl.solve() << endl;
+    compiler.reset(); axAl.compile(compiler);
     out << "Alike Assignment " << axAl << "\n qubo: " << compiler.qubo()
         << endl << axAl.solve() << endl;
     compiler.reset(); xNe.compile(compiler);
@@ -245,7 +278,7 @@ void UTestQbit::eq_asign(ostream& out)
     compiler.reset(); xUl.compile(compiler);
     out << "Unlike Expression " << xUl << "\n qubo: " << compiler.qubo()
         << endl << xUl.solve() << endl;
-    compiler.reset(); xUl.compile(compiler);
+    compiler.reset(); axUl.compile(compiler);
     out << "Unlike Assignment " << axUl << "\n qubo: " << compiler.qubo()
         << endl << axUl.solve() << endl;
 }

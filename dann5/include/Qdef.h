@@ -53,14 +53,16 @@ namespace dann5 {
             return mID;
         };
 
-        // Override to set solution values from the sample set for this deffinition
+        // Override to set solution values from the evaluation set for this
+        // deffinition
         virtual void add(const Qevaluations& evaluations) = 0;
 
-        // Override to return a string representation of a solution value for a sample id
-        virtual string solution(size_t sampleId) const = 0;
+        // Override to return a string representation of a solution value for
+        // an evaluation at 'atEvltn'
+        virtual string solution(size_t atEvltn) const = 0;
 
-        // Reset the quantum definition into its initial state without solutions by clearing
-        // all solution samples
+        // Override to reset the quantum definition into its initial state
+        // without solutions by clearing all evaluations
         virtual void reset() = 0;
 
     protected:
@@ -68,7 +70,8 @@ namespace dann5 {
         string mID;	// The identity of a Q definition
     };
 
-    // An std::vector containing a list of shared pointers pointing to Q definitions
+    // An std::vector containing a list of shared pointers pointing to
+    // quantum definitions
     typedef vector <Qdef::Sp> Qdefs;
 
     // Quantum Eigen vector of Q cell references

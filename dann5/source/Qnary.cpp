@@ -78,10 +78,15 @@ void Qnary::id(const string& id)
 
 void Qnary::resize(size_t size, Qvalue value)
 {
-	size_t oSize = mCells.size();
-	mCells.resize(size);
+    Qvalue aValue = value;
+    size_t oSize = mCells.size();
+
+    if(size > oSize && aValue == cSuperposition && noqbs() != 0 && !any())
+        aValue = 0; // this is a constant
+
+    mCells.resize(size);
 	for (size_t at = oSize; at < size; at++)
-		mCells[at] = create( value, at);
+		mCells[at] = create( aValue, at);
 }
 
 bool Qnary::all(Qvalue value) const
@@ -155,13 +160,13 @@ void Qnary::add(const Qevaluations& evaluations)
 		pCell->add(evaluations);
 }
 
-string Qnary::solution(size_t sampleId) const
+string Qnary::solution(size_t atEvltn) const
 {
 	const Qcells& _cells = cells();
 	size_t size = noqbs();
 	Bits value;
 	for (size_t at = 0; at < size; at++)
-		value[at] = _cells[at]->solutionValue(sampleId);
+		value[at] = _cells[at]->solutionValue(atEvltn);
 
 	string valueStr = value.to_string();
 	valueStr = valueStr.substr(value.size() - size);

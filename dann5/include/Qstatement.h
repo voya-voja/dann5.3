@@ -69,10 +69,10 @@ namespace dann5 {
         // are not assigned by add() or solve method
         virtual string solutions() const = 0;
 
-        // Override to provide a string representation of an 'at' solution
-        // out of all solutions for this Q statement. Return empty string,
-        // when solutions samples are not assigned by add() or solve method
-        virtual string solution(size_t at) const = 0;
+        // Override to provide a string representation of an 'atEvltn' solution
+        // out of all evaluation for this Q statement. Return empty string,
+        // when solution evaluations are not assigned by add() or solve method
+        virtual string solution(size_t atEvltn) const = 0;
 
         // Resets the number of addedd solution samples.
         // Override to reset the operands of this Qstatement

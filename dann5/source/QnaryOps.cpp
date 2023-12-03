@@ -17,6 +17,22 @@ string QnaryOperator::toString(bool decomposed, size_t forBit) const
 {
     string str("?"), rest(""), rStr("");
     if (!decomposed) rStr += "(";
+    Qdef::Sp pIn = Qop::inputs()[0];
+    if (pIn != nullptr)
+    {
+        str = pIn->toString(decomposed, forBit);
+        if (decomposed)
+        {
+            // if operand is a sub-operation
+            Qop::Sp pOp = dynamic_pointer_cast<Qop>(pIn);
+            if (pOp != nullptr)
+            {
+                rest += str;
+                str = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
+            }
+        }
+    }
+    rStr += str + " " + identifier() + " ";
     Qdef::Sp pOut = Qop::output();
     if (pOut != nullptr)
     {
@@ -28,22 +44,6 @@ string QnaryOperator::toString(bool decomposed, size_t forBit) const
             if (pOp != nullptr)
             {
                 if (rest != "") rest += "; ";
-                rest += str;
-                str = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
-            }
-        }
-    }
-    rStr += str + " " + identifier() + " ";
-    Qdef::Sp pIn = Qop::inputs()[0];
-    if (pIn != nullptr)
-    {
-        str = pIn->toString(decomposed, forBit);
-        if (decomposed)
-        {
-            // if operand is a sub-operation
-            Qop::Sp pOp = dynamic_pointer_cast<Qop>(pIn);
-            if (pOp != nullptr)
-            {
                 rest += str;
                 str = pOp->output(forBit)->toString(decomposed, forBit); // extract sub-operation output
             }
@@ -77,7 +77,7 @@ void QnaryNeq::refresh()
 {
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(noqbs(), outId());
+    Qwhole aux(in.noqbs(), createId());
     size_t size = aux.noqbs();
     if (size < 2)
         aux.resize(2);
@@ -86,38 +86,29 @@ void QnaryNeq::refresh()
     for (size_t at = 2; at < size; at++)
         qbXpr = aux[at] | qbXpr;
     Qbit _1("_1", 1);
-    Qblock& blck = block();
-    blck = out = aux + in,
-        _1 = qbXpr;
-    Qroutine::updateLogic();
-    Qroutine::refresh();
+    static_cast<Qfunction&>(*this) = out = aux + in,
+                                            _1 = qbXpr;
+    Qfunction::refresh();
 }
 
 void QnaryLt::refresh()
 {
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(noqbs(), outId());
+    Qwhole aux(noqbs(), createId());
     Qbit _0("_0", 0);
-    Qblock& blck = block();
-    blck = in = aux + out,
-        _0 != in[in.noqbs()];
-    
-    Qroutine::refresh();
+    static_cast<Qfunction&>(*this) = in = aux + out,
+                                            _0 != in[in.noqbs()];
+    Qfunction::refresh();
 }
 
 void QnaryLe::refresh()
 {
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(noqbs(), outId());
+    Qwhole aux(noqbs(), createId());
     Qbit _0("_0", 0);
-    Qblock& blck = block();
-    {
-        Qbit _0("_0", 0);
-        blck = out = aux + in,
-            _0 == out[out.noqbs()];
-    }
-
-    Qroutine::refresh();
+    static_cast<Qfunction&>(*this) = out = aux + in,
+                                            _0 == out[out.noqbs()];
+    Qfunction::refresh();
 }

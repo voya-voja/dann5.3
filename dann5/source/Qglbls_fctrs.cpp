@@ -26,6 +26,14 @@ template class dann5::Factory<string, QcellOp>;
 template class dann5::Factory<string, QcellOp>::Creator<string, QcellOp>;
 #endif
 
+/**** Quantum invert operator identifiers  ****/
+const string Qinvert::cMark = "~";
+const string Qinvert::cName = "invert";
+
+/**** Factory Creator's of quantum invert operator  ****/
+DefaultCreator<string, QcellOp, Qinvert> gInvertOperatorCreator_m(Qinvert::cMark);
+DefaultCreator<string, QcellOp, Qinvert> gInvertOperatorCreator(Qinvert::cName);
+
 /**** Quantum equal operator identifiers  ****/
 const string Qeq::cMark = "==";
 const string Qeq::cName = "equal";
@@ -99,7 +107,7 @@ DefaultCreator<string, QcellOp, Qor> gOrOpCreator_m(Qor::cMark);
 DefaultCreator<string, QcellOp, Qor> gOrOpCreator(Qor::cName);
 
 /**** Quantum nOr binary operation identifiers  ****/
-const string Qnor::cMark = "!|";
+const string Qnor::cMark = "~|";
 const string Qnor::cName = "nor";
 
 /**** Factory Creator's of quantum nOr binary operation ****/
@@ -149,6 +157,14 @@ Factory<string, QnaryOp> Factory<string, QnaryOp>::gFactory;
 template class dann5::Factory<string, QnaryOp>;
 template class dann5::Factory<string, QnaryOp>::Creator<string, QnaryOp>;
 #endif
+
+/**** Quantum invert nary-operator identifiers  ****/
+const string QnaryInvert::cMark = Qinvert::cMark;
+const string QnaryInvert::cName = Qinvert::cName;
+
+/**** Factory Creator's of quantum invert nary-operator  ****/
+DefaultCreator<string, QnaryOp, QnaryInvert> gNaryInvertOperatorCreator_m(Qinvert::cMark);
+DefaultCreator<string, QnaryOp, QnaryInvert> gNaryInvertOperatorCreator(Qinvert::cName);
 
 /**** Quantum equal nary-operator identifiers  ****/
 const string QnaryEq::cMark = Qeq::cMark;

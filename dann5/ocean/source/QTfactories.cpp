@@ -20,6 +20,10 @@ template class QTfactory::Creator<string, QuboTable>;
 #endif
 
 /**** Factory Creator's of Equal operator Qubo Table ****/
+DefaultCreator<string, QuboTable, InvertQT> gInvertQTcreator_m(Qinvert::cMark);
+DefaultCreator<string, QuboTable, InvertQT> gInvertQTcreator(Qinvert::cName);
+
+/**** Factory Creator's of Equal operator Qubo Table ****/
 DefaultCreator<string, QuboTable, EqQT> gEqualQTcreator_m(Qeq::cMark);
 DefaultCreator<string, QuboTable, EqQT> gEqualQTcreator(Qeq::cName);
 

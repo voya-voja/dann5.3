@@ -11,11 +11,11 @@
 #include <Factory.h>
 #include <QnaryOp.h>
 #include <QcellOps.h>
-#include <Qroutine.h>
+#include <Qfunc.h>
 
 namespace dann5
 {
-    // A quntum nary-operator is an abstration of an unnary operation
+    // A Quantum nary-operator is an abstration of an unnary operation
     class QnaryOperator : public QnaryOp
     {
     public:
@@ -35,7 +35,7 @@ namespace dann5
         // output
     //    virtual Qdef::Sp output(size_t forBit = cAllBits) const;
 
-        // convert Quantum operator expration into a string
+        // Convert Quantum nary-operator expression into a string
         virtual string toString(bool decomposed = false,
                                 size_t forBit = cAllBits) const;
     protected:
@@ -72,8 +72,8 @@ namespace dann5
     };
 
     // A Quantum nary-not-equal is an unary operator implemented as a quantum
-    // routine
-    class QnaryNeq : public Qroutine
+    // function
+    class QnaryNeq : public Qfunction
     {
     public:
         // QnaryNeq's shared pointer
@@ -84,10 +84,10 @@ namespace dann5
         static const string cName;    // "notequal"
 
         // Instantiate quantum nary-not-equal operator with '!=' identity
-        QnaryNeq() : Qroutine(cMark, 1) {};
+        QnaryNeq() : Qfunction(cMark, 1) {};
 
         // Copy constructor
-        QnaryNeq(const QnaryNeq& right) : Qroutine(right) {};
+        QnaryNeq(const QnaryNeq& right) : Qfunction(right) {};
 
         // Destruct quantum nary-not-equal
         ~QnaryNeq() {};
@@ -101,9 +101,41 @@ namespace dann5
     private:
     };
 
+    // A Quantum nary-invert is an unary operator
+    class QnaryInvert : public QnaryOperator
+    {
+    public:
+        // QnaryInvert's shared pointer
+        typedef shared_ptr<QnaryInvert> Sp;
+
+        // Quantum nary-invert operator identifiers
+        static const string cMark;    // "~"
+        static const string cName;    // "invert"
+
+        // Instantiate quantum nary-invert operator with '~' identity
+        QnaryInvert() : QnaryOperator(cMark) {};
+
+        // Copy constructor
+        QnaryInvert(const QnaryInvert& right) : QnaryOperator(right) {};
+
+        // Destruct quantum nary-invert
+        ~QnaryInvert() {};
+
+        // Return a Qdef's shared pointer pointing to a copy of this object
+        virtual Qdef::Sp clone() const { return Qdef::Sp(new QnaryInvert(*this)); };
+        
+        // Returns not-equal mark as this operation identifier
+        virtual string identifier() const noexcept {
+            return Qneq::cMark;
+        };
+
+    protected:
+    private:
+    };
+
     // A Qunatum nary-less-than is an unary operator implemented as a quantum
-    // routine
-    class QnaryLt : public Qroutine
+    // function
+    class QnaryLt : public Qfunction
     {
     public:
         // QnaryLt's shared pointer
@@ -114,10 +146,10 @@ namespace dann5
         static const string cName;    // "lessthan"
 
         // Instantiate quantum nary-not-equal operator with '!=' identity
-        QnaryLt() : Qroutine(cMark, 1) {};
+        QnaryLt() : Qfunction(cMark, 1) {};
 
         // Copy constructor
-        QnaryLt(const QnaryLt& right) : Qroutine(right) {};
+        QnaryLt(const QnaryLt& right) : Qfunction(right) {};
 
         // Destruct quantum nary-not-equal
         ~QnaryLt() {};
@@ -132,8 +164,8 @@ namespace dann5
     };
 
     // A Qunatum nary-less-than-or-equal is an unary operator implemented as
-    // a quantum routine
-    class QnaryLe : public Qroutine
+    // a quantum function
+    class QnaryLe : public Qfunction
     {
     public:
         // QnaryLt's shared pointer
@@ -144,10 +176,10 @@ namespace dann5
         static const string cName;    // "lessequal"
 
         // Instantiate quantum nary-not-equal operator with '!=' identity
-        QnaryLe() : Qroutine(cMark, 1) {};
+        QnaryLe() : Qfunction(cMark, 1) {};
 
         // Copy constructor
-        QnaryLe(const QnaryLe& right) : Qroutine(right) {};
+        QnaryLe(const QnaryLe& right) : Qfunction(right) {};
 
         // Destruct quantum nary-not-equal
         ~QnaryLe() {};
@@ -161,7 +193,7 @@ namespace dann5
     private:
     };
 /*
-    // A Quntum greater-than is an operator
+    // A Quantum greater-than is an operator
     class Qgt : public Qoperator
     {
     public:
@@ -190,7 +222,7 @@ namespace dann5
     private:
     };
 
-    // A Quntum greater-than-or-equal is an operator
+    // A Quantum greater-than-or-equal is an operator
     class Qge : public Qoperator
     {
     public:

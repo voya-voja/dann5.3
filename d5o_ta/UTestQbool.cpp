@@ -40,7 +40,7 @@ void UTestQbool::initialization(ostream& out)
     // supperposition value, plus initialize Q bool with a given id and
     // supperposition value
     Qbool dcQbool, idQbool("id");
-    out << "Qbool defualt constructor: " << dcQbool.toString()
+    out << "Qbool default constructor: " << dcQbool.toString()
         << ", creates an object with empty id, i.e. '',\n"
         << " and it is set to superposition state, i.e. S" << endl
         << "Qbool with an id only: " << idQbool.toString()

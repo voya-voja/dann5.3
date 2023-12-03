@@ -61,7 +61,9 @@ namespace dann5 {
         // noInputs() method
         virtual void append(Qdef::Sp input);
 
-        string outId() const { return "_" + identifier() + Qop::Id(identifier()); };
+        string createId() const {
+            return "_" + identifier() + Qop::Id(identifier());
+        };
 
         virtual Qdef::Sp output(size_t forBit = cAllBits) const;
 
@@ -75,8 +77,8 @@ namespace dann5 {
         // Return Q operation outputs, by default has one ouput
         virtual Qdefs outputs() const { return Qdefs({ Qop::output() }); };
 
-        // Returns the largest number of Q bits of all its inputs
-        // override if derived class is not Qdef object
+        // Returns the operation identifier, by default it is the same as its id
+        // Override if the operation's implementation is not Qdef specialization
         virtual string identifier() const noexcept {
             return dynamic_cast<const Qdef*>(this)->id();
         };
@@ -84,8 +86,9 @@ namespace dann5 {
         // Returns the largest number of Q bits of all its inputs
         virtual std::size_t noqbs() const noexcept;
 
-        // convert operation expration into a string
-        virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
+        // Convert quantum operation expression into a string
+        virtual string toString(bool decomposed = false,
+                                            size_t forBit = cAllBits) const;
 
         // Compiles this quantum operation to generate quantum solver code
         virtual void compile(Qcompiler& compiler) const;
@@ -93,8 +96,9 @@ namespace dann5 {
         // Override to set solution values from the list of evaluations for this operation
         virtual void add(const Qevaluations& evaluations);
 
-        // Override to return a string representation of a solution value for a sample id
-        virtual string solution(size_t sampleId) const;
+        // Returns a string representation of a solution value of this operation
+        // for an evaluation at 'atEvltn'
+        virtual string solution(size_t atEvltn) const;
 
         // Reset the quantum operation into its initial state without solutions by clear
         // all solution samples

@@ -70,13 +70,13 @@ string Qint::toString(bool decomposed, size_t forBit) const
 	return id + "\\" + to_string(size) + ":" + vStr + "\\";
 }
 
-string Qint::solution(size_t sampleId) const
+string Qint::solution(size_t atEvltn) const
 {
 	const Qcells& _cells = cells();
 	size_t size = noqbs();
 	Bits value;
 	for (size_t at = 0; at < size; at++)
-		value[at] = _cells[at]->solutionValue(sampleId);
+		value[at] = _cells[at]->solutionValue(atEvltn);
 
 	if (value[size - 1] == 1)
 		for (size_t at = size; at < value.size(); at++)
@@ -190,7 +190,7 @@ Qexpr<Qint> Qint::operator<=(const Qint& right) const
 Qexpr<Qint> Qint::operator+(const Qint& right) const
 {
 	Qop::Sp pOp(new QaddQints());
-	Qint out(pOp->outId());
+	Qint out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qint> expr(pOp);
@@ -200,7 +200,7 @@ Qexpr<Qint> Qint::operator+(const Qint& right) const
 Qexpr<Qint> Qint::operator+(const Qexpr<Qint>& right) const
 {
 	Qop::Sp pOp(new QaddQints());
-	Qint out(pOp->outId());
+	Qint out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qint> expr(pOp);
@@ -210,7 +210,7 @@ Qexpr<Qint> Qint::operator+(const Qexpr<Qint>& right) const
 Qexpr<Qint> Qint::operator*(const Qint& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
-    Qint out(pOp->outId());
+    Qint out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qint> expr(pOp);
@@ -220,7 +220,7 @@ Qexpr<Qint> Qint::operator*(const Qint& right) const
 Qexpr<Qint> Qint::operator*(const Qexpr<Qint>& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
-    Qint out(pOp->outId());
+    Qint out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qint> expr(pOp);

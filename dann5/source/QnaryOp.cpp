@@ -117,31 +117,3 @@ string QnaryOp::toString(bool decomposed, size_t forBit) const
 	return rStr;
 }
 
-void QnaryOp::compile(Qcompiler& compiler) const
-{
-	const Qcells& logic = cells();
-	size_t size = noqbs();
-	for (size_t atCell = 0; atCell < size; atCell++)
-	{
-		Qop::Sp pCellOp = dynamic_pointer_cast<Qop>(logic[atCell]);
-		if (pCellOp != nullptr)
-			pCellOp->compile(compiler);
-		else
-			throw logic_error("Error@QnaryOp: The cell is not an operation");
-	}
-}
-
-void QnaryOp::add(const Qevaluations& evaluations)
-{
-	Qop::add(evaluations);
-}
-
-string QnaryOp::solution(size_t evaluationId) const
-{
-	return Qop::solution(evaluationId);
-}
-
-void QnaryOp::reset()
-{
-	Qop::reset();
-}

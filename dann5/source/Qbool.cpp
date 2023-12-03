@@ -55,10 +55,10 @@ void Qbool::add(const Qevaluations& evaluations)
 	}
 }
 
-string Qbool::solution(size_t sampleId) const
+string Qbool::solution(size_t atEvltn) const
 {
 	if (mValue == cSuperposition) 
-		return Qcell::solution(sampleId);
+		return Qcell::solution(atEvltn);
 	else
 	{
 		string sStr = id() + "\\";
@@ -135,7 +135,7 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::operator &(const Qbool& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark);
-	Qbool out(pOp->outId());
+	Qbool out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
@@ -144,8 +144,8 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::operator &(const Qexpr<Qbool>& right) const
 {
     QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark);
-    Qbool out(pOp->outId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qbool out(pOp->createId());
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 
     Qexpr<Qbool> expr(pOp);
     return expr;
@@ -154,8 +154,8 @@ Qexpr<Qbool> Qbool::operator &(const Qexpr<Qbool>& right) const
 Qexpr<Qbool> Qbool::operator |(const Qbool& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qor::cMark);
-    Qbool out(pOp->outId());
-    pOp->operands(out.clone(), {clone(), right.clone()});
+    Qbool out(pOp->createId());
+    pOp->operands(out.clone(), {clone(), right.clone()->clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
 }
@@ -163,8 +163,8 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::operator |(const Qexpr<Qbool>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qor::cMark);
-    Qbool out(pOp->outId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qbool out(pOp->createId());
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
 }
@@ -172,7 +172,7 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::operator==(const Qbool& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qeq::cMark);
-    pOp->operands(clone(), {right.clone()});
+    pOp->operands(right.clone(), {clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
 }
@@ -180,7 +180,7 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::operator==(const Qexpr<Qbool>& right) const 
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qeq::cMark);
-    pOp->operands(clone(), {right.rootDef()});
+    pOp->operands(right.rootDef()->clone(), {clone()});
 	Qexpr<Qbool> expr(pOp);
 	return expr;
 }
@@ -188,7 +188,7 @@ Qexpr<Qbool> Qbool::operator==(const Qexpr<Qbool>& right) const
 Qexpr<Qbool> Qbool::operator!=(const Qbool& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qneq::cMark);
-    pOp->operands(clone(), {right.clone()});
+    pOp->operands(right.clone(), {clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
 }
@@ -196,7 +196,7 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::operator!=(const Qexpr<Qbool>& right) const 
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qneq::cMark);
-    pOp->operands(clone(), {right.rootDef()});
+    pOp->operands(right.rootDef()->clone(), {clone()});
 	Qexpr<Qbool> expr(pOp);
 	return expr;
 }
@@ -204,7 +204,7 @@ Qexpr<Qbool> Qbool::operator!=(const Qexpr<Qbool>& right) const
 Qexpr<Qbool> Qbool::alike(const Qbool& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qnxor::cMark);
-	Qbool out(pOp->outId());
+	Qbool out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
@@ -213,7 +213,7 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::alike(const Qexpr<Qbool>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qnxor::cMark);
-	Qbool out(pOp->outId());
+	Qbool out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
@@ -222,7 +222,7 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::unlike(const Qbool& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qxor::cMark);
-    Qbool out(pOp->outId());
+    Qbool out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
@@ -231,7 +231,7 @@ Qexpr<Qbool> expr(pOp);
 Qexpr<Qbool> Qbool::unlike(const Qexpr<Qbool>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qxor::cMark);
-    Qbool out(pOp->outId());
+    Qbool out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 Qexpr<Qbool> expr(pOp);
 	return expr;

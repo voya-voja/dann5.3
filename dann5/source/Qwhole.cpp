@@ -51,13 +51,13 @@ string Qwhole::toString(bool decomposed, size_t forBit) const
 	return id + "\\" + to_string(size) + ":" + vStr + "\\";
 }
 
-string Qwhole::solution(size_t sampleId) const
+string Qwhole::solution(size_t atEvltn) const
 {
 	const Qcells& _cells = cells();
 	size_t size = noqbs();
 	Bits value;
 	for (size_t at = 0; at < size; at++)
-		value[at] = _cells[at]->solutionValue(sampleId);
+		value[at] = _cells[at]->solutionValue(atEvltn);
 
 	string valueStr = to_string(value.to_ullong());
 	string id = Qdef::toString();
@@ -172,7 +172,7 @@ Qassign<Qwhole> Qwhole::operator/=(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator==(const Qwhole& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark);
-    pOp->operands(clone(), {right.clone()});
+    pOp->operands(right.clone(), {clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -180,7 +180,7 @@ Qexpr<Qwhole> Qwhole::operator==(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark);
-    pOp->operands(clone(), {right.rootDef()});
+    pOp->operands(right.rootDef()->clone(), {clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -188,7 +188,7 @@ Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryNeq::cMark);
-    pOp->operands(clone(), {right.clone()});
+    pOp->operands(right.clone(), {clone()});
     Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -197,7 +197,7 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 {
 	Qroutine* pRtn = new Qroutine("!=");
 	{
-		Qwhole out(noqbs(), pRtn->outId());
+		Qwhole out(noqbs(), pRtn->createId());
 		size_t size = out.noqbs();
 		if (size < 2)
 			out.resize(2);
@@ -217,7 +217,7 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark);
-    pOp->operands(clone(), {right.clone()});
+    pOp->operands(right.clone(), {clone()});
     Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -226,7 +226,7 @@ Qexpr<Qwhole> Qwhole::operator>(const Qexpr<Qwhole>& right) const
 {
 	Qroutine* pRtn = new Qroutine(">");
 	{
-		Qwhole out(noqbs(), pRtn->outId());
+		Qwhole out(noqbs(), pRtn->createId());
 		Qwhole::Sp pRout = dynamic_pointer_cast<Qwhole>(right.root()->outputs()[0]);
 		Qbit _0("_0", 0);
 		Qassign<Qwhole> subA = out = right - *this;
@@ -245,7 +245,7 @@ Qexpr<Qwhole> Qwhole::operator>(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator>=(const Qwhole& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark);
-    pOp->operands(clone(), {right.clone()});
+    pOp->operands(right.clone(), {clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -254,7 +254,7 @@ Qexpr<Qwhole> Qwhole::operator>=(const Qexpr<Qwhole>& right) const
 {
 	Qroutine* pRtn = new Qroutine(">=");
 	{
-		Qwhole ths(*this), out(noqbs(), pRtn->outId());
+		Qwhole ths(*this), out(noqbs(), pRtn->createId());
 		Qbit _0("_0", 0);
 		*pRtn = ths = out + right,
 			_0 == ths[ths.noqbs()];
@@ -268,7 +268,7 @@ Qexpr<Qwhole> Qwhole::operator<(const Qwhole& right) const
 {
 	Qroutine* pRtn = new Qroutine("<");
 	{
-		Qwhole ths(*this), out(noqbs(), pRtn->outId());
+		Qwhole ths(*this), out(noqbs(), pRtn->createId());
 		Qbit _0("_0", 0);
 		*pRtn = ths = out + right,
 			_0 != ths[ths.noqbs()];
@@ -282,7 +282,7 @@ Qexpr<Qwhole> Qwhole::operator<(const Qexpr<Qwhole>& right) const
 {
 	Qroutine* pRtn = new Qroutine("<");
 	{
-		Qwhole ths(*this), out(noqbs(), pRtn->outId());
+		Qwhole ths(*this), out(noqbs(), pRtn->createId());
 		Qbit _0("_0", 0);
 		*pRtn = ths = out + right,
 			_0 != ths[ths.noqbs()];
@@ -296,7 +296,7 @@ Qexpr<Qwhole> Qwhole::operator<=(const Qwhole& right) const
 {
 	Qroutine* pRtn = new Qroutine("<=");
 	{
-		Qwhole rght(right), out(noqbs(), pRtn->outId());
+		Qwhole rght(right), out(noqbs(), pRtn->createId());
 		Qbit _0("_0", 0);
 		*pRtn = rght = out + *this,
 			_0 == rght[rght.noqbs()];
@@ -310,7 +310,7 @@ Qexpr<Qwhole> Qwhole::operator<=(const Qexpr<Qwhole>& right) const
 {
 	Qroutine* pRtn = new Qroutine("<=");
 	{
-		Qwhole out(noqbs(), pRtn->outId());
+		Qwhole out(noqbs(), pRtn->createId());
 		Qwhole::Sp pRout = dynamic_pointer_cast<Qwhole>(right.root()->outputs()[0]);
 		Qbit _0("_0", 0);
 		Qassign<Qwhole> subA = out = right - *this;
@@ -329,7 +329,7 @@ Qexpr<Qwhole> Qwhole::operator<=(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator+(const Qwhole& right) const
 {
 	Qop::Sp pOp(new Qadd());
-	Qwhole out(pOp->outId());
+	Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qwhole> expr(pOp);
@@ -339,7 +339,7 @@ Qexpr<Qwhole> Qwhole::operator+(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator+(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qadd());
-	Qwhole out(pOp->outId());
+	Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qwhole> expr(pOp);
@@ -349,7 +349,7 @@ Qexpr<Qwhole> Qwhole::operator+(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator*(const Qwhole& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
-    Qwhole out(pOp->outId());
+    Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qwhole> expr(pOp);
@@ -359,7 +359,7 @@ Qexpr<Qwhole> Qwhole::operator*(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator*(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
-    Qwhole out(pOp->outId());
+    Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qwhole> expr(pOp);
@@ -369,7 +369,7 @@ Qexpr<Qwhole> Qwhole::operator*(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator-(const Qwhole& right) const
 {
 	Qop::Sp pOp(new Qsubtract());
-    Qwhole out(pOp->outId());
+    Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qwhole> expr(pOp);
@@ -379,7 +379,7 @@ Qexpr<Qwhole> Qwhole::operator-(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator-(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qsubtract());
-    Qwhole out(pOp->outId());
+    Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qwhole> expr(pOp);
@@ -389,7 +389,7 @@ Qexpr<Qwhole> Qwhole::operator-(const Qexpr<Qwhole>& right) const
 Qexpr<Qwhole> Qwhole::operator/(const Qwhole& right) const
 {
 	Qop::Sp pOp(new Qdivide());
-    Qwhole out(pOp->outId());
+    Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.clone()});
 
 	Qexpr<Qwhole> expr(pOp);
@@ -399,7 +399,7 @@ Qexpr<Qwhole> Qwhole::operator/(const Qwhole& right) const
 Qexpr<Qwhole> Qwhole::operator/(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qdivide());
-    Qwhole out(pOp->outId());
+    Qwhole out(pOp->createId());
     pOp->operands(out.clone(), {clone(), right.rootDef()});
 
 	Qexpr<Qwhole> expr(pOp);

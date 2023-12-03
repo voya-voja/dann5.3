@@ -59,21 +59,25 @@ namespace dann5 {
         virtual Qdef::Sp output(size_t forBit = cAllBits) const;
         virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
-        // convert operation expration into a string
+        // convert operation expression into a string
         virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 
-        // Compiles this Qnary operation to generate quantum solver code
-        virtual void compile(Qcompiler& compiler) const;
+        // Set solution values from the evaluation set for this Qnary-operation
+        virtual void add(const Qevaluations& evaluations){
+            Qop::add(evaluations);
+        };
 
-        // Override to set solution values from the evaluation set for this deffinition
-        virtual void add(const Qevaluations& samples);
+        // Returns a string representation of a solution value of this
+        // Qnary-operation for an evaluation at 'atEvltn'
+        virtual string solution(size_t atEvltn) const{
+            return Qop::solution(atEvltn);
+        };
 
-        // Override to return a string representation of a solution value for a sample id
-        virtual string solution(size_t sampleId) const;
-
-        // Reset the quantum operation into its initial state without solutions by clear
-        // all solution samples
-        virtual void reset();
+        // Resets the Qnary-operation into its initial state without solutions
+        // by clear all solution samples
+        virtual void reset(){
+            Qop::reset();
+        };
 
     protected:
         // Override to refresh the Q-nary operation cells according to the derived
@@ -83,7 +87,12 @@ namespace dann5 {
             refreshOnOutput();
         };
 
+        // Override to refresh the Q-nary operation cells according to the derived
+        // operation logic on inputs assignment
         virtual void refreshOnInputs() = 0;
+
+        // Override to refresh the Q-nary operation cells according to the derived
+        // operation logic on output assignment
         virtual void refreshOnOutput();
     private:
     };

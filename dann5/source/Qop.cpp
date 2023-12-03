@@ -165,13 +165,14 @@ void Qop::add(const Qevaluations& evaluations)
 	mpOutput->add(evaluations);
 }
 
-string Qop::solution(size_t sampleId) const
+string Qop::solution(size_t atEvltn) const
 {
-	string osStr(mpOutput->solution(sampleId));
+	string osStr("");
 	for (auto pInput : mInputs)
 	{
-		osStr += "; " + pInput->solution(sampleId);
+		osStr += pInput->solution(atEvltn) + "; ";
 	}
+    osStr += mpOutput->solution(atEvltn);
 	return osStr;
 }
 

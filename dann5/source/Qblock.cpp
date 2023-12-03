@@ -11,8 +11,14 @@ using namespace dann5;
 size_t Qblock::noqbs() const noexcept
 {
 	size_t size = 0;
-	for (auto pStatement : mStatements)
-        size += pStatement->noqbs();
+    // a number of qubits of a bock is equal to
+    // a largest noqbs()
+    for (auto pStatement : mStatements)
+    {
+        size_t aSize = pStatement->noqbs();
+        if(aSize > size)
+            size = aSize;
+    }
 	return(size);
 }
 
@@ -23,24 +29,23 @@ string Qblock::toString(bool decomposed, size_t forBit) const
     {
         blockStr = "{";
         for (auto pStatement : mStatements)
-            blockStr += "\n\t" + pStatement->toString(decomposed, forBit);
+            blockStr += "\n\t" + pStatement->toString(decomposed, forBit) + ";";
         blockStr += "\n}";
     }
     else
     {
         if(forBit == 0)
             blockStr = "{";
-        size_t atBit = forBit;
+        size_t countAdded = 0;
         for (auto pStatement : mStatements)
         {
             size_t stmntNoqbts = pStatement->noqbs();
-            if(atBit < stmntNoqbts)
+            if(forBit < stmntNoqbts)
             {
-                blockStr += " " + pStatement->toString(decomposed, atBit);
-                break;
+                if(countAdded > 0) blockStr +=  ";";
+                blockStr += " " + pStatement->toString(decomposed, forBit);
+                countAdded++;
             }
-            if(atBit >= stmntNoqbts)
-                atBit -= stmntNoqbts;
         }
         if(forBit == noqbs() - 1)
             blockStr += " }";
@@ -51,31 +56,21 @@ string Qblock::toString(bool decomposed, size_t forBit) const
 void Qblock::compile(Qcompiler& compiler) const
 {
 	for (auto pStatement : mStatements)
-	{
 		pStatement->compile(compiler);
-	}
 }
 
 void Qblock::add(const Qevaluations& samples)
 {
 	Qstatement::add(samples);
 	for (auto pStatement : mStatements)
-	{
 		pStatement->add(samples);
-	}
 }
 
-string Qblock::solution(size_t forBit) const
+string Qblock::solution(size_t atEvltn) const
 {
-    size_t atBit = forBit;
 	string strSol("");
 	for (auto pStatement : mStatements)
-	{
-        size_t stmntNoqbts = pStatement->noqbs();
-        if(atBit > stmntNoqbts)
-            atBit -= stmntNoqbts;
-        strSol += " " + pStatement->solution(atBit);
-	}
+        strSol += " " + pStatement->solution(atEvltn);
 	return strSol;
 }
 
@@ -83,10 +78,8 @@ string Qblock::solutions() const
 {
 	string strSols("");
 	size_t solutionsNo = noSolutions();
-	for (size_t forBit = 0; forBit < solutionsNo; forBit++)
-	{
-		strSols += solution(forBit) + "\n";
-	}
+	for (size_t atEvltn = 0; atEvltn < solutionsNo; atEvltn++)
+		strSols += solution(atEvltn) + "\n";
 	return(strSols);
 }
 
@@ -102,9 +95,8 @@ Qevaluations Qblock::compute()
 void Qblock::reset()
 {
 	for (auto pStatement : mStatements)
-	{
 		pStatement->reset();
-	}
+    Qstatement::reset();
 }
 
 Qblock& Qblock::operator<<(const Qstatement& statement)

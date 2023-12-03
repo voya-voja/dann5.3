@@ -84,7 +84,7 @@ Qcell::Sp Qadd::opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight,
 	}
 	if (pOp != nullptr && assignOutput)
 	{ 
-		Qbit out(pOp->outId());
+		Qbit out(pOp->createId());
 		pOp->output(out.clone());
 		Qaddition::Sp pAddition = dynamic_pointer_cast<Qaddition>(pOp);
 		QxorAdder::Sp pXorAdder = dynamic_pointer_cast<QxorAdder>(pOp);

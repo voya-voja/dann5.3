@@ -24,15 +24,15 @@ namespace dann5 {
         Qroutine(size_t noArguments = 0) :QnaryOp("", noArguments){};
 
         // creates Q routine with a name
-        Qroutine(const string& id, size_t noArguments = 0) :QnaryOp(id, noArguments) {};
+        Qroutine(const string& name, size_t noArguments = 0) :QnaryOp(name, noArguments) {};
 
         // creates a named Q routine with a given Q block
-        Qroutine(const string& id, const Qblock& block, size_t noArguments = 0)
-            :QnaryOp(id, noArguments), mBlock(block) {};
+        Qroutine(const string& name, const Qblock& block, size_t noArguments = 0)
+            :QnaryOp(name, noArguments), mBlock(block) {};
 
         // creates a named Q routine with a given list of Q statements
-        Qroutine(const string& id, const Qstatements& statements, size_t noArguments = 0)
-            :QnaryOp(id, noArguments), mBlock(statements) {};
+        Qroutine(const string& name, const Qstatements& statements, size_t noArguments = 0)
+            :QnaryOp(name, noArguments), mBlock(statements) {};
 
         //copy constructor
         Qroutine(const Qroutine& right)
@@ -64,16 +64,16 @@ namespace dann5 {
 
         // Adds a evaluation set containing nodes with solutions values, the
         // nodes should correspond to operands of statements within this
-        // Q routine
+        // quantum routine
         virtual void add(const Qevaluations& evaluations);
 
-        // For added sample set(s), returns a string represnting 'at'
-        // solution of operands of statements within this Q routine
-        virtual string solution(size_t at) const;
+        // For added evaluation set(s), returns a string represnting 'atEvltn'
+        // solution of operands of this quantum routine
+        virtual string solution(size_t atEvltn) const;
 
         // Returns computed evaluation set with all solutions for the Q block
         // logic
-        virtual Qevaluations compute();
+        virtual Qevaluations compute() { return mBlock.compute(); };
 
         // Resets Q block statements into their initial state without
         // added solutions

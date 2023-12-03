@@ -66,8 +66,9 @@ namespace dann5 {
         virtual string toString(bool decomposed = false,
             size_t forBit = cAllBits) const;
 
-        // Override to return a string representation of a solution value for a sample id
-        virtual string solution(size_t sampleId) const;
+        // Returns a string representation of a solution value of this quantum
+        // integer for an evaluation at 'atEvltn'
+        virtual string solution(size_t atEvltn) const;
 
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qint(*this)); };

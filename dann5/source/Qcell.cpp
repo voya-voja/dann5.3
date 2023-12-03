@@ -23,10 +23,10 @@ void Qcell::add(const Qevaluations& evaluations)
 	}
 }
 
-string Qcell::solution(size_t sampleId) const
+string Qcell::solution(size_t atEvltn) const
 {
 	string sStr = id() + "\\";
-	Qvalue v = solutionValue(sampleId);
+	Qvalue v = solutionValue(atEvltn);
 	if (v > 1)
 		sStr.append(1, v);
 	else
@@ -40,10 +40,10 @@ void Qcell::reset()
 	mSolutions.clear();
 }
 
-Qvalue Qcell::solutionValue(size_t sampleId) const 
+Qvalue Qcell::solutionValue(size_t atEvltn) const
 {
 	Qvalue v = value();
 	if (v == cSuperposition)
-		v = mSolutions[sampleId];
+		v = mSolutions[atEvltn];
 	return v;
 }

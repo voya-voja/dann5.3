@@ -94,10 +94,10 @@ namespace dann5 {
         // solutions of operands of this Q assignment
         virtual string solutions() const;
 
-        // For added sample set(s), returns a string represnting 'at'
+        // For added evaluation set(s), returns a string represnting 'atEvltn'
         // solution of operands of this Q assignment
-        virtual string solution(size_t at) const
-                        { return mpExpr->solution(at); };
+        virtual string solution(size_t atEvltn) const
+                        { return mpExpr->solution(atEvltn); };
 
         // Returns computed evaluation set with all solutions of the assignment
         virtual Qevaluations compute();

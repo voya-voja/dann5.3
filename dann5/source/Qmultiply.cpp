@@ -25,7 +25,7 @@ QcellMatrix Qmultiply::x(const Qdefs& args) const
 		for (size_t atCol = 0; atCol < columns; atCol++)
 		{
 			QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark);
-			Qbit out(pOp->outId());
+			Qbit out(pOp->createId());
             pOp->operands(out.clone(), {(*pLeft)[atRow].clone(), (*pRight)[atCol].clone()});
 			xMatrix(atRow, atCol) = pOp;
 		}
@@ -83,7 +83,7 @@ void Qmultiply::sumDiagonal(const QcellMatrix& matrix)
 				else
 					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(Qadder::cMark));
 				pAddition->inputs(addIns);
-				Qbit out(pAddition->outId());
+				Qbit out(pAddition->createId());
 				pAddition->output(out.clone());
 				// stack carry-forward Q cell
 				carryStack.push_back(as_const(*pAddition).carry());

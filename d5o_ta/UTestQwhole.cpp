@@ -47,7 +47,7 @@ void UTestQwhole::initialization(ostream& out)
     // supperposition value, plus initialize Q whole with a given id and
     // supperposition value
     Qwhole dcQwhole, idQwhole("id");
-    out << "Qwhole defualt constructor: " << dcQwhole.toString()
+    out << "Qwhole default constructor: " << dcQwhole.toString()
         << ", creates an object with empty id, i.e. '',"
         << " 0 qbits, and value 0." << endl << "Qwhole with an id only: "
         << idQwhole.toString() << " has 0 qbits and value 0, too." << endl;
@@ -151,7 +151,7 @@ void UTestQwhole::bitwise(ostream& out)
     out << " resulting in :" << endl << qbExpr.solve() << endl;
 
     x.resize(2); y.resize(2);
-    out << "**** x & y habe been resized to 2 qbits ****" << endl
+    out << "**** x & y have been resized to 2 qbits ****" << endl
         << " decomposed: " << x.toString(true) << endl
         << " decomposed: " << y.toString(true) << endl << endl;
 

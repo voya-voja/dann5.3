@@ -10,6 +10,7 @@
 		A2044A592B10002700D7FDB0 /* QlogicCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2044A572B10002700D7FDB0 /* QlogicCompiler.cpp */; };
 		A204977529494F1700F96DA4 /* UTestQbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A204977429494F1700F96DA4 /* UTestQbit.cpp */; };
 		A218D4AC29DFA6BA0028F469 /* ULint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A218D4AB29DFA6BA0028F469 /* ULint.cpp */; };
+		A220A7C42B1A62A800F9F545 /* Qfunc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A220A7C22B1A62A700F9F545 /* Qfunc.cpp */; };
 		A24FBD8C28C6D72F00E83138 /* d5o_ta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A24FBD8B28C6D72F00E83138 /* d5o_ta.cpp */; };
 		A260C09F2B0D220900B46F43 /* QnaryOps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A260C09E2B0D220900B46F43 /* QnaryOps.cpp */; };
 		A282C3002AC7718A00AA4B98 /* UTestULint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A282C2FE2AC7718A00AA4B98 /* UTestULint.cpp */; };
@@ -67,6 +68,8 @@
 		A20507D82AFF060F00165038 /* Qsolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qsolver.h; path = ../../dann5/include/Qsolver.h; sourceTree = "<group>"; };
 		A218D4AB29DFA6BA0028F469 /* ULint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ULint.cpp; path = ../../dann5/source/ULint.cpp; sourceTree = "<group>"; };
 		A218D4AD29DFA6F30028F469 /* ULint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ULint.h; path = ../../dann5/include/ULint.h; sourceTree = "<group>"; };
+		A220A7C22B1A62A700F9F545 /* Qfunc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qfunc.cpp; path = ../../dann5/source/Qfunc.cpp; sourceTree = "<group>"; };
+		A220A7C62B1A633B00F9F545 /* Qfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qfunc.h; path = ../../dann5/include/Qfunc.h; sourceTree = "<group>"; };
 		A24FBD8B28C6D72F00E83138 /* d5o_ta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = d5o_ta.cpp; path = ../../d5o_ta.cpp; sourceTree = "<group>"; };
 		A260C09E2B0D220900B46F43 /* QnaryOps.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QnaryOps.cpp; path = ../../dann5/source/QnaryOps.cpp; sourceTree = "<group>"; };
 		A282C2FE2AC7718A00AA4B98 /* UTestULint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UTestULint.cpp; path = ../../UTestULint.cpp; sourceTree = "<group>"; };
@@ -240,6 +243,8 @@
 				A2A39AF82B0446D900BAFFEF /* Qevaluation.h */,
 				A2A39ACE2B04266400BAFFEF /* Qexpr.cpp */,
 				A2A39AD12B04266400BAFFEF /* Qexpr.h */,
+				A220A7C22B1A62A700F9F545 /* Qfunc.cpp */,
+				A220A7C62B1A633B00F9F545 /* Qfunc.h */,
 				A2A39AD32B04266400BAFFEF /* Qglbls_fctrs.cpp */,
 				A2A39ADC2B04266500BAFFEF /* Qint.cpp */,
 				A2A39AD72B04266400BAFFEF /* Qint.h */,
@@ -358,6 +363,7 @@
 				A2A39AE52B04266500BAFFEF /* Qmultiply.cpp in Sources */,
 				A2A5358328C6C686002C4145 /* Qubo.cpp in Sources */,
 				A2A39AE22B04266500BAFFEF /* Qbit.cpp in Sources */,
+				A220A7C42B1A62A800F9F545 /* Qfunc.cpp in Sources */,
 				A218D4AC29DFA6BA0028F469 /* ULint.cpp in Sources */,
 				A282C3002AC7718A00AA4B98 /* UTestULint.cpp in Sources */,
 				A2A5357E28C6C686002C4145 /* D5QuboSolver.cpp in Sources */,

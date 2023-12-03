@@ -32,7 +32,7 @@ string Qroutine::declaration() const
 
 string Qroutine::toString(bool decomposed, size_t forBit) const
 {
-    if(!decomposed || forBit == 0)
+    if(!decomposed)
     {
         return(declaration() + ": " + mBlock.toString(decomposed, forBit));
     }
@@ -46,23 +46,19 @@ void Qroutine::add(const Qevaluations& evaluations)
     QnaryOp::add(evaluations);
 }
 
-string Qroutine::solution(size_t at) const
+string Qroutine::solution(size_t atEvltn) const
 {
-    return mBinder.solution(at);
-}
-
-Qevaluations Qroutine::compute()
-{
-    Qevaluations evaluations = mBlock.compute();
-    return evaluations;
+//    string sltnStr = mBlock.solution(atEvltn);
+//    sltnStr += mBinder.solution(atEvltn);
+    string sltnStr = QnaryOp::solution(atEvltn);
+    return sltnStr;
 }
 
 void Qroutine::reset()
 {
     mBinder.reset();
-    mBlock.reset();
     QnaryOp::reset();
-};
+}
 
 Qroutine& Qroutine::operator<<(const Qstatement& statement)
 {

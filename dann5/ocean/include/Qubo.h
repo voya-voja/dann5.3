@@ -143,7 +143,7 @@ namespace dann5{
             
         private:
             
-            Labels			mVariables;	// Qubo table defualt node names
+            Labels			mVariables;	// Qubo table default node names
             MatrixXd		mElements;	// Qubo Table value matrix
         };
 
@@ -182,6 +182,16 @@ namespace dann5{
         public:
         };
 
+        // Invert operator specialization of Operator QuboTable defined by
+        // invert mark (sign) and name
+        class InvertQT : public OperatorQT
+        {
+        private:
+        protected:
+        public:
+            InvertQT();
+        };
+        
         // Equal operator specialization of Operator QuboTable defined by equal
         // mark and name
         class EqQT : public OperatorQT

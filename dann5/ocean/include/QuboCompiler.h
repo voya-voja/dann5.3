@@ -51,17 +51,18 @@ namespace dann5{
                 mFinalized = fnlzd;
                 reset();
             };
-            
-            // Returns QUBO object as a translation of parsed quantum operation
-            // When forBit is specified, the provided operation should be a
-            // quantum nary-operation.
-            virtual Qubo parse(const Qop& op, size_t forBit = cAllBits) const;
 
         protected:
+            // Returns QUBO object as a translation of parsed quantum operation
+            virtual Qubo parse(const Qop& op) const;
+
             // Returns a QUBO object by translating the provided operation.
-            // When forBit is specified, the provided operation should be a
-            // quantum nary-operation.
-            virtual Qubo qubo(const Qop& op, size_t forBit = cAllBits) const;
+            // The provided operation should be a QcellOp, otherwise it throws
+            // logical_error exception.
+            virtual Qubo qubo(const Qop& op) const;
+            
+            // Compiles this Qnary operation to generate QUBO
+            virtual Qubo compile(const QnaryOp* pOp) const;
             
         private:
             Qubo mQubo;         // Compiled QUBO

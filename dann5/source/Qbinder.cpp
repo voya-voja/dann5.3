@@ -40,12 +40,12 @@ void Qbinder::add(const Qevaluations& evltns)
 	}
 }
 
-string Qbinder::solution(size_t forBit) const
+string Qbinder::solution(size_t atEvltn) const
 {
 	string strSol("");
 	for (auto pOperand : mOperands)
 	{
-		strSol += pOperand->solution(forBit) + " ";
+		strSol += pOperand->solution(atEvltn) + " ";
 	}
 	return strSol;
 }
@@ -67,6 +67,7 @@ void Qbinder::reset()
 	{
 		pOperand->reset();
 	}
+    mSolutions.clear();
 }
 
 Qbinder& Qbinder::operator<<(const Qdef& right)

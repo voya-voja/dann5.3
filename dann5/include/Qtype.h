@@ -7,7 +7,7 @@
 using namespace std;
 
 namespace dann5 {
-    // A Quntum type enforces Q type definitions
+    // A Quantum type enforces Q type definitions
     class Qtype
     {
     public:

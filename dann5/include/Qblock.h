@@ -6,6 +6,7 @@
 
 #include <Qstatement.h>
 #include <Qevaluation.h>
+#include <QcellOps.h>
 
 using namespace std;
 
@@ -63,9 +64,9 @@ namespace dann5 {
         // solutions of operands of statements within this Q block
         virtual string solutions() const;
 
-        // For added sample set(s), returns a string represnting 'at'
+        // For added evaluation set(s), returns a string represnting 'atEvltn'
         // solution of operands of statements within this Q block
-        virtual string solution(size_t at) const;
+        virtual string solution(size_t atEvltn) const;
 
         // Returns computed evaluation set with all solutions for the Q block
         // logic
@@ -111,7 +112,69 @@ namespace dann5 {
         // be followed by list of other Q statements separated by
         // comma operator
         CommaOp operator=(const Qstatement& right);
+        
+        // Quantum block cell operation contains a list of quantum cell
+        // operations
+        class Op : public QcellOp
+        {
+        public:
+            // Quantum block operation shared pointer
+            typedef shared_ptr<Op> Sp;
 
+            // Instantiate an quantum block operation instance with its identity
+            Op() : QcellOp("{}", 0), mOps() {};
+
+            // Copy constructor
+            Op(const Op& right) : QcellOp(right), mOps(right.mOps) {};
+
+            // Destruct quantum block operation
+            ~Op() {};
+
+            // Return a Qdef's shared pointer pointing to a copy of this object
+            Qdef::Sp clone() const { return Qdef::Sp(new Op(*this)); };
+
+            // Convert quantum block operation into a string
+            string toString(bool decomposed = false,
+                                    size_t forBit = cAllBits) const;
+
+            // Compiles quantum block operation to generate quantum solver code
+            void compile(Qcompiler& compiler) const {
+                for(auto pOp : mOps)
+                    pOp->compile(compiler);
+            };
+
+            // Sets solution values from the evaluation set for this block
+            // operation
+            void add(const Qevaluations& evaluations) {
+                for(auto pOp : mOps)
+                    pOp->add(evaluations);
+            };
+
+            // Returns a string representation of a solution value of evaluation
+            // at 'atEvltn' for the cell operation
+            string solution(size_t atEvltn) const;
+
+            // Reset the quantum operation into its initial state without solutions
+            // by clearing all evaluation samples
+            void reset() {
+                for(auto pOp : mOps)
+                    pOp->reset();
+            };
+
+        protected:
+            virtual Qvalue calculate(const Qvalues& values) const { return 0; };
+
+        private:
+            QcellOps    mOps;   // containing cell operations
+        };
+        
+        Op at(size_t forBit) const;
+        Op at(size_t forBit);
+        Op operator[](size_t forBit) const {
+            return as_const(*this).at(forBit);
+        };
+        Op operator[](size_t forBit){ return at(forBit); };
+        
         // Insert string representation of a Q block into an output stream
         friend std::ostream& operator << (std::ostream&, const Qblock&);
 

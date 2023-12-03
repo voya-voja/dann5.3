@@ -71,26 +71,6 @@ Qvalue QcellOp::value() const
 	return(cSuperposition);
 }
 
-Qvalue QcellOp::value()
-{
-	return(as_const(*this).value());
-}
-
-void QcellOp::add(const Qevaluations& evaluations)
-{
-	Qop::add(evaluations);
-}
-
-string QcellOp::solution(size_t sampleId) const
-{
-	return Qop::solution(sampleId);
-}
-
-void QcellOp::reset()
-{
-	Qop::reset();
-}   
-
 /*** Q operator ***/
 
 Qdef::Sp Qoperator::output(size_t forBit) const
@@ -106,6 +86,22 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 {
 	string str("?"), rest(""), rStr("");
 	if (!decomposed) rStr += "(";
+    Qdef::Sp pIn = Qop::inputs()[0];
+    if (pIn != nullptr)
+    {
+        str = pIn->toString(decomposed);
+        if (decomposed)
+        {
+            // if operand is a sub-operation
+            Qop::Sp pOp = dynamic_pointer_cast<Qop>(pIn);
+            if (pOp != nullptr)
+            {
+                rest += str;
+                str = pOp->output()->toString(decomposed); // extract sub-operation output
+            }
+        }
+    }
+	rStr += str + " " + identifier() + " ";
     Qdef::Sp pOut = Qop::output();
     if (pOut != nullptr)
     {
@@ -121,22 +117,6 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
                 str = pOp->output()->toString(decomposed); // extract sub-operation output
             }
         }
-    }
-	rStr += str + " " + identifier() + " ";
-    Qdef::Sp pIn = Qop::inputs()[0];
-    if (pIn != nullptr)
-    {
-        str = pIn->toString(decomposed);
-        if (decomposed)
-        {
-            // if operand is a sub-operation
-            Qop::Sp pOp = dynamic_pointer_cast<Qop>(pIn);
-            if (pOp != nullptr)
-            {
-                rest += str;
-                str = pOp->output()->toString(decomposed); // extract sub-operation output
-            }
-        }
         rStr += str;
     }
 	if (!decomposed)
@@ -144,6 +124,16 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
 	else if (rest != "")
 		rStr += "; " + rest;
 	return rStr;
+}
+
+/*** Q invert operation ***/
+
+Qvalue Qinvert::calculate(const Qvalues& values) const
+{
+    Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(Qop::output());
+    if (pOut == nullptr || pOut->value() == cSuperposition)
+        return(cSuperposition);
+    return(Qvalue(values[0] != pOut->value()));
 }
 
 /*** Q eq operation ***/
@@ -276,7 +266,7 @@ Qaddition::Qaddition(const string& id, size_t size, const Qdef::Sp pOut, const Q
 {
 	mpCarry->addition(this);
 	output(pOut);
-	pOut->id(outId());
+	pOut->id(createId());
 }
 
 void Qaddition::operands(const Qdef::Sp& pOut, const Qdefs& ins)

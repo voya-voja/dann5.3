@@ -34,35 +34,42 @@ namespace dann5 {
         // overrides output setter to sync its value and value of this operation
         virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits);
 
-        // Returns the largest number of Q bits of all its inputs
-        virtual std::size_t noqbs() const noexcept { return Qop::noqbs(); };
+        // Returns 1 as cell operations have operands with 1 quantum bit
+        virtual std::size_t noqbs() const noexcept { return 1; };
 
         // set and get the value of this Q cell
         virtual void value(Qvalue v);	// throws logic_error exception
         virtual Qvalue value() const;
-        virtual Qvalue value();
+        virtual Qvalue value() { return(as_const(*this).value()); };
 
-        // convert Quantum cell operation expration into a string as any other
-        // operation
+        // Convert quantum cell operation expression into a string
         virtual string toString(bool decomposed = false,
                                 size_t forBit = cAllBits) const {
             return Qop::toString(decomposed, forBit);
         };
 
-        // Override to set solution values from the sample set for this
-        // deffinition
-        virtual void add(const Qevaluations& evaluations);
+        // Sets solution values from the evaluation set for this cell operation
+        virtual void add(const Qevaluations& evaluations) {
+            Qop::add(evaluations);
+        };
 
-        // Override to return a string representation of a solution value for a
-        // sample id
-        virtual string solution(size_t sampleId) const;
+        // Returns a string representation of a solution value of evaluation at
+        // 'atEvltn' for the cell operation
+        virtual string solution(size_t atEvltn) const {
+            return Qop::solution(atEvltn);
+        };
 
         // Reset the quantum operation into its initial state without solutions
-        // by clearing all solution samples
-        virtual void reset();
+        // by clearing all evaluation samples
+        virtual void reset() {
+            Qop::reset();
+        };
 
     protected:
+        // Override to implement a calculation of the resulting value of this
+        // cell operation
         virtual Qvalue calculate(const Qvalues& values) const = 0;
+        
     private:
     };
 
@@ -71,13 +78,20 @@ namespace dann5 {
     class QcellOps : public vector <QcellOp::Sp>
     {
     public:
+        // default constructor
+        QcellOps() : vector <QcellOp::Sp>() {};
+        
+        // copy cnstructor
+        QcellOps(const QcellOps& right) : vector <QcellOp::Sp>(right) {};
+        
+        // conversion constructor of Qdefs to QcellOps
         QcellOps(const Qdefs& list){
             for(auto pDef: list)
                 push_back(dynamic_pointer_cast<QcellOp>(pDef));
         };
     };
 
-    // A Quntum null operation is an empty cell operation
+    // A Quantum null operation is an empty cell operation
     class QnullCellOp : public QcellOp
     {
     public:
@@ -109,11 +123,11 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum operator is an abstration of an unnary operation
+    // A Quantum operator is an abstration of an unnary operation
     class Qoperator : public QcellOp
     {
     public:
-        // Quntum operator's shared pointer
+        // Quantum operator's shared pointer
         typedef shared_ptr<Qoperator> Sp;
 
         // Instantiate an Quantum operator instance with its identity
@@ -122,21 +136,21 @@ namespace dann5 {
         // Copy constructor
         Qoperator(const Qoperator& right) : QcellOp(right) {};
 
-        // Destruct Quntum operator
+        // Destruct Quantum operator
         ~Qoperator() {};
 
         // overrides output getter to  return output operand when operation is
         // an output
         virtual Qdef::Sp output(size_t forBit = cAllBits) const;
 
-        // convert Quantum operator expration into a string
+        // convert Quantum operator expression into a string
         virtual string toString(bool decomposed = false,
                                 size_t forBit = cAllBits) const;
     protected:
     private:
     };
 
-    // A Quntum equal is an operator
+    // A Quantum equal is an operator
     class Qeq : public Qoperator
     {
     public:
@@ -165,7 +179,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum not-equal is an operator
+    // A Quantum not-equal is an operator
     class Qneq : public Qoperator
     {
     public:
@@ -194,7 +208,41 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum less-than is an operator
+    // A Quantum invert is an operator
+    class Qinvert : public Qoperator
+    {
+    public:
+        // Qinvert's shared pointer
+        typedef shared_ptr<Qinvert> Sp;
+
+        // Quantum invert operator identifiers
+        static const string cMark;    // "~"
+        static const string cName;    // "invert"
+
+        // Instantiate Qinvert instance with '~' identity
+        Qinvert() : Qoperator(cMark) {};
+
+        // Copy constructor
+        Qinvert(const Qinvert& right) : Qoperator(right) {};
+
+        // Destruct quantum not-equal instance
+        ~Qinvert() {};
+
+        // Return a Qdef's shared pointer pointing to a copy of this object
+        virtual Qdef::Sp clone() const { return Qdef::Sp(new Qinvert(*this)); };
+        
+        // Returns not-equal mark as this operation identifier
+        virtual string identifier() const noexcept {
+            return Qneq::cMark;
+        };
+
+    protected:
+        virtual Qvalue calculate(const Qvalues& values) const;
+
+    private:
+    };
+
+    // A Quantum less-than is an operator
     class Qlt : public Qoperator
     {
     public:
@@ -223,7 +271,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum less-than-or-equal is an operator
+    // A Quantum less-than-or-equal is an operator
     class Qle : public Qoperator
     {
     public:
@@ -252,7 +300,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum greater-than is an operator
+    // A Quantum greater-than is an operator
     class Qgt : public Qoperator
     {
     public:
@@ -281,7 +329,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum greater-than-or-equal is an operator
+    // A Quantum greater-than-or-equal is an operator
     class Qge : public Qoperator
     {
     public:
@@ -312,7 +360,7 @@ namespace dann5 {
 
     /****Quantum Binary operations *****/
 
-    // A Quntum and is a binary operation
+    // A Quantum and is a binary operation
     class Qand : public QcellOp
     {
     public:
@@ -376,7 +424,7 @@ namespace dann5 {
         Qdef::Sp mpAuxiliary;
     };
 
-    // A Quntum nand is a binary operation with 2 outputs
+    // A Quantum nand is a binary operation with 2 outputs
     class Qnand : public Qcell2outOp
     {
     public:
@@ -405,7 +453,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum or is a binary operation
+    // A Quantum or is a binary operation
     class Qor : public QcellOp
     {
     public:
@@ -434,7 +482,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum nor is a binary operation
+    // A Quantum nor is a binary operation
     class Qnor : public Qcell2outOp
     {
     public:
@@ -471,7 +519,7 @@ namespace dann5 {
         // Qaddition's shared pointer
         typedef shared_ptr<Qaddition> Sp;
 
-        // A Quntum carry is an operand defined by a Q addition
+        // A Quantum carry is an operand defined by a Q addition
         class Carry : public QcellOp
         {
         public:
@@ -558,7 +606,7 @@ namespace dann5 {
         Carry::Sp	mpCarry;
     };
 
-    // A Quntum xOr is a binary Q addition
+    // A Quantum xOr is a binary Q addition
     class Qxor : public Qaddition
     {
     public:
@@ -591,7 +639,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum xOr is a binary Q addition
+    // A Quantum xOr is a binary Q addition
     class Qnxor : public Qaddition
     {
     public:
@@ -621,7 +669,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum half-adder is a binary Q xor addition
+    // A Quantum half-adder is a binary Q xor addition
     class QhalfAdder : public Qxor
     {
     public:
@@ -651,7 +699,7 @@ namespace dann5 {
 
     /****Quantum Trinary operations *****/
 
-    // A Quntum (full) adder is a trinary Q addition
+    // A Quantum (full) adder is a trinary Q addition
     class Qadder : public Qaddition
     {
     public:
@@ -687,7 +735,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quntum xOr that can be extended to act as Q adder
+    // A Quantum xOr that can be extended to act as Q adder
     class QxorAdder : public Qaddition
     {
     public:

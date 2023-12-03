@@ -75,7 +75,7 @@ namespace dann5 {
 	protected:
 	private:
 		// Factory implements singleton pattern
-		// defualt constructor is private
+		// default constructor is private
 		Factory() {};
 
 		// Factory destructor

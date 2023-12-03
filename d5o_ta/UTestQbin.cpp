@@ -44,7 +44,7 @@ void UTestQbin::initialization(ostream& out)
     // Default constructor initializes Q bin with an empty id and supperposition value
     // Initialize Q bin with a given id and supperposition value
     Qbin dcQbin, idQbin("id");
-    out << "Qbin defualt constructor: " << dcQbin.toString()
+    out << "Qbin default constructor: " << dcQbin.toString()
         << ", creates an object with empty id, i.e. '', 0 qbits, and value 0."
         << endl << "Qbin with an id only: " << idQbin.toString()
         << " has 0 qbits and value 0, too." << endl;
@@ -272,7 +272,7 @@ void UTestQbin::bitwise(ostream& out)
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
     x.resize(2); y.resize(2);
-    out << "**** x & y habe been resized to 2 qbits ****" << endl
+    out << "**** x & y have been resized to 2 qbits ****" << endl
         << " decomposed: " << x.toString(true) << endl
         << " decomposed: " << y.toString(true) << endl << endl;
 
@@ -299,17 +299,25 @@ void UTestQbin::comparison(ostream& out)
     compiler.reset(); xNe.compile(compiler);
     out << xNe.toString() << " decomposed: " << xNe.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xNe.solve() << endl;
-    compiler.reset(); xNe.compile(compiler);
+
+    Qbinder vars; vars = x, y, z;
+    compiler.reset(); xXnYeZ0.compile(compiler);
     out << "x != y == z decomposed: " << xXnYeZ0.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xXnYeZ0.solve() << endl;
-    compiler.reset(); xNe.compile(compiler);
+        << "Qubo: " << compiler.qubo() << endl;
+    vars.add(xXnYeZ0.compute());
+    out << vars << endl;
+    vars.reset();
+    compiler.reset(); xXnYeZ1.compile(compiler);
     out << xXnYeZ1.toString() << " decomposed: " << xXnYeZ1.toString(true)
-        << endl << "Qubo: " << compiler.qubo() << endl << xXnYeZ1.solve()
-        << endl;
-    compiler.reset(); xNe.compile(compiler);
+        << endl << "Qubo: " << compiler.qubo() << endl;
+    vars.add(xXnYeZ1.compute());
+    out << vars << endl;
+    vars.reset();
+    compiler.reset(); xXnYeZ2.compile(compiler);
     out << xXnYeZ2.toString() << " decomposed: " << xXnYeZ2.toString(true)
-        << endl << "Qubo: " << compiler.qubo() << endl << xXnYeZ2.solve()
-        << endl;
+        << endl << "Qubo: " << compiler.qubo() << endl;
+    vars.add(xXnYeZ2.compute());
+    out << vars << endl;
 }
 
 void UTestQbin::eq_asign(ostream& out)

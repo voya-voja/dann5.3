@@ -53,7 +53,7 @@ namespace dann5 {
         operator QdefVector();
         operator const QdefVector() const;
 
-        // by defualt returns Qcell::Sp to a created Qbit with a value and apporopriate id
+        // by default returns Qcell::Sp to a created Qbit with a value and apporopriate id
         // override to create appropriate Qcell object for a given value at givel level
         virtual Qcell::Sp create(Qvalue value, size_t atLevel) const;
         
@@ -83,14 +83,15 @@ namespace dann5 {
         virtual string toString(bool decomposed = false,
                             size_t forBit = cAllBits) const;
 
-        // Override to set solution values from the evaluation set for this deffinition
+        // Sets solution values from the evaluation set for this Qnary object
         virtual void add(const Qevaluations& samples);
 
-        // Override to return a string representation of a solution value for a sample id
-        virtual string solution(size_t sampleId) const;
+        // Return a string representation of a solution value of a qnary object
+        // for evaluation at 'atEvltn'
+        virtual string solution(size_t atEvltn) const;
 
-        // Reset the quantum array of cells into its initial state without solutions by
-        // clearing all solution samples
+        // Reset the quantum array of cells into its initial state without
+        // solutions by clearing all evaluations
         virtual void reset();
 
         void set(const Qcell::Sp& pCell, size_t forBit) {

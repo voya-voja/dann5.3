@@ -236,6 +236,15 @@ BinaryOp2OutQT::BinaryOp2OutQT()
 {
 }
 
+/**** Invertoperator Qubo Table ****/
+InvertQT::InvertQT()
+    :OperatorQT()
+{
+    *this << "i", "o";
+    *this << -1,   2,
+              0,  -1;
+}
+
 /**** Equal operator Qubo Table ****/
 EqQT::EqQT()
 	:OperatorQT()

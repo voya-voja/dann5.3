@@ -56,9 +56,9 @@ namespace dann5 {
         // solutions of operands contained in the Q binder
         virtual string solutions() const;
 
-        // For added sample set(s), returns a string represnting 'at'
+        // For added evaluation set(s), returns a string represnting 'atEvltn'
         // solution of operands contained in the Q binder
-        virtual string solution(size_t at) const;
+        virtual string solution(size_t atEvltn) const;
 
         // Resets the Q bundle by removing all added sample sets and
         // reseting all the operands
