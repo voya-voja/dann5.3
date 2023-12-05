@@ -148,135 +148,51 @@ void testPNcandidates()
     spnFstream.close();
 }
 
-void testFunc()
-{
-    Qwhole x(2, "x"), y("y", 5), z(2, "z");
-    Qwhole aux(2, "aux");
-    Qexpr<Qbit> qbXpr;
-    qbXpr = aux[1] | aux[0];
-    Qbit _1("_1", 1);
-    Qfunction fNeq("neq", 1);
-    fNeq.resize(3);
-    fNeq.operands(z.clone(), {x.clone()});
-    fNeq = z = aux + x,
-        _1 = qbXpr;
-    QuboCompiler compiler; fNeq.compile(compiler);
-    cout << fNeq << endl << " decomposed: " << endl
-        << fNeq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl;
-    Qexpr<Qwhole> xpr(dynamic_pointer_cast<Qop>(fNeq.clone()));
-    cout << xpr.solve() << endl;
-    compiler.reset(); fNeq.compile(compiler);
-    Qexpr<Qwhole> xpr2(y == xpr);
-    cout << xpr2 << endl << " decomposed: " << endl
-        << xpr2.toString(true) << endl;
-    xpr2.reset(); xpr2.compile(compiler);
-    cout << "Qubo: " << compiler.qubo() << endl;
-    cout << xpr2.solve() << endl;
-}
-
 int main(int argc, const char * argv[])
 {
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
     
-    testFunc();
-
     QuboCompiler compiler;
-    Qbin x(3, "x"), y("y", 5), z(3, "z");
+    Qwhole x(3, "x"), y("y", 5), z(3, "z");
 
-    Qexpr<Qbin> xNe = (x != z);
-    compiler.reset(); xNe.compile(compiler);
-    cout << xNe.toString() << " decomposed: " << endl
-        << xNe.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xNe.solve() << endl;
-
-    Qexpr<Qbin> xEq = (x == y), xXnYeZ0 = x != y == z;
-    
-/*
+    Qexpr<Qwhole>   xGt = x > z,
+                    xGe = x >= z,
+                    xLt = x < z,
+                    xLe = x <= z,
+                    xNeq = x != z,
+                    xEq = x == z;
     compiler.reset(); xEq.compile(compiler);
-    cout << xEq.toString() << " decomposed: " << xEq.toString(true) << endl
+    cout << xEq.toString() << endl << " decomposed: " << endl
+        << xEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEq.solve() << endl;
-*/
-    Qbinder vars; vars = x, y, z;
-    compiler.reset();
-    xXnYeZ0.compile(compiler);
-    cout << "x != y == z: " << xXnYeZ0 << endl << " decomposed: " << endl
-        << xXnYeZ0.toString(true) << endl << "Qubo: " << compiler.qubo() << endl
-        << xXnYeZ0.solve() << endl;
-    vars.add(xXnYeZ0.compute());
-    cout << vars << endl;
 
-    Qexpr<Qbin> xXnYeZ1= (x != y) == z, xXnYeZ2 = x != (y == z);
-    vars.reset();
-    compiler.reset(); xXnYeZ1.compile(compiler);
-    cout << xXnYeZ1.toString() << " decomposed: " << xXnYeZ1.toString(true)
-        << endl << "Qubo: " << compiler.qubo() << endl;
-    vars.add(xXnYeZ1.compute());
-    cout << vars << endl;
-    vars.reset();
-    compiler.reset(); xXnYeZ2.compile(compiler);
-    cout << xXnYeZ2.toString() << " decomposed: " << xXnYeZ2.toString(true)
-        << endl << "Qubo: " << compiler.qubo() << endl;
-    vars.add(xXnYeZ2.compute());
-    cout << vars << endl;
-    
+    compiler.reset(); xNeq.compile(compiler);
+    cout << xNeq.toString() << endl << " decomposed: " << endl
+        << xNeq.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xNeq.solve() << endl;
+
+    compiler.reset(); xGt.compile(compiler);
+    cout << xGt.toString() << endl << " decomposed: " << endl
+        << xGt.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xGt.solve() << endl;
+
+    compiler.reset(); xGe.compile(compiler);
+    cout << xGe.toString() << endl << " decomposed: " << endl
+        << xGe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xGe.solve() << endl;
+
+    compiler.reset(); xLt.compile(compiler);
+    cout << xLt.toString() << endl << " decomposed: " << endl
+        << xLt.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xLt.solve() << endl;
+
+    compiler.reset(); xLe.compile(compiler);
+    cout << xLe.toString() << endl << " decomposed: " << endl
+        << xLe.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xLe.solve() << endl;
+
     UTestQbit utQbit;
     utQbit.runAll(cout);
-/*
-    Qbit a("a"), b("b"), c("c");
-    Qexpr<Qbit> bitX0(a > b);
-    cout << bitX0 << endl << bitX0.toString(true)
-        << endl << bitX0.solve();
-    Qexpr<Qbit> bitX(a != b == c);
-    cout << bitX << endl << bitX.toString(true)
-        << endl << bitX.solve();
-
-    Qwhole x(2, "x"), y(2, "y"), z(2, "z"), r(2,"r");
-    Qexpr<Qwhole> xp(x + y);
-    Qassign<Qwhole>
-        as0(r = x + y + z),
-        as2(r = xp + z),
-        as1(r = z + xp);
-    cout << as0 << endl << as0.toString(true) << endl << as0.solve();
-    cout << as1 << endl << as1.toString(true) << endl << as1.solve();
-    cout << as2 << endl << as2.toString(true) << endl << as2.solve();
-
-    Qwhole sub0(2, "_-0"), sub1(3, "_-1");
-    
-    Qassign<Qwhole> a1(z = sub1 + y), a0(y = sub0 + x);
-    Qblock blck;
-    blck = a0, a1;
-    cout << blck << endl << blck.toString(true) << endl << blck.solve();
-
-    
-    Qexpr<Qwhole> xE0(y == sub0 + x);
-    cout << xE0 << endl << xE0.toString(true) << endl << xE0.solve();
-    Qexpr<Qwhole> xE1(z == sub1 + xE0);
-    cout << xE1 << endl << xE1.toString(true) << endl << xE1.solve();
-
-    Qexpr<Qwhole> qwExpr = y - x;
-    QuboCompiler noFnlCmplr(false); qwExpr.compile(noFnlCmplr);
-    QuboCompiler compiler; qwExpr.compile(compiler);
-    cout << "Subtraction Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
-        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
-    cout << "'" << endl << " & finalized Qubo is '"
-        << compiler.qubo()<< "'" << endl;
-    cout << " resulting in :" << endl << qwExpr.solve() << endl;
-// Issue #6
-    Qexpr<Qwhole> qwxExpr = z - qwExpr;
-    noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
-    compiler.reset(); qwxExpr.compile(compiler);
-    cout << "Subtraction Expression" << endl << qwxExpr << endl
-        << " decomposed logic: " << qwxExpr.toString(true) << endl
-        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
-    cout << "'" << endl << " & finalized Qubo is '"
-        << compiler.qubo()<< "'" << endl;
-    QuboAnalyzer analyzer(compiler.qubo());
-    cout << "# of nodes: " << analyzer.nodesNo() << ", # of branches: "
-         << analyzer.branchesNo() << endl;
-    cout << " resulting in :" << endl << qwxExpr.solve() << endl;
- */
     UTestQbool utQbool;
     utQbool.runAll(cout);
     UTestQbin utQbin;

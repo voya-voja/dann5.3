@@ -199,20 +199,20 @@ DefaultCreator<string, QnaryOp, QnaryLe> gNaryLeOperatorCreator_m(QnaryLe::cMark
 DefaultCreator<string, QnaryOp, QnaryLe> gNaryLeOperatorCreator(QnaryLe::cName);
 
 /**** Quantum greater than nary-operator identifiers  ****/
-template<> const string QnaryBiOp<Qgt>::cMark = Qgt::cMark;
-template<> const string QnaryBiOp<Qgt>::cName = Qgt::cName;
+const string QnaryGt::cMark = Qgt::cMark;
+const string QnaryGt::cName = Qgt::cName;
 
 /**** Factory Creator's of quantum greater than nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryBiOp<Qgt> > gGtNaryOperatorCreator_m(QnaryBiOp<Qgt>::cMark);
-DefaultCreator<string, QnaryOp, QnaryBiOp<Qgt> > gGtNaryOperatorCreator(QnaryBiOp<Qgt>::cName);
+DefaultCreator<string, QnaryOp, QnaryGt> gGtNaryOperatorCreator_m(QnaryGt::cMark);
+DefaultCreator<string, QnaryOp, QnaryGt> gGtNaryOperatorCreator(QnaryGt::cName);
 
 /**** Quantum greater than or equal nary-operator identifiers  ****/
-template<> const string QnaryBiOp<Qge>::cMark = Qge::cMark;
-template<> const string QnaryBiOp<Qge>::cName = Qge::cName;
+const string QnaryGe::cMark = Qge::cMark;
+const string QnaryGe::cName = Qge::cName;
 
 /**** Factory Creator's of quantum greater than or equal nary-operator  ****/
-DefaultCreator<string, QnaryOp, QnaryBiOp<Qge> > gGeNaryOperatorCreator_m(QnaryBiOp<Qge>::cMark);
-DefaultCreator<string, QnaryOp, QnaryBiOp<Qge> > gGeNaryOperatorCreator(QnaryBiOp<Qge>::cName);
+DefaultCreator<string, QnaryOp, QnaryGe> gGeNaryOperatorCreator_m(QnaryGe::cMark);
+DefaultCreator<string, QnaryOp, QnaryGe> gGeNaryOperatorCreator(QnaryGe::cName);
 
 /**** Quantum and binary nary-operation identifiers  ****/
 template<> const string QnaryBiOp<Qand>::cMark = Qand::cMark;

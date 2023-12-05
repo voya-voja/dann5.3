@@ -45,7 +45,7 @@ Qvalue Qatomicity::calculate(const Qvalues& values) const
 
 Qfunction::Qfunction(const string& name, const Qblock& block,
                                                 size_t noArguments)
-: QnaryOp(name, noArguments)
+: QnaryOp(name, noArguments), mPrintParentheses(noArguments != 1)
 {
     Compiler compiler(this);
     block.compile(compiler);
@@ -53,16 +53,26 @@ Qfunction::Qfunction(const string& name, const Qblock& block,
 
 Qfunction::Qfunction(const string& name, const Qstatements& statements,
                                                 size_t noArguments)
-: QnaryOp(name, noArguments)
+: QnaryOp(name, noArguments), mPrintParentheses(noArguments != 1)
 {
     for(auto pStatement : statements)
         (*this) << (*pStatement);
 }
 
+Qfunction::Qfunction(const Qfunction& right)
+: QnaryOp(right), mVariables(right.mVariables),
+    mPrintParentheses(right.mPrintParentheses)
+{
+}
+
 string Qfunction::declaration() const
 {
     Qdef::Sp pOut = Qop::output();
-    string dclrtn = pOut->toString() + " " + id() + "(";
+    string dclrtn = pOut->toString() + " " + id();
+    if(mPrintParentheses)
+        dclrtn += "(";
+    else
+        dclrtn += " ";
     
     Qdefs ins(Qop::inputs());
     size_t size = ins.size();
@@ -72,12 +82,19 @@ string Qfunction::declaration() const
         dclrtn += ins[at]->toString();
         if(at != size - 1) dclrtn += ", ";
     }
-    dclrtn += ")";
+    if(mPrintParentheses)
+        dclrtn += ")";
     return dclrtn;
 }
 
-void Qfunction::resize(size_t size, Qvalue value)
-{
+void Qfunction::add(const Qevaluations& evaluations) {
+    mVariables.add(evaluations);
+    QnaryOp::add(evaluations);
+}
+
+void Qfunction::reset() {
+    mVariables.reset();
+    QnaryOp::reset();
 }
 
 Qfunction& Qfunction::operator<<(const Qstatement& right)
@@ -100,16 +117,23 @@ Qfunction::CommaOp Qfunction::operator=(const Qstatement& statement)
     return(CommaOp(this));
 }
 
+void Qfunction::refresh()
+{
+    refreshOnOutput();
+    refreshOnInputs();
+}
+
 void Qfunction::refreshOnInputs()
 {
     Qdefs ins(Qop::inputs());
     for(auto pIn: ins)
-        mBinder << *pIn;
+        mVariables << *pIn;
 }
 
 void Qfunction::refreshOnOutput()
 {
-    mBinder << *Qop::output();
+    Qdef::Sp pOut = Qop::output();
+    mVariables << *pOut;
 }
 
 ostream& dann5::operator << (std::ostream& out, const Qfunction& r)

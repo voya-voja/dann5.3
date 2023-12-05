@@ -27,11 +27,13 @@ namespace dann5
 
         // Instantiate Qatomicity instance with name as its identity
         // and number of arguments
-        Qatomicity(const string& name, size_t noArgs) : QcellOp(name, noArgs) {};
+        Qatomicity(const string& name, size_t noArgs)
+            : QcellOp(name, noArgs), mPrintParentheses(noArgs != 1) {};
 
         // Copy constructor
         Qatomicity(const Qatomicity& right) :
-                    QcellOp(right), mOps(right.mOps), mBinder(right.mBinder) {};
+                    QcellOp(right), mOps(right.mOps), mVariables(right.mVariables),
+                    mPrintParentheses(right.mPrintParentheses) {};
 
         // Destruct quantum not-equal instance
         ~Qatomicity() {};
@@ -55,33 +57,40 @@ namespace dann5
         // nodes should correspond to operands of statements assigned to this
         // quantum atomicity function
         virtual void add(const Qevaluations& evaluations){
-            mBinder.add(evaluations);
+            mVariables.add(evaluations);
             QcellOp::add(evaluations);
         };
 
         // For added evaluation set(s), returns a string represnting 'atEvltn'
         // solution of operands of this quantum atomicity function
         virtual string solution(size_t atEvltn) const{
-            return mBinder.solution(atEvltn);
+            return mVariables.solution(atEvltn);
         };
 
         // Resets Q atomicity function into its initial state without added
         // solutions
         virtual void reset(){
-            mBinder.reset();
+            mVariables.reset();
             QcellOp::reset();
         };
         
         // Change the Qatomicity function's number of inputs
         void noInputs(size_t nIns) { Qop::noInputs(nIns); };
+        
+        // set/get print parentheses parameter
+        bool printParentheses(bool prntPrnthss = true) {
+            mPrintParentheses = prntPrnthss;
+            return mPrintParentheses;
+        };
 
     protected:
         // valculate return value of quantum atomicity function
         virtual Qvalue calculate(const Qvalues& values) const;
 
     private:
+        bool    mPrintParentheses; // print partheses when a function
         QcellOps    mOps;   // a list of assigned quantum cell operations
-        Qbinder     mBinder;    // contins function inputs and output
+        Qbinder     mVariables;    // contins function inputs and output
     };
 
     typedef vector<Qatomicity::Sp> Qatomicities;
@@ -95,7 +104,8 @@ namespace dann5
         // Construct quantum function instance with name as its identity and
         // optinal number of arguments. The default number of arguments is 0
         Qfunction(const string& name, size_t noArguments = 0)
-                                                : QnaryOp(name, noArguments) {};
+                    : QnaryOp(name, noArguments),
+                          mPrintParentheses(noArguments != 1) {};
 
         // Construct quantum function instance with name as its identity with a
         // logic defined by the block and optionaly the number of arguments
@@ -109,8 +119,7 @@ namespace dann5
                                                         size_t noArguments = 0);
 
         // Copy constructor
-        Qfunction(const Qfunction& right)
-                                    : QnaryOp(right), mBinder(right.mBinder) {};
+        Qfunction(const Qfunction& right);
 
         // Destruct Q-nary operation instance
         ~Qfunction() {};
@@ -119,13 +128,6 @@ namespace dann5
         virtual Qdef::Sp clone() const {
             return Qdef::Sp(new Qfunction(*this));
         };
-
-        // Resizes the Q array of oprations to contain a specified size of elements. If the size is
-        // smaller than the current Q array size, the content is reduced to its
-        // first size elements, removing those beyond (and destroying them). If the size
-        // is greater than the current container size, the content is expanded by
-        // inserting at the end as many Q null operations as needed.
-        virtual void resize(size_t size, Qvalue value = 0);
 
         // Returs quantum function declaration as a string
         string declaration() const;
@@ -138,30 +140,23 @@ namespace dann5
         // for the specified qbit level
         virtual string toString(bool decomposed = false,
                                             size_t forBit = cAllBits) const {
-            if(!decomposed)
-                return(declaration());
+            if(!decomposed) return(declaration());
             return(QnaryOp::toString(decomposed, forBit));
         };
 
         // Adds a evaluation set containing nodes with solutions values, the
         // nodes should correspond to operands of statements assigned to this
         // quantum function
-        virtual void add(const Qevaluations& evaluations) {
-            mBinder.add(evaluations);
-            QnaryOp::add(evaluations);
-        };
+        virtual void add(const Qevaluations& evaluations);
 
         // For added evaluation set(s), returns a string represnting 'atEvltn'
         // solution of operands of this quantum function
         virtual string solution(size_t atEvltn) const {
-            return mBinder.solution(atEvltn);
+            return mVariables.solution(atEvltn);
         };
 
         // Resets Q function into its initial state without added solutions
-        virtual void reset() {
-            mBinder.reset();
-            QnaryOp::reset();
-        };
+        virtual void reset();
 
         // An insertion operator (<<) to add a new statement into logic of this
         // Q function and returns the reference to 'this' object
@@ -199,11 +194,20 @@ namespace dann5
         // be followed by list of other Q statements separated by
         // comma operator
         CommaOp operator=(const Qstatement& statement);
+        
+        // set/get print parentheses parameter
+        bool printParentheses(bool prntPrnthss = true) {
+            mPrintParentheses = prntPrnthss;
+            return mPrintParentheses;
+        };
 
         // Insert string representation of a Q function into an output stream
         friend std::ostream& operator << (std::ostream&, const Qfunction&);
 
     protected:
+        // Adds assigned output and inputs into quantum function's binder
+        virtual void refresh();
+
         // Adds assigned inputs into quantum function's binder
         virtual void refreshOnInputs();
 
@@ -235,7 +239,8 @@ namespace dann5
         };
 
     private:
-        Qbinder mBinder;    // contins function inputs and output
+        bool    mPrintParentheses; // print partheses when a function
+        Qbinder mVariables;    // contins function inputs and output
     };
 
     // Insert string representation of a Q routine into an output stream

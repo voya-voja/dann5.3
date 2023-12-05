@@ -240,7 +240,7 @@ Qexpr<Qbin> Qbin::alike(const Qexpr<Qbin>& right) const
 Qexpr<Qbin> Qbin::operator==(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qeq::cMark);
-    pOp->operands(right.clone(), {clone()});
+    pOp->operands(clone(), {right.clone()});
     Qexpr<Qbin> expr(pOp);
 	return expr;
 }
@@ -248,7 +248,7 @@ Qexpr<Qbin> Qbin::operator==(const Qbin& right) const
 Qexpr<Qbin> Qbin::operator==(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qeq::cMark);
-    pOp->operands(right.rootDef()->clone(), {clone()});
+    pOp->operands(clone(), {right.rootDef()->clone()});
     Qexpr<Qbin> expr(pOp);
 	return expr;
 }
@@ -256,7 +256,7 @@ Qexpr<Qbin> Qbin::operator==(const Qexpr<Qbin>& right) const
 Qexpr<Qbin> Qbin::operator!=(const Qbin& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qneq::cMark);
-    pOp->operands(right.clone(), {clone()});
+    pOp->operands(clone(), {right.clone()});
     Qexpr<Qbin> expr(pOp);
 	return expr;
 }
@@ -264,7 +264,7 @@ Qexpr<Qbin> Qbin::operator!=(const Qbin& right) const
 Qexpr<Qbin> Qbin::operator!=(const Qexpr<Qbin>& right) const
 {
 	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qneq::cMark);
-    pOp->operands(right.rootDef()->clone(), {clone()});
+    pOp->operands(clone(), {right.rootDef()->clone()});
     Qexpr<Qbin> expr(pOp);
 	return expr;
 }

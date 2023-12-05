@@ -145,7 +145,7 @@ namespace dann5
         static const string cMark;    // "<"
         static const string cName;    // "lessthan"
 
-        // Instantiate quantum nary-not-equal operator with '!=' identity
+        // Instantiate quantum nary-not-equal operator with '<' identity
         QnaryLt() : Qfunction(cMark, 1) {};
 
         // Copy constructor
@@ -158,7 +158,7 @@ namespace dann5
         virtual Qdef::Sp clone() const { return Qdef::Sp(new QnaryLt(*this)); };
 
     protected:
-        // Refreshes the Q-nary operator cells according to not-equal logic
+        // Refreshes the Q-nary operator cells according to less-than logic
         void refresh();
     private:
     };
@@ -175,7 +175,7 @@ namespace dann5
         static const string cMark;    // "<="
         static const string cName;    // "lessequal"
 
-        // Instantiate quantum nary-not-equal operator with '!=' identity
+        // Instantiate quantum nary-not-equal operator with '<=' identity
         QnaryLe() : Qfunction(cMark, 1) {};
 
         // Copy constructor
@@ -188,69 +188,72 @@ namespace dann5
         virtual Qdef::Sp clone() const { return Qdef::Sp(new QnaryLe(*this)); };
 
     protected:
-        // Refreshes the Q-nary operator cells according to not-equal logic
+        // Refreshes the Q-nary operator cells according to less than or equal
+        // logic
         void refresh();
     private:
     };
-/*
-    // A Quantum greater-than is an operator
-    class Qgt : public Qoperator
+
+    // A quantum nary-greater-than is an unary operator implemented as a quantum
+    // function
+    class QnaryGt : public Qfunction
     {
     public:
-        // Qgt's shared pointer
-        typedef shared_ptr<Qgt> Sp;
+        // QnaryGt's shared pointer
+        typedef shared_ptr<QnaryGt> Sp;
 
-        // Quantum greater than operator identifiers
+        // Quantum nary-greater-than operator identifiers
         static const string cMark;    // ">"
         static const string cName;    // "greaterthan"
         
-        // Instantiate Qgt instance with '&' identity
-        Qgt() : Qoperator(cMark) {};
+        // Instantiate QnaryGt instance with '>' identity
+        QnaryGt() : Qfunction(cMark, 1) {};
 
         // Copy constructor
-        Qgt(const Qgt& right) : Qoperator(right) {};
+        QnaryGt(const QnaryGt& right) : Qfunction(right) {};
 
-        // Destruct Qgt with shared pointers to its Qdef
-        ~Qgt() {};
+        // Destruct QnaryGt with shared pointers to its Qdef
+        ~QnaryGt() {};
 
         // Return a Qdef's shared pointer pointing to a copy of this object
-        virtual Qdef::Sp clone() const { return Qdef::Sp(new Qgt(*this)); };
+        virtual Qdef::Sp clone() const { return Qdef::Sp(new QnaryGt(*this)); };
 
     protected:
-        virtual Qvalue calculate(const Qvalues& values) const;
-
+        // Refreshes the Q-nary operator cells according to greater-than logic
+        void refresh();
     private:
     };
 
-    // A Quantum greater-than-or-equal is an operator
-    class Qge : public Qoperator
+    // A Quantum nary-greater-than-or-equal  is an unary operator implemented as
+    //  a quantum function
+    class QnaryGe : public Qfunction
     {
     public:
-        // Qge's shared pointer
-        typedef shared_ptr<Qge> Sp;
+        // QnaryGe's shared pointer
+        typedef shared_ptr<QnaryGe> Sp;
 
-        // Quantum greater than or equal operator identifiers
+        // Quantum nary-greater than or equal operator identifiers
         static const string cMark;    // ">="
         static const string cName;    // "greaterequal"
         
-        // Instantiate Qge instance with '&' identity
-        Qge() : Qoperator(cMark) {};
+        // Instantiate QnaryGe instance with '>=' identity
+        QnaryGe() : Qfunction(cMark, 1) {};
 
         // Copy constructor
-        Qge(const Qge& right) : Qoperator(right) {};
+        QnaryGe(const QnaryGe& right) : Qfunction(right) {};
 
-        // Destruct Qge with shared pointers to its Qdef
-        ~Qge() {};
+        // Destruct QnaryGe with shared pointers to its Qdef
+        ~QnaryGe() {};
 
         // Return a Qdef's shared pointer pointing to a copy of this object
-        virtual Qdef::Sp clone() const { return Qdef::Sp(new Qge(*this)); };
+        virtual Qdef::Sp clone() const { return Qdef::Sp(new QnaryGe(*this)); };
 
     protected:
-        virtual Qvalue calculate(const Qvalues& values) const;
-
+        // Refreshes the Q-nary operator cells according to greater-than or e
+        // qual logic
+        void refresh();
     private:
     };
-    */
 
     // A Quantum nary-binary-operation template implementation using quantum cell
     // operations

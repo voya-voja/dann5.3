@@ -297,30 +297,6 @@ namespace dann5 {
         };
 
         // Update Q expression with comparison, e.g. for an argument with id 'x'
-        // the expression root points to QgtOp with [previous root] > 'x'
-        Qexpr<Q_Type> operator>(const Q_Type& right) const {
-            return comparisonOp(right.clone(), Qgt::cMark);
-        };
-
-        // Update Q expression with comparison, e.g. for an argument [right] the
-        // expression root points to QgtOp with [previous root] > [right root]
-        Qexpr<Q_Type> operator>(const Qexpr<Q_Type>& right) const {
-            return comparisonOp(right.rootDef()->clone(), Qgt::cMark);
-        };
-
-        // Update Q expression with comparison, e.g. for an argument with id 'x'
-        // the expression root points to QgeOp with [previous root] >= 'x'
-        Qexpr<Q_Type> operator>=(const Q_Type& right) const {
-            return comparisonOp(right.clone(), Qge::cMark);
-        };
-
-        // Update Q expression with comparison, e.g. for an argument [right] the
-        // expression root points to QgeOp with [previous root] >= [right root]
-        Qexpr<Q_Type> operator>=(const Qexpr<Q_Type>& right) const {
-            return comparisonOp(right.rootDef()->clone(), Qge::cMark);
-        };
-
-        // Update Q expression with comparison, e.g. for an argument with id 'x'
         // the expression root points to QltOp with [previous root] < 'x'
         Qexpr<Q_Type> operator<(const Q_Type& right) const {
             return comparisonOp(right.clone(), Qlt::cMark);
@@ -342,6 +318,30 @@ namespace dann5 {
         // expression root points to QleOp with [previous root] <= [right root]
         Qexpr<Q_Type> operator<=(const Qexpr<Q_Type>& right) const {
             return comparisonOp(right.rootDef()->clone(), Qle::cMark);
+        };
+
+        // Update Q expression with comparison, e.g. for an argument with id 'x'
+        // the expression root points to QgtOp with [previous root] > 'x'
+        Qexpr<Q_Type> operator>(const Q_Type& right) const {
+            return comparisonOp(right.clone(), Qgt::cMark);
+        };
+
+        // Update Q expression with comparison, e.g. for an argument [right] the
+        // expression root points to QgtOp with [previous root] > [right root]
+        Qexpr<Q_Type> operator>(const Qexpr<Q_Type>& right) const {
+            return comparisonOp(right.rootDef()->clone(), Qgt::cMark);
+        };
+
+        // Update Q expression with comparison, e.g. for an argument with id 'x'
+        // the expression root points to QgeOp with [previous root] >= 'x'
+        Qexpr<Q_Type> operator>=(const Q_Type& right) const {
+            return comparisonOp(right.clone(), Qge::cMark);
+        };
+
+        // Update Q expression with comparison, e.g. for an argument [right] the
+        // expression root points to QgeOp with [previous root] >= [right root]
+        Qexpr<Q_Type> operator>=(const Qexpr<Q_Type>& right) const {
+            return comparisonOp(right.rootDef()->clone(), Qge::cMark);
         };
 
         /*** Arithmetic ***/
@@ -411,7 +411,7 @@ namespace dann5 {
         inline Qexpr<Q_Type> comparisonOp(const Qdef::Sp& pRdef,
                                                     const string& mark) const {
             Qop::Sp pOp = createOpFor(pRdef, mark);
-            pOp->operands(pRdef, {as_const(*this).rootDef()->clone()});
+            pOp->operands(as_const(*this).rootDef()->clone(), {pRdef});
             Qexpr<Q_Type> expr(pOp);
             return(expr);
         };
