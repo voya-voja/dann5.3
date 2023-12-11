@@ -300,9 +300,12 @@ void UTestQbit::vertex(ostream& out)
 {
     const size_t noVertices = 5;
     Qbit _1("_1", 1), _0("_0", 0), vertices[noVertices];
+    Qbinder verticesBinder;
     for(int at = 0; at < noVertices; at++)
+    {
         vertices[at].id(string(1, char('a' + at)));
-
+        verticesBinder << vertices[at];
+    }
     Qexpr<Qbit> xbTV = (vertices[2] ^ vertices[3])
                         & (vertices[3] ^ vertices[4]) & (vertices[3] *= _0)
                     | (vertices[3] ^ vertices[2])
@@ -312,8 +315,14 @@ void UTestQbit::vertex(ostream& out)
     Qassign<Qbit> axbTV = _1 = xbTV;
     QuboCompiler compiler; axbTV.compile(compiler);
     out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString()
-        << endl << "     QUBO: " << compiler.qubo() << endl
-        << "---- Triangle c-d-e solutions:" << endl << axbTV.solve() << endl;
+        << endl << "     QUBO: " << compiler.qubo() << endl;
+    verticesBinder.add(axbTV.compute());
+    out << "a --- d" << endl
+        << "|     |\\" << endl
+        << "|     | e" << endl
+        << "|     |/" << endl
+        << "b --- c" << endl;
+    out << "---- Triangle c-d-e solutions:" << endl << verticesBinder << endl;
     // sqare
     Qexpr<Qbit> xbSV = ((vertices[0] ^ vertices[1])
                         & (vertices[0] ^ vertices[3])
@@ -324,8 +333,14 @@ void UTestQbit::vertex(ostream& out)
     Qassign<Qbit> axbSV = _1 = xbSV;
     compiler.reset(); axbSV.compile(compiler);
     out << endl << "---- Square a-b-c-d equation:" << endl << axbSV.toString()
-        << endl << "     QUBO: " << compiler.qubo() << endl
-        << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
+        << endl << "     QUBO: " << compiler.qubo() << endl;
+    out << "a --- d" << endl
+        << "|     |\\" << endl
+        << "|     | e" << endl
+        << "|     |/" << endl
+        << "b --- c" << endl;
+    verticesBinder.reset(); verticesBinder.add(axbSV.compute());
+    out << "---- Square a-b-c-d solutions:" << endl << verticesBinder << endl;
     
     Qassign<Qbit> problemAssignment = _1 = xbSV & xbTV;
     out << endl << "---- DWave square(a-b-c-d) "

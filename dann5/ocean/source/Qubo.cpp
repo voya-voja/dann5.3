@@ -263,8 +263,8 @@ NeqQT::NeqQT()
 			  0,  -1;
 }
 
-/**** Less-than operator Qubo Table ****/
-LtQT::LtQT()
+/**** Greater-than operator Qubo Table ****/
+GtQT::GtQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
@@ -274,8 +274,8 @@ LtQT::LtQT()
 			 0,   -1.5;
 }
 
-/**** Less-equal operator Qubo Table ****/
-LeQT::LeQT()
+/**** Greater-than-or-equal operator Qubo Table ****/
+GeQT::GeQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
@@ -284,8 +284,8 @@ LeQT::LeQT()
 			  0,   0;
 }
 
-/**** Greater-than operator Qubo Table ****/
-GtQT::GtQT()
+/**** Less-than operator Qubo Table ****/
+LtQT::LtQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
@@ -293,8 +293,8 @@ GtQT::GtQT()
 			  0,   2;
 }
 
-/**** Greater-equal operator Qubo Table ****/
-GeQT::GeQT()
+/**** Less-than-or-equal operator Qubo Table ****/
+LeQT::LeQT()
 	:OperatorQT()
 {
 	*this << "i", "o";

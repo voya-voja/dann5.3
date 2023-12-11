@@ -151,45 +151,6 @@ void testPNcandidates()
 int main(int argc, const char * argv[])
 {
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
-    
-    QuboCompiler compiler;
-    Qwhole x(3, "x"), y("y", 5), z(3, "z");
-
-    Qexpr<Qwhole>   xGt = x > z,
-                    xGe = x >= z,
-                    xLt = x < z,
-                    xLe = x <= z,
-                    xNeq = x != z,
-                    xEq = x == z;
-    compiler.reset(); xEq.compile(compiler);
-    cout << xEq.toString() << endl << " decomposed: " << endl
-        << xEq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xEq.solve() << endl;
-
-    compiler.reset(); xNeq.compile(compiler);
-    cout << xNeq.toString() << endl << " decomposed: " << endl
-        << xNeq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xNeq.solve() << endl;
-
-    compiler.reset(); xGt.compile(compiler);
-    cout << xGt.toString() << endl << " decomposed: " << endl
-        << xGt.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xGt.solve() << endl;
-
-    compiler.reset(); xGe.compile(compiler);
-    cout << xGe.toString() << endl << " decomposed: " << endl
-        << xGe.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xGe.solve() << endl;
-
-    compiler.reset(); xLt.compile(compiler);
-    cout << xLt.toString() << endl << " decomposed: " << endl
-        << xLt.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xLt.solve() << endl;
-
-    compiler.reset(); xLe.compile(compiler);
-    cout << xLe.toString() << endl << " decomposed: " << endl
-        << xLe.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xLe.solve() << endl;
 
     UTestQbit utQbit;
     utQbit.runAll(cout);

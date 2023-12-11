@@ -85,6 +85,7 @@ Qdef::Sp Qoperator::output(size_t forBit) const
 string Qoperator::toString(bool decomposed, size_t forBit) const
 {
 	string str("?"), rest(""), rStr("");
+	if (!decomposed) rStr += "(";
     Qdef::Sp pOut = Qop::output();
     if (pOut != nullptr)
     {
@@ -118,7 +119,9 @@ string Qoperator::toString(bool decomposed, size_t forBit) const
         }
         rStr += str;
     }
-	if (decomposed && rest != "")
+	if (!decomposed)
+		rStr += ")";
+	else if (rest != "")
 		rStr += "; " + rest;
 	return rStr;
 }
@@ -263,7 +266,7 @@ Qaddition::Qaddition(const string& id, size_t size, const Qdef::Sp pOut, const Q
 {
 	mpCarry->addition(this);
 	output(pOut);
-	pOut->id(createId());
+	pOut->id(createOutId());
 }
 
 void Qaddition::operands(const Qdef::Sp& pOut, const Qdefs& ins)
@@ -323,9 +326,19 @@ Qaddition::Carry::Carry(const Carry& right)
 Qaddition::Carry::~Carry()
 {}
 
+Qdef::Sp Qaddition::Carry::clone() const
+{
+    Sp pCarry = Sp(new Qaddition::Carry(*this));
+    return pCarry;
+}
+
+
 void Qaddition::Carry::output(const Qdef::Sp& pOut, size_t forBit)
 {
 	Qop::output(pOut);
+    Qaddition::Carry* pOldCarry = as_const(*mpAddition).carry().get();
+    if(pOldCarry != this)
+        pOldCarry->output(pOut);
 }
 
 string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
@@ -390,10 +403,11 @@ Qvalue Qadder::calculate(const Qvalues& values) const
 
 QxorAdder::Sp QxorAdder::process(const Qdefs& ins)
 {
+    QxorAdder::Sp pAdder;
 	if (ins.size() == 3)
 	{
-		noInputs(3);
-		Qaddition::inputs(ins);
+        pAdder = QxorAdder::Sp(new QxorAdder(true));
+        pAdder->inputs(ins);
 	}
 	else if (ins.size() == 2)
 	{
@@ -401,11 +415,11 @@ QxorAdder::Sp QxorAdder::process(const Qdefs& ins)
 			pRxor(dynamic_pointer_cast<QxorAdder>(ins[1]));
 		if (pLxor == nullptr && pRxor == nullptr)
 		{
-			Qaddition::inputs(ins);
+            pAdder = QxorAdder::Sp(new QxorAdder());
+            pAdder->inputs(ins);
 		}
 		else
 		{
-			QxorAdder::Sp pAdder;
 			size_t at = 1;
 			if (pLxor != nullptr) 
 				pAdder = pLxor;
@@ -415,23 +429,23 @@ QxorAdder::Sp QxorAdder::process(const Qdefs& ins)
 				at = 0;
 			}
 			if(pAdder->isAdder())
-			{
-				Qaddition::inputs(ins);
-			}
+            {
+                Qaddition::inputs(ins);
+                pAdder = Sp(new QxorAdder(*this));
+            }
 			else
 			{
 				pAdder->id(Qadder::cMark);
 				pAdder->noInputs(3);
 				pAdder->append(ins[at]);
 				pAdder->extended();
-				return pAdder;
 			}
 		}
 	}
 	else
 		throw invalid_argument("Arguments number is " + to_string(ins.size())
 			+ " instead of 2 or 3, in case of xor or adder, respectfully ");
-	return(QxorAdder::Sp(new QxorAdder(*this)));
+	return pAdder;
 }
 
 Qvalue QxorAdder::calculate(const Qvalues& values) const
@@ -443,4 +457,3 @@ Qvalue QxorAdder::calculate(const Qvalues& values) const
 
 	return(Qvalue(values[0] + values[1] + values[2]) & 1);
 }
-

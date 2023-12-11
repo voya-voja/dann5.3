@@ -16,6 +16,7 @@ using namespace dann5;
 string QnaryOperator::toString(bool decomposed, size_t forBit) const
 {
     string str("?"), rest(""), rStr("");
+    if (!decomposed) rStr += "(";
     Qdef::Sp pOut = Qop::output();
     if (pOut != nullptr)
     {
@@ -49,7 +50,9 @@ string QnaryOperator::toString(bool decomposed, size_t forBit) const
         }
         rStr += str;
     }
-    if (decomposed && rest != "")
+    if (!decomposed)
+        rStr += ")";
+    else if (rest != "")
         rStr += "; " + rest;
     return rStr;
 }
@@ -75,7 +78,7 @@ void QnaryNeq::refresh()
     Qfunction::refresh();
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(in.noqbs(), createId());
+    Qwhole aux(in.noqbs(), createOutId());
     size_t size = aux.noqbs();
     if (size < 2)
         aux.resize(2);
@@ -84,8 +87,7 @@ void QnaryNeq::refresh()
     for (size_t at = 2; at < size; at++)
         qbXpr = aux[at] | qbXpr;
     Qbit _1("_1", 1);
-    static_cast<Qfunction&>(*this) = out = aux + in,
-                                            _1 = qbXpr;
+    static_cast<Qfunction&>(*this) = out = aux + in, _1 = qbXpr;
 }
 
 void QnaryLt::refresh()
@@ -93,10 +95,9 @@ void QnaryLt::refresh()
     Qfunction::refresh();
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(out.noqbs(), createId());
+    Qwhole aux(in.noqbs(), createOutId());
     Qbit _0("_0", 0);
-    static_cast<Qfunction&>(*this) = out = aux + in,
-                                            _0 != out[out.noqbs() - 1];
+    static_cast<Qfunction&>(*this) = out = aux + in, _0 != out[out.noqbs() - 1];
 }
 
 void QnaryLe::refresh()
@@ -104,10 +105,9 @@ void QnaryLe::refresh()
     Qfunction::refresh();
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(in.noqbs(), createId());
+    Qwhole aux(out.noqbs(), createOutId());
     Qbit _0("_0", 0);
-    static_cast<Qfunction&>(*this) = in = aux + out,
-                                            _0 == in[in.noqbs() - 1];
+    static_cast<Qfunction&>(*this) = in = aux + out, _0 == in[in.noqbs() - 1];
 }
 
 void QnaryGt::refresh()
@@ -115,10 +115,9 @@ void QnaryGt::refresh()
     Qfunction::refresh();
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(out.noqbs(), createId());
+    Qwhole aux(out.noqbs(), createOutId());
     Qbit _0("_0", 0);
-    static_cast<Qfunction&>(*this) = in = aux + out,
-                                            _0 != in[in.noqbs() - 1];
+    static_cast<Qfunction&>(*this) = in = aux + out, _0 != in[in.noqbs() - 1];
 }
 
 void QnaryGe::refresh()
@@ -126,8 +125,7 @@ void QnaryGe::refresh()
     Qfunction::refresh();
     Qwhole& out = *static_pointer_cast<Qwhole>(Qop::output());
     Qwhole& in = *static_pointer_cast<Qwhole>(Qop::inputs()[0]);
-    Qwhole aux(in.noqbs(), createId());
+    Qwhole aux(in.noqbs(), createOutId());
     Qbit _0("_0", 0);
-    static_cast<Qfunction&>(*this) = out = aux + in,
-                                            _0 == out[out.noqbs() - 1];
+    static_cast<Qfunction&>(*this) = out = aux + in, _0 == out[out.noqbs() - 1];
 }

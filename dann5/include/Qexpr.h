@@ -401,7 +401,7 @@ namespace dann5 {
         inline Qexpr<Q_Type> bitwiselogicOp(const Qdef::Sp& pRdef,
                                                     const string& mark) const {
             Qop::Sp pOp = createOpFor(pRdef, mark);
-            Q_Type out(pOp->createId());
+            Q_Type out(pOp->createOutId());
             pOp->operands(out.clone(),
                           {as_const(*this).rootDef()->clone(), pRdef});
             Qexpr<Q_Type> expr(pOp);
@@ -430,7 +430,7 @@ namespace dann5 {
         inline Qexpr<Q_Type> arithmeticOp(const Qdef::Sp& pRdef,
                                                     const string& mark) const {
             QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(mark);
-            Q_Type out(pOp->createId());
+            Q_Type out(pOp->createOutId());
             pOp->operands(out.clone(),
                                 {as_const(*this).rootDef()->clone(), pRdef});
             Qexpr<Q_Type> expr(pOp);

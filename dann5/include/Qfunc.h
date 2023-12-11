@@ -140,7 +140,7 @@ namespace dann5
         // for the specified qbit level
         virtual string toString(bool decomposed = false,
                                             size_t forBit = cAllBits) const {
-            if(!decomposed) return(declaration());
+            if(!decomposed) return("(" + declaration() + ")");
             return(QnaryOp::toString(decomposed, forBit));
         };
 

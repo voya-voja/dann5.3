@@ -215,10 +215,12 @@ void UTestQbool::vertex(ostream& out)
 {
     const size_t noVertices = 5;
     Qbool _T("_T", Qbool::cTrue), _F("_F", Qbool::cFalse), vertices[noVertices];
+    Qbinder verticesBinder;
     for(int at = 0; at < noVertices; at++)
+    {
         vertices[at].id(string(1, char('a' + at)));
-
-
+        verticesBinder << vertices[at];
+    }
     Qexpr<Qbool> xbTV = (vertices[2] ^ vertices[3])
                         & (vertices[3] ^ vertices[4]) & (vertices[3] *= _F)
                     | (vertices[3] ^ vertices[2])
@@ -228,8 +230,14 @@ void UTestQbool::vertex(ostream& out)
     Qassign<Qbool> axbTV = _T = xbTV;
     QuboCompiler compiler; axbTV.compile(compiler);
     out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString()
-        << endl << "     QUBO: " << compiler.qubo() << endl
-        << "---- Triangle c-d-e solutions:" << endl << axbTV.solve() << endl;
+        << endl << "     QUBO: " << compiler.qubo() << endl;
+    verticesBinder.add(axbTV.compute());
+    out << "a --- d" << endl
+        << "|     |\\" << endl
+        << "|     | e" << endl
+        << "|     |/" << endl
+        << "b --- c" << endl;
+    out << "---- Triangle c-d-e solutions:" << endl << verticesBinder << endl;
     // sqare
     Qexpr<Qbool> xbSV = ((vertices[0] ^ vertices[1])
                          & (vertices[0] ^ vertices[3])
@@ -240,8 +248,14 @@ void UTestQbool::vertex(ostream& out)
     Qassign<Qbool> axbSV = _T = xbSV;
     compiler.reset(); axbSV.compile(compiler);
     out << endl << "---- Square a-b-c-d equation:" << endl << axbSV.toString()
-        << endl << "     QUBO: " << compiler.qubo() << endl
-        << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
+        << endl << "     QUBO: " << compiler.qubo() << endl;
+    verticesBinder.reset(); verticesBinder.add(axbSV.compute());
+    out << "a --- d" << endl
+        << "|     |\\" << endl
+        << "|     | e" << endl
+        << "|     |/" << endl
+        << "b --- c" << endl;
+    out << "---- Square a-b-c-d solutions:" << endl << verticesBinder << endl;
     
     Qassign<Qbool> problemAssignment = _T = xbSV & xbTV;
     out << endl << "---- DWave square(a-b-c-d) "

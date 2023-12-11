@@ -40,7 +40,7 @@ string Qblock::toString(bool decomposed, size_t forBit) const
         for (auto pStatement : mStatements)
         {
             size_t stmntNoqbts = pStatement->noqbs();
-            if(forBit < stmntNoqbts)
+            if(forBit == cAllBits || forBit < stmntNoqbts)
             {
                 if(countAdded > 0) blockStr +=  ";";
                 blockStr += " " + pStatement->toString(decomposed, forBit);

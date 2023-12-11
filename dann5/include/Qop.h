@@ -61,7 +61,7 @@ namespace dann5 {
         // noInputs() method
         virtual void append(Qdef::Sp input);
 
-        string createId() const {
+        string createOutId() const {
             return "_" + identifier() + Qop::Id(identifier());
         };
 

@@ -131,6 +131,7 @@ D5QuboSolver::D5QuboSolver(bool lowest)
 D5QuboSolver::D5QuboSolver(const Qubo& qubo, bool lowest)
 	:QuboAnalyzer(qubo), mLowest(lowest), mMinEnergy(cMaxEnergy)
 {
+    solve();
 }
 
 D5QuboSolver::~D5QuboSolver()

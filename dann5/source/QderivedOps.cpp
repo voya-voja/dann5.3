@@ -35,7 +35,7 @@ void QderivedOp::refreshOnInputs()
         Qnary::Sp pNaryOut = static_pointer_cast<Qnary>(pOut);
         pNaryOut->resize(outSize);
     }
-    Qwhole out(mpSubstituteOp->createId());
+    Qwhole out(mpSubstituteOp->createOutId());
     mpSubstituteOp->operands(out.clone(), {pOut, ins[1]});
     mEq.operands(ins[0], {mpSubstituteOp});
     resize(mEq.noqbs());

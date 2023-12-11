@@ -13,6 +13,7 @@
 #include <Qubo.h>
 #include <QuboCompiler.h>
 #include <QuboAnalyzer.h>
+#include <D5QuboSolver.h>
 
 using namespace dann5test;
 
@@ -307,6 +308,26 @@ void UTestQbin::comparison(ostream& out)
     vars.add(xXnYeZ0.compute());
     out << vars << endl;
     vars.reset();
+    
+    /*** CORECT Begin ***/
+    Qblock bNeqEq; bNeqEq = x != y, x == z;
+    compiler.reset(); bNeqEq.compile(compiler);
+    cout << bNeqEq << endl
+        << bNeqEq.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << bNeqEq.solve() << "CORECT!!!!"
+        << endl << endl;
+    Qubo qubo = compiler.qubo();
+    Qbit x3("x3"), z3("z3", 0); // x3 == z3 is a problem!!!!
+    compiler.reset(); (x3 == z3).compile(compiler);
+    cout << endl << "Problem is: " << (x3 == z3) << " Qubo: " << compiler.qubo()
+            << endl << endl;
+    qubo += compiler.qubo();
+    D5QuboSolver slvrNeqEq(qubo);
+    Qbinder bndrNeqEq; bndrNeqEq = x, y, z;
+    bndrNeqEq.add(slvrNeqEq.solution());
+    cout << bndrNeqEq.solutions() << "WRONG!!!!" << endl << endl;
+    /*** CORECT End ***/
+
     compiler.reset(); xXnYeZ1.compile(compiler);
     out << xXnYeZ1.toString() << " decomposed: " << xXnYeZ1.toString(true)
         << endl << "Qubo: " << compiler.qubo() << endl;

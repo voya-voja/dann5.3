@@ -167,12 +167,14 @@ void Qop::add(const Qevaluations& evaluations)
 
 string Qop::solution(size_t atEvltn) const
 {
-	string osStr(mpOutput->solution(atEvltn)+ "; ");
+	string opStr(mpOutput->solution(atEvltn));
 	for (auto pInput : mInputs)
-	{
-		osStr += pInput->solution(atEvltn) + "; ";
-	}
-	return osStr;
+    {
+        if(opStr.substr(opStr.size() - 2, 2) != "; ")
+            opStr += "; ";
+        opStr += pInput->solution(atEvltn);
+    }
+	return opStr;
 }
 
 void Qop::reset()

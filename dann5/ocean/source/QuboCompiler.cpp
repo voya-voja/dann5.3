@@ -11,7 +11,6 @@
 #include <Qop.h>
 #include <Qcell.h>
 #include <Qnary.h>
-#include <QcellOps.h>
 #include <QnaryOp.h>
 #include <QuboAnalyzer.h>
 
@@ -21,28 +20,41 @@ using namespace dann5::ocean;
 /**** Qubo Compiler ****/
 void QuboCompiler::compile(const Qop& op)
 {
-    mQubo += parse(op);
+    parse(op);
 }
 
-Qubo QuboCompiler::parse(const Qop& op) const
+void QuboCompiler::parse(const Qop& op)
 {
-    const QnullCellOp* pNullOp = dynamic_cast<const QnullCellOp*>(&op);
-    if(pNullOp != nullptr)
-        return Qubo();
-    const Qaddition::Carry* pCarry = dynamic_cast<const Qaddition::Carry*>(&op);
-    if(pCarry != nullptr)
-        return Qubo();
-    const QnaryOp* pNaryOp = dynamic_cast<const QnaryOp*>(&op);
-    if(pNaryOp != nullptr)
-        return compile(pNaryOp);
-    return qubo(op);
+    const QcellOp* pCellOp = dynamic_cast<const QcellOp*>(&op);
+    if(pCellOp != nullptr)
+        parse(pCellOp);
+    else
+    {
+        const QnaryOp* pNaryOp = dynamic_cast<const QnaryOp*>(&op);
+        if(pNaryOp != nullptr)
+            compile(pNaryOp);
+        else
+            throw logic_error(string("ERROR @QuboCompiler: '")
+                  + typeid(op).name() + "' unknown operation to be compiled!");
+    }
 }
 
-Qubo QuboCompiler::qubo(const Qop& op) const
+void QuboCompiler::parse(const QcellOp* pCellOp)
 {
-    Qdefs ins = op.inputs();
+    const QnullCellOp* pNullOp = dynamic_cast<
+                                            const QnullCellOp*>(pCellOp);
+    if(pNullOp != nullptr) return;
+    const Qaddition::Carry* pCarry = dynamic_cast<
+                                        const Qaddition::Carry*>(pCellOp);
+    if(pCarry != nullptr) return;
+    
+    qubo(pCellOp);
+}
+
+void QuboCompiler::qubo(const QcellOp* pCellOp)
+{
+    const Qdefs& ins = pCellOp->Qop::inputs();
     size_t iSize = ins.size();
-    Qubo aQubo;
     QuboTable::IoPorts ports;
     // process input ports
     for (size_t at = 0; at < iSize; at++)
@@ -54,14 +66,12 @@ Qubo QuboCompiler::qubo(const Qop& op) const
         if (pOprnd == nullptr)
             throw logic_error("ERROR @QuboCompiler: Input '" + pIn->id()
                                                         + "' is not a Qcell.");
-        Qop::Sp pOp = dynamic_pointer_cast<Qop>(pOprnd);
+        QcellOp::Sp pOp = dynamic_pointer_cast<QcellOp>(pOprnd);
         if (pOp != nullptr)
         {
             // add sub-qubo from argument operand
-            QuboCompiler compiler;
-            pOp->compile(compiler);
-            aQubo += compiler.qubo();
-            Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->output());
+            pOp->compile(*this);
+            Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->Qop::output());
             ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
         }
         else
@@ -70,7 +80,7 @@ Qubo QuboCompiler::qubo(const Qop& op) const
         }
     }
     // process output ports
-    Qdefs outs = op.outputs();
+    const Qdefs& outs = pCellOp->outputs();
     size_t oSize = outs.size();
     for (size_t at = 0; at < oSize; at++)
     {
@@ -79,14 +89,12 @@ Qubo QuboCompiler::qubo(const Qop& op) const
         if (pOprnd == nullptr)
             throw logic_error("ERROR @QuboCompiler: Output '" + pOut->id()
                                                         + "' is not a Qcell.");
-        Qop::Sp pOp = dynamic_pointer_cast<Qop>(pOprnd);
+        QcellOp::Sp pOp = dynamic_pointer_cast<QcellOp>(pOprnd);
         if (pOp != nullptr)
         {
             // add sub-qubo from argument operand
-            QuboCompiler compiler;
-            pOp->compile(compiler);
-            aQubo += compiler.qubo();
-            Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->output());
+            pOp->compile(*this);
+            Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->Qop::output());
             if(pOut != nullptr)
                 ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
         }
@@ -95,33 +103,25 @@ Qubo QuboCompiler::qubo(const Qop& op) const
             ports.push_back(QuboTable::IoPort(pOprnd->id(), pOprnd->value()));
         }
     }
-    if ((iSize + oSize) > ports.size()) return aQubo;
+    if ((iSize + oSize) > ports.size()) return;
     // create QuboTable rule object for this operand
-    QuboTable::Sp pQubo = QTfactory::Instance().create(op.identifier());
-    Qubo qubo = pQubo->qubo(ports, mFinalized);
-    qubo += aQubo;
-    return(qubo);
+    QuboTable::Sp pQubo = QTfactory::Instance().create(pCellOp->identifier());
+    mQubo += pQubo->qubo(ports, mFinalized);
 }
 
-Qubo QuboCompiler::compile(const QnaryOp* pOp) const
+void QuboCompiler::compile(const QnaryOp* pOp)
 {
     Qubo qubo;
     const Qcells& logic = pOp->cells();
     size_t size = pOp->noqbs();
-    QuboCompiler compiler;
     for (size_t atCell = 0; atCell < size; atCell++)
     {
-        Qop::Sp pCellOp = dynamic_pointer_cast<Qop>(logic[atCell]);
+        QcellOp::Sp pCellOp = dynamic_pointer_cast<QcellOp>(logic[atCell]);
         if (pCellOp != nullptr)
-        {
-            pCellOp->compile(compiler);
-            qubo += compiler.qubo();
-            compiler.reset();
-        }
+            pCellOp->compile(*this);
         else
             throw logic_error("Error@QnaryOp: The cell is not an operation");
     }
-    return qubo;
 }
 
 /**** Qubos Compiler ****/

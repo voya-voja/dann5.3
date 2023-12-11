@@ -15,6 +15,7 @@
 
 #include <Qubo.h>
 #include <QnaryOp.h>
+#include <QcellOps.h>
 
 namespace dann5{
     namespace ocean {
@@ -54,15 +55,19 @@ namespace dann5{
 
         protected:
             // Returns QUBO object as a translation of parsed quantum operation
-            virtual Qubo parse(const Qop& op) const;
+            void parse(const Qop&);
+            
+            // Returns QUBO object as a translation of parsed quantum cell
+            // operation
+            void parse(const QcellOp*);
 
-            // Returns a QUBO object by translating the provided operation.
+            // Returns a QUBO object by translating the provided cell operation.
             // The provided operation should be a QcellOp, otherwise it throws
             // logical_error exception.
-            virtual Qubo qubo(const Qop& op) const;
+            void qubo(const QcellOp*);
             
             // Compiles this Qnary operation to generate QUBO
-            virtual Qubo compile(const QnaryOp* pOp) const;
+            void compile(const QnaryOp*);
             
         private:
             Qubo mQubo;         // Compiled QUBO

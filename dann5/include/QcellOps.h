@@ -549,8 +549,9 @@ namespace dann5 {
             // overrides output setter to set its output pointer
             virtual void output(const Qdef::Sp& pOut, size_t forBit = cAllBits);
 
-            // Return a Qdef's shared pointer pointing to a copy of this object
-            virtual Qdef::Sp clone() const { return Qdef::Sp(new Carry(*this)); };
+            // Returns a Qdef's shared pointer pointing to a copy of this object
+            // same Carry object is set to mpAddition
+            virtual Qdef::Sp clone() const;
 
             // Return a string representation of Q carry operand
             virtual string toString(bool decomposed = false, size_t atBit = cAllBits) const;
@@ -594,6 +595,9 @@ namespace dann5 {
 
         // get carry cell output
         Carry::Sp carry() const { return mpCarry; };
+        
+        // set carry cell output
+        void set(const Carry::Sp& pCarry) { mpCarry = pCarry; };
 
     protected:
         // get a reference to carry cell output
@@ -784,4 +788,3 @@ namespace dann5 {
     private:
         bool	mExtended = false;
     };
-};

@@ -31,7 +31,7 @@ namespace dann5 {
 			~D5QuboSolver();
 
             // Returns quantum evaluations for a given quantum statement,
-            // Depending on the solver initializatio, the returned quantum
+            // Depending on the solver initialization, the returned quantum
             // evaluations can be just those with lowes assessed energy, or
             // the full set of all evaluations.
             virtual Qevaluations solution(const Qstatement&);
