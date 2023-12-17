@@ -56,6 +56,8 @@ namespace dann5 {
         // Refreshes QnaryOp cells with the subtractition logic when inputs are
         // added
         virtual void refreshOnInputs();
+        
+        virtual void refreshOnOutput();
 
     private:
         QnaryEq mEq;	// QnaryEq operand is used to form derived expression

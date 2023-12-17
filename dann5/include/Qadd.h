@@ -21,7 +21,7 @@ namespace dann5 {
         static const string cName;
 
         // An Q addition has identity and should have at least two argument
-        Qadd();
+        Qadd(size_t noLastCarryBit = 1);
 
         // Copy constructor
         Qadd(const Qadd& right);

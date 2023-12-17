@@ -148,10 +148,62 @@ void testPNcandidates()
     spnFstream.close();
 }
 
+Qexpr<Qwhole> minusF(const Qdef::Sp& pLeft,const Qdef::Sp& pRight)
+{
+    Qminus::Sp pMinus = Qminus::Sp(new Qminus());
+    Qwhole out(pRight->noqbs(), pMinus->createOutId());
+    pMinus->operands(out.clone(), {pLeft, pRight});
+    Qexpr<Qwhole> xMinus(pMinus);
+    return xMinus;
+}
+
+void testQminus()
+{
+    QuboCompiler compiler, fullCmplr(false);
+    Qwhole x(2, "x"), y(2, "y"), z("z", 5);
+
+    Qnary::Sp pY = dynamic_pointer_cast<Qnary>(y.clone());
+    pY->resize(3);
+    Qexpr<Qwhole> xFy_x = minusF(pY->clone(), x.clone()); // _-0 = (y - x);
+
+    Qexpr<Qwhole> xFz_y_x(minusF(z.clone(), xFy_x.rootDef().clone())); // z - _-0; _-0 = (y - x);
+    cout << xFz_y_x << endl
+    << xFz_y_x.toString(true) << endl;
+    xFz_y_x.compile(fullCmplr);
+    xFz_y_x.compile(compiler);
+    cout << fullCmplr.qubo() << endl
+         << compiler.qubo() << endl
+         << xFz_y_x.solve() << endl;
+}
+
+void testAddFunc()
+{
+    Qwhole x(2, "x"), y(2, "y"), z(2, "z");
+    Qexpr<Qwhole> xP(x + y), xM(minusF(x.clone(), y.clone()));
+    cout << xP << endl << xP.toString(true) << endl;
+    cout << xM << endl << xM.toString(true) << endl;
+    Qexpr<Qwhole> xPxP(z + xP), xPxM(z + xM);
+    cout << xPxP << endl << xPxP.toString(true) << endl;
+    cout << xPxM << endl << xPxM.toString(true) << endl;
+    cout << xPxM.solve() << endl;
+}
+
 int main(int argc, const char * argv[])
 {
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
+//    testQminus();
+//    testAddFunc();
+    
+    Qbin x(4, "x"),z(3, "z"), y("y", 0b101);
+    Qexpr<Qbin> xpr((x == z) != y);
+    cout << xpr << endl << xpr.toString(true) << endl;
+    cout << xpr.solve();
+    Qexpr<Qbin> xpr1(y != (x == z));
+    cout << xpr1 << endl << xpr1.toString(true) << endl;
+    cout << xpr1.solve();
+
+/*
     UTestQbit utQbit;
     utQbit.runAll(cout);
     UTestQbool utQbool;
@@ -160,7 +212,7 @@ int main(int argc, const char * argv[])
     utQbin.runAll(cout);
     UTestQwhole utQwhole;
     utQwhole.runAll(cout);
-
+*/
 //    pymain();
 
 //    testPNcandidates();

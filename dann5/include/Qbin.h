@@ -17,6 +17,10 @@ namespace dann5 {
         // Q binary shared pointer
         typedef shared_ptr<Qbin> Sp;
 
+        // default constants
+        static const Qbin _0;
+        static const Qbin _1;
+
         // Default constructor initializes Q bin with an empty id and byte size 0 value
         Qbin() :Qtype(), Qnary("") {};
 
@@ -48,36 +52,36 @@ namespace dann5 {
         /*** Assignments ***/
         // assignment of a Q binary creates a Q bin assignment where this
         // Q bin is an assignee
-        Qassign<Qbin> operator=(const Qbin& right);
+        Qassign<Qbin> operator=(const Qbin& right) const;
 
         // assignment of a Q expression creates a Q bin assignment where this
         // Q bin is an assignee
-        Qassign<Qbin> operator=(const Qexpr<Qbin>& right);
+        Qassign<Qbin> operator=(const Qexpr<Qbin>& right) const;
 
         /*** Compound Assignments ***/
         // 'and assignment' of a Q binary creates a following Q bin assignment
         // [this] = [this] & [right]
-        Qassign<Qbin> operator&=(const Qbin& right);
+        Qassign<Qbin> operator&=(const Qbin& right) const;
 
         // 'and assignment' of a Q expression creates a following Q bin assignment
         // [this] = [this] & [right]
-        Qassign<Qbin> operator&=(const Qexpr<Qbin>& right);
+        Qassign<Qbin> operator&=(const Qexpr<Qbin>& right) const;
 
         // 'or assignment' of a Q binary creates a following Q bin assignment
         // [this] = [this] | [right]
-        Qassign<Qbin> operator|=(const Qbin& right);
+        Qassign<Qbin> operator|=(const Qbin& right) const;
 
         // 'or assignment' of a Q expression creates a following Q bin assignment
         // [this] = [this] | [right]
-        Qassign<Qbin> operator|=(const Qexpr<Qbin>& right);
+        Qassign<Qbin> operator|=(const Qexpr<Qbin>& right) const;
 
         // 'xor assignment' of a Q binary creates a following Q bin assignment
         // [this] = [this] ^ [right]
-        Qassign<Qbin> operator^=(const Qbin& right);
+        Qassign<Qbin> operator^=(const Qbin& right) const;
 
         // 'xor assignment' of a Q expression creates a following Q bin assignment
         // [this] = [this] ^ [right]
-        Qassign<Qbin> operator^=(const Qexpr<Qbin>& right);
+        Qassign<Qbin> operator^=(const Qexpr<Qbin>& right) const;
 
         /*** Bitwise ***/
         // instantiate Q expression with inversion logic, e.g. for Qbin with id 'x'

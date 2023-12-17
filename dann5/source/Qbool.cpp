@@ -7,6 +7,9 @@ using namespace dann5;
 const Qvalue Qbool::cTrue;  // 'T' value 84
 const Qvalue Qbool::cFalse; // 'F' value 71
 
+const Qbool Qbool::_T("_T", Qbool::cTrue);
+const Qbool Qbool::_F("_F", Qbool::cFalse);
+
 void Qbool::value(Qvalue v) 
 {
 	if (v == 1 || v == cTrue)
@@ -68,54 +71,54 @@ string Qbool::solution(size_t atEvltn) const
 	}
 }
 
-Qassign<Qbool> Qbool::operator=(const Qbool& right)
+Qassign<Qbool> Qbool::operator=(const Qbool& right) const
 {Qexpr<Qbool> expr = right == right;
 	Qassign<Qbool> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qbool> Qbool::operator=(const Qexpr<Qbool>& right)
+Qassign<Qbool> Qbool::operator=(const Qexpr<Qbool>& right) const
 {
 	Qassign<Qbool> assign(*this, right);
 	return assign;
 }
 
-Qassign<Qbool> Qbool::operator&=(const Qbool& right)
+Qassign<Qbool> Qbool::operator&=(const Qbool& right) const
 {
 	Qexpr<Qbool> expr = *this & right;
 	Qassign<Qbool> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qbool> Qbool::operator&=(const Qexpr<Qbool>& right)
+Qassign<Qbool> Qbool::operator&=(const Qexpr<Qbool>& right) const
 {
 	Qexpr<Qbool> expr = *this & right;
 	Qassign<Qbool> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qbool> Qbool::operator|=(const Qbool& right)
+Qassign<Qbool> Qbool::operator|=(const Qbool& right) const
 {
 	Qexpr<Qbool> expr = *(this) | right;
 	Qassign<Qbool> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qbool> Qbool::operator|=(const Qexpr<Qbool>& right)
+Qassign<Qbool> Qbool::operator|=(const Qexpr<Qbool>& right) const
 {
 	Qexpr<Qbool> expr = *(this) | right;
 	Qassign<Qbool> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qbool> Qbool::operator^=(const Qbool& right)
+Qassign<Qbool> Qbool::operator^=(const Qbool& right) const
 {
 	Qexpr<Qbool> expr = *(this) ^ right;
 	Qassign<Qbool> assign(*this, expr);
 	return assign;
 }
 
-Qassign<Qbool> Qbool::operator^=(const Qexpr<Qbool>& right)
+Qassign<Qbool> Qbool::operator^=(const Qexpr<Qbool>& right) const
 {
 	Qexpr<Qbool> expr = *(this) ^ right;
 	Qassign<Qbool> assign(*this, expr);
@@ -214,7 +217,7 @@ Qexpr<Qbool> Qbool::alike(const Qexpr<Qbool>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qnxor::cMark);
 	Qbool out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
 }
@@ -232,7 +235,7 @@ Qexpr<Qbool> Qbool::unlike(const Qexpr<Qbool>& right) const
 {
 	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qxor::cMark);
     Qbool out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;
 }

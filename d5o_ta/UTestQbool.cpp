@@ -141,7 +141,7 @@ void UTestQbool::comparison(ostream& out)
 
     qbExpr = (_T & (x or y) ^ (_F *= (y | x)));
     compiler.reset(); qbExpr.compile(compiler);
-    QuboCompiler noFnlCmplr(false); xEq.compile(noFnlCmplr);
+    QuboCompiler noFnlCmplr(false); qbExpr.compile(noFnlCmplr);
     out << "Complex Expression" << endl << qbExpr << endl
         << " decomposed logic: " << qbExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl

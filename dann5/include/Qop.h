@@ -42,7 +42,7 @@ namespace dann5 {
 
         // Remove all the Qdefs from the list of inputs and
         // set mpOutput to nullptr
-        void releaseOperands();
+        virtual void releaseOperands();
 
         // The Qop's instantionation specification of the number of inputs
         size_t noInputs() const { return mNoInputs; }

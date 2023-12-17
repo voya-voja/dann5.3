@@ -20,6 +20,10 @@ namespace dann5 {
     public:
         // Q bit shared pointer
         typedef shared_ptr<Qbit> Sp;
+        
+        // default constants
+        static const Qbit _0;
+        static const Qbit _1;
 
         // Default constructor initializes Q bit with an empty id and supperposition
         // value
@@ -53,36 +57,36 @@ namespace dann5 {
         /*** Assignments ***/
         // assignment of an Q expression creates a Q bit assignment where this
         // Q bit is an assignee of equal expression between this to right Q bit
-        Qassign<Qbit> operator=(const Qbit& right);
+        Qassign<Qbit> operator=(const Qbit& right) const;
 
         // assignment of an Q expression creates a Q bit assignment where this
         // Q bit is an assignee
-        Qassign<Qbit> operator=(const Qexpr<Qbit>& right);
+        Qassign<Qbit> operator=(const Qexpr<Qbit>& right) const;
 
         /*** Compound Assignments ***/
         // 'and assignment' of an Q expression creates a following Q bit assignment
         // [this] = [this] & [right]
-        Qassign<Qbit> operator&=(const Qbit& right);
+        Qassign<Qbit> operator&=(const Qbit& right) const;
 
         // 'and assignment' of an Q expression creates a following Q bit assignment
         // [this] = [this] & [right]
-        Qassign<Qbit> operator&=(const Qexpr<Qbit>& right);
+        Qassign<Qbit> operator&=(const Qexpr<Qbit>& right) const;
 
         // 'or assignment' of an Q expression creates a following Q bit assignment
         // [this] = [this] | [right]
-        Qassign<Qbit> operator|=(const Qbit& right);
+        Qassign<Qbit> operator|=(const Qbit& right) const;
 
         // 'or assignment' of an Q expression creates a following Q bit assignment
         // [this] = [this] | [right]
-        Qassign<Qbit> operator|=(const Qexpr<Qbit>& right);
+        Qassign<Qbit> operator|=(const Qexpr<Qbit>& right) const;
 
         // 'xor assignment' of an Q expression creates a following Q bit assignment
         // [this] = [this] ^ [right]
-        Qassign<Qbit> operator^=(const Qbit& right);
+        Qassign<Qbit> operator^=(const Qbit& right) const;
 
         // 'xor assignment' of an Q expression creates a following Q bit assignment
         // [this] = [this] ^ [right]
-        Qassign<Qbit> operator^=(const Qexpr<Qbit>& right);
+        Qassign<Qbit> operator^=(const Qexpr<Qbit>& right) const;
 
         /*** Bitwise ***/
         // instantiate Q boolean expression with inversion logic, e.g. for Qbit with

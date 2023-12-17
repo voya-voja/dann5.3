@@ -65,7 +65,11 @@ namespace dann5{
             // The provided operation should be a QcellOp, otherwise it throws
             // logical_error exception.
             void qubo(const QcellOp*);
-            
+
+            // Compiles quantum cell sub-operations to generate QUBO
+            // Returns an IoPort entry for compiled sub-operations
+            QuboTable::IoPort compile(const QcellOp::Sp&);
+
             // Compiles this Qnary operation to generate QUBO
             void compile(const QnaryOp*);
             

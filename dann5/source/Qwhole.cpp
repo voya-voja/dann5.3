@@ -8,6 +8,9 @@
 
 using namespace dann5;
 
+const Qwhole Qwhole::_0("_0", 0);
+const Qwhole Qwhole::_1("_1", 1);
+
 Qwhole::operator unsigned long long()
 {
 	return(operator const unsigned long long());
@@ -227,22 +230,10 @@ Qexpr<Qwhole> Qwhole::operator<=(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator<=(const Qexpr<Qwhole>& right) const
 {
-    Qfunction* pRtn = new Qfunction("<=");
-	{
-		Qwhole out(noqbs(), pRtn->createOutId());
-		Qwhole::Sp pRout = dynamic_pointer_cast<Qwhole>(right.root()->outputs()[0]);
-		Qbit _0("_0", 0);
-		Qassign<Qwhole> subA = out = right - *this;
-		Qexpression& subX = *subA.expression();
-		Qsubtract::Sp pSubtract = static_pointer_cast<Qsubtract>(as_const(subX).root());
-		QnaryOp::Sp pSbstttOp = pSubtract->substituteOp();
-		Qwhole::Sp pSubXout = static_pointer_cast<Qwhole>(pSbstttOp->outputs()[0]);
-		*pRtn = subA,
-			_0 == (*pSubXout)[pSubXout->noqbs() - 1];
-	}
-	Qop::Sp pOp = static_pointer_cast<Qop>(Qfunction::Sp(pRtn));
-	Qexpr<Qwhole> expr(pOp);
-	return expr;
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLe::cMark);
+    pOp->operands(clone(), {right.rootDef()->clone()});
+    Qexpr<Qwhole> expr(pOp);
+    return expr;
 }
 
 Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
@@ -255,20 +246,8 @@ Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator>(const Qexpr<Qwhole>& right) const
 {
-    Qfunction* pRtn = new Qfunction(">");
-    {
-        Qwhole out(noqbs(), pRtn->createOutId());
-        Qwhole::Sp pRout = dynamic_pointer_cast<Qwhole>(right.root()->outputs()[0]);
-        Qbit _0("_0", 0);
-        Qassign<Qwhole> subA = out = right - *this;
-        Qexpression& subX = *subA.expression();
-        Qsubtract::Sp pSubtract = static_pointer_cast<Qsubtract>(as_const(subX).root());
-        QnaryOp::Sp pSbstttOp = pSubtract->substituteOp();
-        Qwhole::Sp pSubXout = static_pointer_cast<Qwhole>(pSbstttOp->outputs()[0]);
-        *pRtn =  subA,
-            _0 != (*pSubXout)[pSubXout->noqbs() - 1];
-    }
-    Qop::Sp pOp = static_pointer_cast<Qop>(Qfunction::Sp(pRtn));
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGt::cMark);
+    pOp->operands(clone(), {right.rootDef()->clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
 }
@@ -302,7 +281,7 @@ Qexpr<Qwhole> Qwhole::operator+(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qadd());
 	Qwhole out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -320,7 +299,7 @@ Qexpr<Qwhole> Qwhole::operator*(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
     Qwhole out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -338,7 +317,7 @@ Qexpr<Qwhole> Qwhole::operator-(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qsubtract());
     Qwhole out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }
@@ -356,7 +335,7 @@ Qexpr<Qwhole> Qwhole::operator/(const Qexpr<Qwhole>& right) const
 {
 	Qop::Sp pOp(new Qdivide());
     Qwhole out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }

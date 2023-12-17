@@ -6,6 +6,9 @@
 
 using namespace dann5;
 
+const Qint Qint::_0("_0", 0);
+const Qint Qint::_1("_1", 1);
+const Qint Qint::_1_("_1_", -1);
 
 Qint::Qint(const string& id, const Bits& value, bool asis)
 	: Qbin(id, value, asis)
@@ -87,50 +90,73 @@ string Qint::solution(size_t atEvltn) const
 	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
 }
 
-Qint& Qint::operator=(const Qint& right)
+Qassign<Qint > Qint ::operator=(const Qint & right) const
 {
-	Qbin::operator=(right);
-	return(*this);
+    Qexpr<Qint > expr = right == right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
 }
 
-Qassign<Qint> Qint::operator=(const Qexpr<Qint>& right)
+Qassign<Qint > Qint ::operator=(const Qexpr<Qint >& right) const
 {
-	Qassign<Qint> assign(*this, right);
-	return assign;
+    Qassign<Qint > assign(*this, right);
+    return assign;
 }
 
-Qint& Qint::operator+=(const Qint& right)
+Qassign<Qint > Qint ::operator+=(const Qint & right) const
 {
-	return (*this);
+    Qexpr<Qint > expr = *this + right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
 }
 
-Qassign<Qint> Qint::operator+=(const Qexpr<Qint>& right)
+Qassign<Qint > Qint ::operator+=(const Qexpr<Qint >& right) const
 {
-	Qexpr<Qint> expr = *this + right;
-	Qassign<Qint> assign(*this, expr);
-	return assign;
+    Qexpr<Qint > expr = *this + right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
 }
 
-Qint& Qint::operator*=(const Qint& right)
+Qassign<Qint > Qint ::operator*=(const Qint & right) const
 {
-	return *this;
+    Qexpr<Qint > expr = *this * right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
 }
 
-Qassign<Qint> Qint::operator*=(const Qexpr<Qint>& right)
+Qassign<Qint > Qint ::operator*=(const Qexpr<Qint >& right) const
 {
-	Qexpr<Qint> expr = *this * right;
-	Qassign<Qint> assign(*this, expr);
-	return assign;
+    Qexpr<Qint > expr = *this * right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
 }
 
-Qint& Qint::operator-=(const Qint& right)
+Qassign<Qint > Qint ::operator-=(const Qint & right) const
 {
-	return *this;
+    Qexpr<Qint > expr = *this - right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
 }
 
-Qint& Qint::operator/=(const Qint& right)
+Qassign<Qint > Qint ::operator-=(const Qexpr<Qint >& right) const
 {
-	return *this;
+    Qexpr<Qint > expr = *this - right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
+}
+
+Qassign<Qint > Qint ::operator/=(const Qint & right) const
+{
+    Qexpr<Qint > expr = *this / right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
+}
+
+Qassign<Qint > Qint ::operator/=(const Qexpr<Qint >& right) const
+{
+    Qexpr<Qint > expr = *this / right;
+    Qassign<Qint > assign(*this, expr);
+    return assign;
 }
 
 Qexpr<Qint> Qint::operator==(const Qint& right) const
@@ -226,3 +252,40 @@ Qexpr<Qint> Qint::operator*(const Qexpr<Qint>& right) const
 	Qexpr<Qint> expr(pOp);
 	return expr;
 }
+
+Qexpr<Qint> Qint::operator-(const Qint& right) const
+{
+    Qop::Sp pOp(new Qsubtract());
+    Qint out(pOp->createOutId());
+    pOp->operands(out.clone(), {clone(), right.clone()});
+    Qexpr<Qint> expr(pOp);
+    return expr;
+}
+
+Qexpr<Qint> Qint::operator-(const Qexpr<Qint>& right) const
+{
+    Qop::Sp pOp(new Qsubtract());
+    Qint out(pOp->createOutId());
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qexpr<Qint> expr(pOp);
+    return expr;
+}
+
+Qexpr<Qint> Qint::operator/(const Qint& right) const
+{
+    Qop::Sp pOp(new Qdivide());
+    Qint out(pOp->createOutId());
+    pOp->operands(out.clone(), {clone(), right.clone()});
+    Qexpr<Qint> expr(pOp);
+    return expr;
+}
+
+Qexpr<Qint> Qint::operator/(const Qexpr<Qint>& right) const
+{
+    Qop::Sp pOp(new Qdivide());
+    Qint out(pOp->createOutId());
+    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    Qexpr<Qint> expr(pOp);
+    return expr;
+}
+

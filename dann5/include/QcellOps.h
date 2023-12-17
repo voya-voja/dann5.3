@@ -402,7 +402,8 @@ namespace dann5 {
         Qcell2outOp(const string& id, size_t size);
 
         // Copy constructor
-        Qcell2outOp(const Qcell2outOp& right) : QcellOp(right) {};
+        Qcell2outOp(const Qcell2outOp& right)
+                : QcellOp(right), mpAuxiliary(right.mpAuxiliary) {};
 
         // Destruct Qeq with shared pointers to its Qdef
         ~Qcell2outOp() {};
@@ -788,3 +789,4 @@ namespace dann5 {
     private:
         bool	mExtended = false;
     };
+};

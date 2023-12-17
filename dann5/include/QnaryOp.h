@@ -59,6 +59,10 @@ namespace dann5 {
         virtual Qdef::Sp output(size_t forBit = cAllBits) const;
         virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
+        // Remove all the operands and clear the logic of this
+        // Qnary operation
+        virtual void releaseOperands();
+
         // convert operation expression into a string
         virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
 

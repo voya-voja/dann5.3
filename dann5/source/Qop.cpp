@@ -54,6 +54,7 @@ void Qop::operands(const Qdef::Sp& pOut, const Qdefs& ins)
     if (ins.size() != mNoInputs)
         throw invalid_argument("ERROR @Qop: In operands number is " + to_string(ins.size())
             + " instead of " + to_string(mNoInputs));
+    mInputs.clear();
     for (auto& pIn : ins)
         mInputs.push_back(pIn);
     mpOutput = pOut;

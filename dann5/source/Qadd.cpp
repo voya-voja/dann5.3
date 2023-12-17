@@ -6,8 +6,8 @@ using namespace dann5;
 
 /*** Addition ***/
 
-Qadd::Qadd()
-	:QnaryOp(Qadd::cMark, 2), mNoLastCarryBit(1)
+Qadd::Qadd(size_t noLastCarryBit)
+	:QnaryOp(Qadd::cMark, 2), mNoLastCarryBit(noLastCarryBit)
 {}
 
 Qadd::Qadd(const Qadd& right)

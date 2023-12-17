@@ -286,7 +286,19 @@ void UTestQwhole::arithmetic(ostream& out)
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
-    out << " resulting in :" << endl << qxwExpr.solve() << endl;
+    out << " resulting in :" << endl << qxwExpr.solve() << endl << "WRONG!!!"
+        << endl << endl;
+    
+    Qwhole w(3, "w");
+    Qblock blckSub; blckSub = z = w - x, w = y - x;
+    noFnlCmplr.reset(); blckSub.compile(noFnlCmplr);
+    compiler.reset(); blckSub.compile(compiler);
+    out << "Subtraction Expression" << endl << blckSub << endl
+        << " decomposed logic: " << blckSub.toString(true) << endl
+        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
+    out << endl << " & finalized Qubo is '"
+        << compiler.qubo()<< "'" << endl;
+    out << " resulting in :" << endl << blckSub.solve() << endl;
 /* Issue #6  */
     qxxExpr = z_3Expr - qwExpr;
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
@@ -354,7 +366,22 @@ void UTestQwhole::arithmetic(ostream& out)
     out << endl << " # of nodes: " << anlyzeD.nodesNo()
         << " # of branches: " << anlyzeD.branchesNo() << endl << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
+    
+    qwExpr.reset();
+    Qblock byDx; byDx = qwExpr, x != Qwhole::_0;
+    noFnlCmplr.reset(); byDx.compile(noFnlCmplr);
+    compiler.reset(); byDx.compile(compiler);
+    out << "Division Expression" << endl << byDx << endl
+        << " decomposed logic: " << byDx.toString(true) << endl
+        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
+    out << endl << " & finalized Qubo is '"
+        << compiler.qubo()<< "'" << endl;
+    QuboAnalyzer anlyzeDne(compiler.qubo());
+    out << endl << " # of nodes: " << anlyzeDne.nodesNo()
+        << " # of branches: " << anlyzeDne.branchesNo() << endl << endl;
+    out << " resulting in :" << endl << byDx.solve() << endl;
 
+    qwExpr.reset();
     qxwExpr = qwExpr / z;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
@@ -387,7 +414,7 @@ void UTestQwhole::arithmetic(ostream& out)
     QuboAnalyzer anlyzeD2(compiler.qubo());
     out << endl << " # of nodes: " << anlyzeD2.nodesNo()
         << " # of branches: " << anlyzeD2.branchesNo() << endl << endl;
-    out << " resulting in :" << endl << qxxExpr.solve() << endl;
+//    out << " resulting in :" << endl << qxxExpr.solve() << endl;
 
     Qwhole  r("r", 6), k(2, "k");
     Qexpr<Qwhole> e1 = r - x, e2 = x / k;
@@ -668,6 +695,84 @@ void UTestQwhole::comparison(ostream& out)
     cout << xEqLe << endl << " decomposed: " << endl
         << xEqLe.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqLe.solve() << endl;
+    
+    Qexpr<Qwhole> xxEyAz(x == y + z);
+    compiler.reset(); xxEyAz.compile(compiler);
+    cout << xxEyAz << endl << " decomposed: " << endl
+        << xxEyAz.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xEqLe.solve() << endl;
+
+    Qexpr<Qwhole> xxNEyAz(x != y + z);
+    compiler.reset(); xxNEyAz.compile(compiler);
+    cout << xxNEyAz.toString() << endl << " decomposed: " << endl
+        << xxNEyAz.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xxNEyAz.solve() << endl << "WRONG!!!"
+        << endl << endl;
+
+    Qexpr<Qwhole> xxGTyAz(x > y + z);
+    compiler.reset(); xxGTyAz.compile(compiler);
+    cout << xxGTyAz.toString() << endl << " decomposed: " << endl
+        << xxGTyAz.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xxGTyAz.solve() << endl << "WRONG!!!"
+        << endl << endl;
+
+    Qexpr<Qwhole> xxGEyAz(x >= y + z);
+    compiler.reset(); xxGEyAz.compile(compiler);
+    cout << xxGEyAz.toString() << endl << " decomposed: " << endl
+        << xxGEyAz.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xxGEyAz.solve() << endl;
+
+    Qexpr<Qwhole> xxLTyAz(x < y + z);
+    compiler.reset(); xxLTyAz.compile(compiler);
+    cout << xxLTyAz.toString() << endl << " decomposed: " << endl
+        << xxLTyAz.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xxLTyAz.solve() << endl;
+
+    Qexpr<Qwhole> xxLEyAz(x <= y + z);
+    compiler.reset(); xxLEyAz.compile(compiler);
+    cout << xxLEyAz.toString() << endl << " decomposed: " << endl
+        << xxLEyAz.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xxLEyAz.solve() << endl << "WRONG!!!"
+        << endl << endl;
+    
+    Qexpr<Qwhole> xyAzEx(y + z == x);
+    compiler.reset(); xyAzEx.compile(compiler);
+    cout << xyAzEx << endl << " decomposed: " << endl
+        << xyAzEx.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xyAzEx.solve() << endl;
+
+    Qexpr<Qwhole> xyAzNEx(y + z != x);
+    compiler.reset(); xyAzNEx.compile(compiler);
+    cout << xyAzNEx.toString() << endl << " decomposed: " << endl
+        << xyAzNEx.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xyAzNEx.solve() << endl << "WRONG!!!"
+        << endl << endl;
+
+    Qexpr<Qwhole> xyAzGTx(y + z > x);
+    compiler.reset(); xyAzGTx.compile(compiler);
+    cout << xyAzGTx.toString() << endl << " decomposed: " << endl
+        << xyAzGTx.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xyAzGTx.solve() << endl;
+
+    Qexpr<Qwhole> xyAzGEx(y + z >= x);
+    compiler.reset(); xyAzGEx.compile(compiler);
+    cout << xyAzGEx.toString() << endl << " decomposed: " << endl
+        << xyAzGEx.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xyAzGEx.solve() << endl << "WRONG!!!"
+    << endl << endl;
+
+    Qexpr<Qwhole> xyAzLTx(y + z < x);
+    compiler.reset(); xyAzLTx.compile(compiler);
+    cout << xyAzLTx.toString() << endl << " decomposed: " << endl
+        << xyAzLTx.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xyAzLTx.solve() << endl << "WRONG!!!"
+    << endl << endl;
+
+    Qexpr<Qwhole> xyAzLEx(y + z <= x);
+    compiler.reset(); xyAzLEx.compile(compiler);
+    cout << xyAzLEx.toString() << endl << " decomposed: " << endl
+        << xyAzLEx.toString(true) << endl
+        << "Qubo: " << compiler.qubo() << endl << xyAzLEx.solve() << endl;
 }
 
 void UTestQwhole::assignment(ostream& out)
@@ -695,7 +800,7 @@ void UTestQwhole::assignment(ostream& out)
     compiler.reset(); qwholeAssign.compile(compiler);
     out << endl << "Assignment 'r -= x' creats logic => " << qwholeAssign
         << endl << " It's Qubo is '" << compiler.qubo() << "'" << endl;
-    out << "resulting in solutions:" << endl << qwholeAssign.solve();
+    out << "resulting in solutions:" << endl << qwholeAssign.solve() << endl;
 
     qwholeAssign = r *= x;
     compiler.reset(); qwholeAssign.compile(compiler);
@@ -710,7 +815,8 @@ void UTestQwhole::assignment(ostream& out)
     QuboAnalyzer analyzeAd(compiler.qubo());
     out << endl << "# of nodes: " << analyzeAd.nodesNo()
         << "\t# of branches: " << analyzeAd.branchesNo() << endl;
-    out << "resulting in solutions:" << endl << qwholeAssign.solve();
+//    out << "resulting in solutions:" << endl << qwholeAssign.solve()<< "WRONG!!!"
+//    << endl << endl;
 
     Qwhole y("y", 6), z(2, "z"), k(2, "k");
     Qassign<Qwhole> a1 = y = r - x, a2 = k = y - z;
@@ -829,10 +935,7 @@ void UTestQwhole::prime6(ostream& out)
     Qwhole prime(4, "p"), s(2, "s"), t(1, "t"), mod(2, "m"), _1("1_", 1), _5("5_", 5), _3("3_", 3), _6("6_", 6), _8("8_", 8);
     Qblock prime6m1;
     {
-        prime6m1 = prime = _6 * s - _1; // ,
-//        prime6m1 = prime + _1 == _6 * s; // ,
-//            prime = t * _8 + mod,
-//                   mod != 5;
+        prime6m1 = prime = _6 * s - _1;
     }
     QuboCompiler noFnlCmplr(false); prime6m1.compile(noFnlCmplr);
     QuboCompiler compiler; prime6m1.compile(compiler);
@@ -847,12 +950,25 @@ void UTestQwhole::prime6(ostream& out)
     Qbinder pst(solution);
     pst = prime, s, t, mod;
     out << " resulting in :" << endl << pst << endl;
+    
+    Qexpr<Qwhole> prmXpr(_6 * s == prime + Qwhole::_1);
+    noFnlCmplr.reset(); prmXpr.compile(noFnlCmplr);
+    compiler.reset(); prmXpr.compile(compiler);
+    out << "Prime Number\n Code" << endl << prmXpr << endl
+        << " Logic: " << prmXpr.toString(true) << endl;
+    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+    QuboAnalyzer analyseX(compiler.qubo());
+    out << endl << "*** Prime number p = 6s - 1 has: " << analyseX.nodesNo()
+        << " # of node and # of branches: " << analyseX.branchesNo() << endl;
+    Qevaluations solutionX = prmXpr.compute();
+    Qbinder pstX(solutionX);
+    pstX = prime, s, t, mod;
+    out << " resulting in :" << endl << pstX << endl;
 
     Qblock prime6p1;
     {
         prime6p1 = prime = _6 * s + _1;
-        //                    prime = t * _8 + mod,
-        //                    mod != 5;
     }
     noFnlCmplr.reset(); prime6m1.compile(noFnlCmplr);
     compiler.reset(); prime6m1.compile(compiler);

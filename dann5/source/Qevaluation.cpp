@@ -56,13 +56,13 @@ std::ostream& dann5::operator << (std::ostream& out, const Qevaluations& evaluat
         if (tableHeader)
         {
             for (auto element : evltn.sample())
-                out << element.first << " ";
+                out << element.first << "\t";
             out << endl;
             tableHeader = false;
         }
         for (auto element : evltn.sample())
-            out << to_string(element.second) << " ";
-        out << "--> " << evltn.energy();
+            out << to_string(element.second) << "\t";
+        out << "-->\t" << evltn.energy();
     }
     return out;
 }

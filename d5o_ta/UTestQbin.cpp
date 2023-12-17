@@ -326,6 +326,14 @@ void UTestQbin::comparison(ostream& out)
     Qbinder bndrNeqEq; bndrNeqEq = x, y, z;
     bndrNeqEq.add(slvrNeqEq.solution());
     cout << bndrNeqEq.solutions() << "WRONG!!!!" << endl << endl;
+    
+    Qexpr<Qbin> xpr((x == z) != y);
+    cout << xpr << endl << xpr.toString(true) << endl;
+    cout << xpr.solve() << endl << "WRONG!!!" << endl << endl;
+    Qexpr<Qbin> xpr1(y != (x == z));
+    cout << xpr1 << endl << xpr1.toString(true) << endl;
+    cout << xpr1.solve() << endl << "WRONG!!!" << endl << endl;
+
     /*** CORECT End ***/
 
     compiler.reset(); xXnYeZ1.compile(compiler);

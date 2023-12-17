@@ -21,6 +21,11 @@ namespace dann5 {
         // Q definition shared pointer
         typedef shared_ptr<Qint> Sp;
 
+        // default constants
+        static const Qint _0;
+        static const Qint _1;
+        static const Qint _1_;
+
         // Qint is unknown, if any of its Qbits is in superposition state
         static const unsigned long long cUnknown = ULLONG_MAX;
 
@@ -74,38 +79,47 @@ namespace dann5 {
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qint(*this)); };
 
         /*** Assignments ***/
-        // assignment operator changes the identity and value of this object to be
-        // the same as right object
-        Qint& operator=(const Qint& right);
-
-        // assignment of an Q expression creates a Q int assignment where this
+        // assignment of a Q int creates a Q int assignment where this
         // Q int is an assignee
-        Qassign<Qint> operator=(const Qexpr<Qint>& right);
+        Qassign<Qint> operator=(const Qint& right) const;
+
+        // assignment of a Q expression creates a Q int assignment where this
+        // Q int is an assignee
+        Qassign<Qint> operator=(const Qexpr<Qint>& right) const;
 
         /*** Compound Assignments ***/
-        // change value of this object as result of and operation between this
-        // and right Q bit
-        Qint& operator+=(const Qint& right);
-
-        // 'add assignment' of an Q expression creates a following Q int assignment
+        // 'add assignment' of a Q int creates a following Q int assignment
         // [this] = [this] + [right]
-        Qassign<Qint> operator+=(const Qexpr<Qint>& right);
+        Qassign<Qint> operator+=(const Qint& right) const;
 
-        // change value of this object as result of or operation between this
-        // and right Q bit
-        Qint& operator*=(const Qint& right);
+        // 'add assignment' of a Q expression creates a following Q int assignment
+        // [this] = [this] + [right]
+        Qassign<Qint> operator+=(const Qexpr<Qint>& right) const;
 
-        // 'add assignment' of an Q expression creates a following Q int assignment
+        // 'add assignment' of a Q int creates a following Q int assignment
         // [this] = [this] * [right]
-        Qassign<Qint> operator*=(const Qexpr<Qint>& right);
+        Qassign<Qint> operator*=(const Qint& right) const;
 
-        // change value of this object as result of xor operation between this
-        // and right Q bit
-        Qint& operator-=(const Qint& right);
+        // 'add assignment' of a Q expression creates a following Q int assignment
+        // [this] = [this] * [right]
+        Qassign<Qint> operator*=(const Qexpr<Qint>& right) const;
 
-        // change value of this object as result of xor operation between this
-        // and right Q bit
-        Qint& operator/=(const Qint& right);
+        // 'add assignment' of a Q int creates a following Q int assignment
+        // [this] = [this] - [right]
+        Qassign<Qint> operator-=(const Qint& right) const;
+
+        // 'add assignment' of a Q expression creates a following Q int assignment
+        // [this] = [this] - [right]
+        Qassign<Qint> operator-=(const Qexpr<Qint>& right) const;
+
+
+        // 'add assignment' of a Q int creates a following Q int assignment
+        // [this] = [this] / [right]
+        Qassign<Qint> operator/=(const Qint& right) const;
+
+        // 'add assignment' of a Q expression creates a following Q int assignment
+        // [this] = [this] / [right]
+        Qassign<Qint> operator/=(const Qexpr<Qint>& right) const;
 
         /*** Comparison ***/
         // instantiate Q expression with comparison, e.g. for Qint ids 'x' and 'y'
@@ -133,22 +147,39 @@ namespace dann5 {
         Qexpr<Qint> operator<=(const Qint& right) const;
 
         /*** Arithmetic ***/
-
-        // instantiate Q expression with and logic, e.g. for Qint ids 'x' and 'y'
+        // instantiate Q expression with add logic, e.g. for Qint ids 'x' and 'y'
         // the expression is 'x' + 'y'
         Qexpr<Qint> operator+(const Qint& right) const;
 
-        // instantiate Q expression with and logic, e.g. for Qint ids 'x' and 'y'
-        // the expression is 'x' + 'y'
+        // instantiate Q expression with add logic, e.g. for Qint id 'x' and [right]
+        // expression the expression is 'x' + [right]
         Qexpr<Qint> operator+(const Qexpr<Qint>& right) const;
 
-        // instantiate Q expression with or logic, e.g. for Qint ids 'x' and 'y'
+        // instantiate Q expression with multiply logic, e.g. for Qint ids 'x' and 'y'
         // the expression is 'x' * 'y'
         Qexpr<Qint> operator*(const Qint& right) const;
 
-        // instantiate Q expression with or logic, e.g. for Qint ids 'x' and 'y'
-        // the expression is 'x' * 'y'
+        // instantiate Q expression with multiply logic, e.g. for Qint id 'x' and [right]
+        // expression the expression is 'x' * [right]
         Qexpr<Qint> operator*(const Qexpr<Qint>& right) const;
+
+        // instantiate Q expression with subtract logic, e.g. for Qint ids 'x' and 'y'
+        // the expression is 'x' - 'y'
+        Qexpr<Qint> operator-(const Qint& right) const;
+
+        // Subtraction with EXPRESSION needs to be tested
+        // instantiate Q expression with subtract logic, e.g. for Qint id 'x' and [right]
+        // expression the expression is 'x' - [right]
+        Qexpr<Qint> operator-(const Qexpr<Qint>& right) const;
+
+        // instantiate Q expression with divide logic, e.g. for Qint ids 'x' and 'y'
+        // the expression is 'x' / 'y'
+        Qexpr<Qint> operator/(const Qint& right) const;
+
+        // Division with EXPRESSION needs to be tested
+        // instantiate Q expression with divide logic, e.g. for Qint id 'x' and [right]
+        // expression the expression is 'x' / [right]
+        Qexpr<Qint> operator/(const Qexpr<Qint>& right) const;
 
     protected:
     private:

@@ -22,6 +22,10 @@ namespace dann5 {
         // Q definition shared pointer
         typedef shared_ptr<Qwhole> Sp;
 
+        // default constants
+        static const Qwhole _0;
+        static const Qwhole _1;
+
         // Qwhole is unknown, if any of its Qbits is in superposition state
         static const unsigned long long cUnknown = ULLONG_MAX;
 

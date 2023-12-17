@@ -23,6 +23,10 @@ namespace dann5 {
         static const Qvalue cTrue	= 'T'; // value 84
         static const Qvalue cFalse	= 'F'; // value 71
 
+        // default constants
+        static const Qbool _T;
+        static const Qbool _F;
+
         // Default constructor initializes Q bit with an empty id and supperposition
         // value
         Qbool() : Qcell(""), Qtype(), mValue(cSuperposition) {};
@@ -69,36 +73,36 @@ namespace dann5 {
         /*** Assignment ***/
         // assignment of an Q expression creates a Q bool assignment where this
         // Q bool is an assignee of equal expression between this to right Q bool
-        Qassign<Qbool> operator=(const Qbool& right);
+        Qassign<Qbool> operator=(const Qbool& right) const;
 
         // assignment of an Q expression creates a Q bool assignment where this
         // Q boolean is an assignee
-        Qassign<Qbool> operator=(const Qexpr<Qbool>& right);
+        Qassign<Qbool> operator=(const Qexpr<Qbool>& right) const;
 
         /*** Compound Assignments ***/
         // 'and assignment' of an Q expression creates a following Q bool assignment
         // [this] = [this] & [right]
-        Qassign<Qbool> operator&=(const Qbool& right);
+        Qassign<Qbool> operator&=(const Qbool& right) const;
 
         // 'and assignment' of an Q expression creates a following Q bool assignment
         // [this] = [this] & [right]
-        Qassign<Qbool> operator&=(const Qexpr<Qbool>& right);
+        Qassign<Qbool> operator&=(const Qexpr<Qbool>& right) const;
 
         // 'or assignment' of an Q expression creates a following Q bool assignment
         // [this] = [this] | [right]
-        Qassign<Qbool> operator|=(const Qbool& right);
+        Qassign<Qbool> operator|=(const Qbool& right) const;
 
         // 'or assignment' of an Q expression creates a following Q bool assignment
         // [this] = [this] | [right]
-        Qassign<Qbool> operator|=(const Qexpr<Qbool>& right);
+        Qassign<Qbool> operator|=(const Qexpr<Qbool>& right) const;
 
         // 'xor assignment' of an Q expression creates a following Q bool assignment
         // [this] = [this] ^ [right]
-        Qassign<Qbool> operator^=(const Qbool& right);
+        Qassign<Qbool> operator^=(const Qbool& right) const;
 
         // 'xor assignment' of an Q expression creates a following Q bool assignment
         // [this] = [this] ^ [right]
-        Qassign<Qbool> operator^=(const Qexpr<Qbool>& right);
+        Qassign<Qbool> operator^=(const Qexpr<Qbool>& right) const;
 
         /*** Logical ***/
         // instantiate Q expression with inversion logic, e.g. for Qbool with id 'x'

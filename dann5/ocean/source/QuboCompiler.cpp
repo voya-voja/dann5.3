@@ -68,16 +68,9 @@ void QuboCompiler::qubo(const QcellOp* pCellOp)
                                                         + "' is not a Qcell.");
         QcellOp::Sp pOp = dynamic_pointer_cast<QcellOp>(pOprnd);
         if (pOp != nullptr)
-        {
-            // add sub-qubo from argument operand
-            pOp->compile(*this);
-            Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->Qop::output());
-            ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
-        }
+            ports.push_back(compile(pOp));
         else
-        {
             ports.push_back(QuboTable::IoPort(pOprnd->id(), pOprnd->value()));
-        }
     }
     // process output ports
     const Qdefs& outs = pCellOp->outputs();
@@ -91,23 +84,34 @@ void QuboCompiler::qubo(const QcellOp* pCellOp)
                                                         + "' is not a Qcell.");
         QcellOp::Sp pOp = dynamic_pointer_cast<QcellOp>(pOprnd);
         if (pOp != nullptr)
-        {
-            // add sub-qubo from argument operand
-            pOp->compile(*this);
-            Qcell::Sp pOut = dynamic_pointer_cast<Qcell>(pOp->Qop::output());
-            if(pOut != nullptr)
-                ports.push_back(QuboTable::IoPort(pOut->id(), pOut->value()));
-        }
+                ports.push_back(compile(pOp));
         else
-        {
             ports.push_back(QuboTable::IoPort(pOprnd->id(), pOprnd->value()));
-        }
     }
-    if ((iSize + oSize) > ports.size()) return;
+    if ((iSize + oSize) > ports.size())
+        return;
     // create QuboTable rule object for this operand
     QuboTable::Sp pQubo = QTfactory::Instance().create(pCellOp->identifier());
     mQubo += pQubo->qubo(ports, mFinalized);
 }
+
+QuboTable::IoPort QuboCompiler::compile(const QcellOp::Sp& pCellOp)
+{
+    QcellOp::Sp pOp = pCellOp;
+    // compile a sub-operation(s) that is (are) an input argument
+    pOp->compile(*this);
+    Qcell::Sp pOut = nullptr;
+    do { // parse through all compiled operations until finding the
+         // operation output that is not another operation
+        pOut = dynamic_pointer_cast<Qcell>(pOp->Qop::output());
+        pOp = dynamic_pointer_cast<QcellOp>(pOut);
+    } while(pOp != nullptr);
+    if(pOut == nullptr)
+        throw logic_error("ERROR @QuboCompiler: output argument is null poiner!");
+    QuboTable::IoPort port(pOut->id(), pOut->value());
+    return port;
+}
+
 
 void QuboCompiler::compile(const QnaryOp* pOp)
 {

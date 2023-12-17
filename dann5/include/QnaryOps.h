@@ -281,8 +281,8 @@ namespace dann5
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const {
             return Qdef::Sp(new QnaryBiOp<Q_OP>(*this));
-            
         };
+        
     protected:
         // Override to refresh the Q-nary operation cells using quantum cell
         // operations when inputs are added
@@ -307,6 +307,39 @@ namespace dann5
         };
     private:
     };
+
+    // A Quantum subtract is a binary operation implemented as
+    // a quantum function
+    class Qminus : public Qfunction
+    {
+    public:
+        // QnaryGe's shared pointer
+        typedef shared_ptr<Qminus> Sp;
+
+        // Quantum nary-greater than or equal operator identifiers
+//        static const string cMark;    // "-"
+//        static const string cName;    // "minus"
+        
+        // Instantiate Qminus instance with '-' identity
+        Qminus() : Qfunction("-", 2) {};
+
+        // Copy constructor
+        Qminus(const Qminus& right) : Qfunction(right) {};
+
+        // Destruct Qminus with shared pointers to its Qdef
+        ~Qminus() {};
+
+        // Return a Qdef's shared pointer pointing to a copy of this object
+        virtual Qdef::Sp clone() const { return Qdef::Sp(new Qminus(*this)); };
+
+    protected:
+        // Refreshes the Q-nary operator cells according to greater-than or e
+        // qual logic
+        void refresh();
+    private:
+    };
+
+
 };
 
 #endif /* QnaryOps_h */

@@ -71,6 +71,12 @@ void QnaryOp::output(const Qdef::Sp& pOut, size_t forBit)
     refreshOnOutput();
 }
 
+void QnaryOp::releaseOperands()
+{
+    Qop::releaseOperands();
+    cells().clear();
+}
+
 void QnaryOp::refreshOnOutput()
 {
     Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(Qop::output());

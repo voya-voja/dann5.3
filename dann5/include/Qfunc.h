@@ -214,6 +214,10 @@ namespace dann5
         // Adds assigned output into quantum function's binder
         virtual void refreshOnOutput();
 
+        // Resizes arguments to the size of the biggest and returns
+        // the biggest noqbs
+        virtual size_t resizeArguments();
+
         // Compiles a quantum operation logic and creates a list of quantum
         // atomicity function shared-pointers. The size of list is defined by the
         // highest number-of-qbits of compiled operations, i.e. its noqbs().

@@ -123,6 +123,36 @@ void Qfunction::refresh()
     refreshOnInputs();
 }
 
+size_t Qfunction::resizeArguments()
+{
+    Qnary& out = *static_pointer_cast<Qnary>(Qop::output());
+    Qnaries ins(Qop::inputs());
+    size_t oNoqbs = out.noqbs();
+    size_t iNoqbs = 0, at = 0, biggest = 0;
+    for(auto pIn : ins)
+    {
+        size_t aNoqbs = pIn->noqbs();
+        at++;
+        if(iNoqbs < aNoqbs)
+        {
+            iNoqbs = aNoqbs;
+            biggest = at;
+        }
+        if(oNoqbs > iNoqbs)
+            pIn->resize(oNoqbs); //resize all in arguments is out is the biggest
+        else if(iNoqbs != aNoqbs)
+            pIn->resize(iNoqbs); //resize all following arguments of the biggest
+    }
+    if(oNoqbs < iNoqbs)
+    { // resize out and preceding in arguments
+        out.resize(iNoqbs);
+        for(size_t at = 0; at < biggest; at++)
+            ins[at]->resize(iNoqbs);
+        return iNoqbs;
+    }
+    return oNoqbs;
+}
+
 void Qfunction::refreshOnInputs()
 {
     Qdefs ins(Qop::inputs());
@@ -199,7 +229,7 @@ void Qfunction::Compiler::add(QcellOp::Sp pOp, size_t at)
         pAtomicity->noInputs(atomicIns.size());
         Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(pOut);
         Qdef::Sp pAtomicOut = nullptr;
-        if(pNaryOut == nullptr && at == 0)
+        if(pNaryOut == nullptr) // && at == 0)
             pAtomicOut = pOut;
         else
         {
