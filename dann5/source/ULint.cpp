@@ -278,6 +278,16 @@ ULint& ULint::operator%=(const ULint& right)
     return(*this);
 }
 
+ULint ULint::pow(size_t exponent) const
+{
+    ULint powered(1);
+    for (size_t exp = 1; exp < exponent; exp++)
+    {
+        powered *= (*this);
+    }
+    return powered;
+}
+
 ULint ULint::operator>> (size_t noBits) const
 {
     ULint result(*this);
@@ -386,7 +396,7 @@ bool ULint::Iterator::operator==(const ULint::Iterator& right) const
 bool ULint::Iterator::operator*() const
 {
     Byte& byte = mULint[mAtByte];
-    Byte mask = Byte(pow(2, mAtBit));
+    Byte mask = Byte(std::pow(2, mAtBit));
     return ((byte & mask) == mask);
 }
 
@@ -400,7 +410,7 @@ size_t ULint::Iterator::operator-(const Iterator& right) const
 ULint::Iterator& ULint::Iterator::operator^=(bool value)
 {
     Byte& byte = mULint[mAtByte];
-    Byte mask = Byte(pow(2, mAtBit));
+    Byte mask = Byte(std::pow(2, mAtBit));
     if (value)
         if ((byte & mask) == mask)
             byte &= ~mask;

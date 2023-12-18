@@ -114,6 +114,9 @@ namespace dann5
         // First calculates mode of the current value of the variable on left by the value on the right and then assign the result to the variable on the left
         ULint& operator%=(const ULint & right);
 
+        // Returns a ULint object as a power of 'this' object's value raised to the provided exponent
+        ULint pow(size_t exponent) const;
+
         /*** Bitwise operattors ***/
         // Shifts the value to right by the number of bits specified by the right operand
         ULint operator>> (size_t noBits) const;

@@ -14,17 +14,17 @@ from PrimeNumberGenerator import PNGen, PNGen6
 import time
 
 def rsa(primeP, primeQ, message):
-    publikkeyN = primeP * primeQ
+    publicKeyN = primeP * primeQ
     baseFI = (primeP-1) * (primeQ-1)
-    publickKeyE = 2
-    for publickKeyE in range(2, baseFI):
-        if baseFI % publickKeyE != 0:
+    publicKeyE = 2
+    for publicKeyE in range(2, baseFI):
+        if baseFI % publicKeyE != 0:
             break
-    publickKeyE = 7
-    secretD = int((baseFI + 1) / publickKeyE)
-    encrypt = (message ** publickKeyE) % publikkeyN
-    decrypt = (encrypt ** secretD) % publikkeyN
-    print("N: {}, base-D: {}, e: {}, d: {}, encrypt: {}, decrypt: {}".format(publikkeyN, baseFI, publickKeyE, secretD, encrypt, decrypt))
+    #publicKeyE = 7
+    secretD = int((baseFI + 1) / publicKeyE)
+    encrypt = (message ** publicKeyE) % publicKeyN
+    decrypt = (encrypt ** secretD) % publicKeyN
+    print("N: {}, base-D: {}, e: {}, d: {}, encrypt: {}, decrypt: {}".format(publicKeyN, baseFI, publicKeyE, secretD, encrypt, decrypt))
     
     
     
@@ -43,7 +43,7 @@ def main():
     #qbsNo = x.noqbs()    # ERROR
     
     start = time.process_time()
-    png = PNGen(16, 4, debug = False)
+    png = PNGen(18, 20, debug = False)
     png.generate()
     finish = time.process_time()
     print("PN candidate generation takes", finish - start, "seconds")
