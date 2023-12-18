@@ -8,14 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		A2044A592B10002700D7FDB0 /* QlogicCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2044A572B10002700D7FDB0 /* QlogicCompiler.cpp */; };
-		A204977529494F1700F96DA4 /* UTestQbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A204977429494F1700F96DA4 /* UTestQbit.cpp */; };
 		A218D4AC29DFA6BA0028F469 /* ULint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A218D4AB29DFA6BA0028F469 /* ULint.cpp */; };
 		A220A7C42B1A62A800F9F545 /* Qfunc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A220A7C22B1A62A700F9F545 /* Qfunc.cpp */; };
-		A24FBD8C28C6D72F00E83138 /* d5o_ta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A24FBD8B28C6D72F00E83138 /* d5o_ta.cpp */; };
+		A246F5602B2FE673005922D5 /* d5o_ta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A246F5542B2FE672005922D5 /* d5o_ta.cpp */; };
+		A246F5612B2FE673005922D5 /* UTestQwhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A246F5562B2FE673005922D5 /* UTestQwhole.cpp */; };
+		A246F5622B2FE673005922D5 /* UTestQbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A246F5572B2FE673005922D5 /* UTestQbit.cpp */; };
+		A246F5632B2FE673005922D5 /* UTestULint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A246F5582B2FE673005922D5 /* UTestULint.cpp */; };
+		A246F5642B2FE673005922D5 /* PNGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A246F55A2B2FE673005922D5 /* PNGen.cpp */; };
+		A246F5652B2FE673005922D5 /* UTestQbool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A246F55C2B2FE673005922D5 /* UTestQbool.cpp */; };
+		A246F5662B2FE673005922D5 /* UTestQbin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A246F55E2B2FE673005922D5 /* UTestQbin.cpp */; };
 		A260C09F2B0D220900B46F43 /* QnaryOps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A260C09E2B0D220900B46F43 /* QnaryOps.cpp */; };
-		A282C3002AC7718A00AA4B98 /* UTestULint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A282C2FE2AC7718A00AA4B98 /* UTestULint.cpp */; };
-		A282C3052AC7742700AA4B98 /* PNGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A282C3012AC7742600AA4B98 /* PNGen.cpp */; };
-		A282C3062AC7742700AA4B98 /* UTestQwhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A282C3022AC7742600AA4B98 /* UTestQwhole.cpp */; };
 		A2A39AB12B0425DB00BAFFEF /* QuboCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A39AAE2B0425DB00BAFFEF /* QuboCompiler.cpp */; };
 		A2A39AB22B0425DB00BAFFEF /* QTfactories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A39AB02B0425DB00BAFFEF /* QTfactories.cpp */; };
 		A2A39ADF2B04266500BAFFEF /* Qcell.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A39AB42B04266300BAFFEF /* Qcell.cpp */; };
@@ -44,8 +46,6 @@
 		A2A5355428C6C627002C4145 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5355028C6C627002C4145 /* Logger.cpp */; };
 		A2A5357E28C6C686002C4145 /* D5QuboSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5355628C6C685002C4145 /* D5QuboSolver.cpp */; };
 		A2A5358328C6C686002C4145 /* Qubo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2A5356028C6C685002C4145 /* Qubo.cpp */; };
-		A2F3631D29567D9300BAB767 /* UTestQbool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2F3631B29567D9300BAB767 /* UTestQbool.cpp */; };
-		A2F363202957957800BAB767 /* UTestQbin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2F3631E2957957800BAB767 /* UTestQbin.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,21 +63,25 @@
 /* Begin PBXFileReference section */
 		A2044A572B10002700D7FDB0 /* QlogicCompiler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QlogicCompiler.cpp; path = ../../dann5/source/QlogicCompiler.cpp; sourceTree = "<group>"; };
 		A2044A5A2B10014400D7FDB0 /* QlogicCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QlogicCompiler.h; path = ../../dann5/include/QlogicCompiler.h; sourceTree = "<group>"; };
-		A204977329494BE700F96DA4 /* UTestQbit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UTestQbit.h; path = ../../UTestQbit.h; sourceTree = "<group>"; };
-		A204977429494F1700F96DA4 /* UTestQbit.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbit.cpp; path = ../../UTestQbit.cpp; sourceTree = "<group>"; };
 		A20507D82AFF060F00165038 /* Qsolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qsolver.h; path = ../../dann5/include/Qsolver.h; sourceTree = "<group>"; };
 		A218D4AB29DFA6BA0028F469 /* ULint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ULint.cpp; path = ../../dann5/source/ULint.cpp; sourceTree = "<group>"; };
 		A218D4AD29DFA6F30028F469 /* ULint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ULint.h; path = ../../dann5/include/ULint.h; sourceTree = "<group>"; };
 		A220A7C22B1A62A700F9F545 /* Qfunc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Qfunc.cpp; path = ../../dann5/source/Qfunc.cpp; sourceTree = "<group>"; };
 		A220A7C62B1A633B00F9F545 /* Qfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qfunc.h; path = ../../dann5/include/Qfunc.h; sourceTree = "<group>"; };
-		A24FBD8B28C6D72F00E83138 /* d5o_ta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = d5o_ta.cpp; path = ../../d5o_ta.cpp; sourceTree = "<group>"; };
+		A246F5532B2FE672005922D5 /* UTestQbool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UTestQbool.hpp; path = ../UTestQbool.hpp; sourceTree = "<group>"; };
+		A246F5542B2FE672005922D5 /* d5o_ta.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = d5o_ta.cpp; path = ../d5o_ta.cpp; sourceTree = "<group>"; };
+		A246F5552B2FE673005922D5 /* UTestQwhole.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UTestQwhole.hpp; path = ../UTestQwhole.hpp; sourceTree = "<group>"; };
+		A246F5562B2FE673005922D5 /* UTestQwhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQwhole.cpp; path = ../UTestQwhole.cpp; sourceTree = "<group>"; };
+		A246F5572B2FE673005922D5 /* UTestQbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbit.cpp; path = ../UTestQbit.cpp; sourceTree = "<group>"; };
+		A246F5582B2FE673005922D5 /* UTestULint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestULint.cpp; path = ../UTestULint.cpp; sourceTree = "<group>"; };
+		A246F5592B2FE673005922D5 /* UTestQbin.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UTestQbin.hpp; path = ../UTestQbin.hpp; sourceTree = "<group>"; };
+		A246F55A2B2FE673005922D5 /* PNGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PNGen.cpp; path = ../PNGen.cpp; sourceTree = "<group>"; };
+		A246F55B2B2FE673005922D5 /* UTestULint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UTestULint.hpp; path = ../UTestULint.hpp; sourceTree = "<group>"; };
+		A246F55C2B2FE673005922D5 /* UTestQbool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbool.cpp; path = ../UTestQbool.cpp; sourceTree = "<group>"; };
+		A246F55D2B2FE673005922D5 /* UTestQbit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTestQbit.h; path = ../UTestQbit.h; sourceTree = "<group>"; };
+		A246F55E2B2FE673005922D5 /* UTestQbin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbin.cpp; path = ../UTestQbin.cpp; sourceTree = "<group>"; };
+		A246F55F2B2FE673005922D5 /* PNGen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PNGen.h; path = ../PNGen.h; sourceTree = "<group>"; };
 		A260C09E2B0D220900B46F43 /* QnaryOps.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = QnaryOps.cpp; path = ../../dann5/source/QnaryOps.cpp; sourceTree = "<group>"; };
-		A282C2FE2AC7718A00AA4B98 /* UTestULint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UTestULint.cpp; path = ../../UTestULint.cpp; sourceTree = "<group>"; };
-		A282C2FF2AC7718A00AA4B98 /* UTestULint.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = UTestULint.hpp; path = ../../UTestULint.hpp; sourceTree = "<group>"; };
-		A282C3012AC7742600AA4B98 /* PNGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PNGen.cpp; path = ../../PNGen.cpp; sourceTree = "<group>"; };
-		A282C3022AC7742600AA4B98 /* UTestQwhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQwhole.cpp; path = ../../UTestQwhole.cpp; sourceTree = "<group>"; };
-		A282C3032AC7742600AA4B98 /* UTestQwhole.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UTestQwhole.hpp; path = ../../UTestQwhole.hpp; sourceTree = "<group>"; };
-		A282C3042AC7742600AA4B98 /* PNGen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PNGen.h; path = ../../PNGen.h; sourceTree = "<group>"; };
 		A2A39AAE2B0425DB00BAFFEF /* QuboCompiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuboCompiler.cpp; path = ../../dann5/ocean/source/QuboCompiler.cpp; sourceTree = "<group>"; };
 		A2A39AAF2B0425DB00BAFFEF /* QuboCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuboCompiler.h; path = ../../dann5/ocean/include/QuboCompiler.h; sourceTree = "<group>"; };
 		A2A39AB02B0425DB00BAFFEF /* QTfactories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QTfactories.cpp; path = ../../dann5/ocean/source/QTfactories.cpp; sourceTree = "<group>"; };
@@ -140,10 +144,6 @@
 		A2A5356028C6C685002C4145 /* Qubo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qubo.cpp; path = ../../dann5/ocean/source/Qubo.cpp; sourceTree = "<group>"; };
 		A2A5356828C6C685002C4145 /* D5QuboSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = D5QuboSolver.h; path = ../../dann5/ocean/include/D5QuboSolver.h; sourceTree = "<group>"; };
 		A2A5357828C6C686002C4145 /* Qubo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qubo.h; path = ../../dann5/ocean/include/Qubo.h; sourceTree = "<group>"; };
-		A2F3631B29567D9300BAB767 /* UTestQbool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbool.cpp; path = ../../UTestQbool.cpp; sourceTree = "<group>"; };
-		A2F3631C29567D9300BAB767 /* UTestQbool.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = UTestQbool.hpp; path = ../../UTestQbool.hpp; sourceTree = "<group>"; };
-		A2F3631E2957957800BAB767 /* UTestQbin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbin.cpp; path = ../../UTestQbin.cpp; sourceTree = "<group>"; };
-		A2F3631F2957957800BAB767 /* UTestQbin.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = UTestQbin.hpp; path = ../../UTestQbin.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,12 +157,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A246F5522B2FE618005922D5 /* d5o_ta_Xc */ = {
+			isa = PBXGroup;
+			children = (
+				A246F5542B2FE672005922D5 /* d5o_ta.cpp */,
+				A246F55A2B2FE673005922D5 /* PNGen.cpp */,
+				A246F55F2B2FE673005922D5 /* PNGen.h */,
+				A246F55E2B2FE673005922D5 /* UTestQbin.cpp */,
+				A246F5592B2FE673005922D5 /* UTestQbin.hpp */,
+				A246F5572B2FE673005922D5 /* UTestQbit.cpp */,
+				A246F55D2B2FE673005922D5 /* UTestQbit.h */,
+				A246F55C2B2FE673005922D5 /* UTestQbool.cpp */,
+				A246F5532B2FE672005922D5 /* UTestQbool.hpp */,
+				A246F5562B2FE673005922D5 /* UTestQwhole.cpp */,
+				A246F5552B2FE673005922D5 /* UTestQwhole.hpp */,
+				A246F5582B2FE673005922D5 /* UTestULint.cpp */,
+				A246F55B2B2FE673005922D5 /* UTestULint.hpp */,
+			);
+			name = d5o_ta_Xc;
+			sourceTree = "<group>";
+		};
 		A2A5353B28C6C5E8002C4145 = {
 			isa = PBXGroup;
 			children = (
 				A2A5354E28C6C5F3002C4145 /* dann5.ocean */,
 				A2A5354F28C6C5FE002C4145 /* dann5 */,
-				A2A5354628C6C5E8002C4145 /* d5o_ta_Xc */,
+				A246F5522B2FE618005922D5 /* d5o_ta_Xc */,
 				A2A5354528C6C5E8002C4145 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -173,26 +193,6 @@
 				A2A5354428C6C5E8002C4145 /* d5o_ta_Xc */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A2A5354628C6C5E8002C4145 /* d5o_ta_Xc */ = {
-			isa = PBXGroup;
-			children = (
-				A24FBD8B28C6D72F00E83138 /* d5o_ta.cpp */,
-				A282C3012AC7742600AA4B98 /* PNGen.cpp */,
-				A282C3042AC7742600AA4B98 /* PNGen.h */,
-				A204977429494F1700F96DA4 /* UTestQbit.cpp */,
-				A204977329494BE700F96DA4 /* UTestQbit.h */,
-				A2F3631E2957957800BAB767 /* UTestQbin.cpp */,
-				A2F3631F2957957800BAB767 /* UTestQbin.hpp */,
-				A2F3631B29567D9300BAB767 /* UTestQbool.cpp */,
-				A2F3631C29567D9300BAB767 /* UTestQbool.hpp */,
-				A282C3022AC7742600AA4B98 /* UTestQwhole.cpp */,
-				A282C3032AC7742600AA4B98 /* UTestQwhole.hpp */,
-				A282C2FE2AC7718A00AA4B98 /* UTestULint.cpp */,
-				A282C2FF2AC7718A00AA4B98 /* UTestULint.hpp */,
-			);
-			path = d5o_ta_Xc;
 			sourceTree = "<group>";
 		};
 		A2A5354E28C6C5F3002C4145 /* dann5.ocean */ = {
@@ -342,18 +342,19 @@
 				A2A39AB12B0425DB00BAFFEF /* QuboCompiler.cpp in Sources */,
 				A2A39AE32B04266500BAFFEF /* Qop.cpp in Sources */,
 				A2A39AE62B04266500BAFFEF /* Qroutine.cpp in Sources */,
-				A2F3631D29567D9300BAB767 /* UTestQbool.cpp in Sources */,
 				A2A39AEE2B04266500BAFFEF /* QcellOps.cpp in Sources */,
 				A2A39AE12B04266500BAFFEF /* Qbool.cpp in Sources */,
 				A260C09F2B0D220900B46F43 /* QnaryOps.cpp in Sources */,
+				A246F5662B2FE673005922D5 /* UTestQbin.cpp in Sources */,
 				A2A39AFD2B0555F800BAFFEF /* QuboAnalyzer.cpp in Sources */,
 				A2A39AE72B04266500BAFFEF /* Qstatement.cpp in Sources */,
+				A246F5602B2FE673005922D5 /* d5o_ta.cpp in Sources */,
 				A2A39AE02B04266500BAFFEF /* Qbin.cpp in Sources */,
-				A24FBD8C28C6D72F00E83138 /* d5o_ta.cpp in Sources */,
 				A2A39AF22B04266500BAFFEF /* Qint.cpp in Sources */,
-				A282C3062AC7742700AA4B98 /* UTestQwhole.cpp in Sources */,
+				A246F5612B2FE673005922D5 /* UTestQwhole.cpp in Sources */,
+				A246F5632B2FE673005922D5 /* UTestULint.cpp in Sources */,
+				A246F5622B2FE673005922D5 /* UTestQbit.cpp in Sources */,
 				A2A39AF32B04266500BAFFEF /* QnaryOp.cpp in Sources */,
-				A2F363202957957800BAB767 /* UTestQbin.cpp in Sources */,
 				A2044A592B10002700D7FDB0 /* QlogicCompiler.cpp in Sources */,
 				A2A39AF12B04266500BAFFEF /* Qadd.cpp in Sources */,
 				A2A39AEB2B04266500BAFFEF /* QderivedOps.cpp in Sources */,
@@ -365,15 +366,14 @@
 				A2A39AE22B04266500BAFFEF /* Qbit.cpp in Sources */,
 				A220A7C42B1A62A800F9F545 /* Qfunc.cpp in Sources */,
 				A218D4AC29DFA6BA0028F469 /* ULint.cpp in Sources */,
-				A282C3002AC7718A00AA4B98 /* UTestULint.cpp in Sources */,
 				A2A5357E28C6C686002C4145 /* D5QuboSolver.cpp in Sources */,
 				A2A39ADF2B04266500BAFFEF /* Qcell.cpp in Sources */,
-				A204977529494F1700F96DA4 /* UTestQbit.cpp in Sources */,
+				A246F5642B2FE673005922D5 /* PNGen.cpp in Sources */,
 				A2A39AEC2B04266500BAFFEF /* Qglbls_fctrs.cpp in Sources */,
-				A282C3052AC7742700AA4B98 /* PNGen.cpp in Sources */,
 				A2A5355428C6C627002C4145 /* Logger.cpp in Sources */,
 				A2A39AE42B04266500BAFFEF /* Qassign.cpp in Sources */,
 				A2A39AB22B0425DB00BAFFEF /* QTfactories.cpp in Sources */,
+				A246F5652B2FE673005922D5 /* UTestQbool.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
