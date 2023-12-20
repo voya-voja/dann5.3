@@ -97,7 +97,10 @@ void QnaryNeq::refresh()
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_1 = qbXpr;
+        Qfunction* pThis = static_cast<Qfunction*>(this);
+        static_cast<Qfunction&>(*this) = 
+            out = aux + in, 
+            Qbit::_1 = qbXpr;
     }
     else if(pOutOp == nullptr)
     {
@@ -288,64 +291,4 @@ void QnaryGe::refresh()
         Qbit& outOpOut = *dynamic_pointer_cast<Qbit>(pOutCellOp->Qop::output());
         static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_0 == outOpOut;
     }
-}
-
-void Qminus::refresh()
-{
-    Qfunction::refresh();
-    //Qexpr<Qwhole> xy_x(y - x);
-    Qnaries ins(Qop::inputs());
-    Qdef::Sp pOut = Qop::output();
-/*    size_t iSize = ins.size();
-    if (iSize != 2) return;
-    // ... is same as ins[0] = out + ins[1]
-    size_t outSize = ins[1]->noqbs();
-    if (pOut->noqbs() == 0)
-    {
-        Qnary::Sp pNaryOut = static_pointer_cast<Qnary>(pOut);
-        pNaryOut->resize(outSize);
-    }
-    QnaryOp::Sp mpSubstituteOp = dynamic_pointer_cast<QnaryOp>(Qadd().clone());
-    Qwhole subOut(mpSubstituteOp->createOutId());
-    mpSubstituteOp->operands(subOut.clone(), {pOut, ins[1]});
-//    mEq.operands(ins[0], {mpSubstituteOp});
-//    resize(mEq.noqbs());
- */
-    QnaryOp::Sp pLeftOp = dynamic_pointer_cast<QnaryOp>(ins[0]),
-                pRightOp = dynamic_pointer_cast<QnaryOp>(ins[1]);
-    if(pLeftOp == nullptr && pRightOp == nullptr)
-    {
-        Qwhole& left = *dynamic_pointer_cast<Qwhole>(ins[0]);
-        Qwhole& right = *dynamic_pointer_cast<Qwhole>(ins[1]);
-        Qwhole& out = *dynamic_pointer_cast<Qwhole>(pOut);
-        Qwhole aux(left.noqbs(), Qadd().createOutId());
-        static_cast<Qfunction&>(*this) = left == aux, aux = out + right;
-    }
-    else if(pLeftOp != nullptr && pRightOp != nullptr)
-    {
-        Qexpr<Qwhole> left(pLeftOp);
-        Qexpr<Qwhole> right(pRightOp);
-        Qwhole& out = *dynamic_pointer_cast<Qwhole>(pOut);
-        Qwhole aux(left.noqbs(), Qadd().createOutId());
-        static_cast<Qfunction&>(*this) = left == aux, aux = out + right;
-    }
-    else if(pLeftOp != nullptr && pRightOp == nullptr)
-    {
-        Qexpr<Qwhole> left(pLeftOp);
-        Qwhole& right = *dynamic_pointer_cast<Qwhole>(ins[1]);
-        Qwhole& out = *dynamic_pointer_cast<Qwhole>(pOut);
-        Qwhole aux(left.noqbs(), Qadd().createOutId());
-        static_cast<Qfunction&>(*this) = left == aux, aux = out + right;
-    }
-    else if(pLeftOp == nullptr && pRightOp != nullptr)
-    {
-        Qwhole& left = *dynamic_pointer_cast<Qwhole>(ins[0]);
-        Qexpr<Qwhole> right(pRightOp);
-        Qwhole& out = *dynamic_pointer_cast<Qwhole>(pOut);
-        Qwhole aux(left.noqbs(), Qadd().createOutId());
-        static_cast<Qfunction&>(*this) = left == aux, aux = out + right;
-    }
-    else
-        throw logic_error(string("ERROR @Qminus::refresh(): Input arguments are")
-                                + " not Qwhole or QnaryOp");
 }

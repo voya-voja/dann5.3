@@ -8,7 +8,7 @@ using namespace dann5;
 
 const Qint Qint::_0("_0", 0);
 const Qint Qint::_1("_1", 1);
-const Qint Qint::_1_("_1_", -1);
+const Qint Qint::_1_("_1_", -1, true);
 
 Qint::Qint(const string& id, const Bits& value, bool asis)
 	: Qbin(id, value, asis)
@@ -161,7 +161,7 @@ Qassign<Qint > Qint ::operator/=(const Qexpr<Qint >& right) const
 
 Qexpr<Qint> Qint::operator==(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qeq::cMark);
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryEq::cMark());
     pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
@@ -170,7 +170,7 @@ Qexpr<Qint> Qint::operator==(const Qint& right) const
 
 Qexpr<Qint> Qint::operator!=(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qneq::cMark);
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryNeq::cMark());
     pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
@@ -179,7 +179,7 @@ Qexpr<Qint> Qint::operator!=(const Qint& right) const
 
 Qexpr<Qint> Qint::operator>(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qgt::cMark);
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryGt::cMark());
     pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
@@ -188,7 +188,7 @@ Qexpr<Qint> Qint::operator>(const Qint& right) const
 
 Qexpr<Qint> Qint::operator>=(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qge::cMark);
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryGe::cMark());
     pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
@@ -197,7 +197,7 @@ Qexpr<Qint> Qint::operator>=(const Qint& right) const
 
 Qexpr<Qint> Qint::operator<(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qlt::cMark);
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryLt::cMark());
     pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);
@@ -206,7 +206,7 @@ Qexpr<Qint> Qint::operator<(const Qint& right) const
 
 Qexpr<Qint> Qint::operator<=(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qle::cMark);
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryLe::cMark());
     pOp->operands(clone(), {right.clone()});
 
 	Qexpr<Qint> expr(pOp);

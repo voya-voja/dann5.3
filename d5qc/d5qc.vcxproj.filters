@@ -1,70 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+      <UniqueIdentifier>{deaf9883-23e0-491c-9470-97562b5a9885}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{b323e222-9167-4eb7-8ea5-5982e359415f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\dann5">
-      <UniqueIdentifier>{29f60ab3-f2e4-4c63-aa92-8854bf95c749}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\dann5\ocean">
-      <UniqueIdentifier>{1643ceb7-cab4-471c-b9ff-e7f199e0cae6}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tga;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\dann5">
-      <UniqueIdentifier>{b542f3dd-8b1f-4ca8-ba57-0aa9e6248f7d}</UniqueIdentifier>
+      <UniqueIdentifier>{6277854b-4f1a-402d-9078-435bc9f195c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\dann5\ocean">
-      <UniqueIdentifier>{ac365d08-4bc4-4913-9de0-7130778c42d8}</UniqueIdentifier>
+    <Filter Include="Source Files\dann5">
+      <UniqueIdentifier>{ec82295c-b4e1-4bf0-8555-cc454567d637}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="d5o_ta.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp">
       <Filter>Source Files\dann5</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\Qubo.cpp">
-      <Filter>Source Files\dann5\ocean</Filter>
-    </ClCompile>
-    <ClCompile Include="UTestQbit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UTestQbin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UTestQbool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UTestQwhole.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dann5\source\ULint.cpp">
-      <Filter>Source Files\dann5</Filter>
-    </ClCompile>
-    <ClCompile Include="PNGen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\D5QuboSolver.cpp">
-      <Filter>Source Files\dann5\ocean</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\QTfactories.cpp">
-      <Filter>Source Files\dann5\ocean</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\QuboAnalyzer.cpp">
-      <Filter>Source Files\dann5\ocean</Filter>
-    </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\QuboCompiler.cpp">
-      <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
     <ClCompile Include="..\dann5\source\Qadd.cpp">
       <Filter>Source Files\dann5</Filter>
@@ -141,6 +98,12 @@
     <ClCompile Include="..\dann5\source\Qwhole.cpp">
       <Filter>Source Files\dann5</Filter>
     </ClCompile>
+    <ClCompile Include="..\dann5\source\ULint.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h">
@@ -148,39 +111,6 @@
     </ClInclude>
     <ClInclude Include="..\dann5\include\Logger.h">
       <Filter>Header Files\dann5</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dann5\include\Utility.h">
-      <Filter>Header Files\dann5</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dann5\ocean\include\Qubo.h">
-      <Filter>Header Files\dann5\ocean</Filter>
-    </ClInclude>
-    <ClInclude Include="UTestQbit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UTestQbin.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UTestQbool.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UTestQwhole.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dann5\include\ULint.h">
-      <Filter>Header Files\dann5</Filter>
-    </ClInclude>
-    <ClInclude Include="PNGen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dann5\ocean\include\D5QuboSolver.h">
-      <Filter>Header Files\dann5\ocean</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dann5\ocean\include\QuboAnalyzer.h">
-      <Filter>Header Files\dann5\ocean</Filter>
-    </ClInclude>
-    <ClInclude Include="..\dann5\ocean\include\QuboCompiler.h">
-      <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
     <ClInclude Include="..\dann5\include\Qadd.h">
       <Filter>Header Files\dann5</Filter>
@@ -268,6 +198,18 @@
     </ClInclude>
     <ClInclude Include="..\dann5\include\Qwhole.h">
       <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\ULint.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Utility.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

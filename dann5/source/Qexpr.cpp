@@ -60,7 +60,9 @@ Qevaluations Qexpression::compute()
 void Qexpression::reset()
 {
 	mSolutions.clear();
-	root().reset();
+	Qop::Sp pRoot = as_const(*this).root();
+	if(pRoot != nullptr)
+		pRoot->reset();
 }
 
 std::ostream& dann5::operator << (std::ostream& out, const Qexpression& right)

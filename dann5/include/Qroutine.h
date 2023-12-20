@@ -32,7 +32,8 @@ namespace dann5 {
         Qroutine(const string& name, const Qbinder& arguments)
             :Qstatement(), mName(name), mArguments(arguments) {};
 
-        // creates a named Q routine with a given arguments in a quantum binder
+        // creates a named quantum routine with a given arguments in a quantum
+        // binder and a given logic as a quantum block
         Qroutine(const string& name, const Qbinder& arguments,
                                                             const Qblock& block)
             :Qstatement(), mName(name), mArguments(arguments), mLogic(block) {};

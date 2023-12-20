@@ -182,11 +182,10 @@ void Qfunction::Compiler::compile(const Qop& op)
     for(size_t at = 0; at < opNoQbs; at++)
     {
         QcellOp::Sp pOp = nullptr;
-        try{
-            const QnaryOp& naryOp = dynamic_cast<const QnaryOp&>(op);
-            pOp = static_pointer_cast<QcellOp>(naryOp[at]->clone());
-        }
-        catch(...)
+        const QnaryOp* pNaryOp = dynamic_cast<const QnaryOp*>(&op);
+        if(pNaryOp != nullptr)
+            pOp = static_pointer_cast<QcellOp>((*pNaryOp)[at]->clone());
+        else
         {
             const QcellOp& cellOp = static_cast<const QcellOp&>(op);
             pOp = static_pointer_cast<QcellOp>(cellOp.clone());

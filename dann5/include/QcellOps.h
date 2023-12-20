@@ -158,11 +158,11 @@ namespace dann5 {
         typedef shared_ptr<Qeq> Sp;
         
         // Quantum equal operator identifiers
-        static const string cMark;    // "=="
-        static const string cName;    // "equal"
+        static const string cMark() { return "=="; };
+        static const string cName() { return "equal"; };
 
         // Instantiate Qeq instance with '==' identity
-        Qeq() : Qoperator(cMark) {};
+        Qeq() : Qoperator(cMark()) {};
 
         // Copy constructor
         Qeq(const Qeq& right) : Qoperator(right){};
@@ -187,11 +187,11 @@ namespace dann5 {
         typedef shared_ptr<Qneq> Sp;
 
         // Quantum not equal operator identifiers
-        static const string cMark;    // "!="
-        static const string cName;    // "notequal"
+        static const string cMark() { return "!="; };
+        static const string cName() { return "notequal"; };
 
         // Instantiate Qneq instance with '!=' identity
-        Qneq() : Qoperator(cMark) {};
+        Qneq() : Qoperator(cMark()) {};
 
         // Copy constructor
         Qneq(const Qneq& right) : Qoperator(right) {};
@@ -216,11 +216,11 @@ namespace dann5 {
         typedef shared_ptr<Qinvert> Sp;
 
         // Quantum invert operator identifiers
-        static const string cMark;    // "~"
-        static const string cName;    // "invert"
+        static const string cMark() { return "~"; };
+        static const string cName() { return "invert"; };
 
         // Instantiate Qinvert instance with '~' identity
-        Qinvert() : Qoperator(cMark) {};
+        Qinvert() : Qoperator(cMark()) {};
 
         // Copy constructor
         Qinvert(const Qinvert& right) : Qoperator(right) {};
@@ -233,7 +233,7 @@ namespace dann5 {
         
         // Returns not-equal mark as this operation identifier
         virtual string identifier() const noexcept {
-            return Qneq::cMark;
+            return Qneq::cMark();
         };
 
     protected:
@@ -250,11 +250,11 @@ namespace dann5 {
         typedef shared_ptr<Qlt> Sp;
 
         // Quantum less than operator identifiers
-        static const string cMark;    // "<"
-        static const string cName;    // "lessthan"
+        static const string cMark() { return "<"; };
+        static const string cName() { return "lessthan"; };
         
         // Instantiate Qlt instance with '&' identity
-        Qlt() : Qoperator(cMark) {};
+        Qlt() : Qoperator(cMark()) {};
 
         // Copy constructor
         Qlt(const Qlt& right) : Qoperator(right) {};
@@ -279,11 +279,11 @@ namespace dann5 {
         typedef shared_ptr<Qle> Sp;
 
         // Quantum less than or equal operator identifiers
-        static const string cMark;    // "<="
-        static const string cName;    // "lessequal"
+        static const string cMark() { return "<="; };
+        static const string cName() { return "lessequal"; };
         
         // Instantiate Qle instance with '&' identity
-        Qle() : Qoperator(cMark) {};
+        Qle() : Qoperator(cMark()) {};
 
         // Copy constructor
         Qle(const Qle& right) : Qoperator(right) {};
@@ -308,11 +308,11 @@ namespace dann5 {
         typedef shared_ptr<Qgt> Sp;
 
         // Quantum greater than operator identifiers
-        static const string cMark;    // ">"
-        static const string cName;    // "greaterthan"
+        static const string cMark() { return ">"; };
+        static const string cName() { return "greaterthan"; };
         
         // Instantiate Qgt instance with '&' identity
-        Qgt() : Qoperator(cMark) {};
+        Qgt() : Qoperator(cMark()) {};
 
         // Copy constructor
         Qgt(const Qgt& right) : Qoperator(right) {};
@@ -337,11 +337,11 @@ namespace dann5 {
         typedef shared_ptr<Qge> Sp;
 
         // Quantum greater than or equal operator identifiers
-        static const string cMark;    // ">="
-        static const string cName;    // "greaterequal"
+        static const string cMark() { return ">="; };
+        static const string cName() { return "greaterequal"; };
         
         // Instantiate Qge instance with '&' identity
-        Qge() : Qoperator(cMark) {};
+        Qge() : Qoperator(cMark()) {};
 
         // Copy constructor
         Qge(const Qge& right) : Qoperator(right) {};
@@ -368,11 +368,11 @@ namespace dann5 {
         typedef shared_ptr<Qand> Sp;
 
         // Quantum and binary operation identifiers
-        static const string cMark;    // "&"
-        static const string cName;    // "and"
+        static const string cMark() { return "&"; };
+        static const string cName() { return "and"; };
         
         // Instantiate Qand instance with '&' identity
-        Qand() : QcellOp(cMark, 2) {};
+        Qand() : QcellOp(cMark(), 2) {};
 
         // Copy constructor
         Qand(const Qand& right) : QcellOp(right) {};
@@ -433,11 +433,11 @@ namespace dann5 {
         typedef shared_ptr<Qnand> Sp;
 
         // Quantum nand binary operation identifiers
-        static const string cMark;    // "~&"
-        static const string cName;    // "nand"
+        static const string cMark() { return "!&"; };
+        static const string cName() { return "nand"; };
         
         // Instantiate Qnand instance with '&' identity
-        Qnand() : Qcell2outOp(cMark, 2) {};
+        Qnand() : Qcell2outOp(cMark(), 2) {};
 
         // Copy constructor
         Qnand(const Qnand& right) : Qcell2outOp(right) {};
@@ -462,11 +462,11 @@ namespace dann5 {
         typedef shared_ptr<Qor> Sp;
 
         // Quantum or binary operation identifiers
-        static const string cMark;    // "|"
-        static const string cName;    // "or"
-        
+        static const string cMark() { return "|"; };
+        static const string cName() { return "or"; };
+
         // Instantiate Qor instance with '|' identity
-        Qor() : QcellOp(cMark, 2) {};
+        Qor() : QcellOp(cMark(), 2) {};
 
         // Copy constructor
         Qor(const Qor& right) : QcellOp(right) {};
@@ -491,11 +491,11 @@ namespace dann5 {
         typedef shared_ptr<Qnor> Sp;
 
         // Quantum nor binary operation identifiers
-        static const string cMark;    // "~|"
-        static const string cName;    // "nor"
-        
+        static const string cMark() { return "!|"; };
+        static const string cName() { return "nor"; };
+
         // Instantiate Qnor instance with '|' identity
-        Qnor() : Qcell2outOp(cMark, 2) {};
+        Qnor() : Qcell2outOp(cMark(), 2) {};
 
         // Copy constructor
         Qnor(const Qnor& right) : Qcell2outOp(right) {};
@@ -528,8 +528,8 @@ namespace dann5 {
             typedef shared_ptr<Carry> Sp;
 
             // Quantum carry operation identifiers
-            static const string cMark;    // "#"
-            static const string cName;    // "carry"
+            static const string cMark() { return "#"; };
+            static const string cName() { return "carry"; };
             
             // Return converted given string to Q carry definition, e.g. add-tag
             // 'a0 ^ b0' is converted to '#[a0 ^ b0]'
@@ -619,11 +619,11 @@ namespace dann5 {
         typedef shared_ptr<Qxor> Sp;
 
         // Quantum xOr binary addition identifiers
-        static const string cMark;    // "^"
-        static const string cName;    // "xor"
+        static const string cMark() { return "^"; };
+        static const string cName() { return "xor"; };
         
         // Default constructor
-        Qxor() : Qaddition(cMark, 2) {};
+        Qxor() : Qaddition(cMark(), 2) {};
 
         // Copy constructor
         Qxor(const Qxor& right) : Qaddition(right) {};
@@ -644,7 +644,7 @@ namespace dann5 {
     private:
     };
 
-    // A Quantum xOr is a binary Q addition
+    // A Quantum not-xOr is a binary Q addition
     class Qnxor : public Qaddition
     {
     public:
@@ -652,11 +652,11 @@ namespace dann5 {
         typedef shared_ptr<Qxor> Sp;
 
         // Quantum nXor binary addition identifiers
-        static const string cMark;    // "*="
-        static const string cName;    // "nxor"
+        static const string cMark() { return "!^"; };
+        static const string cName() { return "nxor"; };
         
         // Default constructor
-        Qnxor() : Qaddition(cMark, 2) {};
+        Qnxor() : Qaddition(cMark(), 2) {};
 
         // Copy constructor
         Qnxor(const Qnxor& right) : Qaddition(right) {};
@@ -682,11 +682,11 @@ namespace dann5 {
         typedef shared_ptr<QhalfAdder> Sp;
 
         // Quantum binary half-adder addition identifiers
-        static const string cMark;    // ""h+"
-        static const string cName;    // "halfadder"
+        static const string cMark() { return "h+"; };
+        static const string cName() { return "halfadder"; };
         
         // Default constructor
-        QhalfAdder() : Qxor(cMark) {};
+        QhalfAdder() : Qxor(cMark()) {};
 
         // Copy constructor
         QhalfAdder(const QhalfAdder& right) : Qxor(right) {};
@@ -712,14 +712,14 @@ namespace dann5 {
         typedef shared_ptr<Qadder> Sp;
 
         // Quantum trinary adder identifiers
-        static const string cMark;    // "+"
-        static const string cName;    // "adder"
+        static const string cMark() { return "+"; };
+        static const string cName() { return "adder"; };
         
         // Default constructor
-        Qadder() : Qaddition(cMark, 3) {};
+        Qadder() : Qaddition(cMark(), 3) {};
 
         // Default constructor
-        Qadder(const Qdef::Sp pOut, const Qaddition::Carry::Sp pCarry) : Qaddition(cMark, 3, pOut, pCarry) {};
+        Qadder(const Qdef::Sp pOut, const Qaddition::Carry::Sp pCarry) : Qaddition(cMark(), 3, pOut, pCarry) {};
 
         // Copy constructor
         Qadder(const Qadder& right) : Qaddition(right) {};
@@ -748,10 +748,10 @@ namespace dann5 {
         typedef shared_ptr<QxorAdder> Sp;
 
         // Default constructor for XOr
-        QxorAdder() : Qaddition(Qxor::cMark, 2) {};
+        QxorAdder() : Qaddition(Qxor::cMark(), 2) {};
 
         // Constructor for Adder regardless of asAdder value
-        QxorAdder(bool asAdder) : Qaddition(Qadder::cMark, 3) {};
+        QxorAdder(bool asAdder) : Qaddition(Qadder::cMark(), 3) {};
 
         // Copy constructor, Q xo-adder can have up to 3 inputs
         QxorAdder(const Qxor& right) : Qaddition(right) {};

@@ -17,7 +17,7 @@ namespace dann5 {
     class QderivedOp : public QnaryOp
     {
     public:
-        // QeqOp's shared pointer
+        // QderivedOp's shared pointer
         typedef shared_ptr<QderivedOp> Sp;
 
         // An Q derived operation has identity and substitution operation
@@ -27,11 +27,12 @@ namespace dann5 {
         // Copy constructor
         QderivedOp(const QderivedOp& right);
 
-        // Destruct the Q subtractition instance with a shared pointer to its carry operand
+        // Destruct the Q derived operation instance
         ~QderivedOp() {};
 
-        // Return a Q add representation when decomposed.
-        // Otherwise, return a string representation of a Q subbtract operation
+        // Return a quantum equal operand representation with substitute operation 
+        // as one of the oeprands when decomposed.
+        // Otherwise, return a string representation of a Q derived operation
         virtual string toString(bool decomposed = false,
             size_t forBit = cAllBits) const
         {
@@ -39,49 +40,55 @@ namespace dann5 {
             return QnaryOp::toString(decomposed, forBit);
         };
 
-        // Compiles this Qnary operation to generate quantum solver code
+        // Compiles this quantum derived operation to generate quantum solver
+        // code by compiling quantum equation with substitute operation as an
+        // argument
         virtual void compile(Qcompiler& compiler) const
         {
             return mEq.compile(compiler);
         };
 
+        // returns a reference to quantum equal operator
         const QnaryEq& equalOp() const { return mEq; };
         
-        QnaryOp::Sp substituteOp() const
-        {
+        // returns a sared pointer to substitute operation
+        QnaryOp::Sp substituteOp() const {
             return mpSubstituteOp;
         };
 
     protected:
-        // Refreshes QnaryOp cells with the subtractition logic when inputs are
-        // added
+        // Refreshes QnaryOp cells with the substitute operation logic when
+        //  inputs are added
         virtual void refreshOnInputs();
         
+        // Refreshes QnaryOp cells, equal operator and substitute operation 
+        // logic outputs are added
         virtual void refreshOnOutput();
 
     private:
-        QnaryEq mEq;	// QnaryEq operand is used to form derived expression
+        QnaryEq mEq;	// QnaryEq operator is used to form derived expression
         QnaryOp::Sp  mpSubstituteOp;// The substitute operation
     };
 
-    // A Q subtract is a specific implementation of a Q derived operation
+    // A quantum subtract is a specific implementation of a Q derived operation
     class Qsubtract : public QderivedOp
     {
     public:
         // Qsubtract's shared pointer
         typedef shared_ptr<Qsubtract> Sp;
 
-        static const string cMark;
-        static const string cName;
+        // Quantum subtract operation identifiers
+        static const string cMark() { return "-"; };
+        static const string cName() { return "sub"; };
 
         // An Q subtractition has identity cMark and uses Qadd as its
-        // substitute
+        // substitute operation
         Qsubtract();
 
         // Copy constructor
         Qsubtract(const Qsubtract& right) : QderivedOp(right) {};
 
-        // Destruct the Q subtractition instance with a shared pointer to its carry operand
+        // Destruct the Q subtractition instance
         ~Qsubtract() {};
 
         // Return a Qdef's shared pointer pointing to a copy of this object
@@ -91,24 +98,25 @@ namespace dann5 {
     };
 
 
-    // A Q divide is a specific implementation of a Q derived operation
+    // A quantum divide is a specific implementation of a Q derived operation
     class Qdivide : public QderivedOp
     {
     public:
-        // Qsubtract's shared pointer
+        // Qdivide's shared pointer
         typedef shared_ptr<Qdivide> Sp;
 
-        static const string cMark;
-        static const string cName;
+        // Quantum divide operation identifiers
+        static const string cMark() { return "/"; };
+        static const string cName() { return "div"; };
 
-        // An Q subtractition has identity cMark and uses Qadd as its
-        // substitute
+        // An Q divide has identity cMark and uses Qmultiply as its
+        // substitute operation
         Qdivide();
 
         // Copy constructor
         Qdivide(const Qdivide& right) : QderivedOp(right) {};
 
-        // Destruct the Q subtractition instance with a shared pointer to its carry operand
+        // Destruct the Q divide instance
         ~Qdivide() {};
 
         // Return a Qdef's shared pointer pointing to a copy of this object
@@ -116,22 +124,4 @@ namespace dann5 {
     protected:
     private:
     };
-
-    /*
-    class QsubtractQints : public Qsubtract
-    {
-    public:
-        // Qsubtract's shared pointer
-        typedef shared_ptr<QsubtractQints> Sp;
-
-        // An Q subtractition has identity and should have at least two argument
-        QsubtractQints();
-
-        // Copy constructor
-        QsubtractQints(const QsubtractQints& right);
-
-        // Destruct the Q subtractition instance with a shared pointer to its carry operand
-        ~QsubtractQints();
-    };
-*/
 };

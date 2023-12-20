@@ -20,8 +20,9 @@ namespace dann5 {
     class Qevaluation
     {
     public:
-        constexpr static const double cOoRenergy = MAXFLOAT;   // Out of Range Energy
-        
+        // constexpr static const double cOoRenergy = MAXFLOAT;   // Out of Range Energy - ERROR
+        constexpr static const double cOoRenergy = DBL_MAX;   // Out of Range Energy - in <float.h>
+
         // default constructor
         Qevaluation() : mEnergy(cOoRenergy) {};
         

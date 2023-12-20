@@ -174,7 +174,7 @@ Qassign<Qwhole> Qwhole::operator/=(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator==(const Qwhole& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark());
     pOp->operands(clone(), {right.clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
@@ -182,7 +182,7 @@ Qexpr<Qwhole> Qwhole::operator==(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark());
     pOp->operands(clone(), {right.rootDef()->clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
@@ -190,7 +190,7 @@ Qexpr<Qwhole> Qwhole::operator==(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryNeq::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryNeq::cMark());
     pOp->operands(clone(), {right.clone()});
     Qexpr<Qwhole> expr(pOp);
 	return expr;
@@ -198,7 +198,7 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(Qneq::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryNeq::cMark());
     pOp->operands(clone(), {right.rootDef()->clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
@@ -206,7 +206,7 @@ Qexpr<Qwhole> Qwhole::operator!=(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator<(const Qwhole& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark());
     pOp->operands(clone(), {right.clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
@@ -214,7 +214,7 @@ Qexpr<Qwhole> Qwhole::operator<(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator<(const Qexpr<Qwhole>& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark());
     pOp->operands(clone(), {right.rootDef()->clone()});
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
@@ -222,7 +222,7 @@ Qexpr<Qwhole> Qwhole::operator<(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator<=(const Qwhole& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLe::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLe::cMark());
     pOp->operands(clone(), {right.clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
@@ -230,7 +230,7 @@ Qexpr<Qwhole> Qwhole::operator<=(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator<=(const Qexpr<Qwhole>& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLe::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLe::cMark());
     pOp->operands(clone(), {right.rootDef()->clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
@@ -238,7 +238,7 @@ Qexpr<Qwhole> Qwhole::operator<=(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGt::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGt::cMark());
     pOp->operands(clone(), {right.clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
@@ -246,7 +246,7 @@ Qexpr<Qwhole> Qwhole::operator>(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator>(const Qexpr<Qwhole>& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGt::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGt::cMark());
     pOp->operands(clone(), {right.rootDef()->clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
@@ -254,7 +254,7 @@ Qexpr<Qwhole> Qwhole::operator>(const Qexpr<Qwhole>& right) const
 
 Qexpr<Qwhole> Qwhole::operator>=(const Qwhole& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGe::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGe::cMark());
     pOp->operands(clone(), {right.clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;
@@ -262,7 +262,7 @@ Qexpr<Qwhole> Qwhole::operator>=(const Qwhole& right) const
 
 Qexpr<Qwhole> Qwhole::operator>=(const Qexpr<Qwhole>& right) const
 {
-    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGe::cMark);
+    QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGe::cMark());
     pOp->operands(clone(), {right.rootDef()->clone()});
     Qexpr<Qwhole> expr(pOp);
     return expr;

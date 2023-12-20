@@ -9,23 +9,24 @@
 using namespace std;
 
 namespace dann5 {
-    // A Q multiplication is a specific implementation of a Q operation
+    // A quantum multiplication is a specific implementation of a Q operation
     class Qmultiply : public QnaryOp
     {
     public:
-        // Qadd's shared pointer
+        // Qmultiply's shared pointer
         typedef shared_ptr<Qmultiply> Sp;
 
-        static const string cMark;
-        static const string cName;
+        // Quantum multiply operation identifiers
+        static const string cMark() { return "*"; };
+        static const string cName() { return "mul"; };
 
-        // An Q addition has identity and should have at least two argument
-        Qmultiply() : QnaryOp(cMark, 2) {};
+        // An Q multiply has identity and should have at least two argument
+        Qmultiply() : QnaryOp(cMark(), 2) {};
 
         // Copy constructor
         Qmultiply(const Qmultiply& right) : QnaryOp(right) {};
 
-        // Destruct the Q addition instance with a shared pointer to its carry operand
+        // Destruct the Q multiply instance
         ~Qmultiply() {};
 
         // Return a Qdef's shared pointer pointing to a copy of this object

@@ -169,7 +169,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'and assign' logic, e.g. for an
         // assignee 'A' amd argument 'x' the assignment becomes 'A' = 'A' & 'x'
         Qassign<Q_Type>& operator&=(const Q_Type& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark);
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark());
             pOp->inputs({ assignee(), right.clone() });
             expression()->root(pOp);
             return(*this);
@@ -178,7 +178,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'and assign' logic, e.g. for an
         // argument [expr] and assignee 'A' becomes 'A' = 'A' & [expr]
         Qassign<Q_Type>& operator&=(const Qexpr<Q_Type>& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark);
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark());
             pOp->inputs({ assignee(), right.rootDef() });
             expression()->root(pOp);
             return(*this);
@@ -187,7 +187,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'or assign' logic, e.g. for an
         // assignee 'A' amd argument 'x' the assignment becomes 'A' = 'A' | 'x'
         Qassign<Q_Type>& operator|=(const Q_Type& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qor::cMark);
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qor::cMark());
             pOp->inputs({ assignee(), right.clone() });
             expression()->root(pOp);
             return(*this);
@@ -196,7 +196,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'or assign' logic, e.g. for an
         // argument [expr] and assignee 'A' becomes 'A' = 'A' | [expr]
         Qassign<Q_Type>& operator|=(const Qexpr<Q_Type>& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qor::cMark);
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qor::cMark());
             pOp->inputs({ assignee(), right.rootDef() });
             expression()->root(pOp);
             return(*this);
@@ -205,7 +205,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'xor assign' logic, e.g. for an
         // assignee 'A' amd argument 'x' the assignment becomes 'A' = 'A' ^ 'x'
         Qassign<Q_Type>& operator^=(const Q_Type& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qxor::cMark);
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qxor::cMark());
             pOp->inputs({ assignee(), right.clone() });
             expression()->root(pOp);
             return(*this);
@@ -214,7 +214,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'xor assign' logic, e.g. for an
         // argument [expr] and assignee 'A' becomes 'A' = 'A' ^ [expr]
         Qassign<Q_Type>& operator^=(const Qexpr<Q_Type>& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qxor::cMark);
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qxor::cMark());
             pOp->inputs({ assignee(), right.rootDef() });
             expression()->root(pOp);
             return(*this);
@@ -223,7 +223,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'add assign' logic, e.g. for an
         // assignee 'A' amd argument 'x' the assignment becomes 'A' = 'A' + 'x'
         Qassign<Q_Type>& operator+=(const Q_Type& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create("add");
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qadd::cMark());
             pOp->inputs({ Qassign<Q_Type>::assignee(), right.clone() });
             Qassign<Q_Type>::expression()->root(pOp);
             return(*this);
@@ -232,7 +232,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'add assign' logic, e.g. for an
         // argument [expr] and assignee 'A' becomes 'A' = 'A' + [expr]
         Qassign<Q_Type>& operator+=(const Qexpr<Q_Type>& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create("add");
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qadd::cMark());
             pOp->inputs({ Qassign<Q_Type>::assignee(), right.rootDef() });
             Qassign<Q_Type>::expression()->root(pOp);
             return(*this);
@@ -241,7 +241,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'multiply assign' logic, e.g.
         // for an assignee 'A' amd argument 'x' becomes 'A' = 'A' * 'x'
         Qassign<Q_Type>& operator*=(const Q_Type& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create("multiply");
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qmultiply::cMark());
             pOp->inputs({ Qassign<Q_Type>::assignee(), right.clone() });
             Qassign<Q_Type>::expression()->root(pOp);
             return(*this);
@@ -250,7 +250,7 @@ namespace dann5 {
         // Replace the Q assignment expression with 'multiply assign' logic, e.g.
         // for anargument [expr] and assignee 'A' becomes 'A' = 'A' * [expr]
         Qassign<Q_Type>& operator*=(const Qexpr<Q_Type>& right) {
-            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create("multiply");
+            QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qmultiply::cMark());
             pOp->inputs({ Qassign<Q_Type>::assignee(), right.rootDef() });
             Qassign<Q_Type>::expression()->root(pOp);
             return(*this);
