@@ -7,7 +7,7 @@ using namespace dann5;
 /*** Addition ***/
 
 Qadd::Qadd(size_t noLastCarryBit)
-	:QnaryOp(Qadd::cMark, 2), mNoLastCarryBit(noLastCarryBit)
+	:QnaryOp(Qadd::cMark(), 2), mNoLastCarryBit(noLastCarryBit)
 {}
 
 Qadd::Qadd(const Qadd& right)
@@ -58,7 +58,7 @@ Qcell::Sp Qadd::opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight,
 		}
 		else
 		{	// otherwise if both left and right cells are defined use adder circuit
-			pOp = Factory<string, QcellOp>::Instance().create(Qadder::cMark);
+			pOp = Factory<string, QcellOp>::Instance().create(Qadder::cMark());
 			pOp->inputs({ pLcell, pRcell, pCarry });
 		}
 	}

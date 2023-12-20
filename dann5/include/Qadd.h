@@ -17,8 +17,9 @@ namespace dann5 {
         // Qadd's shared pointer 
         typedef shared_ptr<Qadd> Sp;
 
-        static const string cMark;
-        static const string cName;
+        // Quantum add operation identifiers
+        static const string cMark() { return "+"; };
+        static const string cName() { return "add"; };
 
         // An Q addition has identity and should have at least two argument
         Qadd(size_t noLastCarryBit = 1);

@@ -31,10 +31,6 @@ namespace dann5
         // Destruct quantum nary-operator
         ~QnaryOperator() {};
 
-        // overrides output getter to return output operand when operation is an
-        // output
-    //    virtual Qdef::Sp output(size_t forBit = cAllBits) const;
-
         // Convert Quantum nary-operator expression into a string
         virtual string toString(bool decomposed = false,
                                 size_t forBit = cAllBits) const;
@@ -52,11 +48,11 @@ namespace dann5
         typedef shared_ptr<QnaryEq> Sp;
         
         // Quantum nary-equal operator identifiers
-        static const string cMark;    // "=="
-        static const string cName;    // "equal"
+        static const string cMark() { return Qeq::cMark(); };
+        static const string cName() { return Qeq::cName(); };
 
         // Instantiate quantum nary-equal instance with '==' identity
-        QnaryEq() : QnaryOperator(cMark) {};
+        QnaryEq() : QnaryOperator(cMark()) {};
 
         // Copy constructor
         QnaryEq(const QnaryEq& right) : QnaryOperator(right){};
@@ -80,11 +76,11 @@ namespace dann5
         typedef shared_ptr<QnaryNeq> Sp;
 
         // Quantum nary-not-equal operator identifiers
-        static const string cMark;    // "!="
-        static const string cName;    // "notequal"
+        static const string cMark() { return Qneq::cMark(); };
+        static const string cName() { return Qneq::cName(); };
 
         // Instantiate quantum nary-not-equal operator with '!=' identity
-        QnaryNeq() : Qfunction(cMark, 1) {};
+        QnaryNeq() : Qfunction(cMark(), 1) {};
 
         // Copy constructor
         QnaryNeq(const QnaryNeq& right) : Qfunction(right) {};
@@ -109,11 +105,11 @@ namespace dann5
         typedef shared_ptr<QnaryInvert> Sp;
 
         // Quantum nary-invert operator identifiers
-        static const string cMark;    // "~"
-        static const string cName;    // "invert"
+        static const string cMark() { return Qinvert::cMark(); };
+        static const string cName() { return Qinvert::cName(); };
 
         // Instantiate quantum nary-invert operator with '~' identity
-        QnaryInvert() : QnaryOperator(cMark) {};
+        QnaryInvert() : QnaryOperator(cMark()) {};
 
         // Copy constructor
         QnaryInvert(const QnaryInvert& right) : QnaryOperator(right) {};
@@ -126,7 +122,7 @@ namespace dann5
         
         // Returns not-equal mark as this operation identifier
         virtual string identifier() const noexcept {
-            return Qneq::cMark;
+            return QnaryNeq::cMark();
         };
 
     protected:
@@ -142,11 +138,11 @@ namespace dann5
         typedef shared_ptr<QnaryLt> Sp;
 
         // Quantum nary-not-equal operator identifiers
-        static const string cMark;    // "<"
-        static const string cName;    // "lessthan"
+        static const string cMark() { return Qlt::cMark(); };
+        static const string cName() { return Qlt::cName(); };
 
         // Instantiate quantum nary-not-equal operator with '<' identity
-        QnaryLt() : Qfunction(cMark, 1) {};
+        QnaryLt() : Qfunction(cMark(), 1) {};
 
         // Copy constructor
         QnaryLt(const QnaryLt& right) : Qfunction(right) {};
@@ -172,11 +168,11 @@ namespace dann5
         typedef shared_ptr<QnaryLe> Sp;
 
         // Quantum nary-not-equal operator identifiers
-        static const string cMark;    // "<="
-        static const string cName;    // "lessequal"
+        static const string cMark() { return Qle::cMark(); };
+        static const string cName() { return Qle::cName(); };
 
         // Instantiate quantum nary-not-equal operator with '<=' identity
-        QnaryLe() : Qfunction(cMark, 1) {};
+        QnaryLe() : Qfunction(cMark(), 1) {};
 
         // Copy constructor
         QnaryLe(const QnaryLe& right) : Qfunction(right) {};
@@ -203,11 +199,11 @@ namespace dann5
         typedef shared_ptr<QnaryGt> Sp;
 
         // Quantum nary-greater-than operator identifiers
-        static const string cMark;    // ">"
-        static const string cName;    // "greaterthan"
-        
+        static const string cMark() { return Qgt::cMark(); };
+        static const string cName() { return Qgt::cName(); };
+
         // Instantiate QnaryGt instance with '>' identity
-        QnaryGt() : Qfunction(cMark, 1) {};
+        QnaryGt() : Qfunction(cMark(), 1) {};
 
         // Copy constructor
         QnaryGt(const QnaryGt& right) : Qfunction(right) {};
@@ -233,11 +229,11 @@ namespace dann5
         typedef shared_ptr<QnaryGe> Sp;
 
         // Quantum nary-greater than or equal operator identifiers
-        static const string cMark;    // ">="
-        static const string cName;    // "greaterequal"
-        
+        static const string cMark() { return Qge::cMark(); };
+        static const string cName() { return Qge::cName(); };
+
         // Instantiate QnaryGe instance with '>=' identity
-        QnaryGe() : Qfunction(cMark, 1) {};
+        QnaryGe() : Qfunction(cMark(), 1) {};
 
         // Copy constructor
         QnaryGe(const QnaryGe& right) : Qfunction(right) {};
@@ -265,12 +261,12 @@ namespace dann5
         typedef shared_ptr<QnaryBiOp<Q_OP> > Sp;
         
         // Quantum equal operator identifiers
-        static const string cMark;    // Q_OP::cMark
-        static const string cName;    // Q_OP::cName
+        static const string cMark() { return Q_OP::cMark(); };
+        static const string cName() { return Q_OP::cName(); };
 
         // Construct Q-nary operation instance as instantionation of Q_OP
         // identity
-        QnaryBiOp() : QnaryOp(cMark, Q_OP().noInputs()) {};
+        QnaryBiOp() : QnaryOp(cMark(), Q_OP().noInputs()) {};
 
         // Copy constructor
         QnaryBiOp(const QnaryBiOp<Q_OP>& right) : QnaryOp(right){};
@@ -298,7 +294,7 @@ namespace dann5
             opCells.resize(size);
             for (size_t atBit = 0; atBit < size; atBit++)
             {
-                QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Q_OP::cMark);
+                QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Q_OP::cMark());
                 Qcell::Sp pLcell(as_const(*pLeft)[atBit]);
                 Qcell::Sp pRcell(as_const(*pRight)[atBit]);
                 pOp->inputs({pLcell, pRcell});
@@ -307,39 +303,6 @@ namespace dann5
         };
     private:
     };
-
-    // A Quantum subtract is a binary operation implemented as
-    // a quantum function
-    class Qminus : public Qfunction
-    {
-    public:
-        // QnaryGe's shared pointer
-        typedef shared_ptr<Qminus> Sp;
-
-        // Quantum nary-greater than or equal operator identifiers
-//        static const string cMark;    // "-"
-//        static const string cName;    // "minus"
-        
-        // Instantiate Qminus instance with '-' identity
-        Qminus() : Qfunction("-", 2) {};
-
-        // Copy constructor
-        Qminus(const Qminus& right) : Qfunction(right) {};
-
-        // Destruct Qminus with shared pointers to its Qdef
-        ~Qminus() {};
-
-        // Return a Qdef's shared pointer pointing to a copy of this object
-        virtual Qdef::Sp clone() const { return Qdef::Sp(new Qminus(*this)); };
-
-    protected:
-        // Refreshes the Q-nary operator cells according to greater-than or e
-        // qual logic
-        void refresh();
-    private:
-    };
-
-
 };
 
 #endif /* QnaryOps_h */

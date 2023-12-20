@@ -57,14 +57,14 @@ void QderivedOp::refreshOnOutput()
 /*** Substraction ***/
 
 Qsubtract::Qsubtract()
-	:QderivedOp(Qsubtract::cMark, Qadd() )
+	:QderivedOp(Qsubtract::cMark(), Qadd())
 {}
 
 
 /*** Division ***/
 
 Qdivide::Qdivide()
-	:QderivedOp(Qdivide::cMark, Qmultiply())
+	:QderivedOp(Qdivide::cMark(), Qmultiply())
 {}
 
 /*** Sutraction of Quantum integers

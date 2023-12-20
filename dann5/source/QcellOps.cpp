@@ -312,11 +312,11 @@ inline void Qaddition::initialize()
 /*** Carry Operation ***/
 string Qaddition::Carry::Carry::Symbol(const string& addTag)
 {
-    return(cMark + "[" + addTag + "]");
+    return(cMark() + "[" + addTag + "]");
 }
 
 Qaddition::Carry::Carry(Qaddition* pAddition)
-	: QcellOp(cMark, pAddition->noInputs()), mpAddition(pAddition)
+	: QcellOp(cMark(), pAddition->noInputs()), mpAddition(pAddition)
 {}
 
 Qaddition::Carry::Carry(const Carry& right)
@@ -435,7 +435,7 @@ QxorAdder::Sp QxorAdder::process(const Qdefs& ins)
             }
 			else
 			{
-				pAdder->id(Qadder::cMark);
+				pAdder->id(Qadder::cMark());
 				pAdder->noInputs(3);
 				pAdder->append(ins[at]);
 				pAdder->extended();

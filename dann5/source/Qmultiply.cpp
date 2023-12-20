@@ -24,7 +24,7 @@ QcellMatrix Qmultiply::x(const Qdefs& args) const
 	{
 		for (size_t atCol = 0; atCol < columns; atCol++)
 		{
-			QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark);
+			QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark());
 			Qbit out(pOp->createOutId());
             pOp->operands(out.clone(), {(*pLeft)[atRow].clone(), (*pRight)[atCol].clone()});
 			xMatrix(atRow, atCol) = pOp;
@@ -79,9 +79,9 @@ void Qmultiply::sumDiagonal(const QcellMatrix& matrix)
 			else
 			{	// create addition object according to # of addition-inputs
 				if (addIns.size() == 2)
-					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(Qxor::cMark));
+					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(Qxor::cMark()));
 				else
-					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(Qadder::cMark));
+					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(Qadder::cMark()));
 				pAddition->inputs(addIns);
 				Qbit out(pAddition->createOutId());
 				pAddition->output(out.clone());
