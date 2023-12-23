@@ -45,6 +45,12 @@ namespace dann5 {
             // returns the given QUBO instance
 			inline const Qubo& qubo() const { return mQubo; };
 
+			// set a new qubo
+			void qubo(const Qubo& q) { 
+				reset();
+				mQubo = q; 
+			};
+
             // returns suggested chain streinght for a given QUBO instance
 			inline double chainStrength()
 			{
@@ -53,11 +59,10 @@ namespace dann5 {
 				return mChainStrength;
 			};
             
+			// reset qubo, and nodes and branches analyses
             virtual void reset();
 
 		protected:
-            void qubo(const Qubo& q) { mQubo = q; };
-            
             // algorithm to calcualte the chain streingth
 			void calculateChainStrength();
 

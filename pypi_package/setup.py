@@ -27,7 +27,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='dann5',    # This is the name of your PyPI-package.
-    version='2.2.3',                          # Update the version number for new releases
+    version='3.0.0',             # Update the version number for new releases
     author="voya-voja",
     author_email="nebojsa@nand5.onmicrosoft.com",
     description="A Library of Quantum computing types for programming",
@@ -83,16 +83,12 @@ setup(
         "Bug Tracker": "https://github.com/voya-voja/d5o2/issues",
     },
     packages=['dann5'],
-#    packages=find_packages(include=['dann5', 'dann5.*']),
-#    package_dir={'dann5': 'dann5'},
     include_package_data=True,
     package_data={
-        'dann5': ['d5o2.cp310-win_amd64.pyd', 'd5o2.cpython-310-darwin.so', 'd5o2.so'],
-#        'dann5': ['d5o2.cpython-310-darwin.so'],
-#        'dann5': ['d5o2.so'],
+        'dann5': ['d5.cp310-win_amd64.pyd', 'd5o.cp310-win_amd64.pyd',
+                  'd5o2.cpython-310-darwin.so'
+                  'd5o2.so'],
     },
     install_requires=['pybind11'],
     python_requires=">=3.10",
-#    data_files=[('Lib/site-packages/dann5', ['x64/Release/d5o2.cp39-win_amd64.pyd'])],
-#    scripts=['dann5/d5o2.cp39-win_amd64.pyd']                  # The name of your scipt, and also the command you'll be using for calling it
 )

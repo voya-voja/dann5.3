@@ -19,10 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <VCProjectVersion>16.0</VCProjectVersion>
+    <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{55a349c7-538c-40dc-b910-d36330cc66c2}</ProjectGuid>
-    <RootNamespace>d5o</RootNamespace>
+    <ProjectGuid>{b6b85bca-53a7-474d-9d85-9d37c53a0660}</ProjectGuid>
+    <RootNamespace>d5</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,27 +70,16 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <TargetName>$(ProjectName)_d.cp39-win_amd64</TargetName>
-    <TargetExt>.pyd</TargetExt>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
     <TargetName>$(ProjectName).cp310-win_amd64</TargetName>
     <TargetExt>.pyd</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;D5O_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;D5_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -107,7 +96,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;D5O_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;D5_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -124,21 +113,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;D5O_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;D5_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;../../../../AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>../../../../AppData/Local/Programs/Python/Python310/libs/Python310_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateMapFile>false</GenerateMapFile>
-      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
-      <MapExports>true</MapExports>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -147,12 +130,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;D5O_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;D5_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;%userprofile%/AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;%userprofile%/AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>../dann5/include;../../eigen-master;%userprofile%/AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;%userprofile%/AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -165,44 +148,75 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h" />
+    <ClInclude Include="..\dann5\include\Logger.h" />
+    <ClInclude Include="..\dann5\include\Qadd.h" />
+    <ClInclude Include="..\dann5\include\Qassign.h" />
+    <ClInclude Include="..\dann5\include\Qbin.h" />
+    <ClInclude Include="..\dann5\include\Qbinder.h" />
+    <ClInclude Include="..\dann5\include\Qbit.h" />
+    <ClInclude Include="..\dann5\include\Qblock.h" />
+    <ClInclude Include="..\dann5\include\Qbool.h" />
     <ClInclude Include="..\dann5\include\Qcell.h" />
     <ClInclude Include="..\dann5\include\QcellOps.h" />
     <ClInclude Include="..\dann5\include\Qcompiler.h" />
     <ClInclude Include="..\dann5\include\Qdef.h" />
+    <ClInclude Include="..\dann5\include\QderivedOps.h" />
     <ClInclude Include="..\dann5\include\Qevaluation.h" />
+    <ClInclude Include="..\dann5\include\Qexpr.h" />
+    <ClInclude Include="..\dann5\include\Qfunc.h" />
+    <ClInclude Include="..\dann5\include\Qint.h" />
+    <ClInclude Include="..\dann5\include\QlogicCompiler.h" />
+    <ClInclude Include="..\dann5\include\Qmultiply.h" />
     <ClInclude Include="..\dann5\include\Qnary.h" />
     <ClInclude Include="..\dann5\include\QnaryOp.h" />
+    <ClInclude Include="..\dann5\include\QnaryOps.h" />
     <ClInclude Include="..\dann5\include\Qop.h" />
+    <ClInclude Include="..\dann5\include\Qroutine.h" />
     <ClInclude Include="..\dann5\include\Qsolver.h" />
     <ClInclude Include="..\dann5\include\Qstatement.h" />
+    <ClInclude Include="..\dann5\include\QtoString.hpp" />
     <ClInclude Include="..\dann5\include\Qtype.h" />
     <ClInclude Include="..\dann5\include\Qvalue.h" />
-    <ClInclude Include="..\dann5\ocean\include\D5QuboSolver.h" />
-    <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
-    <ClInclude Include="..\dann5\ocean\include\QuboAnalyzer.h" />
-    <ClInclude Include="..\dann5\ocean\include\QuboCompiler.h" />
+    <ClInclude Include="..\dann5\include\Qwhole.h" />
+    <ClInclude Include="..\dann5\include\ULint.h" />
+    <ClInclude Include="..\dann5\include\Utility.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\dann5\ocean\source\D5QuboSolver.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\QTfactories.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\QuboAnalyzer.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\QuboCompiler.cpp" />
+    <ClCompile Include="..\dann5\source\Logger.cpp" />
+    <ClCompile Include="..\dann5\source\Qadd.cpp" />
+    <ClCompile Include="..\dann5\source\Qassign.cpp" />
+    <ClCompile Include="..\dann5\source\Qbin.cpp" />
+    <ClCompile Include="..\dann5\source\Qbinder.cpp" />
+    <ClCompile Include="..\dann5\source\Qbit.cpp" />
+    <ClCompile Include="..\dann5\source\Qblock.cpp" />
+    <ClCompile Include="..\dann5\source\Qbool.cpp" />
     <ClCompile Include="..\dann5\source\Qcell.cpp" />
     <ClCompile Include="..\dann5\source\QcellOps.cpp" />
+    <ClCompile Include="..\dann5\source\QderivedOps.cpp" />
     <ClCompile Include="..\dann5\source\Qevaluation.cpp" />
+    <ClCompile Include="..\dann5\source\Qexpr.cpp" />
+    <ClCompile Include="..\dann5\source\Qfunc.cpp" />
+    <ClCompile Include="..\dann5\source\Qglbls_fctrs.cpp" />
+    <ClCompile Include="..\dann5\source\Qint.cpp" />
+    <ClCompile Include="..\dann5\source\QlogicCompiler.cpp" />
+    <ClCompile Include="..\dann5\source\Qmultiply.cpp" />
     <ClCompile Include="..\dann5\source\Qnary.cpp" />
     <ClCompile Include="..\dann5\source\QnaryOp.cpp" />
+    <ClCompile Include="..\dann5\source\QnaryOps.cpp" />
     <ClCompile Include="..\dann5\source\Qop.cpp" />
+    <ClCompile Include="..\dann5\source\Qroutine.cpp" />
     <ClCompile Include="..\dann5\source\Qstatement.cpp" />
+    <ClCompile Include="..\dann5\source\QtoString.cpp" />
+    <ClCompile Include="..\dann5\source\Qwhole.cpp" />
+    <ClCompile Include="..\dann5\source\ULint.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

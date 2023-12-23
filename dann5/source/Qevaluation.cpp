@@ -34,6 +34,14 @@ Qevaluation Qevaluation::operator+(const Qevaluation& right) const
     return(rslt);
 }
 
+string Qevaluation::toString() const
+{
+    string str("");
+    for (auto element : sample())
+        str += element.first + ": " + to_string(element.second) + "; ";
+    return(str);
+}
+
 Qevaluations dann5::operator+(const Qevaluations& left, const Qevaluations& right)
 {
     Qevaluations evaltns;

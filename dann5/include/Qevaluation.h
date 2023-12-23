@@ -57,6 +57,9 @@ namespace dann5 {
         double& energy() { return mEnergy; };
         double energy() const { return mEnergy; };
 
+        // returns string representation of quantum evaluation
+        string toString() const;
+
     protected:
     private:
         Qsample mSample;    // the evaluation sample

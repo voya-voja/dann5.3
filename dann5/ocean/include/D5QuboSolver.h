@@ -42,6 +42,9 @@ namespace dann5 {
             // returns minimal evaluated energy
             double minEnergy() { return mMinEnergy; };
             
+            // reset solutions and assessed minimum energy, 
+            // calls Qanalyzer::reset() to reset qubo, and nodes and branches
+            // analyses
             virtual void reset();
 
         protected:
