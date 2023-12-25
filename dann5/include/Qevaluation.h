@@ -66,7 +66,8 @@ namespace dann5 {
         double mEnergy;     // the assessed energy
     };
 
-    // A list of quantum evaluations by quantum solver for a compiled quantum statement
+    // A list of quantum evaluations, e.g. a quantum solver would return for
+    // a compiled quantum statement
     typedef vector<Qevaluation> Qevaluations;
 
     // merges two quantum evaluations vectors with same and/or different elements

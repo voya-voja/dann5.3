@@ -128,8 +128,8 @@ namespace dann5 {
     class Qassign : public Qassignment
     {
     public:
-        // Q definition shared pointer
-        typedef shared_ptr< Qexpr<Q_Type> > Sp;
+        // Q assignment for specific quantum type shared pointer
+        typedef shared_ptr< Qassign<Q_Type> > Sp;
 
         // default constructor creates an empty Q expression
         Qassign() : Qassignment() {};

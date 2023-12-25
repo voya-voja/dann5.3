@@ -178,6 +178,7 @@
     <ClInclude Include="..\dann5\include\Qtype.h" />
     <ClInclude Include="..\dann5\include\Qvalue.h" />
     <ClInclude Include="..\dann5\ocean\include\D5QuboSolver.h" />
+    <ClInclude Include="..\dann5\ocean\include\DwaveSolver.h" />
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\QuboAnalyzer.h" />
     <ClInclude Include="..\dann5\ocean\include\QuboCompiler.h" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dann5\ocean\source\D5QuboSolver.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\DwaveSolver.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QTfactories.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QuboAnalyzer.cpp" />

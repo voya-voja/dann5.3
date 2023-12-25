@@ -1,13 +1,19 @@
+//
+//  D5QuboSolver.h
+//  d5o
+//
+//  Created by Nebojsa Vojinovic on 2023-11-12.
+//
+
+#ifndef D5QuboSolver_h
+#define D5QuboSolver_h
 #pragma once
 
 #include <pybind11/pybind11.h>
 
-#include <iostream>
-
 #include <Qsolver.h>
 #include <Qubo.h>
 #include <QuboAnalyzer.h>
-using namespace std;
 
 namespace dann5 {
 	namespace ocean {
@@ -19,6 +25,9 @@ namespace dann5 {
             // a shared pointer to a specific dann5 qubo solver
             typedef shared_ptr<D5QuboSolver> Sp;
 
+            // Defual construtor with optinal flag to process just evaluations
+            // with the lowest energy. When lowest is 'false' the solver will
+            // process all the evaluation regardless of their evaluated energy
             D5QuboSolver(bool lowest = true);
             
             // Initialize quantum solver simulator with a qubo problem to be
@@ -35,16 +44,22 @@ namespace dann5 {
             // evaluations can be just those with lowes assessed energy, or
             // the full set of all evaluations.
             virtual Qevaluations solution(const Qstatement&);
-            
+
+            // Returns quantum evaluations for a given QUBO,
+            // Depending on the solver initialization, the returned quantum
+            // evaluations can be just those with lowes assessed energy, or
+            // the full set of all evaluations.
+            virtual Qevaluations solution(const Qubo&);
+
             // Returns quantum evaluations
             const Qevaluations& solution() const { return mSolution; };
 
             // returns minimal evaluated energy
-            double minEnergy() { return mMinEnergy; };
+            double minEnergy() const { return mMinEnergy; };
             
             // reset solutions and assessed minimum energy, 
             // calls Qanalyzer::reset() to reset qubo, and nodes and branches
-            // analyses
+            // of analyses
             virtual void reset();
 
         protected:
@@ -87,3 +102,5 @@ namespace dann5 {
 		};
 	};
 };
+
+#endif /* D5QuboSolver_h */

@@ -32,6 +32,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 #include <Qint.h>
 #include <Qwhole.h>
 
+#include <Qstatement.h>
 #include <Qexpr.h>
 #include <Qassign.h>
 #include <Qblock.h>
@@ -142,8 +143,18 @@ PYBIND11_MODULE(d5, m) {
 
 	py::class_<Qvalues>(m, "Qvalues", R"pbdoc(An array of Quantum values)pbdoc");
 
+	/*--- Qstatement.h definitions ---*/
+	py::class_<Qstatement, Qstatement::Sp>(m, "Qstatement",
+		R"pbdoc( Quantum statement is a coupling of a Q expression with Q variables as arguments)pbdoc")
+
+		.def("add", &Qstatement::add,
+			"Add a quantum evaluation to this quantum expression.")
+		.def("solve", &Qstatement::solve,
+			"Solve this Q expression and return a string with all solutions")
+		.def("reset", &Qstatement::reset, "Clear all solution samples");
+
 	/*--- Qexpr.h definitions ---*/
-	py::class_<Qexpression>(m, "Qexpression",
+	py::class_<Qexpression, Qexpression::Sp, Qstatement>(m, "Qexpression",
 		R"pbdoc( Quantum expression of arithmetic Q operations with Q defined
 				 symbols as operands)pbdoc")
 		.def("root", static_cast<Qop & (Qexpression::*)()>(&Qexpression::root),
@@ -176,7 +187,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QbitExpr ===*/
-	py::class_<Qexpr<Qbit>, Qexpression>(m, "QbitExpr",
+	py::class_<Qexpr<Qbit>, Qexpr<Qbit>::Sp, Qexpression>(m, "QbitExpr",
 		R"pbdoc( Instantiation of quantum bit expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qop::Sp&>())
@@ -228,7 +239,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QboolExpr ===*/
-	py::class_<Qexpr<Qbool>, Qexpression>(m, "QboolExpression",
+	py::class_<Qexpr<Qbool>, Qexpr<Qbool>::Sp, Qexpression>(m, "QboolExpression",
 		R"pbdoc( Instantiation of quantum boolean expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qop::Sp&>())
@@ -262,7 +273,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QbinExpr ===*/
-	py::class_<Qexpr<Qbin>, Qexpression>(m, "QbinExpr",
+	py::class_<Qexpr<Qbin>, Qexpr<Qbin>::Sp, Qexpression>(m, "QbinExpr",
 		R"pbdoc( Instantiation of quantum binary expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qop::Sp&>())
@@ -296,7 +307,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QwholeExpr ===*/
-	py::class_<Qexpr<Qwhole>, Qexpression>(m, "QwholeExpr",
+	py::class_<Qexpr<Qwhole>, Qexpr<Qwhole>::Sp, Qexpression>(m, "QwholeExpr",
 		R"pbdoc( Instantiation of quantum whole expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qop::Sp&>())
@@ -336,7 +347,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*--- Qassign.h definitions ---*/
-	py::class_<Qassignment>(m, "Qassignment",
+	py::class_<Qassignment, Qassignment::Sp, Qstatement>(m, "Qassignment",
 		R"pbdoc( Quantum assignment of an expression to a result)pbdoc")
 		.def("_", &Qassignment::assign, "Assign a Q expression to Q defintion assignee. Use without inputs to remove (one or boath) Q assignment members")
 		.def("assign", &Qassignment::assign, "Assign a Q expression to Q defintion assignee. Use without inputs to remove (one or boath) Q assignment members")
@@ -366,7 +377,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QbitAssign ===*/
-	py::class_<Qassign<Qbit>, Qassignment>(m, "QbitAssign",
+	py::class_<Qassign<Qbit>, Qassign<Qbit>::Sp, Qassignment>(m, "QbitAssign",
 		R"pbdoc( Instantiation of quantum bit expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qbit&>())
@@ -375,7 +386,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QboolAssign ===*/
-	py::class_<Qassign<Qbool>, Qassignment>(m, "QboolAssign",
+	py::class_<Qassign<Qbool>, Qassign<Qbool>::Sp, Qassignment>(m, "QboolAssign",
 		R"pbdoc( Instantiation of quantum bool expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qbool&>())
@@ -384,7 +395,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QbinAssign ===*/
-	py::class_<Qassign<Qbin>, Qassignment>(m, "QbinAssign",
+	py::class_<Qassign<Qbin>, Qassign<Qbin>::Sp, Qassignment>(m, "QbinAssign",
 		R"pbdoc( Instantiation of quantum bin expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qbin&>())
@@ -393,7 +404,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*=== QwholeAssign ===*/
-	py::class_<Qassign<Qwhole>, Qassignment>(m, "QwholeAssign",
+	py::class_<Qassign<Qwhole>, Qassign<Qwhole>::Sp, Qassignment>(m, "QwholeAssign",
 		R"pbdoc( Instantiation of quantum whole expression)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qwhole&>())
@@ -402,7 +413,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*--- Qblock.h definitions---*/
-	py::class_<Qblock>(m, "Qblock",
+	py::class_<Qblock, Qblock::Sp, Qstatement>(m, "Qblock",
 		R"pbdoc( A Q block is a lexical structure of quantum code, which is grouped
 				 together. Qblock consist of one or more quantum statements. Qblock 
 				 is a quantum statement, too, permitting block-structured quantum 
@@ -911,7 +922,7 @@ PYBIND11_MODULE(d5, m) {
 
 
 	/*--- Qroutine.h definitions---*/
-	py::class_<Qroutine>(m, "Qroutine",
+	py::class_<Qroutine, Qroutine::Sp, Qstatement>(m, "Qroutine",
 		R"pbdoc( Quantum routine is a quantum definition with a sequence of 
 				 logical quantum statements organized as quantum block)pbdoc")
 
@@ -1002,21 +1013,31 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::self + py::self, "Return a quantum evaluation with merge elements from this and right object")
 
 		.def("sample", [](const Qevaluation& o) { return o.sample(); })
-		.def("energy", [](const Qevaluation& o) { return o.energy(); });
+		.def("energy", [](const Qevaluation& o) { return o.energy(); })
+		.def("__str__", [](Qevaluation& self) { return self.toString(); })
+		.def("__repr__", [](Qevaluation& self) { return self.toString(); });
+
+	m.def("Qevaluations", []() { return Qevaluations(); },
+		R"pbdoc( A list of quantum evaluations, e.g. a quantum solver would return for a compiled quantum statement.)pbdoc");
 
 	/*--- Qsolver.h definitions ---*/
-	py::class_<Qsolver>(m, "Qsolver",
+	py::class_<Qsolver, Qsolver::Sp>(m, "Qsolver",
 		R"pbdoc(Quantum solver abstraction evaluates solutions for a compiled quantum statement.)pbdoc")
 		.def_static("Active", static_cast<void (*)(Qsolver::Sp)>(&Qsolver::Active),
 			"Sets an active quantum solver to be used as a default solver")
 		.def_static("Active", static_cast<Qsolver::Sp(*)()>(&Qsolver::Active),
 			"Returns an active quantum solver used as a default solver")
+//		.def(py::init<>())
 		.def("solution", &Qsolver::solution,
 			"Override to return quantum evaluations for a compiled quantum statement");
 
 	/*--- Qcompiler.h definitions ---*/
 	py::class_<Qcompiler>(m, "Qcompiler",
-		R"pbdoc(An abstration of quantum operation compiler is an integration point for conversion of dann5 quantum peration to target quantum solver presentation, like qiskit in case of IBM or Qubo in case of D-Wave)pbdoc")
+		R"pbdoc( An abstration of quantum operation compiler is an integration
+				 point for conversion of dann5 quantum peration to target
+				 quantum solver presentation, like qiskit in case of IBM or Qubo
+				 in case of D-Wave)pbdoc")
+//		.def(py::init<>())
 		.def("compile", &Qcompiler::compile, "A method to be executed by active Qsolver when solving a quantum statement.");
 
 }

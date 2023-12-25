@@ -15,7 +15,10 @@ namespace dann5 {
 		class QuboAnalyzer
 		{
 		public:
-            // a logical QUBO node
+			// a shared pointer to a qubo analyzer
+			typedef shared_ptr<QuboAnalyzer> Sp;
+			
+			// a logical QUBO node
 			typedef std::pair<string, double> Node;
             
             // a list of linear nodes in a QUBO
@@ -26,6 +29,9 @@ namespace dann5 {
             
             // a list of binary QUBO elements
 			typedef std::vector<Element> Branches;
+
+			// Quantum analyzer default constructor
+			QuboAnalyzer() : mQubo() {};
 
             // Quantum analyzer is initialized with a QUBO instance
             QuboAnalyzer(const Qubo& qubo) : mQubo(qubo) {};

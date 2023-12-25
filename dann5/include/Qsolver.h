@@ -1,3 +1,12 @@
+//
+//  Qsolver.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2023-11-12.
+//
+
+#ifndef Qsolver_h
+#define Qsolver_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -40,3 +49,5 @@ namespace dann5 {
         static Qsolver::Sp  gpActive;   // Active instance of Qsolver
     };
 };
+
+#endif /* Qsolver_h */

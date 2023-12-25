@@ -1,42 +1,169 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Aug 10 17:12:10 2021
+Created on Fri Dec 23 10:20:10 2023
 
 @author: Nebojsa.Vojinovic
 """
 
-from dimod import ExactSolver
+import dimod
 from dwave.system import DWaveSampler, EmbeddingComposite
 from dwave.cloud.exceptions import SolverNotFoundError
 from dwave.system.samplers import LeapHybridSampler
-from dann5.d5o2 import SampleEng, Qanalyzer, Qsolver
+from dann5.d5 import Qevaluation, Qsolver
+from dann5.d5o import QuboAnalyzer, DwaveSolver, D5QuboSolver
 
-"""
-A facade abstracts access to different solvers of optimal functions expressed
-as qubo. It supports following types:
-    - 'dann5' => a local quantum simulator
-    - 'exact' => DWave local quantum simulator
-    - 'Advantage2' => DWave qpu with zephyr topology
-    - 'Advantage' => DWave qpu with pegasus topology
-    - '2000Q' => DWave qpu with chimera topology
-    - 'Hybrid' => DWave hybrid BQM solver
-"""
+class PyQsolver(Qsolver):
+    gActive = D5QuboSolver()
+    
+    def SetActive(solver):
+        PyQsolver.gActive = solver
+        Qsolver.Active(solver)
+    
+    def Active():
+        active = Qsolver.Active()
+        if(PyQsolver.gActive != active):
+            Qsolver.Active(PyQsolver.gActive)
+        return PyQsolver.gActive
+
+    
+    
+class DwaveExactSolver(DwaveSolver):
+    """
+    A dann5 quantum solver that will calcualte quantum evaluations of a quantum
+    statement using D-Wave exact solver, a DWave local quantum simulator
+    """
+    def __init__(self, lowest = True):
+        """
+        Initializes an instance of a D-Wave exact solver 
+        """
+        DwaveSolver.__init__(self, lowest)
+        self.solver = dimod.ExactSolver()
+        
+    def solve(self):
+        """
+        Computes solutions samples using Dwave exact solver 
+        """
+        sampleset = self.solver.sample_qubo(self.qubo())
+        lowEnergy = sampleset.lowest().record['energy'][0]
+        evaluations = [Qevaluation(dict(sample), lowEnergy) for sample in sampleset.lowest().samples()]
+        self.solution(evaluations)
+  
+class DwaveHybridSolver(DwaveSolver):
+    """
+    A dann5 quantum solver that will calcualte quantum evaluations of a quantum
+    statement using D-Wave hybrid sampler (LeapHybridSampler)
+    """
+    def __init__(self, lowest = True):
+        """
+        Initializes an instance of an hybrid sampler 
+        """
+        DwaveSolver.__init__(self, lowest)
+        self.solver = LeapHybridSampler()
+                 
+    def solve(self):
+        """
+        Computes solutions samples using Dwave hybrid sampler 
+        """
+        sampleset = self.solver.sample_qubo(self.qubo())
+        samples = sampleset.samples()
+        energies = sampleset.data_vectors['energy']
+        evaluations = []
+        for i in range(len(samples)):
+            sample = dict(samples[i])
+            energy = energies[i]
+            evaluations.append(Qevaluation(sample, energy))
+        self.solution(evaluations)
+
+class DwaveQuantumSolver(DwaveSolver):
+    """
+    A dann5 quantum solver that will calcualte quantum evaluations of a quantum
+    statement using D-Wave quantum samplers, including hybrid sampler
+    """
+    def __init__(self, lowest = True, num_reads = 1000):
+        """
+        Initializes an instance of a D-Wave quantum solver 
+        """
+        DwaveSolver.__init__(self, lowest)
+        self.mKwargs = {'num_reads': num_reads,
+                        'answer_mode': 'histogram',
+                        }
+                
+    def solve(self):
+        """
+        Computes solutions samples using Dwave quantum sampler 
+        """
+        self.mKwargs['chain_strength'] = self.chainStrength()
+        sampleset = self.solver.sample_qubo(self.qubo(), **self.mKwargs)
+        samples = sampleset.samples()
+        energies = sampleset.data_vectors['energy']
+        evaluations = []
+        for i in range(len(samples)):
+            sample = dict(samples[i])
+            energy = energies[i]
+            evaluations.append(Qevaluation(sample, energy))
+        self.solution(evaluations)
+  
+class DwaveAdvantageSolver(DwaveQuantumSolver):
+    """
+    A dann5 quantum solver that will calcualte quantum evaluations of a quantum
+    statement using D-Wave Advantage sampler with 'pegasus' topology
+    """
+    def __init__(self, lowest = True):
+        """
+        Initializes an instance solver and connect to an Advantage sampler 
+        """
+        DwaveQuantumSolver.__init__(self, lowest)
+        try:
+            sampler = DWaveSampler(solver={'topology__type': 'pegasus', 'qpu': True})
+            self.solver = EmbeddingComposite(sampler)
+            print("CONNECTED to {}.".format(sampler.solver.id))
+        except SolverNotFoundError:
+            print("ERROR: Advantage is unavailable!")
+  
+class DwaveAdvantage2Solver(DwaveQuantumSolver):
+    """
+    A dann5 quantum solver that will calcualte quantum evaluations of a quantum
+    statement using D-Wave Advantage 2 sampler with 'zephyr' topology
+    """
+    def __init__(self, lowest = True):
+        """
+        Initializes an instance solver and connect to an Advantage sampler 
+        """
+        DwaveQuantumSolver.__init__(self, lowest)
+        try:
+            sampler = DWaveSampler(solver={'topology__type': 'zephyr', 'qpu': True})
+            self.solver = EmbeddingComposite(sampler)
+            print("CONNECTED to {}.".format(sampler.solver.id))
+        except SolverNotFoundError:
+            print("ERROR: Advantage 2 is unavailable!") 
+
 class Solvers:
     """
-    Initialize Solvers by provinding num_reads to be executed on DWave qpu's 
-    before the solutions are returned
+    A facade abstracts access to different solvers of optimal functions expressed
+    as qubo. It supports following types:
+        - 'dann5' => a local quantum simulator
+        - 'exact' => DWave local quantum simulator
+        - 'Advantage2' => DWave qpu with zephyr topology
+        - 'Advantage' => DWave qpu with pegasus topology
+        - '2000Q' => DWave qpu with chimera topology
+        - 'Hybrid' => DWave hybrid BQM solver
     """
+    
     def __init__(self, num_reads):
+        """
+        Initialize Solvers by provinding num_reads to be executed on DWave qpu's 
+        before the solutions are returned
+        """
         self.mSolvers = {}
         self.mKwargs = {'num_reads': num_reads,
                         'answer_mode': 'histogram',
                         }
 
-    """
-    Connect to remote DWave qpu's or hybrid BQM solver or initialize DWave's 
-    (local) exact simulator
-    """
     def connect(self, solverType):
+        """
+        Connect to remote DWave qpu's or hybrid BQM solver or initialize DWave's 
+        (local) exact simulator
+        """
         try:
             sampler = None
             if solverType == 'Advantage2':
@@ -66,20 +193,20 @@ class Solvers:
         return solver
     
 
-    """
-    Returns solutions to a qubo function as a list of dann5.d502.SampleEng 
-    containing samples with lowest energy, e.g. optimal solutions for the given
-    qubo.
-    The qubo function will be executed using a requested solver based on 
-    solverType parameter, which can have one of teh following values:
-        - 'dann5' => a local quantum simulator
-        - 'exact' => DWave local quantum simulator
-        - 'Advantage2' => DWave qpu with zephyr topology
-        - 'Advantage' => DWave qpu with pegasus topology
-        - '2000Q' => DWave qpu with chimera topology
-        - 'Hybrid' => DWave hybrid BQM solver
-    """
     def solve(self, solverType, qubo, exact = True):
+        """
+        Returns solutions to a qubo function as a list of dann5.d502.Qevaluation 
+        containing samples with lowest energy, e.g. optimal solutions for the given
+        qubo.
+        The qubo function will be executed using a requested solver based on 
+        solverType parameter, which can have one of teh following values:
+            - 'dann5' => a local quantum simulator
+            - 'exact' => DWave local quantum simulator
+            - 'Advantage2' => DWave qpu with zephyr topology
+            - 'Advantage' => DWave qpu with pegasus topology
+            - '2000Q' => DWave qpu with chimera topology
+            - 'Hybrid' => DWave hybrid BQM solver
+        """
         if solverType == 'dann5':
             solver = Qsolver(qubo)
             return solver.solution()
@@ -88,21 +215,21 @@ class Solvers:
         except KeyError:
             solver = self.connect(solverType)
         if solverType in ['Advantage2', 'Advantage', '2000Q']:
-            analyzer = Qanalyzer(qubo)
+            analyzer = QuboAnalyzer(qubo)
             self.mKwargs['chain_strength'] = analyzer.chainStrength()
             sampleset = solver.sample_qubo(qubo, **self.mKwargs)
         else:
             sampleset = solver.sample_qubo(qubo)
         if exact:
             lowEnergy = sampleset.lowest().record['energy'][0]
-            samples = [SampleEng(dict(sample), lowEnergy) for sample in sampleset.lowest().samples()]
+            samples = [Qevaluation(dict(sample), lowEnergy) for sample in sampleset.lowest().samples()]
         else:
             rowSamples = sampleset.samples()
             energies = sampleset.data_vectors['energy']
-            #samples = [SampleEng(dict(rowSamples[i]), energies[i]) for i in range(len(rowSamples))]            
+            #samples = [Qevaluation(dict(rowSamples[i]), energies[i]) for i in range(len(rowSamples))]            
             samples = []
             for i in range(len(rowSamples)):
                 sample = dict(rowSamples[i])
                 energy = energies[i]
-                samples.append(SampleEng(sample, energy))
+                samples.append(Qevaluation(sample, energy))
         return samples

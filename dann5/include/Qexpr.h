@@ -130,7 +130,7 @@ namespace dann5 {
     class Qexpr : public Qexpression
     {
     public:
-        // Q definition shared pointer
+        // Q assignment for specific quantum type shared pointer
         typedef shared_ptr< Qexpr<Q_Type> > Sp;
 
         // default constructor creates an empty Q expression

@@ -149,6 +149,15 @@ Qevaluations D5QuboSolver::solution(const Qstatement& statement)
     return(mSolution);
 }
 
+Qevaluations D5QuboSolver::solution(const Qubo& q)
+{
+	if (mMinEnergy != cMaxEnergy)
+		reset();
+	qubo(q);
+	solve();
+	return(mSolution);
+}
+
 void  D5QuboSolver::reset()
 {
     QuboAnalyzer::reset();
