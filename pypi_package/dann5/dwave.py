@@ -24,10 +24,8 @@ class PyQsolver(Qsolver):
         if(PyQsolver.gActive != active):
             Qsolver.Active(PyQsolver.gActive)
         return PyQsolver.gActive
-
-    
-    
-class DwaveExactSolver(DwaveSolver):
+   
+class PyDwaveSolver(DwaveSolver):
     """
     A dann5 quantum solver that will calcualte quantum evaluations of a quantum
     statement using D-Wave exact solver, a DWave local quantum simulator
@@ -37,18 +35,42 @@ class DwaveExactSolver(DwaveSolver):
         Initializes an instance of a D-Wave exact solver 
         """
         DwaveSolver.__init__(self, lowest)
-        self.solver = dimod.ExactSolver()
         
     def solve(self):
         """
         Computes solutions samples using Dwave exact solver 
         """
-        sampleset = self.solver.sample_qubo(self.qubo())
-        lowEnergy = sampleset.lowest().record['energy'][0]
-        evaluations = [Qevaluation(dict(sample), lowEnergy) for sample in sampleset.lowest().samples()]
-        self.solution(evaluations)
+        sampleset = self.sampler.sample_qubo(self.qubo())
+        self.evaluatuate(sampleset)
+        
+    def evaluatuate(self, sampleset):
+        if(self.lowest()):
+            samples = sampleset.lowest().samples()
+            energies = sampleset.lowest().data_vectors['energy']
+        else:
+            samples = sampleset.samples()
+            energies = sampleset.data_vectors['energy']
+        #evaluations = [Qevaluation(dict(sample), lowEnergy) for sample in sampleset.lowest().samples()]
+        evaluations = []
+        for i in range(len(samples)):
+            sample = dict(samples[i])
+            energy = energies[i]
+            evaluations.append(Qevaluation(sample, energy))
+        self.solution(evaluations)   
+        
+class DwaveExactSolver(PyDwaveSolver):
+    """
+    A dann5 quantum solver that will calcualte quantum evaluations of a quantum
+    statement using D-Wave exact solver, a DWave local quantum simulator
+    """
+    def __init__(self, lowest = True):
+        """
+        Initializes an instance of a D-Wave exact solver 
+        """
+        DwaveSolver.__init__(self, lowest)
+        self.sampler = dimod.ExactSolver()
   
-class DwaveHybridSolver(DwaveSolver):
+class DwaveHybridSolver(PyDwaveSolver):
     """
     A dann5 quantum solver that will calcualte quantum evaluations of a quantum
     statement using D-Wave hybrid sampler (LeapHybridSampler)
@@ -58,23 +80,10 @@ class DwaveHybridSolver(DwaveSolver):
         Initializes an instance of an hybrid sampler 
         """
         DwaveSolver.__init__(self, lowest)
-        self.solver = LeapHybridSampler()
-                 
-    def solve(self):
-        """
-        Computes solutions samples using Dwave hybrid sampler 
-        """
-        sampleset = self.solver.sample_qubo(self.qubo())
-        samples = sampleset.samples()
-        energies = sampleset.data_vectors['energy']
-        evaluations = []
-        for i in range(len(samples)):
-            sample = dict(samples[i])
-            energy = energies[i]
-            evaluations.append(Qevaluation(sample, energy))
-        self.solution(evaluations)
+        self.sampler = LeapHybridSampler()
+        print("CONNECTED to {}.".format(self.sampler.solver.id))
 
-class DwaveQuantumSolver(DwaveSolver):
+class DwaveQuantumSolver(PyDwaveSolver):
     """
     A dann5 quantum solver that will calcualte quantum evaluations of a quantum
     statement using D-Wave quantum samplers, including hybrid sampler
@@ -93,16 +102,9 @@ class DwaveQuantumSolver(DwaveSolver):
         Computes solutions samples using Dwave quantum sampler 
         """
         self.mKwargs['chain_strength'] = self.chainStrength()
-        sampleset = self.solver.sample_qubo(self.qubo(), **self.mKwargs)
-        samples = sampleset.samples()
-        energies = sampleset.data_vectors['energy']
-        evaluations = []
-        for i in range(len(samples)):
-            sample = dict(samples[i])
-            energy = energies[i]
-            evaluations.append(Qevaluation(sample, energy))
-        self.solution(evaluations)
-  
+        sampleset = self.sampler.sample_qubo(self.qubo(), **self.mKwargs)
+        self.evaluatuate(sampleset)
+
 class DwaveAdvantageSolver(DwaveQuantumSolver):
     """
     A dann5 quantum solver that will calcualte quantum evaluations of a quantum
@@ -114,9 +116,9 @@ class DwaveAdvantageSolver(DwaveQuantumSolver):
         """
         DwaveQuantumSolver.__init__(self, lowest)
         try:
-            sampler = DWaveSampler(solver={'topology__type': 'pegasus', 'qpu': True})
-            self.solver = EmbeddingComposite(sampler)
-            print("CONNECTED to {}.".format(sampler.solver.id))
+            annealer = DWaveSampler(solver={'topology__type': 'pegasus', 'qpu': True})
+            self.sampler = EmbeddingComposite(annealer)
+            print("CONNECTED to {}.".format(annealer.solver.id))
         except SolverNotFoundError:
             print("ERROR: Advantage is unavailable!")
   
@@ -131,9 +133,9 @@ class DwaveAdvantage2Solver(DwaveQuantumSolver):
         """
         DwaveQuantumSolver.__init__(self, lowest)
         try:
-            sampler = DWaveSampler(solver={'topology__type': 'zephyr', 'qpu': True})
-            self.solver = EmbeddingComposite(sampler)
-            print("CONNECTED to {}.".format(sampler.solver.id))
+            annealer = DWaveSampler(solver={'topology__type': 'zephyr', 'qpu': True})
+            self.sampler = EmbeddingComposite(annealer)
+            print("CONNECTED to {}.".format(annealer.solver.id))
         except SolverNotFoundError:
             print("ERROR: Advantage 2 is unavailable!") 
 

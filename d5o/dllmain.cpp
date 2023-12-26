@@ -209,6 +209,13 @@ PYBIND11_MODULE(d5o, m) {
 			argument is 'false' the solver will process all the evaluation
 			regardless of their evaluated energy)pbdoc")
 
+		.def("lowest", static_cast<bool (DwaveSolver::*)() const>
+			(&DwaveSolver::lowest),
+			"returns a lowest energy flag")
+		.def("lowest", static_cast<void (DwaveSolver::*)(bool)>
+			(&DwaveSolver::lowest),
+			"sets a lowest energy flag")
+
 		.def("solution", static_cast<Qevaluations(DwaveSolver::*)
 								(const Qstatement&)>(&DwaveSolver::solution),
 			R"pbdoc(Returns quantum evaluations for a given quantum statement.
@@ -230,7 +237,7 @@ PYBIND11_MODULE(d5o, m) {
 
 		.def("minEnergy", static_cast<double (DwaveSolver::*)() const>
 													(&DwaveSolver::minEnergy), 
-			"returns minimal evaluated energy")
+			"returns a minimal evaluated energy")
 		.def("minEnergy", static_cast<void (DwaveSolver::*)(double)>
 													(&DwaveSolver::minEnergy), 
 			"sets a minimal evaluated energy")

@@ -49,13 +49,19 @@ namespace dann5 {
             // the full set of all evaluations.
             virtual Qevaluations solution(const Qubo&);
 
+            // Returns a lowest energy flag
+            bool lowest() const { return mLowest; };
+
+            // sets a lowest energy flag
+            void lowest(bool lwst) { mLowest = lwst; };
+
             // Returns quantum evaluations
             const Qevaluations& solution() const { return mSolution; };
 
             // Sets quantum evaluations
             void solution(const Qevaluations& solution) { mSolution = solution; };
 
-            // returns minimal evaluated energy
+            // returns a minimal evaluated energy
             double minEnergy() const { return mMinEnergy; };
 
             // sets a minimal evaluated energy
