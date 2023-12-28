@@ -4,6 +4,7 @@
 
 #include <map>
 #include <iostream>
+#include <float.h>
 
 #include <Qvalue.h>
 
