@@ -5,7 +5,7 @@ Created on Mon Mar 27 11:28:10 2023
 @author: pc
 """
 
-from dann5.dwave import Solvers
+from dann5.dwave import QuboSolvers
 from dann5.d5o2 import Qwhole, Qblock, Qanalyzer, Qbinder, SampleEng, ULint
 
 from datetime import datetime
@@ -79,7 +79,6 @@ class PNGenerator:
         else:
             fNoQBs = noQBs - 2
         self.qFactor = Qwhole(fNoQBs, "f") # A Quantum whole prime factor variable 
-        self.solvers = Solvers(1000) # A list of available quantum problem solvers
         self.nPNs = []  # a list of new Prime Numbers
         self.loadPrimes() # initialize a list of discovered prime numbers
         self.primeSamples = []
@@ -148,19 +147,18 @@ class PNGenerator:
         if self.debug:
             print(" # of nodes: " + str(noNodes))
             print(" # of branches: " + str(noBrnchs) + "\n");
-        start = time.process_time()
         if self.useHybrid or noNodes >= 4000:
-            samples = self.solvers.solve('Hybrid', qubo, exact = False)
-            self.log.solver = 'Hybrid'; self.log.solveTime += time.process_time() - start
+            solverType = 'Hybrid';
         elif noNodes < 32:
-            samples = qCode.compute()
-            self.log.solver = 'dann5'; self.log.solveTime += time.process_time() - start
+            solverType = 'dann5';
         elif noNodes < 250:
-            samples = self.solvers.solve('Advantage2', qubo, exact = False)
-            self.log.solver = 'Advantage2'; self.log.solveTime += time.process_time() - start
+            solverType = 'Advantage2';
         else: #noNodes < 4000
-            samples = self.solvers.solve('Advantage', qubo, exact = False)
-            self.log.solver = 'Advantage'; self.log.solveTime += time.process_time() - start
+            solverType = 'Advantage';
+        start = time.process_time()
+        solver = QuboSolvers.solver(solverType, lowest=False)
+        samples = solver.solution(qubo)
+        self.log.solver = solverType; self.log.solveTime += time.process_time() - start
         self.log.samplesNo += len(samples); self.log.unqSmplsNo += len(set(samples))
         return samples
     

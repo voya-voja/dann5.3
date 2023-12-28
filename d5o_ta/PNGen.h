@@ -32,9 +32,11 @@ namespace dann5 {
             const Qwhole m1;
         };
 
-        class PNGbase6algorithm : public PNGen
+        class PNGen6 : public PNGen
         {
         public:
+        protected:
+        private:
         };
 	};
 };

@@ -148,10 +148,373 @@ void testPNcandidates()
     spnFstream.close();
 }
 
+void prime_s2t(ostream& out)
+{
+    Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _2("2_", 2);
+    Qblock primeNo;
+    {
+        Qbin _3("3_", 3), _7("7_", 7);
+        Qassign<Qwhole> p_s2_2t2 = prime = s * s + _2 * t * t;
+        Qassign<Qbin> p3mod8 = _3 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin::_1 = s & Qwhole::_1;
+        Qassign<Qbin> t1mod2 = Qbin::_1 = t & Qwhole::_1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
+                t = t * d,
+                d == Qwhole::_1;
+        }
+        primeNo = p_s2_2t2, p3mod8, s1mod2, t1mod2, gcd1;
+    }
+    QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
+    QuboCompiler compiler; primeNo.compile(compiler);
+    out << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+/*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+*/    QuboAnalyzer analyse(compiler.qubo());
+    out << endl
+        << "*** Prime number p = s2 + 2t2, p mod 8 = 3, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: "
+        << analyse.branchesNo() << endl;
+    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
+}
+
+void prime_s4t(ostream& out)
+{
+    Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _4("4_", 4);
+    Qblock primeNo;
+    {
+        Qbin _5("5_", 5), _7("7_", 7);
+        Qassign<Qwhole> p_s2_4t2 = prime = s * s + _4 * t * t;
+        Qassign<Qbin> p5mod8 = _5 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin::_1 = s & Qwhole::_1;
+        Qassign<Qbin> t1mod2 = Qbin::_1 = t & Qwhole::_1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
+                t = t * d,
+                d == Qwhole::_1;
+        }
+        primeNo = p_s2_4t2, p5mod8, s1mod2, t1mod2, gcd1;
+    }
+    QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
+    QuboCompiler compiler; primeNo.compile(compiler);
+    out << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+/*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+*/    QuboAnalyzer analyse(compiler.qubo());
+    out << endl
+        << "*** Prime number p = s2 + 4t2, p mod 8 = 5, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: "
+        << analyse.branchesNo() << endl;
+    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
+}
+
+void prime_s8t(ostream& out)
+{
+    Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _8("8_", 8);
+    Qblock primeNo;
+    {
+        Qbin _7("7_", 7);
+        Qassign<Qwhole> p_s2_8t2 = prime = s * s + _8 * t * t;
+        Qassign<Qbin> p1mod8 = Qbin::_1 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin::_1 = s & Qwhole::_1;
+        Qassign<Qbin> t1mod2 = Qbin::_1 = t & Qwhole::_1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
+                t = t * d,
+                d == Qwhole::_1;
+        }
+        primeNo = p_s2_8t2, p1mod8, s1mod2, t1mod2, gcd1;
+    }
+    QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
+    QuboCompiler compiler; primeNo.compile(compiler);
+    out << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+    /*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+            << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+    */    QuboAnalyzer analyse(compiler.qubo());
+    out << endl
+        << "*** Prime number p = s2 + 8t2, p mod 8 = 1, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: "
+        << analyse.branchesNo() << endl;
+/*    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
+*/
+}
+
+void prime_s16t(ostream& out)
+{
+    Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _16("16_", 16);
+    Qblock primeNo;
+    {
+        Qbin _7("7_", 7);
+        Qassign<Qwhole> p_s2_16t2 = prime = s * s + _16 * t * t;
+        Qassign<Qbin> p1mod8 = Qbin::_1 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin::_1 = s & Qwhole::_1;
+        Qassign<Qbin> t1mod2 = Qbin::_1 = t & Qwhole::_1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
+                t = t * d,
+                d == Qwhole::_1;
+        }
+        primeNo = p_s2_16t2, p1mod8, s1mod2, t1mod2, gcd1;
+    }
+    QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
+    QuboCompiler compiler; primeNo.compile(compiler);
+    out << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+    /*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+            << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+    */    QuboAnalyzer analyse(compiler.qubo());
+    out << endl
+        << "*** Prime number p = s2 + 16t2, p mod 8 = 1, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: "
+        << analyse.branchesNo() << endl;
+/*    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
+*/
+}
+
+void prime_s4st2t(ostream& out)
+{
+    Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _2("2_", 2), _4("4_", 4);
+    Qblock primeNo;
+    {
+        Qbin _7("7_", 7);
+        Qassign<Qwhole> p_s2_4st_2t2 = prime = s * s + _4 * s * t + _2 * t * t;
+        Qassign<Qbin> p7mod8 = _7 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin::_1 = s & Qwhole::_1;
+        Qassign<Qbin> t1mod2 = Qbin::_1 = t & Qwhole::_1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
+                t = t * d,
+                d == Qwhole::_1;
+        }
+        primeNo = p_s2_4st_2t2, p7mod8, s1mod2, t1mod2, gcd1;
+    }
+    QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
+    QuboCompiler compiler; primeNo.compile(compiler);
+    out << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+    /*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+            << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+    */    QuboAnalyzer analyse(compiler.qubo());
+    out << endl
+        << "*** Prime number p = s2 + 4st + 2t2, p mod 8 = 7, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: "
+        << analyse.branchesNo() << endl;
+/*    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
+*/
+}
+
+void prime_s8st8t(ostream& out)
+{
+    Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _8("8_", 8);
+    Qblock primeNo;
+    {
+        Qbin _7("7_", 7);
+        Qassign<Qwhole> p_s2_8st_8t2 = prime = s * s + _8 * s * t + _8 * t * t;
+        Qassign<Qbin> p1mod8 = Qbin::_1 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin::_1 = s & Qwhole::_1;
+        Qassign<Qbin> t1mod2 = Qbin::_1 = t & Qwhole::_1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
+                t = t * d,
+                d == Qwhole::_1;
+        }
+        primeNo = p_s2_8st_8t2, p1mod8, s1mod2, t1mod2, gcd1;
+    }
+    QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
+    QuboCompiler compiler; primeNo.compile(compiler);
+    out << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+    /*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+            << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+    */    QuboAnalyzer analyse(compiler.qubo());
+    out << endl
+        << "*** Prime number p = s2 + 8st + 8t2, p mod 8 = 1, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: "
+        << analyse.branchesNo() << endl;
+/*    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
+*/
+}
+
+void prime6m(ostream& out)
+{
+    Qwhole prime(4, "p"), s(2, "s"), _6("6_", 6);
+    Qblock prime6m1;
+    {
+        prime6m1 = prime = _6 * s - Qwhole::_1;
+    }
+    QuboCompiler noFnlCmplr(false); prime6m1.compile(noFnlCmplr);
+    QuboCompiler compiler; prime6m1.compile(compiler);
+    out << "Prime Number\n Code" << endl << prime6m1 << endl
+        << " Logic: " << prime6m1.toString(true) << endl;
+/*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+*/    QuboAnalyzer analyse(compiler.qubo());
+    out << endl << "*** Prime number p = 6s - 1 has: " << analyse.nodesNo()
+        << " # of node and # of branches: " << analyse.branchesNo() << endl;
+/*    Qevaluations solution = prime6m1.compute();
+    Qbinder pst(solution);
+    pst = prime, s;
+    out << " resulting in :" << endl << pst << endl;
+*/
+    Qwhole r1(5, "r1"), r2(5, "r2");
+    Qblock prime6m1X;
+    {
+        prime6m1X = r1 = prime + Qwhole::_1, r2= _6 * s, r1 == r2 ;
+    }
+    noFnlCmplr.reset(); prime6m1X.compile(noFnlCmplr);
+    compiler.reset(); prime6m1X.compile(compiler);
+    out << "Prime Number\n Code" << endl << prime6m1X << endl
+        << " Logic: " << prime6m1X.toString(true) << endl;
+/*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+*/    QuboAnalyzer analyseBx(compiler.qubo());
+    out << endl << "*** Prime number p = 6s - 1 has: " << analyseBx.nodesNo()
+        << " # of node and # of branches: " << analyseBx.branchesNo() << endl;
+/*    Qevaluations solution = prime6m1.compute();
+    Qbinder pst(solution);
+    pst = prime, s;
+    out << " resulting in :" << endl << pst << endl;
+*/
+    Qexpr<Qwhole> prmXpr(_6 * s == prime + Qwhole::_1);
+    noFnlCmplr.reset(); prmXpr.compile(noFnlCmplr);
+    compiler.reset(); prmXpr.compile(compiler);
+    out << "Prime Number\n Code" << endl << prmXpr << endl
+        << " Logic: " << prmXpr.toString(true) << endl;
+/*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+*/    QuboAnalyzer analyseX(compiler.qubo());
+    out << endl << "*** Prime number p = 6s - 1 has: " << analyseX.nodesNo()
+        << " # of node and # of branches: " << analyseX.branchesNo() << endl;
+    Qevaluations solutionX = prmXpr.compute();
+    Qbinder pstX(solutionX);
+    pstX = prime, s;
+    out << " resulting in :" << endl << pstX << endl;
+}
+
+
+void prime6p(ostream& out)
+{
+    Qwhole prime(4, "p"), s(2, "s"), _6("6_", 6);
+    Qblock prime6p1;
+    {
+        prime6p1 = prime = _6 * s + Qwhole::_1;
+    }
+    QuboCompiler noFnlCmplr(false); prime6p1.compile(noFnlCmplr);
+    QuboCompiler compiler; prime6p1.compile(compiler);
+    out << "Prime Number\n Code" << endl << prime6p1 << endl
+        << " Logic: " << prime6p1.toString(true) << endl;
+/*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+*/    QuboAnalyzer analyse2(compiler.qubo());
+    out << endl << "*** Prime number p = 6s + 1 has: "
+        << analyse2.nodesNo() << " # of node and # of branches: " << analyse2.branchesNo() << endl;
+/*    Qevaluations solution2 = prime6p1.compute();
+    Qbinder pst2(solution2);
+    pst2 = prime, s;
+    out << " resulting in :" << endl << pst2 << endl;
+*/
+    Qassign<Qwhole> prmXpr(prime = _6 * s + Qwhole::_1);
+    noFnlCmplr.reset(); prmXpr.compile(noFnlCmplr);
+    compiler.reset(); prmXpr.compile(compiler);
+    out << "Prime Number\n Code" << endl << prmXpr << endl
+        << " Logic: " << prmXpr.toString(true) << endl;
+/*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+        << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+*/    QuboAnalyzer analyseX(compiler.qubo());
+    out << endl << "*** Prime number p = 6s + 1 has: " << analyseX.nodesNo()
+        << " # of node and # of branches: " << analyseX.branchesNo() << endl;
+    Qevaluations solutionX = prmXpr.compute();
+    Qbinder pstX(solutionX);
+    pstX = prime, s;
+    out << " resulting in :" << endl << pstX << endl;
+}
+
+
+
+void prime_s2t_prime(ostream& out)
+{
+    Qwhole prime(5, "p"), s(1, "s"), t(2, "t"), _2("2_", 2);
+    Qblock primeNo;
+    {
+        Qbin _3("3_", 3), _7("7_", 7);
+        Qassign<Qwhole> p_s2_2t2 = prime = s * s + _2 * t * t;
+        Qassign<Qbin> p3mod8 = _3 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin::_1 = s & Qwhole::_1;
+        Qassign<Qbin> t1mod2 = Qbin::_1 = t & Qwhole::_1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
+                t = t * d,
+                d == Qwhole::_1;
+        }
+        primeNo = p_s2_2t2, p3mod8, s1mod2, t1mod2, gcd1;
+    }
+    QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
+    QuboCompiler compiler; primeNo.compile(compiler);
+    out << "Prime Number\n Code" << endl << primeNo << endl
+        << " Logic: " << primeNo.toString(true) << endl;
+    /*    out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
+            << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
+    */    QuboAnalyzer analyse(compiler.qubo());
+    out << endl
+        << "*** Prime number p = s2 + 2t2, p mod 8 = 3, gcd(s,t) = 1 has: "
+        << analyse.nodesNo() << " # of node and # of branches: "
+        << analyse.branchesNo() << endl;
+    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
+}
+
 int main(int argc, const char * argv[])
 {
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
+    prime_s2t(cout);
+    prime_s4t(cout);
+    prime_s8t(cout);
+    prime_s16t(cout);
+    prime_s4st2t(cout);
+    prime_s8st8t(cout);
+    prime6m(cout);
+    prime6p(cout);
+    prime_s2t_prime(cout);
+
+/*
     UTestQbit utQbit;
     utQbit.runAll(cout);
     UTestQbool utQbool;
@@ -160,7 +523,9 @@ int main(int argc, const char * argv[])
     utQbin.runAll(cout);
     UTestQwhole utQwhole;
     utQwhole.runAll(cout);
- 
+    utQwhole.prime(cout);
+    utQwhole.prime6(cout);
+*/
 //    pymain();
 
 //    testPNcandidates();

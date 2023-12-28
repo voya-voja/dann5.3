@@ -899,20 +899,22 @@ void UTestQwhole::factorial(ostream& out)
 void UTestQwhole::prime(ostream& out)
 {
     Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _1("1_", 1), _2("2_", 2);
-    Qbin _3("3_", 3), _7("7_", 7);
-    Qassign<Qwhole> p_s2_2t2 = prime = s * s + _2 * t * t;
-    Qassign<Qbin> p3mod8 = _3 = prime & _7;
-    Qassign<Qbin> s1mod2 = Qbin(_1) = s & _1;
-    Qassign<Qbin> t1mod2 = Qbin(_1) = t & _1;
-    Qblock gcd1;
+    Qblock primeNo;
     {
-        Qwhole d(1, "d");
-        gcd1 = s = s * d,
+        Qbin _3("3_", 3), _7("7_", 7);
+        Qassign<Qwhole> p_s2_2t2 = prime = s * s + _2 * t * t;
+        Qassign<Qbin> p3mod8 = _3 = prime & _7;
+        Qassign<Qbin> s1mod2 = Qbin(_1) = s & _1;
+        Qassign<Qbin> t1mod2 = Qbin(_1) = t & _1;
+        Qblock gcd1;
+        {
+            Qwhole d(1, "d");
+            gcd1 = s = s * d,
                 t = t * d,
                 d == _1;
+        }
+        primeNo = p_s2_2t2, p3mod8, s1mod2, t1mod2, gcd1;
     }
-    Qblock primeNo;
-    primeNo = p_s2_2t2, p3mod8, s1mod2, t1mod2, gcd1;
     QuboCompiler noFnlCmplr(false); primeNo.compile(noFnlCmplr);
     QuboCompiler compiler; primeNo.compile(compiler);
     out << "Prime Number\n Code" << endl << primeNo << endl
@@ -932,10 +934,10 @@ void UTestQwhole::prime(ostream& out)
 
 void UTestQwhole::prime6(ostream& out)
 {
-    Qwhole prime(4, "p"), s(2, "s"), t(1, "t"), mod(2, "m"), _1("1_", 1), _5("5_", 5), _3("3_", 3), _6("6_", 6), _8("8_", 8);
+    Qwhole prime(4, "p"), s(2, "s"), _6("6_", 6);
     Qblock prime6m1;
     {
-        prime6m1 = prime = _6 * s - _1;
+        prime6m1 = prime = _6 * s - Qwhole::_1;
     }
     QuboCompiler noFnlCmplr(false); prime6m1.compile(noFnlCmplr);
     QuboCompiler compiler; prime6m1.compile(compiler);
@@ -948,7 +950,7 @@ void UTestQwhole::prime6(ostream& out)
         << " # of node and # of branches: " << analyse.branchesNo() << endl;
     Qevaluations solution = prime6m1.compute();
     Qbinder pst(solution);
-    pst = prime, s, t, mod;
+    pst = prime, s;
     out << " resulting in :" << endl << pst << endl;
     
     Qexpr<Qwhole> prmXpr(_6 * s == prime + Qwhole::_1);
@@ -963,15 +965,15 @@ void UTestQwhole::prime6(ostream& out)
         << " # of node and # of branches: " << analyseX.branchesNo() << endl;
     Qevaluations solutionX = prmXpr.compute();
     Qbinder pstX(solutionX);
-    pstX = prime, s, t, mod;
+    pstX = prime, s;
     out << " resulting in :" << endl << pstX << endl;
 
     Qblock prime6p1;
     {
-        prime6p1 = prime = _6 * s + _1;
+        prime6p1 = prime = _6 * s + Qwhole::_1;
     }
-    noFnlCmplr.reset(); prime6m1.compile(noFnlCmplr);
-    compiler.reset(); prime6m1.compile(compiler);
+    noFnlCmplr.reset(); prime6p1.compile(noFnlCmplr);
+    compiler.reset(); prime6p1.compile(compiler);
     out << "Prime Number\n Code" << endl << prime6p1 << endl
         << " Logic: " << prime6p1.toString(true) << endl;
     out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
@@ -981,6 +983,6 @@ void UTestQwhole::prime6(ostream& out)
         << analyse2.nodesNo() << " # of node and # of branches: " << analyse2.branchesNo() << endl;
     Qevaluations solution2 = prime6p1.compute();
     Qbinder pst2(solution2);
-    pst2 = prime, s, t, mod;
+    pst2 = prime, s;
     out << " resulting in :" << endl << pst2 << endl;
 }
