@@ -12,6 +12,9 @@ from qiskit import IBMQ, transpile
 from qiskit.providers.aer import QasmSimulator
 from qiskit_ibm_provider import IBMProvider
 
+import qiskit
+from qiskit_aer import AerSimulator
+
 
 def getProvider():
     provider = None
@@ -430,8 +433,15 @@ def adder():
      
 def testCircuit(qc, provider):
     print(qc)
-    backend = provider.get_backend('ibm_brisbane')
+    # Construct an ideal simulator
+    aersim = AerSimulator()
+    
+    # Perform an ideal simulation
+    result_ideal = qiskit.execute(qc, aersim).result()
+    counts_ideal = result_ideal.get_counts(0)
+    print('Counts(ideal):', counts_ideal)
     """
+    backend = provider.get_backend('ibm_brisbane')
     #backend = provider.get_backend('ibm_perth')
     #backend = provider.get_backend('ibm_nairobi')
     #backend = provider.get_backend('ibmq_qasm_simulator')

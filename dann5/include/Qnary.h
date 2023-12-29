@@ -1,4 +1,12 @@
-#pragma once
+//
+//  Qnary.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qnary_h
+#define Qnary_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -181,3 +189,5 @@ namespace dann5 {
         };
     };
 };
+
+#endif /* Qnary_h */

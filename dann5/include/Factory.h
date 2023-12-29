@@ -1,4 +1,14 @@
+//
+//  Factory.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2021-11-12.
+//
+
+#ifndef Factory_h
+#define Factory_h
 #pragma once
+
 #include <memory>
 #include <stdexcept>
 
@@ -129,3 +139,5 @@ namespace dann5 {
 	private:
 	};
 };
+
+#endif /* Factory_h */

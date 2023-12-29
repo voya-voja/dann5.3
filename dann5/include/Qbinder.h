@@ -1,3 +1,12 @@
+//
+//  Qbinder.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qbinder_h
+#define Qbinder_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -139,3 +148,5 @@ namespace dann5 {
     // An std::vector containing a list of Q binders
     typedef vector<Qbinder::Sp> Qbinders;
 };
+
+#endif /* Qbinder_h */

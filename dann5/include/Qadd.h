@@ -1,3 +1,12 @@
+//
+//  Qadd.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qadd_h
+#define Qadd_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -69,3 +78,5 @@ namespace dann5 {
         ~QaddQints();
     };
 };
+
+#endif /* Qadd_h */

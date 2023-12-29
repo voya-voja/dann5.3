@@ -1,3 +1,12 @@
+//
+//  Qbool.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qbool_h
+#define Qbool_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -174,3 +183,5 @@ namespace dann5 {
         Qvalue mValue;
     };
 };
+
+#endif /* Qbool_h */

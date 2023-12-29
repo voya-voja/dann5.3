@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\dann5">
+      <UniqueIdentifier>{5c074f3f-349e-4c8d-be3c-57c6b61af231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dann5\qiskit">
+      <UniqueIdentifier>{bd760b46-ce7c-4760-a13f-ddd67a555597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dann5">
+      <UniqueIdentifier>{37be6c6d-90a7-4caa-bea8-d42b3d129f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dann5\qiskit">
+      <UniqueIdentifier>{20310832-56ae-4232-aef9-7bb31bdc16d0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Factory.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qcell.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\QcellOps.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qcompiler.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qdef.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qevaluation.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qnary.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\QnaryOp.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qop.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qsolver.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qstatement.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qtype.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\include\Qvalue.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\qiskit\include\Circuits.h">
+      <Filter>Header Files\dann5\qiskit</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\Qcell.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\QcellOps.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\Qevaluation.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\Qnary.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\QnaryOp.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\Qop.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\Qstatement.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

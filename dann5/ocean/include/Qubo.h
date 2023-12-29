@@ -1,4 +1,14 @@
+//
+//  Qubo.h
+//  d5o
+//
+//  Created by Nebojsa Vojinovic on 2021-11-12.
+//
+
+#ifndef Qubo_h
+#define Qubo_h
 #pragma once
+
 #include <pybind11/pybind11.h>
 
 #include <utility>
@@ -349,3 +359,5 @@ namespace dann5{
         };
     };
 };
+
+#endif /* Qubo_h */

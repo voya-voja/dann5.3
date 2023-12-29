@@ -1,3 +1,12 @@
+//
+//  Utility.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2021-11-12.
+//
+
+#ifndef Utility_h
+#define Utility_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -87,3 +96,5 @@ namespace dann5 {
 		std::string do_grouping() const override { return "\3"; }
 	};
 };
+
+#endif /* Utility_h */

@@ -1,3 +1,12 @@
+//
+//  QuboAnalyzer.h
+//  d5o
+//
+//  Created by Nebojsa Vojinovic on 2023-11-12.
+//
+
+#ifndef QuboAnalyzer_h
+#define QuboAnalyzer_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -84,3 +93,5 @@ namespace dann5 {
 		std::ostream& operator << (std::ostream&, const QuboAnalyzer::Branches&);
 	};
 };
+
+#endif /* QuboAnalyzer_h */

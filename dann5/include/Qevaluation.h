@@ -1,3 +1,12 @@
+//
+//  Qevaluation.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2023-11-12.
+//
+
+#ifndef Qevaluation_h
+#define Qevaluation_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -77,3 +86,5 @@ namespace dann5 {
     // Sends a representation of Qevaluations into output stream
     std::ostream& operator << (std::ostream&, const Qevaluations&);
 };
+
+#endif /* Qevaluation_h */

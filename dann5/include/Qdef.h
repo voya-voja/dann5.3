@@ -1,3 +1,12 @@
+//
+//  Qdef.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qdef_h
+#define Qdef_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -80,3 +89,5 @@ namespace dann5 {
     // Quantum Eigen matrix of Q cell references
     typedef Matrix<Qdef::Sp, Dynamic, Dynamic> QdefMatrix;
 };
+
+#endif /* Qdef_h */

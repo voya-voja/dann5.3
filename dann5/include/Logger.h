@@ -1,4 +1,14 @@
+//
+//  Logger.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2021-11-12.
+//
+
+#ifndef Logger_h
+#define Logger_h
 #pragma once
+
 #include <utility>
 #include <memory>
 
@@ -50,3 +60,5 @@ namespace dann5 {
 	#define _la(a)
 	#define _lat(a,t)
 #endif
+
+#endif /* Logger_h */

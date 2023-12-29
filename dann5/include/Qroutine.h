@@ -1,3 +1,12 @@
+//
+//  Qroutine.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qroutine_h
+#define Qroutine_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -168,3 +177,5 @@ namespace dann5 {
     // Insert string representation of a Q routine into an output stream
     std::ostream& operator << (std::ostream&, const Qroutine&);
 };
+
+#endif /* Qroutine_h */

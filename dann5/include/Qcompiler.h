@@ -1,6 +1,6 @@
 //
 //  Qcompiler.h
-//  d5o_Xc
+//  d5
 //
 //  Created by Nebojsa Vojinovic on 2023-11-12.
 //

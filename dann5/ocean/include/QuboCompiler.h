@@ -1,6 +1,6 @@
 //
 //  QuboCompiler.h
-//  d5o_Xc
+//  d5o_X
 //
 //  Created by Nebojsa Vojinovic on 2023-11-12.
 //

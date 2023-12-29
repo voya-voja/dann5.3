@@ -1,3 +1,12 @@
+//
+//  QderivedOps.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef QderivedOps_h
+#define QderivedOps_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -125,3 +134,5 @@ namespace dann5 {
     private:
     };
 };
+
+#endif /* QderivedOps_h */

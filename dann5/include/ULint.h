@@ -1,12 +1,12 @@
 //
-//  Lint.h
-//  d5o_ta_Xc
+//  ULint.h
+//  d5
 //
 //  Created by Dann5 Solutions Inc. on 2023-04-06.
 //
 
-#ifndef Lint_h
-#define Lint_h
+#ifndef ULint_h
+#define ULint_h
 
 #include <vector>
 #include <utility>
@@ -329,4 +329,4 @@ namespace dann5
     std::ostream& operator << (std::ostream& output, const ULint& value);
 };
 
-#endif /* Lint_h */
+#endif /* ULint_h */

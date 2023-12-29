@@ -1,6 +1,6 @@
 //
 //  QtoString.hpp
-//  d5o_ta_Xc
+//  d5
 //
 //  Created by Nebojsa Vojinovic on 2023-11-15.
 //

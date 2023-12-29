@@ -1,3 +1,12 @@
+//
+//  Qblock.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qblock_h
+#define Qblock_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -189,3 +198,5 @@ namespace dann5 {
     // An std::vector containing a list of Q blocks
     typedef vector<Qblock::Sp> Qblocks;
 };
+
+#endif /* Qblock_h */

@@ -1,5 +1,13 @@
-#pragma once
+//
+//  Qassign.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
 
+#ifndef Qassign_h
+#define Qassign_h
+#pragma once
 
 #include <pybind11/pybind11.h>
 
@@ -257,3 +265,5 @@ namespace dann5 {
         };
     };
 };
+
+#endif /* Qassign_h */

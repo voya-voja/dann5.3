@@ -1,3 +1,12 @@
+//
+//  Qbit.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qbit_h
+#define Qbit_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -208,3 +217,5 @@ namespace dann5 {
     // Quantum vector of Q cell references
     typedef vector<Qbit::Sp> Qbits;
 };
+
+#endif /* Qbit_h */

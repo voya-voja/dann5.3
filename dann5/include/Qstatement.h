@@ -1,3 +1,12 @@
+//
+//  Qstatement.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qstatement_h
+#define Qstatement_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -89,3 +98,5 @@ namespace dann5 {
     // An std::vector containing a list of Q statements
     typedef vector<Qstatement::Sp> Qstatements;
 };
+
+#endif /* Qstatement_h */

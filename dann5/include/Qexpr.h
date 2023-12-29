@@ -1,3 +1,12 @@
+//
+//  Qexpr.h
+//  d5
+//
+//  Created by Nebojsa Vojinovic on 2022-11-12.
+//
+
+#ifndef Qexpr_h
+#define Qexpr_h
 #pragma once
 
 #include <pybind11/pybind11.h>
@@ -438,3 +447,5 @@ namespace dann5 {
         };
     };
 };
+
+#endif /* Qexpr_h */
