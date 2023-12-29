@@ -5,7 +5,7 @@ Created on Thu Jan  6 15:12:23 2022
 @author: Nebojsa.Vojinovic
 """
 
-from dann5.d5o2 import Qbit, Superposition, Qanalyzer
+from dann5.d5 import Qbit, Superposition, Qanalyzer
 
 class QbitTest:
     def __init__(self):

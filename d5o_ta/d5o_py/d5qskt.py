@@ -5,25 +5,21 @@ Created on Mon Dec 27 16:59:22 2021
 @author: Nebojsa.Vojinovic
 """
 
-import dann5.d5o2 as d5o
-from dann5.qiskit import QuantumRequest
-
-import time
-
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
 
 from qiskit import IBMQ, transpile
 
 from qiskit.providers.aer import QasmSimulator
+from qiskit_ibm_provider import IBMProvider
 
 
 def getProvider():
     provider = None
     try:
-        provider = IBMQ.load_account()
+        provider = IBMProvider()
     except:
-        IBMQ.save_account('3831550b1cb9f95399e73d27580df327545536ec32add72e4194247a9f7e02ade60a585057c1d030ca0cda5bc6f443d8f3dd010f4fbacbe8291295a24cfdd8fc')   
-        provider = IBMQ.load_account()
+        IBMProvider.save_account('3831550b1cb9f95399e73d27580df327545536ec32add72e4194247a9f7e02ade60a585057c1d030ca0cda5bc6f443d8f3dd010f4fbacbe8291295a24cfdd8fc')   
+        provider = IBMProvider()
     return provider
 
 def initialize():
@@ -435,6 +431,7 @@ def adder():
 def testCircuit(qc, provider):
     print(qc)
     backend = provider.get_backend('ibm_brisbane')
+    """
     #backend = provider.get_backend('ibm_perth')
     #backend = provider.get_backend('ibm_nairobi')
     #backend = provider.get_backend('ibmq_qasm_simulator')
@@ -447,6 +444,7 @@ def testCircuit(qc, provider):
     result = job.result() # memory=True
     print(result.get_counts())
     return result
+    """
     
     
 def logicalGates():
@@ -484,38 +482,10 @@ def logicalGates():
     #barrier qi, qo, out;
     
 
-
-def qwholeXlarge_test() -> d5o.Qassignment:
-    print("\n\n==== qwholeXlarge_test() =====")
-    p = d5o.Qwhole(2,"p")
-    q = d5o.Qwhole(2, "q")
-    #r = d5o.Qwhole(5, "r")
-    M = d5o.Qwhole("M", 3)
-    mM = M._(p * q) # * r)
-    print(f"\n{mM.toString()}\n{mM.toString(True)}")
-    qubo = mM.qubo()
-    analyze = d5o.Qanalyzer(qubo)
-    print("# of nodes: {}\t# of branches: {}".format(
-        analyze.nodesNo(), analyze.branchesNo()))
-    mM.solve()
-    print("d5o simulation solutions: \n{}\n".format(mM.solutions()))
-    
-    return mM;
     
 def main():
     logicalGates()
-    """
-    assignment = qwholeXlarge_test()
-    assignment.reset()
-    request = QuantumRequest(assignment)
 
-    print('\nSubmitting simplified problem...')
-    start = time.time()
-    request.execute()
-    time_elapsed_simplified = time.time() - start
-    print(f'\nResult returned in {time_elapsed_simplified} seconds:')
-    print(assignment.solutions())
-    """
 
 if __name__ == "__main__":
     main()
