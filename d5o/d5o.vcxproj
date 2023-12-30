@@ -188,7 +188,7 @@
   <ItemGroup>
     <ClCompile Include="..\dann5\ocean\source\D5QuboSolver.cpp" />
     <ClCompile Include="..\dann5\ocean\source\DwaveSolver.cpp" />
-    <ClCompile Include="..\dann5\ocean\source\QTfactories.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\QTfactory.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QuboAnalyzer.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QuboCompiler.cpp" />

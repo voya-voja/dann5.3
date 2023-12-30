@@ -7,7 +7,7 @@
 using namespace dann5;
 using namespace dann5::ocean;
 
-/**** dann5 Qubo Solver ****/
+/**** dann5 Dwave Solver ****/
 const double DwaveSolver::cMaxEnergy = numeric_limits<double>::max();
 
 DwaveSolver::DwaveSolver(bool lowest)
@@ -46,9 +46,3 @@ void  DwaveSolver::reset()
 	mSolution.clear();
 	mMinEnergy = cMaxEnergy;
 }
-/*
-void  DwaveSolver::solve()
-{
-	throw logic_error("Error@DwaveSolver::solve(): Implementation is required!");
-}
-*/

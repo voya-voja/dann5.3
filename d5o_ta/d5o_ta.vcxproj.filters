@@ -57,7 +57,7 @@
     <ClCompile Include="..\dann5\ocean\source\D5QuboSolver.cpp">
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
-    <ClCompile Include="..\dann5\ocean\source\QTfactories.cpp">
+    <ClCompile Include="..\dann5\ocean\source\QTfactory.cpp">
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
     <ClCompile Include="..\dann5\ocean\source\QuboAnalyzer.cpp">

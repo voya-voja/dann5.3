@@ -160,11 +160,17 @@
     <ClInclude Include="..\dann5\include\Qstatement.h" />
     <ClInclude Include="..\dann5\include\Qtype.h" />
     <ClInclude Include="..\dann5\include\Qvalue.h" />
+    <ClInclude Include="..\dann5\qiskit\include\CircuitCompiler.h" />
     <ClInclude Include="..\dann5\qiskit\include\Circuits.h" />
+    <ClInclude Include="..\dann5\qiskit\include\QiskitSolver.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\dann5\qiskit\source\Circuit.cpp" />
+    <ClCompile Include="..\dann5\qiskit\source\CircuitCompiler.cpp" />
+    <ClCompile Include="..\dann5\qiskit\source\CircuitFactory.cpp" />
+    <ClCompile Include="..\dann5\qiskit\source\QiskitSolver.cpp" />
     <ClCompile Include="..\dann5\source\Qcell.cpp" />
     <ClCompile Include="..\dann5\source\QcellOps.cpp" />
     <ClCompile Include="..\dann5\source\Qevaluation.cpp" />

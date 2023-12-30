@@ -75,6 +75,12 @@
     <ClInclude Include="..\dann5\qiskit\include\Circuits.h">
       <Filter>Header Files\dann5\qiskit</Filter>
     </ClInclude>
+    <ClInclude Include="..\dann5\qiskit\include\CircuitCompiler.h">
+      <Filter>Header Files\dann5\qiskit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\qiskit\include\QiskitSolver.h">
+      <Filter>Header Files\dann5\qiskit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -103,6 +109,18 @@
     </ClCompile>
     <ClCompile Include="..\dann5\source\Qstatement.cpp">
       <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\Circuit.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\CircuitCompiler.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\CircuitFactory.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\QiskitSolver.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
