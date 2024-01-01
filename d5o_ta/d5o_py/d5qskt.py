@@ -369,66 +369,54 @@ def halfAdder():
     return qc;
 
 def adder():
-    #qreg in[2]; qreg ci[1]; 
-    #qreg xorO[1]; qreg andO[2]; qreg aux[2];
-    #qreg out[1]; qreg co[1];
-    qi = QuantumRegister(2, 'qi')
-    ci = QuantumRegister(1, 'ci') 
-    xorO = QuantumRegister(1, 'xorO') 
-    andO = QuantumRegister(2, 'andO')
-    aux = QuantumRegister(2, 'aux')
-    out = QuantumRegister(1, 'out')    
-    co = QuantumRegister(1, 'co')
+    #qreg i[3];
+    #qreg a[5];
+    #qreg o[1]; qreg c[1];
+    i = QuantumRegister(3, 'i')
+    a = QuantumRegister(5, 'a')
+    o = QuantumRegister(1, 'o')    
+    c = QuantumRegister(1, 'c')
     cl = ClassicalRegister(5, "cl")
-    qc = QuantumCircuit(qi, ci, xorO, andO, aux, out, co, cl)
+    qc = QuantumCircuit(i, a, o, c, cl)
     
-    #// half adder: xorO = in0 + in1
+    #// half adder: xorO = i0 + i1
     #h in; 
-    qc.h(qi)
-    qc.barrier(qi)
-    #// out = in0 XOR in1
-    #cx in[0], xorO[0];
-    #cx in[1], xorO[0];
-    qc.cx(qi[0], xorO[0])
-    qc.cx(qi[1], xorO[0])
-    #// andO0 = in0 AND in1
-    #ccx in[0], in[1], andO[0];
-    #barrier in, ci, xorO, andO[0];
-    qc.ccx(qi[0], qi[1], andO[0])
-    qc.barrier(qi, xorO, andO[0])
+    qc.h(i)
+    qc.barrier(i, a, o, c)
+    #// half adder: a0 = i0 + i1
+    #cx in[0], a[0];
+    #cx in[1], a[0];
+    qc.cx(i[0], a[0])
+    qc.cx(i[1], a[0])
+    #// andO0 = i0 AND i1
+    qc.ccx(i[0], i[1], a[1])
+    qc.barrier(i, a, o, c)
     
-    #// half adder: out = xorO + ci
-    #h ci; 
-    qc.h(ci)
-    qc.barrier(ci)
-    #// out = xorO XOR ci
-    #cx xorO[0], out[0];
-    #cx ci[0], out[0];
-    qc.cx(xorO[0], out[0])
-    qc.cx(ci[0], out[0])
-    #// andO1 = xorO AND ci
-    #ccx xorO[0], ci[0], andO[1];
-    #barrier ci, xorO, andO, aux, out;
-    qc.ccx(xorO[0], ci[0], andO[1])
-    qc.barrier(ci, xorO, andO, aux, out)
+    #// half adder: o = aO + i2
+    qc.cx(a[0], o[0])
+    qc.cx(i[2], o[0])
+    #// andO1 = aO AND i2
+    #ccx a[0], i[2], a[2];
+    #barrier i, a, o, c, cl;
+    qc.ccx(a[0], i[2], a[2])
+    qc.barrier(i, a, o, c)
     
-    #// co = andO0 OR andO1
-    # ccx andO[0], andO[1], aux[0]; // AND
-    # cx andO[0], aux[1];
-    # cx andO[1], aux[1];      // XOR
-    # cx aux[1], co[0];
-    # cx aux[0], co[0];   // XOR
-    qc.ccx(andO[0],andO[1], aux[0])
-    qc.cx(andO[0], aux[1])
-    qc.cx(andO[1], aux[1])
-    qc.cx(aux[0], co[0])
-    qc.cx(aux[1], co[0])
-    # barrier andO, aux, out, co;
-    qc.barrier(andO, aux, out, co)
-    qc.measure(qi, cl[0:2])
-    qc.measure(ci[0], cl[2])
-    qc.measure(out[0], cl[3])
-    qc.measure(co[0], cl[4])
+    #// co = a1 OR a2
+    # ccx a[1], a[2], a[3]; // AND
+    # cx a[1], a[4];
+    # cx a[2], a[4];      // XOR
+    # cx a[3], c[0];
+    # cx a[4], c[0];   // XOR
+    qc.ccx(a[1],a[2], a[3])
+    qc.cx(a[1], a[4])
+    qc.cx(a[2], a[4])
+    qc.cx(a[3], c[0])
+    qc.cx(a[4], c[0])
+    # barrier i, a, o, c, cl;
+    qc.barrier(i, a, o, c)
+    qc.measure(i, cl[0:3])
+    qc.measure(o[0], cl[3])
+    qc.measure(c[0], cl[4])
     return qc
      
 def testCircuit(qc, provider):
@@ -459,6 +447,7 @@ def testCircuit(qc, provider):
     
 def logicalGates():
     provider = getProvider()
+    """
     print("Initialize:"); testCircuit(initialize(), provider)
     print("Superposition:"); testCircuit(superposition(), provider);
     print("Reset:"); testCircuit(reset(), provider);
@@ -478,6 +467,7 @@ def logicalGates():
     print("NOR op:"); testCircuit(norOp(), provider);
     
     print("Half Adder:"); testCircuit(halfAdder(), provider);
+    """
     print("Adder:"); testCircuit(adder(), provider);
     
     #testCircuit(initialize())

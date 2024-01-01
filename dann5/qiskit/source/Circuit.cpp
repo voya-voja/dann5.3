@@ -5,262 +5,413 @@ using namespace dann5;
 using namespace dann5::qiskit;
 
 /**** Circuit ****/
+Circuit::Sp Circuit::circuit(const IoPorts& ports) const
+{
+    return Circuit::Sp( new Circuit(*this) );
+}
 
-Circuit::Circuit()
+string Circuit::draw() const
+{
+    return "";
+}
+
+std::ostream& dann5::qiskit::operator << (std::ostream& out, const Circuit& circuit)
+{
+    out << circuit.draw();
+    return out;
+}
+
+/**** Measure Circuit ****/
+Circuit::Instruction MeasureCircuit::Measure(const IoPort& arg, const IoPort& cl)
+{
+    return Instruction("measure",
+        { Qubit(QuantumRegister(1, arg.name()), arg.at()) },
+        { Clbit(ClassicalRegister(1, cl.name()), cl.at()) });
+}
+
+MeasureCircuit::MeasureCircuit() 
+    :Circuit({ MeasureCircuit::Measure() }) 
+{}
+
+string MeasureCircuit::draw() const
+{
+    string drawing = "\t   a_0: -M-";
+    drawing += "\t         |";
+    drawing += "\tcl: 1 /= +=";
+    drawing += "\t         0";
+    return drawing;
+}
+
+/**** Hadamard Circuit ****/
+Circuit::Instruction HadamardCircuit::Hadamard(const IoPort& arg)
+{
+    return Instruction("h",
+        { Qubit(QuantumRegister(1, arg.name()), arg.at()) });
+}
+
+HadamardCircuit::HadamardCircuit() 
+    :Circuit({ HadamardCircuit::Hadamard() })
 {
 }
 
-Circuit::~Circuit() 
+string HadamardCircuit::draw() const
+{
+    string drawing = "\t  a_0: - H -";
+    return drawing;
+}
+
+/**** Reset Circuit ****/
+Circuit::Instruction ResetCircuit::Reset(const IoPort& arg) 
+{
+    return Instruction("reset",
+        { Qubit(QuantumRegister(1, arg.name()), arg.at()) });
+}
+
+ResetCircuit::ResetCircuit() : Circuit({ ResetCircuit::Reset() }) 
 {
 }
 
-Circuit Circuit::circuit(const IoPorts& ports) const
+string ResetCircuit::draw() const
 {
-	Index cSize = mElements.cols(), rSize = mElements.rows();
-	Qkey key;
-	Qubo dict;
-	// generate full qubo if not finalized
-	for (Index r = 0; r < rSize; r++)
-	{	// if finalized and 1st port value is 0, skip element
-		if (!finalized || ports[r].value != 0)
-		{
-			key.first = ports[r].name;
-			for (Index c = 0; c < cSize; c++)
-			{	// if finalized and 1st port value is 1, use name of 2nd
-				if (finalized && ports[r].value == 1)
-				{
-					if (ports[c].value == 1) continue;
-					key.first = ports[c].name;
-				}
-				// if finalized and 2nd port value is 0, skip element
-				if (!finalized || ports[c].value != 0)
-				{	// if finalized and 2nd port value is 1, use name of 1st
-					if (finalized && ports[c].value == 1)
-						key.second = ports[r].name;
-					else
-						key.second = ports[c].name;
-
-					// add 0 energy element only if linear element, i.e. 
-					// 1st and 2nd name are the same
-					double energy = mElements(r, c);
-					if (energy != 0 || key.first == key.second)
-						dict[key] += energy;
-				}
-			}
-		}
-	}
-	return dict;
+    string drawing = "\t  a_0: -|0>-";
+    return drawing;
 }
 
-std::ostream& dann5::qiskit::operator<< (std::ostream& stream, const Circuit& right)
+/**** Invert Circuit ****/
+Circuit::Instruction InvertCircuit::Not(const IoPort& arg) 
 {
-	stream << "  " << right.mVariables.transpose() << std::endl;
-	stream << right.mElements;
-	return(stream);
+    return Instruction("x",
+        { Qubit(QuantumRegister(1, arg.name()), arg.at()) });
+}
+
+InvertCircuit::InvertCircuit() 
+    : Circuit({ InvertCircuit::Not() }) 
+{
+}
+
+string InvertCircuit::draw() const
+{
+    string drawing = "\t  a_0: - X -";
+    return drawing;
 }
 
 /**** Operator Circuit ****/
-OperatorCircuit::OperatorCircuit()
-	:Circuit(Circuit::Size(2))
+Circuit::Instruction OperatorCircuit::ControlledNot(const IoPort& in, const IoPort& out) 
+{
+    return Instruction("x",
+        { Qubit(QuantumRegister(1, in.name()), in.at()),
+            Qubit(QuantumRegister(1, out.name()), out.at()) });
+}
+
+Circuit::Instruction OperatorCircuit::Swap(const IoPort& in, const IoPort& out)
+{
+    return Instruction("swap",
+        { Qubit(QuantumRegister(1, in.name()), in.at()),
+            Qubit(QuantumRegister(1, out.name()), out.at()) });
+}
+
+/**** Binary Operation Circuit ****/
+Circuit::Instruction BinaryOpCircuit::Toffoli(const IoPort& in, const IoPort& out) 
+{
+    return Instruction("x",
+        { Qubit(QuantumRegister(2, in.name()), in.at()),
+            Qubit(QuantumRegister(2, in.name()), in.at() + 1),
+            Qubit(QuantumRegister(1, out.name()), out.at()) });
+}
+
+Circuit::Instruction BinaryOpCircuit::Toffoli(const IoPort& in0, const IoPort& in1, const IoPort& out) 
+{
+    return Instruction("x",
+        { Qubit(QuantumRegister(1, in0.name()), in0.at()),
+            Qubit(QuantumRegister(1, in1.name()), in1.at()),
+            Qubit(QuantumRegister(1, out.name()), out.at()) });
+}
+
+/**** Equal Operator Circuit ****/
+EqCircuit::EqCircuit() 
+    :OperatorCircuit({ OperatorCircuit::ControlledNot() }) 
 {
 }
 
-/**** Binary operation Circuit ****/
-BinaryOpCircuit::BinaryOpCircuit()
-	:Circuit(Circuit::Size(3))
+string EqCircuit::draw() const
+{
+    string 
+        drawing = "\t  i_0: --+--";
+        drawing += "\t         |";
+        drawing += "\t  o_0: - X -";
+    return drawing;
+}
+
+/**** Not-Equal Operator Circuit ****/
+NeqCircuit::NeqCircuit() 
+    : OperatorCircuit({ OperatorCircuit::ControlledNot(),
+                        InvertCircuit::Not(IoPort("o")) })
 {
 }
 
-/**** Binary operation Circuit with two outputs ****/
-BinaryOp2OutCircuit::BinaryOp2OutCircuit()
-	:Circuit(Circuit::Size(4))
+string NeqCircuit::draw() const
 {
+    string 
+        drawing = "\t  i_0: --+--";
+        drawing += "\t         |";
+        drawing += "\t  o_0: - X -- X -";
+    return drawing;
 }
 
-/**** Invertoperator Circuit ****/
-InvertCircuit::InvertCircuit()
-    :OperatorCircuit()
-{
-    *this << "i", "o";
-    *this << -1,   2,
-              0,  -1;
-}
-
-/**** Equal operator Circuit ****/
-EqCircuit::EqCircuit()
-	:OperatorCircuit()
-{
-	*this << "i", "o";
-	*this <<  1,  -2,
-			  0,   1;
-}
-
-/**** Not equal operator Circuit ****/
-NeqCircuit::NeqCircuit()
-	:OperatorCircuit()
-{
-	*this << "i", "o";
-	*this << -1,   2, 
-			  0,  -1;
-}
-
-/**** Greater-than operator Circuit ****/
-GtCircuit::GtCircuit()
-	:OperatorCircuit()
-{
-	*this << "i", "o";
-//	*this <<  2,   4,
-//			  0,  -6;
-	*this << 0.5,  1,
-			 0,   -1.5;
-}
-
-/**** Greater-than-or-equal operator Circuit ****/
-GeCircuit::GeCircuit()
-	:OperatorCircuit()
-{
-	*this << "i", "o";
-//	*this <<  4,  -4,
-	* this << 1,  -1,
-			  0,   0;
-}
-
-/**** Less-than operator Circuit ****/
+/**** Less-Than Operator Circuit ****/
 LtCircuit::LtCircuit()
-	:OperatorCircuit()
+    : OperatorCircuit({ OperatorCircuit::Swap(),
+                        ResetCircuit::Reset(IoPort("o")),
+                        InvertCircuit::Not(IoPort("o")),
+                        OperatorCircuit::ControlledNot() }) 
 {
-	*this << "i", "o";
-	*this << -6,   4,
-			  0,   2;
 }
 
-/**** Less-than-or-equal operator Circuit ****/
-LeCircuit::LeCircuit()
-	:OperatorCircuit()
+string LtCircuit::draw() const
 {
-	*this << "i", "o";
-	*this <<  0,  -4,
-			  0,   4;
+    string 
+        drawing = "\t  i_0: -X-------------+--";
+        drawing += "\t       |             | ";
+        drawing += "\t o_0: -X--|0>-- X -- X -";
+    return drawing;
+};
+
+/**** Less-Than-and-Equal Operator Circuit ****/
+LeCircuit::LeCircuit() 
+    : OperatorCircuit({ OperatorCircuit::Swap(),
+                        OperatorCircuit::ControlledNot() }) 
+{
 }
 
-/**** And binary operation Circuit ****/
-AndCircuit::AndCircuit()
-	:BinaryOpCircuit()
+string LeCircuit::draw() const
 {
-	*this << "i0", "i1", "o";
-	*this <<   0,    1,  -2,
-			   0,    0,  -2,
-			   0,    0,   3;
+    string 
+        drawing = "\t  i_0: --X---+-";
+        drawing += "\t        |   |";
+        drawing += "\t o_0: --X-- X -";
+    return drawing;
 }
 
-/**** Nand binary operation Circuit with two outputs****/
-NandCircuit::NandCircuit()
-	:BinaryOp2OutCircuit()
+/**** Greater-Than Operator Circuit ****/
+GtCircuit::GtCircuit() 
+    : OperatorCircuit({ InvertCircuit::Not(IoPort("o")),
+                        OperatorCircuit::Swap(),
+                        OperatorCircuit::ControlledNot(),
+                        ResetCircuit::Reset(IoPort("o")) }) 
 {
-	// assuming x = 1 - ab
-	*this << "i0", "i1", "o0", "o1";
-	*this <<   0,    5,    0,   -7,
-			   0,    0,    0,   -8,
-			   0,    0,   -5,   10,
-			   0,    0,    0,    5;
 }
 
-/**** Or binary operation Circuit ****/
-OrCircuit::OrCircuit()
-	:BinaryOpCircuit()
+string GtCircuit::draw() const
 {
-	*this << "i0", "i1", "o";
-	*this <<   1,    1,  -2,
-			   0,    1,  -2,
-			   0,    0,   1;
+    string 
+        drawing = "\t  i_0: ------X---+-";
+        drawing += "\t            |   | ";
+        drawing += "\t o_0: - X --X-- X -----|0>-";
+    return drawing;
 }
 
-/**** Nand binary operation Circuit with two outputs****/
-NorCircuit::NorCircuit()
-	:BinaryOp2OutCircuit()
+/****  Greater-Than-and-Equal Operator Circuit ****/
+GeCircuit::GeCircuit() 
+    : OperatorCircuit({ InvertCircuit::Not(IoPort("o")),
+                        OperatorCircuit::Swap(),
+                        OperatorCircuit::ControlledNot() }) 
 {
-	// assuming x = 1 - ab
-	*this << "i0", "i1", "o0", "o1";
-	*this <<  -1,    2,    2,   -2,
-			   0,   -1,    2,   -2,
-			   0,    0,   -1,   -1,
-			   0,    0,    0,    3;
 }
 
-/**** Not-left-or-right binary operation Circuit with two outputs****/
-NotLeftOrRightCircuit::NotLeftOrRightCircuit()
-	:BinaryOp2OutCircuit()
+string GeCircuit::draw() const
 {
-	*this << "i0", "i1", "o0", "o1";
-	*this <<  -1,    1,    2,   -3,
-			   0,    0,    0,   -2,
-			   0,    0,   -1,   -2,
-			   0,    0,    0,    5;
+    string 
+        drawing = "\t  i_0: ------X---+-";
+        drawing += "\t            |   | ";
+        drawing += "\t o_0: - X --X-- X -";
+    return drawing;
 }
 
-/**** DWave not-left-or-right binary operation Circuit with two outputs****/
-DwNotLeftOrRightCircuit::DwNotLeftOrRightCircuit()
-	:BinaryOp2OutCircuit()
+/****  And Operation Circuit ****/
+AndCircuit::AndCircuit() 
+    : BinaryOpCircuit({ BinaryOpCircuit::Toffoli() }) 
 {
-	*this << "i0", "i1", "o0", "o1";
-	*this <<  -1,    4,    2,   -6,
-			   0,    0,    0,   -6,
-			   0,    0,   -1,   -2,
-			   0,    0,    0,    9;
 }
 
-/**** Xor binary operation Circuit with two outputs****/
-XorCircuit::XorCircuit()
-	:BinaryOp2OutCircuit()
+string AndCircuit::draw() const
 {
-	*this << "i0", "i1", "o0", "o1";
-	*this <<   1,    2,   -2,   -4,
-			   0,    1,   -2,   -4,
-			   0,    0,    1,    4,
-			   0,    0,    0,    4; 
+    string 
+        drawing = "\t  i_0: --+-";
+        drawing += "\t        | ";
+        drawing += "\t i_1: --+--";
+        drawing += "\t        | ";
+        drawing += "\t o_0: - X -";
+    return drawing;
 }
 
-/**** Nxor binary operation Circuit with two outputs****/
-NxorCircuit::NxorCircuit()
-	:BinaryOp2OutCircuit()
+/****  Not-And Operation Circuit ****/
+NandCircuit::NandCircuit() 
+    : BinaryOpCircuit({ InvertCircuit::Not(IoPort("o")),
+                        BinaryOpCircuit::Toffoli() }) 
 {
-	*this << "i0", "i1", "o0", "o1";
-/*	*this <<  -1,    2,   -4,    2,
-			   0,   -1,   -4,    2,
-			   0,    0,    8,   -4,
-			   0,    0,    0,   -1;
-*/
-	*this <<  -1,    2,    2,   -4,
-			   0,   -1,    2,   -4,
-			   0,    0,   -1,   -4,
-			   0,    0,    0,    8;
-
 }
 
-/**** Adder trinary operation Circuit with two outputs****/
-AdderCircuit::AdderCircuit()
-	:Circuit(Circuit::Size(5))
+string NandCircuit::draw() const
 {
-	*this << "i0", "i1", "i3", "o0", "o1";
-	*this <<   1,    2,    2,   -2,   -4,
-			   0,    1,    2,   -2,   -4,
-			   0,    0,    1,   -2,   -4,
-			   0,    0,    0,    1,    4,
-			   0,    0,    0,    0,    4;
+    string 
+        drawing = "\t  i_0: -------+-";
+        drawing += "\t             | ";
+        drawing += "\t i_1: -------+--";
+        drawing += "\t             | ";
+        drawing += "\t o_0: - X -- X -";
+    return drawing;
 }
 
-Circuit::Labels AdderCircuit::format(const Circuit::Labels& args) const
+/**** Or Operation Circuit ****/
+OrCircuit::OrCircuit() 
+    : BinaryOpCircuit({ BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("a")),
+                        OperatorCircuit::ControlledNot(IoPort("i"), IoPort("a", 1)),
+                        OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("a", 1)),
+                        OperatorCircuit::ControlledNot(IoPort("a"), IoPort("o")),
+                        OperatorCircuit::ControlledNot(IoPort("a", 1), IoPort("o")) }) 
 {
-	if (args.rows() == 5) return args;
-
-	Circuit::Labels fAdderArgs(5);
-	if (args.rows() == 4)
-		fAdderArgs << args(0), args(1), args(2), args(3),
-                        Qaddition::Carry::Symbol(args(3));
-	else
-		fAdderArgs << args(0), args(1),
-                        Qaddition::Carry::Symbol(args(0)), args(2),
-                        Qaddition::Carry::Symbol(args(2));
-
-	return(fAdderArgs);
 }
+
+string OrCircuit::draw() const
+{
+    string 
+        drawing = "\t  i_0: --+----+--------------------";
+        drawing += "\t        |    |                    ";
+        drawing += "\t i_1: --+---------+---------------";
+        drawing += "\t        |    |    |               ";
+        drawing += "\t a_0: - X ----------------+-------";
+        drawing += "\t             |    |       |       ";
+        drawing += "\t a_1: ------ X -- X -----------+--";
+        drawing += "\t                          |    |  ";
+        drawing += "\t o_0: ------------------- X -- X -";
+    return drawing;
+}
+
+/****  Not-Or Operation Circuit ****/
+NorCircuit::NorCircuit() 
+    : BinaryOpCircuit({ BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("a")),
+                        OperatorCircuit::ControlledNot(IoPort("i"), IoPort("a", 1)),
+                        OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("a", 1)),
+                        OperatorCircuit::ControlledNot(IoPort("a")),
+                        OperatorCircuit::ControlledNot(IoPort("a", 1)),
+                        InvertCircuit::Not(IoPort("o")) }) 
+{
+}
+
+string NorCircuit::draw() const
+{
+    string 
+        drawing = "\t  i_0: --+----+--------------------";
+        drawing += "\t        |    |                    ";
+        drawing += "\t i_1: --+---------+---------------";
+        drawing += "\t        |    |    |               ";
+        drawing += "\t a_0: - X ----------------+-------";
+        drawing += "\t             |    |       |       ";
+        drawing += "\t a_1: ------ X -- X -----------+--";
+        drawing += "\t                          |    |  ";
+        drawing += "\t o_0: ------------------- X -- X -- X -";
+    return drawing;
+};
+
+/**** Xor Operation Circuit ****/
+XorCircuit::XorCircuit() 
+    : BinaryOpCircuit({ OperatorCircuit::ControlledNot(),
+                        OperatorCircuit::ControlledNot(IoPort("i", 1)) }) 
+{
+}
+
+string XorCircuit::draw() const
+{
+    string 
+        drawing = "\t  i_0: --+-------";
+        drawing += "\t        |       ";
+        drawing += "\t i_1: -------+--";
+        drawing += "\t        |    |  ";
+        drawing += "\t o_0: - X -- X -";
+    return drawing;
+}
+
+/****  Not-Xor Operation Circuit ****/
+NxorCircuit::NxorCircuit() 
+    : BinaryOpCircuit({ OperatorCircuit::ControlledNot(),
+                        OperatorCircuit::ControlledNot(IoPort("i", 1)),
+                        InvertCircuit::Not(IoPort("o")) }) 
+{
+}
+
+string NxorCircuit::draw() const
+{
+    string 
+        drawing = "\t  i_0: --+-------";
+        drawing += "\t        |       ";
+        drawing += "\t i_1: -------+--";
+        drawing += "\t        |    |  ";
+        drawing += "\t o_0: - X -- X -- X -";
+    return drawing;
+}
+
+/****  Half-Adder Operation Circuit ****/
+HalfAdder::HalfAdder() 
+    : BinaryOp2OutCircuit({ OperatorCircuit::ControlledNot(),
+                            OperatorCircuit::ControlledNot(IoPort("i", 1)),
+                            BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("c")) }) 
+{
+}
+
+string HalfAdder::draw() const
+{
+    string 
+        drawing = "\t  i_0: --+---------+--";
+        drawing += "\t        |         |  ";
+        drawing += "\t i_1: -------+----+--";
+        drawing += "\t        |    |    |  ";
+        drawing += "\t o_0: - X -- X ------";
+        drawing += "\t                  |  ";
+        drawing += "\t c_0: ----------- X -";
+    return drawing;
+}
+
+/****  Adder Operation Circuit ****/
+AdderCircuit::AdderCircuit() 
+    : Circuit({ // half adder { out: a0 = i0 ^ i1; carry: a[1] = i[0] & i[1] }
+                OperatorCircuit::ControlledNot(IoPort("i"), IoPort("a")),
+                OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("a")),
+                BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("a", 1)),
+                // half adder { out: o0 = a0 ^ i2; carry: a[2] = a[0] & i[2] }
+                OperatorCircuit::ControlledNot(IoPort("a"), IoPort("o")),
+                OperatorCircuit::ControlledNot(IoPort("i", 2) , IoPort("o+", 1)),
+                BinaryOpCircuit::Toffoli(IoPort("a"), IoPort("i", 2), IoPort("a", 2)),
+                // c0 = a1 | a2
+                BinaryOpCircuit::Toffoli(IoPort("a", 1), IoPort("a", 3)),       // AND
+                OperatorCircuit::ControlledNot(IoPort("a", 1), IoPort("a", 4)),
+                OperatorCircuit::ControlledNot(IoPort("a", 2), IoPort("a", 4)), // XOR
+                OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("c")),
+                OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("c")) })  // XOR
+{
+}
+
+string AdderCircuit::draw() const
+{
+    string 
+        drawing = "\t  i_0: - H ------+---------+-----------M-----------------------------------";
+        drawing += "\t                |         |           |";
+        drawing += "\t i_1: - H -----------+----+--------------M--------------------------------";
+        drawing += "\t                |    |    |           |  |";
+        drawing += "\t i_3: - H -----------------------------------+----+-----------M-----------";
+        drawing += "\t                |    |    |           |  |   |    |           |";
+        drawing += "\t a_0: --------- X -- X -----------+---------------+-----------------------";
+        drawing += "\t                          |       |   |  |   |    |           |";
+        drawing += "\t a_1: ------------------- X ------------------------------+-------+-------";
+        drawing += "\t                                  |   |  |   |    |       |   |   |";
+        drawing += "\t a_2: ------------------------------------------- X ------+-----------------+-------";
+        drawing += "\t                                  |   |  |   |            |   |   |         |";
+        drawing += "\t a_3: --------------------------------------------------- X -----------+------------";
+        drawing += "\t                                  |   |  |   |                |   |    |    |";
+        drawing += "\t a_4: ----------------------------------------------------------- X ------- X ---+--";
+        drawing += "\t                                  |   |  |   |                |        |         |";
+        drawing += "\t o_0: --------------------------- X -------- X -------------------------------------";
+        drawing += "\t                                      |  |                    |        |         |  ";
+        drawing += "\t c_0: ---------------------------------------------------------------- X ------- X -";
+    return drawing;
+};
+

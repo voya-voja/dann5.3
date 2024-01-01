@@ -33,12 +33,20 @@ namespace dann5 {
             typedef shared_ptr<Circuit> Sp;
 
             // A circuit's input-output port
-            struct IoPort {
-                string name;
-                Qvalue value;
+            typedef pair<string, size_t> Port;
 
-                IoPort() : name(""), value(cSuperposition) {};
-                IoPort(string n, Qvalue v) : name(n), value(v) {};
+            struct IoPort : public Port{
+                IoPort(string name, size_t at = 0) : Port(name, at) {};
+
+                IoPort(const Port& port) : Port(port) {};
+
+                IoPort(const IoPort& right) : Port(right) {};
+
+                const string& name() const { return first; };
+                void name(const string& n) { first = n; };
+
+                size_t at() const { return second; };
+                void at(size_t position) { second = position; };
             };
 
             // A list of circuit's input-output ports
@@ -46,42 +54,78 @@ namespace dann5 {
             typedef vector<IoPort> IoPorts;
 
             // Defines a qiskit quantum-register coresponding element
-            struct QuantumRegister {
+            typedef pair<size_t, string> QuantumRegister;
+
+            struct QuReg {
                 size_t mNumQubits = 0;
                 string mName;
 
-                QuantumRegister(size_t num_qubits, const string& name)
+                QuReg(size_t num_qubits, const string& name)
                     : mNumQubits(num_qubits), mName(name) {};
+
+                QuReg(const QuantumRegister& quReg)
+                    : mNumQubits(quReg.first), mName(quReg.second) {};
+
+                operator QuantumRegister() {
+                    return QuantumRegister(mNumQubits, mName);
+                };
             };
 
             // Defines a qiskit quantum-bit coresponding element
-            struct Qubit {
-                QuantumRegister mRegister;
+            typedef pair<QuantumRegister, size_t> Qubit;
+
+            struct QuantumBit {
+                QuReg mRegister;
                 size_t mAt;
 
-                Qubit(const QuantumRegister& reg, size_t at)
+                QuantumBit(const QuReg& reg, size_t at)
                     : mRegister(reg), mAt(at) {};
+
+                QuantumBit(const Qubit& quBit)
+                    : mRegister(quBit.first), mAt(quBit.second) {};
+
+                operator Qubit() {
+                    return Qubit(mRegister, mAt);
+                };
             };
 
             // A list of qiskit quantum-bits
             typedef vector<Qubit> Qubits;
 
             // Defines a qiskit control-register coresponding element
-            struct ControlRegister {
+            typedef pair<size_t, string> ClassicalRegister;
+
+            struct ClReg {
                 size_t mNumClbits = 0;
                 string mName;
 
-                ControlRegister(size_t num_qubits, const string& name)
+                ClReg(size_t num_qubits, const string& name)
                     : mNumClbits(num_qubits), mName(name) {};
+
+                ClReg(const ClassicalRegister& cntrlReg)
+                    : mNumClbits(cntrlReg.first), mName(cntrlReg.second) {};
+
+                operator ClassicalRegister() {
+                    return ClassicalRegister(mNumClbits, mName);
+                };
             };
 
             // Defines a qiskit control-bit coresponding element
-            struct Clbit {
-                ControlRegister mRegister;
+            typedef pair<ClassicalRegister, size_t> Clbit;
+
+            struct ControllBit {
+                ClReg mRegister;
                 size_t mAt;
 
-                Clbit(const ControlRegister& reg, size_t at)
+                ControllBit(const ClReg& reg, size_t at)
                     : mRegister(reg), mAt(at) {};
+
+                ControllBit(const Clbit& clBit)
+                    : mRegister(clBit.first), mAt(clBit.second) {};
+
+                operator Clbit() {
+                    return Clbit(mRegister, mAt);
+                };
             };
 
             // A list of qiskit control-bits
@@ -93,9 +137,12 @@ namespace dann5 {
                 Qubits mQubits;
                 Clbits mClbits;
 
-                Instruction(const string& name, const Qubits& qubits,
-                                                        const Clbits& clbits) 
+                Instruction(const string& name, const Qubits& qubits = {},
+                                                    const Clbits& clbits = {})
                     : mName(name), mQubits(qubits), mClbits(clbits) {};
+
+                size_t num_qubits() const { return mQubits.size(); };
+                size_t num_clbits() const { return mClbits.size(); }
             };
 
             // A list of qiskit circuit instructions
@@ -108,19 +155,28 @@ namespace dann5 {
             // on their value, i.e. for port value 0, its elements will be a QuantumRegister with a "reset" and "measure" gates, and for
             // port with value 1, it will be initialized as value 0 followed by "NOT" gate.
             // A Qbit in a superposition state, e.g. a/S/, will be initialized using "hadamard" gate
-            Circuit circuit(const IoPorts& ports) const;
+            Circuit::Sp circuit(const IoPorts& ports) const;
 
-            ~Circuit();
+            // override to draw the circuit
+            virtual string draw() const;
 
             // Sends a representation of Circuit into output stream
             friend std::ostream& operator << (std::ostream&, const Circuit&);
 
         protected:
-            // construct default circuit object
-            Circuit() {};
+            // construct default circuit object with instructions
+            Circuit(const Instructions& instructions)
+                : mInstructions(instructions) {};
+
+            // construct default circuit object with instructions
+            Circuit(const Circuit& right)
+                : mInstructions(right.mInstructions) {};
+
+            // returns reference to list of instructions of this circuit
+            Instructions& instructions() { return mInstructions; };
 
         private:
-            Instructions    mInstructions;	// Default circuite instructions 
+            Instructions    mInstructions;	// Default circuite instructions
         };
 
         // Sends a representation of Circuit into output stream
@@ -133,706 +189,291 @@ namespace dann5 {
         typedef vector<Circuit::Sp> Circuits;
 
         // Qiskit measurement circuit is a specialization of a Circuit
-        /*        Initialize:
-         qi_0: -M-
-                |
-         cl: 5/=+=
-                0  
-        1.	CircuitInstruction(
-            	operation=Instruction(
-                	name='measure', 
-                	num_qubits=1, 
-                	num_clbits=1, 
-                	params=[]
-             	), 
-            	qubits=(
-                	Qubit(
-                	    QuantumRegister( 2, 'qi' ), 
-                	    0
-                	),
-                ), 
-                clbits=(
-                	Clbit(
-                	    ClassicalRegister( 5, 'cl'), 
-                	    0
-                	),
-            	)
-        	)
-*/
         class MeasureCircuit : public Circuit
         {
-        private:
-        protected:
         public:
+            // The qiskit measure gate (M)
+            static Instruction Measure(const IoPort& arg = IoPort("a"), const IoPort& cl = IoPort("cl"));
+
             MeasureCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
-
         // Qiskit hadamard circuit is a specialization of a Circuit
-        /*
-        Superposition:
-        qi_0: - H --M----
-
-
-        1.	CircuitInstruction(
-                operation=Instruction(
-                    name='h',
-                    num_qubits=1,
-                    num_clbits=0,
-                    params=[]
-                ),
-                qubits=(
-                    Qubit(
-                        QuantumRegister(2, 'qi'),
-                        0
-                    ),
-                ),
-                clbits=()
-            )
-        */
         class HadamardCircuit : public Circuit
         {
-        private:
-        protected:
         public:
+            // The qiskit hadamard gate (H)
+            static Instruction Hadamard(const IoPort& arg = IoPort("a"));
+
             HadamardCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
+        };
+
+        // Qiskit's reset specialization of operator circuit
+        class ResetCircuit : public Circuit
+        {
+        public:
+            // The qiskit reset gate
+            static Instruction Reset(const IoPort& arg = IoPort("a") );
+
+            ResetCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
+        };
+
+        // Invert operator specialization of Circuit defined by invert logic of
+        // qiskit NOT gate
+        class InvertCircuit : public Circuit
+        {
+        public:
+            // The qiskit NOT gate (X)
+            static Instruction Not(const IoPort& arg = IoPort("a"));
+
+            InvertCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Operator specialization of Circuit has one input and one output port
         class OperatorCircuit : public Circuit
         {
-        private:
-        protected:
-            OperatorCircuit();
         public:
+            // The qiskit controlled-NOT gate (CX)
+            static Instruction ControlledNot(const IoPort& in = IoPort("i"), const IoPort& out = IoPort("o") );
+
+            // The qiskit swap gate
+            static Instruction Swap(const IoPort& in = IoPort("i"), const IoPort& out = IoPort("o") );
+
+        protected:
+            OperatorCircuit(const Instructions& insructions)
+                : Circuit(insructions) {};
+        private:
         };
 
         // Binary operation specialization of Circuit has two input and one
         // output port
         class BinaryOpCircuit : public Circuit
         {
-        private:
-        protected:
-            BinaryOpCircuit();
         public:
+            // The qiskit Toffoli gate, also known as the double controlled-NOT gate (CCX)
+            static Instruction Toffoli(const IoPort& in = IoPort("i"), const IoPort& out = IoPort("o") );
+
+            static Instruction Toffoli(const IoPort& in0, const IoPort& in1, const IoPort& out);
+
+        protected:
+            BinaryOpCircuit(const Instructions& insructions)
+                : Circuit(insructions) {};
+        private:
         };
 
         // Binary operation specialization of Circuit has two input and two
         // output ports
         class BinaryOp2OutCircuit : public Circuit
         {
-        private:
-        protected:
-            BinaryOp2OutCircuit();
         public:
-        };
-
-        // Qiskit's reset specialization of operator circuit
-        /*
-        Reset:
-         out: -|0>----- X -----M-
-                               |
-        cl: 1/=================+=
-                               0 == 1
-
-        1.	CircuitInstruction(
-                operation=Instruction(
-                    name='reset', 
-                    num_qubits=1, 
-                    num_clbits=0, 
-                    params=[]
-                ), 
-                qubits=(
-                    Qubit(
-                        QuantumRegister(1, 'out'), 
-                        0
-                     ),
-                ), 
-                clbits=()
-            )
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        3.	CircuitInstruction(
-                operation=Instruction(
-                    name='x', 
-                    num_qubits=1, 
-                    num_clbits=0, 
-                    params=[]
-                ), 
-                qubits=(
-                    Qubit(
-                        QuantumRegister(1, 'out'), 
-                        0
-                    ),
-                ), 
-                clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(1, 'cl'), 0),))
-*/
-        class ResetCircuit : public OperatorCircuit
-        {
-        private:
         protected:
-        public:
-            ResetCircuit();
-        };
-
-        // Invert operator specialization of Operator Circuit defined by
-        // invert mark (sign) and name
-        /*
-        NOT operator:
-          qi: - H ----- X -----M-
-                               |
-        cl: 1/=================+=
-                               0 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        3.	CircuitInstruction(
-                operation=Instruction(
-                    name='x',
-                    num_qubits=1,
-                    num_clbits=0,
-                    params=[]
-                ),
-                qubits=(
-                    Qubit(
-                        QuantumRegister(1, 'qi'),
-                        0
-                    ),
-                ),
-                clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(1, 'cl'), 0),))
-        */
-        class InvertCircuit : public OperatorCircuit
-        {
+            BinaryOp2OutCircuit(const Instructions& insructions)
+                : Circuit(insructions) {};
         private:
-        protected:
-        public:
-            InvertCircuit();
         };
 
         // Equal operator specialization of Operator Circuit defined by equal
-        // mark and name
-        /*
-        EQ operator:
-          qi: - H ------+------M----
-                        |      |
-         out: --------- X --------M-
-                               |  | 
-        cl: 2/=================+==+=
-                               0  1 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        3.	CircuitInstruction(
-                operation=Instruction(
-                        name='cx', 
-                        num_qubits=2, 
-                        num_clbits=0, 
-                        params=[]
-                ), 
-                qubits=(
-                    Qubit(
-                        QuantumRegister(1, 'qi'), 
-                        0
-                    ), 
-                    Qubit(
-                        QuantumRegister(1, 'out'), 
-                        0
-                    )
-                ), 
-                clbits=()
-            )
-        4.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 0),))
-        6.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 1),))
-        */
+        // logic of qiskit controlled-NOT gate
         class EqCircuit : public OperatorCircuit
         {
-        private:
-        protected:
         public:
             EqCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Not equal operator specialization of Operator Circuit defined by
-        // not-equal mark (sign) and name
-        /*
-        NE operator:
-          qi: - H ------+-----------M----
-                        |           |    
-         out: --------- X -- X --------M-
-                                    |  | 
-        cl: 2/======================+==+=
-                                    0  1 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='x', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 0),))
-        7.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 1),))
-*/
+        // qiskit controlled-not and not gates
         class NeqCircuit : public OperatorCircuit
         {
-        private:
-        protected:
         public:
             NeqCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Less than operator specialization of Operator Circuit defined by
-        // less-than mark (sign) and name
-        /*
-        LT operator:
-          qi: - H -----X-------------+------M----
-                       |             |      |    
-         out: ---------X--|0>-- X -- X --------M-
-                                            |  | 
-        cl: 2/==============================+==+=
-                                            0  1 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        3.	CircuitInstruction(
-                operation=Instruction(
-                    name='swap', 
-                    num_qubits=2, 
-                    num_clbits=0, 
-                    params=[]
-                ), 
-                qubits=(
-                    Qubit(
-                        QuantumRegister(1, 'qi'), 
-                        0
-                    ), 
-                    Qubit(
-                        QuantumRegister(1, 'out'), 
-                        0
-                    )
-                ), 
-                clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='reset', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='x', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 0),))
-        9.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 1),))
-        */
+        // qiskit swap, reset, not and controlled-not gates
         class LtCircuit : public OperatorCircuit
         {
-        private:
-        protected:
         public:
             LtCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Less eqal operator specialization of Operator Circuit defined by
-        // less-eqal mark (sign) and name
-        /*
-        LE operator:
-          qi: - H -----X---+------M----
-                       |   |      |    
-         out: ---------X-- X --------M-
-                                  |  | 
-        cl: 2/====================+==+=
-                                  0  1 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='swap', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 0),))
-        7.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 1),))
-        */
+        // qiskit swap and controlled-not gates
         class LeCircuit : public OperatorCircuit
         {
-        private:
-        protected:
         public:
             LeCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Greater-than operator specialization of Operator Circuit defined by
-        // reater-than mark (sign) and name
-        /*
-        GT operator:
-          qi: - H ----------X---+-----------M----
-                            |   |           |    
-         out: --------- X --X-- X -----|0>-----M-
-                                            |  | 
-        cl: 2/==============================+==+=
-                                            0  1 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='x', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='swap', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='reset', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 0),))
-        9.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 1),))
-        */
+        // qiskit not, swap, controlled-not and reset gates
         class GtCircuit : public OperatorCircuit
         {
-        private:
-        protected:
         public:
             GtCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Greater-eqal operator specialization of Operator Circuit defined by
-        // greater-eqal mark (sign) and name
-        /*
-        GE operator:
-          qi: - H ----------X---+------M----
-                            |   |      |    
-         out: --------- X --X-- X --------M-
-                                       |  | 
-        cl: 2/=========================+==+=
-                                       0  1 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='x', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='swap', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 0),))
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(2, 'cl'), 1),))
-        */
+        // qiskit not, swap and controlled-not gates
         class GeCircuit : public OperatorCircuit
         {
         private:
         protected:
         public:
             GeCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // And specialization of Binary Operation Circuit defined by
-        // bitwise-and mark (sign) and name
-        /*
-        AND op:
-        qi_0: - H ------+------M-------
-                        |      |       
-        qi_1: - H ------+---------M----
-                        |      |  |    
-         out: --------- X -----------M-
-                               |  |  | 
-        cl: 3/=================+==+==+=
-                               0  1  2 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(
-                operation=Instruction(
-                    name='ccx', 
-                    num_qubits=3, 
-                    num_clbits=0, 
-                    params=[]
-                ), 
-                qubits=(
-                    Qubit(
-                        QuantumRegister(2, 'qi'), 
-                        0
-                    ), 
-                    Qubit(
-                        QuantumRegister(2, 'qi'), 
-                        1
-                    ), 
-                    Qubit(
-                        QuantumRegister(1, 'out'), 
-                        0
-                    )
-                ), 
-                clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 0),))
-        7.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 1),))
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 2),))
-        */
+        // qiskit Toffoli gate, also known as the double controlled-NOT gate
         class AndCircuit : public BinaryOpCircuit
         {
-        private:
-        protected:
         public:
             AndCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Not and specialization of Binary Operation Circuit defined by
-        // bitwise-inverted-and mark (sign) and name
-        /*
-        NAND op:
-        qi_0: - H -----------+------M-------
-                             |      |       
-        qi_1: - H -----------+---------M----
-                             |      |  |    
-         out: --------- X -- X -----------M-
-                                    |  |  | 
-        cl: 3/======================+==+==+=
-                                    0  1  2 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='x', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='ccx', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 0),))
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 1),))
-        9.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 2),))
-        */
+        // qiskit not and toffoli gates
         class NandCircuit : public BinaryOpCircuit
         {
-        private:
-        protected:
         public:
             NandCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Or specialization of Binary Operation Circuit defined by
-        // bitwise-or mark (sign) and name
-        /*
-        OR op:
-         qi_0: - H ------+----+------------------------M-------
-                         |    |                        |  
-         qi_1: - H ------+---------+----------------------M----
-                         |    |    |                   |  |
-        aux_0: --------- X ----------------+-------------------
-                              |    |       |           |  |  
-        aux_1: -------------- X -- X -----------+--------------
-                                           |    |      |  |  
-          out: --------------------------- X -- X -----------M-
-                                                       |  |  |
-         cl: 3/========================================+==+==+=
-                                                       0  1  2 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='ccx', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=4, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        8.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        9.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'aux'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        10.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=5, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(2, 'aux'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        11.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 0),))
-        12.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 1),))
-        13.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 2),))
-        */
+        // qiskit Toffoli and controlled-not gates
         class OrCircuit : public BinaryOpCircuit
         {
-        private:
-        protected:
         public:
             OrCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Not or specialization of Binary Operation Circuit defined by
-        // bitwise-inverted-or mark (sign) and name
-        /*
-        NOR op:
-         qi_0: - H ------+----+-----------------------------M-------
-                         |    |                             |
-         qi_1: - H ------+---------+---------------------------M----
-                         |    |    |                        |  |
-        aux_0: --------- X ----------------+------------------------
-                              |    |       |                |  |
-        aux_1: -------------- X -- X -----------+-------------------
-                                           |    |           |  |
-          out: --------------------------- X -- X -- X -----------M-
-                                                            |  |  | 
-         cl: 3/=============================================+==+==+=
-                                                            0  1  2 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='ccx', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=4, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        8.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        9.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'aux'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        10.	CircuitInstruction(operation=Instruction(name='x', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        11.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=5, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(2, 'aux'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        12.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 0),))
-        13.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 1),))
-        14.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 2),))
-        */
+        // qiskit Toffoli, controlled-not and not gates
         class NorCircuit : public BinaryOpCircuit
         {
-        private:
-        protected:
         public:
             NorCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
-        // Xor specialization of Binary Operation with 2 outputs Circuit
-        // defined by bitwise-xor mark (sign) and name
-        /*
-        XOR op:
-        qi_0: - H ------+-----------M-------
-                        |           |       
-        qi_1: - H -----------+---------M----
-                        |    |      |  |    
-         out: --------- X -- X -----------M-
-                                    |  |  | 
-        cl: 3/======================+==+==+=
-                                    0  1  2 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 0),))
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 1),))
-        9.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 2),))
-        */
+        // Xor specialization of Binary Operation Circuit defined by
+        // qiskit controlled-not gates
         class XorCircuit : public BinaryOpCircuit
         {
-        private:
-        protected:
         public:
             XorCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
         // Not xor specialization of Binary Operation Circuit defined by
-        // bitwise-inverted-xor mark (sign) and name
-        /*
-        NXOR op:
-        qi_0: - H ------+----------------M-------
-                        |                |
-        qi_1: - H -----------+--------------M----
-                        |    |           |  |
-         out: --------- X -- X -- X -----------M-
-                                         |  |  |
-        cl: 3/===========================+==+==+=
-                                         0  1  2
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='x', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 0),))
-        9.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 1),))
-        10.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(3, 'cl'), 2),))
-        */
+        // qiskit controlled-not and not gates
         class NxorCircuit : public BinaryOpCircuit
         {
-        private:
-        protected:
         public:
             NxorCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
-        // Half adder is a specialization of Binary Operation with 2 outputs
-        // Circuit defined by bitwise-xor mark (sign) and name
-        /*
-        Half Adder:
-        qi_0: - H ------+---------+------M----------
-                        |         |      |
-        qi_1: - H -----------+----+---------M-------
-                        |    |    |      |  |
-         out: --------- X -- X ----------------M----
-                                  |      |  |  |
-          co: ------------------- X --------------M-
-                                         |  |  |  | 
-        cl: 4/===========================+==+==+==+=
-                                         0  1  2  3 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=4, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0), Qubit(QuantumRegister(1, 'co'), 0)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='ccx', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'co'), 0)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=4, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'out'), 0), Qubit(QuantumRegister(1, 'co'), 0)), clbits=())
-        8.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(4, 'cl'), 0),))
-        9.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(4, 'cl'), 1),))
-        10.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(4, 'cl'), 2),))
-        11.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'co'), 0),), clbits=(Clbit(ClassicalRegister(4, 'cl'), 3),))
-        */
-        class XorCircuit : public BinaryOp2OutCircuit
+        // Half adder is a specialization of Binary Operation with 2 outputs,
+        // o(ut) & c(arry), defined by qiskit controlled-not and Toffoli gates
+        class HalfAdder : public BinaryOp2OutCircuit
         {
-        private:
-        protected:
         public:
-            NxorCircuit();
+            HalfAdder();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
 
-
-
-        // Adder is trinary operation specialization of Circuit with two outputs
-        // defined arithmetic-add mark (sign) and name
-        /*
-        Adder:
-          qi_0: - H ------+---------+-----------M-----------------------------------
-                          |         |           |
-          qi_1: - H -----------+----+--------------M--------------------------------
-                          |    |    |           |  |
-            ci: - H -----------------------------------+----+-----------M-----------
-                          |    |    |           |  |   |    |           |
-          xorO: --------- X -- X -----------+---------------+-----------------------
-                                    |       |   |  |   |    |           |
-        andO_0: ------------------- X ------------------------------+-------+-------
-                                            |   |  |   |    |       |   |   |
-        andO_1: ------------------------------------------- X ------+-----------------+----------------
-                                            |   |  |   |            |   |   |         |
-         aux_0: --------------------------------------------------- X -----------+---------------------
-                                            |   |  |   |                |   |    |    |
-         aux_1: ----------------------------------------------------------- X ------- X ---+-----------
-                                            |   |  |   |                |        |         |
-           out: --------------------------- X -------- X -----------------------------------------M----
-                                                |  |                    |        |         |      |
-            co: ---------------------------------------------------------------- X ------- X --------M-
-                                                |  |                    |                         |  | 
-          cl: 5/================================+==+====================+=========================+==+=
-                                                0  1                    2                         3  4 
-
-        1.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=())
-        2.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=())
-        3.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1)), clbits=())
-        4.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(1, 'xorO'), 0)), clbits=())
-        5.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'xorO'), 0)), clbits=())
-        6.	CircuitInstruction(operation=Instruction(name='ccx', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(2, 'andO'), 0)), clbits=())
-        7.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=4, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0), Qubit(QuantumRegister(2, 'qi'), 1), Qubit(QuantumRegister(1, 'xorO'), 0), Qubit(QuantumRegister(2, 'andO'), 0)), clbits=())
-        8.	CircuitInstruction(operation=Instruction(name='h', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'ci'), 0),), clbits=())
-        9.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=1, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'ci'), 0),), clbits=())
-        10.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'xorO'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        11.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'ci'), 0), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        12.	CircuitInstruction(operation=Instruction(name='ccx', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'xorO'), 0), Qubit(QuantumRegister(1, 'ci'), 0), Qubit(QuantumRegister(2, 'andO'), 1)), clbits=())
-        13.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=7, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(1, 'ci'), 0), Qubit(QuantumRegister(1, 'xorO'), 0), Qubit(QuantumRegister(2, 'andO'), 0), Qubit(QuantumRegister(2, 'andO'), 1), Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(2, 'aux'), 1), Qubit(QuantumRegister(1, 'out'), 0)), clbits=())
-        14.	CircuitInstruction(operation=Instruction(name='ccx', num_qubits=3, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'andO'), 0), Qubit(QuantumRegister(2, 'andO'), 1), Qubit(QuantumRegister(2, 'aux'), 0)), clbits=())
-        15.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'andO'), 0), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        16.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'andO'), 1), Qubit(QuantumRegister(2, 'aux'), 1)), clbits=())
-        17.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(1, 'co'), 0)), clbits=())
-        18.	CircuitInstruction(operation=Instruction(name='cx', num_qubits=2, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'aux'), 1), Qubit(QuantumRegister(1, 'co'), 0)), clbits=())
-        19.	CircuitInstruction(operation=Instruction(name='barrier', num_qubits=6, num_clbits=0, params=[]), qubits=(Qubit(QuantumRegister(2, 'andO'), 0), Qubit(QuantumRegister(2, 'andO'), 1), Qubit(QuantumRegister(2, 'aux'), 0), Qubit(QuantumRegister(2, 'aux'), 1), Qubit(QuantumRegister(1, 'out'), 0), Qubit(QuantumRegister(1, 'co'), 0)), clbits=())
-        20.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 0),), clbits=(Clbit(ClassicalRegister(5, 'cl'), 0),))
-        21.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(2, 'qi'), 1),), clbits=(Clbit(ClassicalRegister(5, 'cl'), 1),))
-        22.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'ci'), 0),), clbits=(Clbit(ClassicalRegister(5, 'cl'), 2),))
-        23.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'out'), 0),), clbits=(Clbit(ClassicalRegister(5, 'cl'), 3),))
-        24.	CircuitInstruction(operation=Instruction(name='measure', num_qubits=1, num_clbits=1, params=[]), qubits=(Qubit(QuantumRegister(1, 'co'), 0),), clbits=(Clbit(ClassicalRegister(5, 'cl'), 4),))
-        */
+        // Adder is trinary operation specialization of Circuit with two outputs,
+        // o(ut) & c(arry), defined by qiskit controlled-not and Toffoli gates
         class AdderCircuit : public Circuit
         {
-        private:
-        protected:
-            Labels format(const Labels&) const;
         public:
             AdderCircuit();
+
+            virtual string draw() const;
+
+        protected:
+        private:
         };
     };
 };
