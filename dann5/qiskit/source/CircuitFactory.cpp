@@ -19,6 +19,14 @@ template class dann5::Factory<string, Circuit>;
 template class CircuitFactory::Creator<string, Circuit>;
 #endif
 
+/**** Factory Creator's of measure and reset circuit ****/
+DefaultCreator<string, Circuit, MeasureCircuit> gMeasureCircuitcreator("measure");
+DefaultCreator<string, Circuit, ResetCircuit> gResetCircuitcreator("reset");
+
+/**** Factory Creator's of DWave hadamard Circuit ****/
+DefaultCreator<string, Circuit, HadamardCircuit> gHadamardCircuitcreator_m("h");
+DefaultCreator<string, Circuit, HadamardCircuit> gHadamardCircuitcreator("hadamard");
+
 /**** Factory Creator's of Equal operator Qubo Table ****/
 DefaultCreator<string, Circuit, InvertCircuit> gInvertCircuitcreator_m(Qinvert::cMark());
 DefaultCreator<string, Circuit, InvertCircuit> gInvertCircuitcreator(Qinvert::cName());
@@ -62,14 +70,6 @@ DefaultCreator<string, Circuit, OrCircuit> gOrCircuitcreator(Qor::cName());
 /**** Factory Creator's of Nor binary operation Qubo Table ****/
 DefaultCreator<string, Circuit, NorCircuit> gNorCircuitcreator_m(Qnor::cMark());
 DefaultCreator<string, Circuit, NorCircuit> gNorCircuitcreator(Qnor::cName());
-
-/**** Factory Creator's of not-left-or-right binary operation Qubo Table ****/
-DefaultCreator<string, Circuit, NotLeftOrRightCircuit> gNotLeftOrRightCircuitcreator_m("!l|r");
-DefaultCreator<string, Circuit, NotLeftOrRightCircuit> gNotLeftOrRightCircuitcreator("notleftorright");
-
-/**** Factory Creator's of DWave not-left-or-right binary operation Qubo Table ****/
-DefaultCreator<string, Circuit, DwNotLeftOrRightCircuit> gNotLeftOrRightCircuitcreator_m_dw("d!l|r");
-DefaultCreator<string, Circuit, DwNotLeftOrRightCircuit> gNotLeftOrRightCircuitcreator_dw("dwnotleftorright");
 
 /**** Factory Creator's of Xor binary operation Qubo Table ****/
 DefaultCreator<string, Circuit, XorCircuit> gXorCircuitcreator_m(Qxor::cMark());

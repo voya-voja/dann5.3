@@ -351,14 +351,14 @@ string NxorCircuit::draw() const
 }
 
 /****  Half-Adder Operation Circuit ****/
-HalfAdder::HalfAdder() 
+HalfAdderCircuit::HalfAdderCircuit()
     : BinaryOp2OutCircuit({ OperatorCircuit::ControlledNot(),
                             OperatorCircuit::ControlledNot(IoPort("i", 1)),
                             BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("c")) }) 
 {
 }
 
-string HalfAdder::draw() const
+string HalfAdderCircuit::draw() const
 {
     string 
         drawing = "\t  i_0: --+---------+--";

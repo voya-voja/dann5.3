@@ -452,10 +452,10 @@ namespace dann5 {
 
         // Half adder is a specialization of Binary Operation with 2 outputs,
         // o(ut) & c(arry), defined by qiskit controlled-not and Toffoli gates
-        class HalfAdder : public BinaryOp2OutCircuit
+        class HalfAdderCircuit : public BinaryOp2OutCircuit
         {
         public:
-            HalfAdder();
+            HalfAdderCircuit();
 
             virtual string draw() const;
 
