@@ -10,7 +10,7 @@ using namespace dann5::qiskit;
 /**** dann5 Qiskit Solver ****/
 
 QiskitSolver::QiskitSolver(bool lowest)
-	:CircuitAnalyzer(Circuit()), mLowest(lowest), mMinEnergy(cMaxEnergy)
+	:mLowest(lowest)//, mMinEnergy(cMaxEnergy)
 {
 
 }
@@ -21,20 +21,20 @@ QiskitSolver::~QiskitSolver()
 
 Qevaluations QiskitSolver::solution(const Qstatement& statement)
 {
-	if (mMinEnergy != cMaxEnergy)
+//	if (mMinEnergy != cMaxEnergy)
 		reset();
 	CircuitCompiler compiler;
 	statement.compile(compiler);
-	qubo(compiler.qubo());
+//	qubo(compiler.qubo());
 	solve();
 	return(mSolution);
 }
 
 Qevaluations QiskitSolver::solution(const Circuits& q)
 {
-	if (mMinEnergy != cMaxEnergy)
+//	if (mMinEnergy != cMaxEnergy)
 		reset();
-	qubo(q);
+//	qubo(q);
 	solve();
 	return(mSolution);
 }
@@ -42,7 +42,7 @@ Qevaluations QiskitSolver::solution(const Circuits& q)
 void  QiskitSolver::reset()
 {
 	mSolution.clear();
-	mMinEnergy = cMaxEnergy;
+//	mMinEnergy = cMaxEnergy;
 }
 /*
 void  QiskitSolver::solve()

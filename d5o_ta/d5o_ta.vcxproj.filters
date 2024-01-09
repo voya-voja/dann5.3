@@ -25,6 +25,12 @@
     <Filter Include="Header Files\dann5\ocean">
       <UniqueIdentifier>{ac365d08-4bc4-4913-9de0-7130778c42d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\dann5\qiskit">
+      <UniqueIdentifier>{7c9f9119-90ab-4ca0-8504-ca63e357cb4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dann5\qiskit">
+      <UniqueIdentifier>{4d2e0a30-3b7e-4171-9ae9-4735adaba778}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="d5o_ta.cpp">
@@ -140,6 +146,18 @@
     </ClCompile>
     <ClCompile Include="..\dann5\source\Qwhole.cpp">
       <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\Circuit.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\CircuitCompiler.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\CircuitFactory.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\qiskit\source\QiskitSolver.cpp">
+      <Filter>Source Files\dann5\qiskit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +286,15 @@
     </ClInclude>
     <ClInclude Include="..\dann5\include\Qwhole.h">
       <Filter>Header Files\dann5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\qiskit\include\CircuitCompiler.h">
+      <Filter>Header Files\dann5\qiskit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\qiskit\include\Circuits.h">
+      <Filter>Header Files\dann5\qiskit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dann5\qiskit\include\QiskitSolver.h">
+      <Filter>Header Files\dann5\qiskit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

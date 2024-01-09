@@ -388,14 +388,14 @@ def adder():
     #cx in[1], a[0];
     qc.cx(i[0], a[0])
     qc.cx(i[1], a[0])
-    #// andO0 = i0 AND i1
+    #// a1 = i0 AND i1
     qc.ccx(i[0], i[1], a[1])
     qc.barrier(i, a, o, c)
     
     #// half adder: o = aO + i2
     qc.cx(a[0], o[0])
     qc.cx(i[2], o[0])
-    #// andO1 = aO AND i2
+    #// a2 = aO AND i2
     #ccx a[0], i[2], a[2];
     #barrier i, a, o, c, cl;
     qc.ccx(a[0], i[2], a[2])
@@ -481,10 +481,41 @@ def logicalGates():
     #h qo[1];#c4x qo[1], qo[0], qi[0], qi[1], out[0];
     #barrier qi, qo, out;
     
-
+def test0():
+    x = QuantumRegister(1, 'x')
+    y = QuantumRegister(1, 'y')
+    z = QuantumRegister(1, 'z')
+    _and0 = QuantumRegister(1, '_&0')
+    _xor0 = QuantumRegister(1, '_^0')
+    _cXor0 = QuantumRegister(1, '#[_^0]')
+    cl = ClassicalRegister(6, "cl")
+    
+    qc = QuantumCircuit(x, y, z, _and0, _xor0, _cXor0, cl)
+    qc.h(x)
+    qc.h(y)
+    qc.h(z)
+    qc.reset(_and0); 
+    qc.x(_and0)
+    #qc.h(_and0)
+    #qc.h(_xor0)
+    
+    qc.ccx(x, y, _and0)
+    qc.cx(_and0, _xor0)
+    qc.cx(z, _xor0)
+    
+    qc.measure(x, cl[0])
+    qc.measure(y, cl[1])
+    qc.measure(z, cl[2])
+    qc.measure(_and0, cl[3])
+    qc.measure(_xor0, cl[4])
+    qc.measure(_cXor0, cl[5])
+    testCircuit(qc, None)
+    
+    
     
 def main():
-    logicalGates()
+    #logicalGates()
+    test0()
 
 
 if __name__ == "__main__":

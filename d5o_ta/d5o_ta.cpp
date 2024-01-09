@@ -29,8 +29,12 @@
 #include <QuboCompiler.h>
 #include <Qfunc.h>
 
+#include <Circuits.h>
+#include <CircuitCompiler.h>
+
 using namespace std;
 using namespace dann5::ocean;
+using namespace dann5::qiskit;
 using namespace dann5;
 using namespace dann5test;
 
@@ -500,10 +504,24 @@ void prime_s2t_prime(ostream& out)
     out << " resulting in :" << endl << pst << endl;
 }
 
+void testQiskit()
+{
+    Qbit x("x"), y("y"), z("z", 1);
+    Qexpr<Qbit> expr((x & y) ^ z);
+    CircuitCompiler compiler;
+    expr.compile(compiler);
+    Circuit& circuit = compiler.circuit();
+    cout << circuit.instructions();
+
+    cout << endl << expr.solve() << endl;
+}
+
 int main(int argc, const char * argv[])
 {
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
+    testQiskit();
+/*
     prime_s2t(cout);
     prime_s4t(cout);
     prime_s8t(cout);
@@ -514,7 +532,6 @@ int main(int argc, const char * argv[])
     prime6p(cout);
     prime_s2t_prime(cout);
 
-/*
     UTestQbit utQbit;
     utQbit.runAll(cout);
     UTestQbool utQbool;

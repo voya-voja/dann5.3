@@ -60,10 +60,10 @@ namespace dann5 {
             void solution(const Qevaluations& solution) { mSolution = solution; };
 
             // returns a minimal evaluated energy
-            double minEnergy() const { return mMinEnergy; };
+//            double minEnergy() const { return mMinEnergy; };
 
             // sets a minimal evaluated energy
-            void minEnergy(double mEnergy) { mMinEnergy = mEnergy; };
+//            void minEnergy(double mEnergy) { mMinEnergy = mEnergy; };
 
             // reset solutions and assessed minimum energy, 
             // calls Qanalyzer::reset() to reset qubo, and nodes and branches
@@ -78,10 +78,10 @@ namespace dann5 {
             void init();
 
         private:
-            static const double cMaxEnergy; // numeric_limits<double>::max()
+//            static const double cMaxEnergy; // numeric_limits<double>::max()
 
             bool	        mLowest;    // Return only evaluations with minimal energy
-            double      	mMinEnergy; // Minimal evaluated energy
+//            double      	mMinEnergy; // Minimal evaluated energy
             Qevaluations	mSolution;  // Solution evaluations
         };
 

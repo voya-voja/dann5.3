@@ -23,13 +23,19 @@ namespace dann5{
         // operation definition into QUBO
         class CircuitCompiler : public Qcompiler
         {
+            enum Stage {
+                cInitialize,
+                cCompile,
+                cMeasure
+            };
+
         public:
             // Constructor sets the QUBO compiler mode. If finalized, compiles
             // an quantum operation into an executable qubo format with all
             // constant variables substituted by their values and recalcualtes
             // parameters of linear nodes. If not finalized, creates a full
             // qubo translation without substitutions.
-            CircuitCompiler(bool finalized = true) : mFinalized(finalized) {};
+            CircuitCompiler() : mStage(cCompile) {};
             
             // Compiles an operation into its QUBO transalation. When the
             // compiler is in finalized mode, creates an executable qubo format
@@ -42,40 +48,47 @@ namespace dann5{
             const Circuit& qubo() const { return mCircuit; };
             
             // Resets the compiler into its initial state
-            void reset() { mCircuit = Circuit(); };
+            void reset() {
+                mCircuit.reset();
+                mStage = cInitialize;
+            };
 
             // Returns finalized status mode
-            bool finalized() const { return mFinalized; };
+            Stage stage() const { return mStage; };
             
             // Changes finalized status mode and resets the compiler object
-            void finalized(bool fnlzd) {
-                mFinalized = fnlzd;
+            void stage(Stage stg) {
+                mStage = stg;
                 reset();
             };
 
+            D5circuit& circuit() { return mCircuit; };
+
         protected:
-            // Returns QUBO object as a translation of parsed quantum operation
+            // Updates circuit instructions as a translation of parsed quantum
+            // operation
             void parse(const Qop&);
             
-            // Returns QUBO object as a translation of parsed quantum cell
-            // operation
-            void parse(const QcellOp*);
-
-            // Returns a QUBO object by translating the provided cell operation.
+            // Updates circuit instructions as a translation of parsed quantum
+            // cell operation
             // The provided operation should be a QcellOp, otherwise it throws
             // logical_error exception.
-            void qubo(const QcellOp*);
+            void parse(const QcellOp*);
 
-            // Compiles quantum cell sub-operations to generate QUBO
-            // Returns an IoPort entry for compiled sub-operations
-            Circuit::IoPort compile(const QcellOp::Sp&);
+            // Compiles quantum cell sub-operations to generate circuit
+            // instructions
+            // Returns ashared pointer to an output cell of compiled cell
+            // operation
+            Qcell::Sp compile(const QcellOp::Sp&);
 
-            // Compiles this Qnary operation to generate QUBO
+            // Compiles a Qnary operation to generate circuit instructions
             void compile(const QnaryOp*);
             
         private:
-            Circuit mCircuit;         // Compiled QUBO
-            bool mFinalized;    // Finalized compiler mode
+
+            D5circuit mCircuit;           // Compiled Circuit
+            size_t    mOpCount = 0;       // Counter of operations on the stack
+            Stage     mStage = cCompile;  // Compiler's stage
         };
     
         // A specialization of quantum operation compiler that translates the

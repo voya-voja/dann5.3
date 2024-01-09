@@ -16,10 +16,23 @@
 using namespace dann5;
 using namespace dann5::qiskit;
 
-/**** Qubo Compiler ****/
+/**** Circuit Compiler ****/
 void CircuitCompiler::compile(const Qop& op)
 {
-    parse(op);
+    mOpCount++;
+    if (mStage == cCompile)
+    {
+        mCircuit.declare(op);
+        parse(op);
+        mStage = cMeasure;
+    }
+    mOpCount--;
+    if (mOpCount == 0 && mStage == cMeasure)
+    {
+        mCircuit.Circuit::instructions() = mCircuit.initialize() + mCircuit.Circuit::instructions();
+        mCircuit.measure();
+        mStage = cCompile;
+    }
 }
 
 void CircuitCompiler::parse(const Qop& op)
@@ -43,18 +56,14 @@ void CircuitCompiler::parse(const QcellOp* pCellOp)
     const QnullCellOp* pNullOp = dynamic_cast<
                                             const QnullCellOp*>(pCellOp);
     if(pNullOp != nullptr) return;
+
     const Qaddition::Carry* pCarry = dynamic_cast<
                                         const Qaddition::Carry*>(pCellOp);
     if(pCarry != nullptr) return;
     
-    qubo(pCellOp);
-}
-
-void CircuitCompiler::qubo(const QcellOp* pCellOp)
-{
     const Qdefs& ins = pCellOp->Qop::inputs();
     size_t iSize = ins.size();
-    Circuit::IoPorts ports;
+    Qubits arguments;
     // process input ports
     for (size_t at = 0; at < iSize; at++)
     {
@@ -67,9 +76,8 @@ void CircuitCompiler::qubo(const QcellOp* pCellOp)
                                                         + "' is not a Qcell.");
         QcellOp::Sp pOp = dynamic_pointer_cast<QcellOp>(pOprnd);
         if (pOp != nullptr)
-            ports.push_back(compile(pOp));
-        else
-            ports.push_back(Circuit::IoPort(pOprnd->id(), pOprnd->value()));
+            pOprnd = compile(pOp);
+        arguments.push_back(mCircuit.input(pOprnd));
     }
     // process output ports
     const Qdefs& outs = pCellOp->outputs();
@@ -83,18 +91,18 @@ void CircuitCompiler::qubo(const QcellOp* pCellOp)
                                                         + "' is not a Qcell.");
         QcellOp::Sp pOp = dynamic_pointer_cast<QcellOp>(pOprnd);
         if (pOp != nullptr)
-                ports.push_back(compile(pOp));
-        else
-            ports.push_back(Circuit::IoPort(pOprnd->id(), pOprnd->value()));
+            pOprnd = compile(pOp);
+        arguments.push_back(mCircuit.output(pOprnd));
     }
-    if ((iSize + oSize) > ports.size())
+    if ((iSize + oSize) > arguments.size())
         return;
     // create Circuit rule object for this operand
-    Circuit::Sp pQubo = QTfactory::Instance().create(pCellOp->identifier());
-    mQubo += pQubo->qubo(ports, mFinalized);
+    Circuit::Sp pCircuit = CircuitFactory::Instance().create(pCellOp->identifier());
+    mCircuit.Circuit::instructions() += pCircuit->instructions(arguments);
+
 }
 
-Circuit::IoPort CircuitCompiler::compile(const QcellOp::Sp& pCellOp)
+Qcell::Sp CircuitCompiler::compile(const QcellOp::Sp& pCellOp)
 {
     QcellOp::Sp pOp = pCellOp;
     // compile a sub-operation(s) that is (are) an input argument
@@ -107,14 +115,13 @@ Circuit::IoPort CircuitCompiler::compile(const QcellOp::Sp& pCellOp)
     } while(pOp != nullptr);
     if(pOut == nullptr)
         throw logic_error("ERROR @CircuitCompiler: output argument is null poiner!");
-    Circuit::IoPort port(pOut->id(), pOut->value());
-    return port;
+    return pOut;
 }
 
 
 void CircuitCompiler::compile(const QnaryOp* pOp)
 {
-    Qubo qubo;
+    Circuits qubo;
     const Qcells& logic = pOp->cells();
     size_t size = pOp->noqbs();
     for (size_t atCell = 0; atCell < size; atCell++)
@@ -127,28 +134,27 @@ void CircuitCompiler::compile(const QnaryOp* pOp)
     }
 }
 
-/**** Qubos Compiler ****/
-void QubosCompiler::compile(const Qop& op)
+/**** Circuits Compiler ****/
+void CircuitsCompiler::compile(const Qop& op)
 {
     const QnaryOp& naryOp = dynamic_cast<const QnaryOp&>(op);
     size_t size = op.noqbs();
     size_t nodeCnt = 0;
-    Qubo subQubo = Qubo();
+    Circuit::Sp pCircuit;
     for (size_t at = 0; at < size; at++)
     {
-        CircuitCompiler quboCompiler;
-        quboCompiler.compile(*dynamic_pointer_cast<QcellOp>(naryOp[at]));
-        Qubo qubo = quboCompiler.qubo();
-        QuboAnalyzer anlzr(qubo);
-        size_t ndsNo = anlzr.nodesNo();
+        CircuitCompiler compiler;
+        compiler.compile(*dynamic_pointer_cast<QcellOp>(naryOp[at]));
+        D5circuit& circuit = compiler.circuit();
+        size_t ndsNo = circuit.nodesNo();
         nodeCnt += ndsNo;
-        if(nodeCnt > mMaxNoNodes)
+        pCircuit = Circuit::Sp(new D5circuit(circuit));
+        if (nodeCnt > mMaxNoNodes)
         {
-            mQubos.push_back(subQubo);
-            subQubo.clear();
+            mCircuits.push_back(pCircuit);
             nodeCnt = ndsNo;
         }
-        subQubo += qubo;
+             
     }
-    mQubos.push_back(subQubo);
+    mCircuits.push_back(pCircuit);
 }

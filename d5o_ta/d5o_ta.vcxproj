@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;%userprofile%/AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;%userprofile%/AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../dann5/qiskit/include;../../eigen-master;%userprofile%/AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;%userprofile%/AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +149,10 @@
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QuboAnalyzer.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QuboCompiler.cpp" />
+    <ClCompile Include="..\dann5\qiskit\source\Circuit.cpp" />
+    <ClCompile Include="..\dann5\qiskit\source\CircuitCompiler.cpp" />
+    <ClCompile Include="..\dann5\qiskit\source\CircuitFactory.cpp" />
+    <ClCompile Include="..\dann5\qiskit\source\QiskitSolver.cpp" />
     <ClCompile Include="..\dann5\source\Logger.cpp" />
     <ClCompile Include="..\dann5\source\Qadd.cpp" />
     <ClCompile Include="..\dann5\source\Qassign.cpp" />
@@ -221,6 +225,9 @@
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\QuboAnalyzer.h" />
     <ClInclude Include="..\dann5\ocean\include\QuboCompiler.h" />
+    <ClInclude Include="..\dann5\qiskit\include\CircuitCompiler.h" />
+    <ClInclude Include="..\dann5\qiskit\include\Circuits.h" />
+    <ClInclude Include="..\dann5\qiskit\include\QiskitSolver.h" />
     <ClInclude Include="PNGen.h" />
     <ClInclude Include="UTestQbin.hpp" />
     <ClInclude Include="UTestQbit.h" />
