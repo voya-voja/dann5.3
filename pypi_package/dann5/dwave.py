@@ -15,7 +15,7 @@ from dann5.d5o import QuboAnalyzer, DwaveSolver, D5QuboSolver
 class PyDwaveSolver(DwaveSolver):
     """
     A dann5 quantum solver that will calcualte quantum evaluations of a quantum
-    statement using D-Wave exact solver, a DWave local quantum simulator
+    statement using a specific D-Wave quantum remote sampler or local simulator
     """
     def __init__(self, lowest = True):
         """
@@ -183,28 +183,33 @@ class QuboSolvers(Qsolver):
         return solver
  
     
-    gActive = solver("dann5")
+class Solver(Qsolver):
+    """
+    A class facade sets and returns an active solver, which will be used to solve
+    a quantum statement
+    """   
+    gActive = QuboSolvers.solver("dann5")
     """
     A reference to an active qubo solver used to solve quantum statements
     """
     
     def SetActive(solver):
         """
-        Sets an active qubo solver used to solve quantum statements,
-        both as python's QuboSolvers and dann5.d5 library static reference
+        Sets an active qubo solver used to solve quantum statements. It sets
+        both as python's Solver.gActive and dann5.d5 library static reference
         """
-        QuboSolvers.gActive = solver
+        Solver.gActive = solver
         Qsolver.Active(solver)
     
     def Active():
         """
         Returns an active qubo solver used to solve quantum statements.
         When dann5.d5 library static reference is different than the python's
-        QuboSolvers reference, dann5.d5 library is set to reference the same
-        QuboSolvers.gActive solver.
+        Solver.gActive reference, dann5.d5 library is set to reference the same
+        solver.
         """
         active = Qsolver.Active()
-        if(QuboSolvers.gActive != active):
-            Qsolver.Active(QuboSolvers.gActive)
-        return QuboSolvers.gActive
+        if(Solver.gActive != active):
+            Qsolver.Active(Solver.gActive)
+        return Solver.gActive
    

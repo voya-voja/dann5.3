@@ -6,6 +6,7 @@ Created on Mon Dec 27 16:59:22 2021
 """
 
 from qiskit import QuantumRegister, ClassicalRegister, QuantumCircuit
+from qiskit.circuit import Qubit, Clbit
 
 from qiskit import IBMQ, transpile
 
@@ -15,6 +16,9 @@ from qiskit_ibm_provider import IBMProvider
 import qiskit
 from qiskit_aer import AerSimulator
 
+from dann5.d5 import Qbit
+from dann5.d5q import CircuitCompiler
+from dann5.qiskit import Solver
 
 def getProvider():
     provider = None
@@ -481,7 +485,7 @@ def logicalGates():
     #h qo[1];#c4x qo[1], qo[0], qi[0], qi[1], out[0];
     #barrier qi, qo, out;
     
-def test0():
+def testQiskit():
     x = QuantumRegister(1, 'x')
     y = QuantumRegister(1, 'y')
     z = QuantumRegister(1, 'z')
@@ -494,8 +498,6 @@ def test0():
     qc.h(x)
     qc.h(y)
     qc.h(z)
-    qc.reset(_and0); 
-    qc.x(_and0)
     #qc.h(_and0)
     #qc.h(_xor0)
     
@@ -511,11 +513,83 @@ def test0():
     qc.measure(_cXor0, cl[5])
     testCircuit(qc, None)
     
-    
+def testDann5():
+    x = Qbit("x"); y = Qbit("y"); z = Qbit("z")
+    xpr = (x & y) ^ z
+    comp = CircuitCompiler()
+    xpr.compile(comp)
+    circuit = comp.circuit()
+    # create qc
+    #declare qc
+    qc = QuantumCircuit()
+    qubits = {}
+    nclbs = 0
+    regs = []
+    for name, operand in circuit.operands().items():
+        qreg = QuantumRegister(operand[0][0][0], name)
+        regs.append(qreg)
+        qubit = Qubit(qreg, 0)
+        qubits[name] = qubit
+        nclbs += 1
+    clreg = ClassicalRegister(nclbs, "cl")
+    regs.append(clreg)
+    qc = QuantumCircuit(*regs)
+    #print(qc.draw())
+    #print(qubits)
+    for instrctn in circuit.instructions():
+        if instrctn.name() == 'h':
+            qc.h(qubits[instrctn.qubits()[0][0][1]])
+        elif instrctn.name() == 'cx':
+            qc.cx(qubits[instrctn.qubits()[0][0][1]], \
+                  qubits[instrctn.qubits()[1][0][1]])
+        elif instrctn.name() == 'ccx':
+            qc.ccx(qubits[instrctn.qubits()[0][0][1]], \
+                  qubits[instrctn.qubits()[1][0][1]], \
+                  qubits[instrctn.qubits()[2][0][1]])
+        elif instrctn.name() == 'measure':
+            clbit = Clbit(clreg, instrctn.clbits()[0][1] )
+            qc.measure(qubits[instrctn.qubits()[0][0][1]], clbit)
+    #print(qc.draw())
+    testCircuit(qc, None)
+    print(circuit.instructions())
+
+def testSolver():
+    x = Qbit("x"); y = Qbit("y"); z = Qbit("z")
+    xpr = (x & y) ^ z
+    print("\n {} \n\n {}\n".format(xpr, 
+                                   xpr.toString(True)))    
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    xpr = (x | y) ^ z
+    print("\n {} \n\n {}\n".format(xpr, 
+                                   xpr.toString(True)))    
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    w = Qbit("w", 0)
+    xpr = (x & y) ^ w
+    print("\n {} \n\n {}\n".format(xpr, 
+                                   xpr.toString(True)))    
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    xpr = (x | y) ^ w
+    print("\n {} \n\n {}\n".format(xpr, 
+                                   xpr.toString(True)))    
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    m = Qbit("m", 1)
+    xpr = (x & y) ^ m
+    print("\n {} \n\n {}\n".format(xpr, 
+                                   xpr.toString(True)))    
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    xpr = (x | y) ^ m
+    print("\n {} \n\n {}\n".format(xpr, 
+                                   xpr.toString(True)))    
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
     
 def main():
+        
+    Solver.Active()   # activates default AerSimulator
+    testSolver()
+    
     #logicalGates()
-    test0()
+    #testQiskit()
+    #testDann5()
 
 
 if __name__ == "__main__":

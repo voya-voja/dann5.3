@@ -30,21 +30,27 @@ namespace dann5 {
 
         // QuantumRegister wraper structure 
         struct QuReg {
-            size_t mNumQubits = 0;
-            string mName;
+            size_t mNumQubits = 0;  // register size
+            string mName;           // register name
 
+            // default constructor creates 0 size instance with an empty name
             QuReg() : mNumQubits(0), mName("") {};
 
+            // Construct an instance by specifying size and name of a quantum
+            // register
             QuReg(size_t num_qubits, const string& name)
                 : mNumQubits(num_qubits), mName(name) {};
 
+            // Construct an instance of a wraper for the quantum register
             QuReg(const QuantumRegister& quReg)
                 : mNumQubits(quReg.first), mName(quReg.second) {};
 
+            // returns a QuantumRegister instance with same size and name
             operator QuantumRegister() {
                 return QuantumRegister(mNumQubits, mName);
             };
 
+            // a string representation of a quantum register
             operator string() {
                 return "QuantumRegister(" + to_string(mNumQubits) 
                                                         + ", '" + mName + "')";
@@ -63,21 +69,29 @@ namespace dann5 {
 
         // Qu(antum)-Bit wraper structure 
         struct QuantumBit {
-            QuReg mRegister;
-            size_t mAt;
+            QuReg mRegister;    // a quantum register
+            size_t mAt;         // a position within the register
 
-            QuantumBit() : mRegister(), mAt(-1) {};
+            // default constructor creates an instance with an default quantum 
+            // register and position set to 0
+            QuantumBit() : mRegister(), mAt(0) {};
 
+            // Construct an instance by specifying a quantum register and 
+            // the position of the quantum bit within the register
             QuantumBit(const QuReg& reg, size_t at)
                 : mRegister(reg), mAt(at) {};
 
+            // Construct an instance of a wraper for the quantum bit
             QuantumBit(const Qubit& quBit)
                 : mRegister(quBit.first), mAt(quBit.second) {};
 
+            // returns a Qubit instance with the same register and the same
+            // position
             operator Qubit() {
                 return Qubit(mRegister, mAt);
             };
 
+            // a string representation of a quantum bit
             operator string() {
                 return "Qubit(" + string(mRegister) + ", " 
                                                     + to_string(mAt) + ")";
@@ -92,19 +106,27 @@ namespace dann5 {
 
         // ClassicRegister wraper structure 
         struct ClReg {
-            size_t mNumClbits = 0;
-            string mName;
+            size_t mNumClbits = 0;  // register size
+            string mName;           // register name
 
+            // default constructor creates 0 size instance with an empty name
+            ClReg() : mNumClbits(0), mName("") {};
+
+            // Construct an instance by specifying size and name of a classical
+            // register
             ClReg(size_t num_qubits, const string& name)
                 : mNumClbits(num_qubits), mName(name) {};
 
+            // Construct an instance of a wraper for the classical register
             ClReg(const ClassicalRegister& cntrlReg)
                 : mNumClbits(cntrlReg.first), mName(cntrlReg.second) {};
 
+            // returns a ClassicalRegister instance with same size and name
             operator ClassicalRegister() {
                 return ClassicalRegister(mNumClbits, mName);
             };
 
+            // a string representation of a classical register
             operator string() {
                 return "ClassicalRegister(" + to_string(mNumClbits)
                                                         + ", '" + mName + "')";
@@ -119,19 +141,29 @@ namespace dann5 {
 
         // Cl(assical)-Bit wraper structure 
         struct ClassicalBit {
-            ClReg mRegister;
-            size_t mAt;
+            ClReg mRegister;    // a classical register
+            size_t mAt;         // a position within the register
 
+            // default constructor creates an instance with an default classical 
+            // register and position set to 0
+            ClassicalBit() : mRegister(), mAt(0) {};
+
+            // Construct an instance by specifying a classical register and 
+            // the position of the quantum bit within the register
             ClassicalBit(const ClReg& reg, size_t at)
                 : mRegister(reg), mAt(at) {};
 
+            // Construct an instance of a wraper for the classical bit
             ClassicalBit(const Clbit& clBit)
                 : mRegister(clBit.first), mAt(clBit.second) {};
 
+            // returns a Clbit instance with the same register and the same
+            // position
             operator Clbit() {
                 return Clbit(mRegister, mAt);
             };
 
+            // a string representation of a classical bit
             operator string() {
                 return "Clbit(" + string(mRegister) + ", " 
                                                     + to_string(mAt) + ")";
@@ -224,27 +256,6 @@ namespace dann5 {
             // a shared pointer to a specific logical circuit
             typedef shared_ptr<Circuit> Sp;
 
-            // A circuit's input-output port
-            typedef pair<string, size_t> Port;
-/*
-            struct IoPort : public Port{
-                IoPort(string name, size_t at = 0) : Port(name, at) {};
-
-                IoPort(const Port& port) : Port(port) {};
-
-                IoPort(const IoPort& right) : Port(right) {};
-
-                const string& name() const { return first; };
-                void name(const string& n) { first = n; };
-
-                size_t at() const { return second; };
-                void at(size_t position) { second = position; };
-            };
-
-            // A list of circuit's input-output ports
-            // the list should be ordered as per a circuite specific logic 
-            typedef vector<IoPort> IoPorts;
-*/
             // Returns a instructions based on this circuit rules using provided
             // argument list. It expects a list of Qu(autum) bit arguments to be
             // provided in order specified by particual implementation.
@@ -687,32 +698,56 @@ namespace dann5 {
             typedef pair<Qubit, Qvalue>      QuOperand;
             typedef map<string, QuOperand>   QuOperandsMap;
 
+            // default constructor
             D5circuit();
+            // copy constructor
+            D5circuit(const D5circuit&);
 
             // Declare circuit's quantum registers
             void declare(const Qop&);
 
-            // Return initialization instructions for circuit registers
+            // Return initialization instructions for qubits in the init list
             Instructions initialize() const;
 
+            // Adds an quantum-cell operand into the list of input quantum 
+            // registers, all qubit operands and init qubit operands
             QuantumBit input(const Qcell::Sp&);
+            // Adds an quantum-cell operand into the list of input quantum 
+            // registers, all qubit operands
             QuantumBit output(const Qcell::Sp&);
 
+            // Returns a list of the circuit's input quantum registers
             const QuRegMap& inputs() const { return mIns; };
+            // Sets a list of the circuit's input quantum registers
             void inputs(const QuRegMap& ins) { mIns = ins; };
 
+            // Returns a list of the circuit's output quantum registers
             const QuRegMap& outputs() const { return mOuts; };
+            // Sets a list of the circuit's output quantum registers
             void outputs(const QuRegMap& outs) { mOuts = outs; };
 
+            // Returns a list of the circuit's operands.
             const QuOperandsMap& operands() const { return mOperands; };
+            // Sets a list of the circuit's operands.
             void operands(const QuOperandsMap& oprnds) { mOperands = oprnds; };
 
+            // Returns a list of the circuit's operands requiring initialization
+            const QuOperandsMap& initOperands() const { return mInitOperands; };
+            // Sets a list of the circuit's operands requiring initialization
+            void initOperands(const QuOperandsMap& oprnds) 
+                                                    { mInitOperands = oprnds; };
+
+            // Appends measure instructions for all operands to the circuit's
+            // list of instructions
             void measure();
 
+            // number of logical quantum nodes required for this circuit
             size_t nodesNo() const;
 
+            // Draws a circuit using ASCII characters
             virtual string draw() const;
 
+            // Resets a circuit into initial state
             virtual void reset() {
                 mIns.clear();
                 mOuts.clear();
@@ -727,7 +762,6 @@ namespace dann5 {
             virtual Instructions instructions(const Qubits& arguments) const;
 
         private:
-
             QuRegMap            mIns,
                                 mOuts;
             QuOperandsMap       mOperands, 

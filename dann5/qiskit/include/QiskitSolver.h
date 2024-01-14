@@ -16,43 +16,34 @@
 
 namespace dann5 {
 	namespace qiskit {
-		// D-Wave solver is an adapter-superclass of dann5 quantum solver
-		// (Qsolver) and all implementations of D-Wave quantum annealing
-		// simulator and samplers. It evaluates solutions for a given 
-		// QUBO or given Qstatement.
+		// Qiskit solver is an adapter-superclass of dann5 quantum solver
+		// (Qsolver) and all implementations of Qiskit quantum simulators and
+        // backends. It evaluates solutions for a given Circuit or a given
+        // Qstatement.
 		class QiskitSolver : public Qsolver
 		{
 		public:
-            // a shared pointer to a specific D-Wave solver
+            // a shared pointer to a specific Qiskit solver
             typedef shared_ptr<QiskitSolver> Sp;
 
-            // Defual construtor with an optinal flag to process just
-            // evaluations with the lowest energy. When lowest is 'false' the
-            // solver will process all the evaluation regardless of their 
-            // evaluated energy
+            // Defual construtor.
             QiskitSolver(bool lowest = true);
 
             // destructor
             virtual ~QiskitSolver();
 
-            // Returns quantum evaluations for a given quantum statement,
-            // Depending on the solver initialization, the returned quantum
-            // evaluations can be just those with lowes assessed energy, or
-            // the full set of all evaluations.
+            // Returns quantum evaluations for a given quantum statement.
             virtual Qevaluations solution(const Qstatement&);
 
-            // Returns quantum evaluations for a given QUBO,
-            // Depending on the solver initialization, the returned quantum
-            // evaluations can be just those with lowes assessed energy, or
-            // the full set of all evaluations.
-            virtual Qevaluations solution(const Circuits&);
-
+            // Returns quantum evaluations for a given dann5 circuit.
+            virtual Qevaluations solution(const D5circuit&);
+/*
             // Returns a lowest energy flag
             bool lowest() const { return mLowest; };
 
             // sets a lowest energy flag
             void lowest(bool lwst) { mLowest = lwst; };
-
+*/
             // Returns quantum evaluations
             const Qevaluations& solution() const { return mSolution; };
 
@@ -65,24 +56,24 @@ namespace dann5 {
             // sets a minimal evaluated energy
 //            void minEnergy(double mEnergy) { mMinEnergy = mEnergy; };
 
-            // reset solutions and assessed minimum energy, 
-            // calls Qanalyzer::reset() to reset qubo, and nodes and branches
-            // of analyses
+            // returns a circuite being solved
+            const D5circuit& circuit() const { return mCircuit; };
+
+            // Resets evaluated solutions and the coresponding circuit. 
             virtual void reset();
 
-            // Override to run solve algorith on a coresponding D-Wave quantum
-		    // annealing simulator or sampler
+            // Override to run solve algorith on a coresponding Qiskit quantum
+		    // simulator or backend
             virtual void solve() = 0;
 
         protected:
-            void init();
-
         private:
 //            static const double cMaxEnergy; // numeric_limits<double>::max()
 
             bool	        mLowest;    // Return only evaluations with minimal energy
 //            double      	mMinEnergy; // Minimal evaluated energy
             Qevaluations	mSolution;  // Solution evaluations
+            D5circuit       mCircuit;
         };
 
         class PyQiskitSolver : public QiskitSolver {

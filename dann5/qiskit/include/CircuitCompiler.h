@@ -20,33 +20,26 @@
 namespace dann5{
     namespace qiskit {
         // A specialization of quantum operation compiler that translates the
-        // operation definition into QUBO
+        // operation definition into Qiskit cicuit list of instructions
         class CircuitCompiler : public Qcompiler
         {
+        public:
             enum Stage {
                 cInitialize,
                 cCompile,
                 cMeasure
             };
 
-        public:
-            // Constructor sets the QUBO compiler mode. If finalized, compiles
-            // an quantum operation into an executable qubo format with all
-            // constant variables substituted by their values and recalcualtes
-            // parameters of linear nodes. If not finalized, creates a full
-            // qubo translation without substitutions.
+            // Default constructor sets the Circuit compiler into compile stage.
             CircuitCompiler() : mStage(cCompile) {};
             
-            // Compiles an operation into its QUBO transalation. When the
-            // compiler is in finalized mode, creates an executable qubo format
-            // with all constant variables substituted by their values and
-            // recalcualtes parameters of linear nodes. Otherwise, creates a
-            // full qubo translation without substitutions.
+            // Compiles a quantum operation into its Qiskit circuit transalation.
             virtual void compile(const Qop&);
             
-            // Returns a qubo representation of last compiled quantum operation
-            const Circuit& qubo() const { return mCircuit; };
-            
+            // Returns a circuit representation of last compiled quantum operation
+            const D5circuit& circuit() const { return mCircuit; };
+            D5circuit& circuit() { return mCircuit; };
+
             // Resets the compiler into its initial state
             void reset() {
                 mCircuit.reset();
@@ -62,7 +55,6 @@ namespace dann5{
                 reset();
             };
 
-            D5circuit& circuit() { return mCircuit; };
 
         protected:
             // Updates circuit instructions as a translation of parsed quantum

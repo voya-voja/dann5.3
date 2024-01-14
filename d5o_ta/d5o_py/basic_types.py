@@ -6,7 +6,7 @@ Created on Fri Sec 22 19:37:12 2023
 """
 import dann5.d5 as d5
 from dann5.d5o import QuboCompiler, QuboAnalyzer, D5QuboSolver
-from dann5.dwave import Solvers as DwaveSolvers, PyQsolver, DwaveExactSolver, \
+from dann5.dwave import Solvers as DwaveSolvers, QuboSolvers, DwaveExactSolver, \
                                    DwaveHybridSolver, DwaveAdvantageSolver, \
                                    DwaveAdvantage2Solver
 
@@ -284,7 +284,7 @@ def qwholeGe_test():
 def main():
     basic_types()
     
-    PyQsolver.Active()   # activates default D%QuboSolver
+    QuboSolvers.Active()   # activates default D5QuboSolver
 
     qbit_test()
     qbool_test()

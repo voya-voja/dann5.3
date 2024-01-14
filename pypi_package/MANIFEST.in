@@ -4,6 +4,7 @@
 # Windows x64
 include dann5/d5.cp310-win_amd64.pyd
 include dann5/d5o.cp310-win_amd64.pyd
+include dann5/d5q.cp310-win_amd64.pyd
 
 # macOS
 include dann5/d5o2.cpython-310-darwin.so

@@ -85,7 +85,7 @@ setup(
     packages=['dann5'],
     include_package_data=True,
     package_data={
-        'dann5': ['d5.cp310-win_amd64.pyd', 'd5o.cp310-win_amd64.pyd',
+        'dann5': ['d5.cp310-win_amd64.pyd', 'd5o.cp310-win_amd64.pyd', 'd5q.cp310-win_amd64.pyd',
                   'd5o2.cpython-310-darwin.so'
                   'd5o2.so'],
     },

@@ -13,7 +13,7 @@ void Instruction::append(const Qubits& qbts, const Clbits& clbts)
 
 Instruction::operator string() const
 {
-    string str("CircuitInstruction(operation=Instruction('");
+    string str("CircuitInstruction(operation=Instruction(name='");
     str += name() + "', num_qubits=";
     str += to_string(num_qubits()) + ", num_clbits=";
     str += to_string(num_clbits()) + ", params=[]), qubits=(";
@@ -106,10 +106,11 @@ Instructions MeasureCircuit::instructions(const Qubits& arguments) const
 
 string MeasureCircuit::draw() const
 {
-    string drawing = "\t   a_0: -M-";
-    drawing += "\t         |";
-    drawing += "\tcl: 1 /= +=";
-    drawing += "\t         0";
+    string 
+        drawing  = "\t   a_0: -M-";
+        drawing += "\t         |";
+        drawing += "\tcl: 1 /= +=";
+        drawing += "\t         0";
     return drawing;
 }
 
@@ -147,20 +148,12 @@ string HadamardCircuit::draw() const
 }
 
 /**** Reset Circuit ****/
-/*
-Instruction ResetCircuit::Reset(const IoPort& arg) 
-{
-    return Instruction("reset",
-        { Qubit(QuantumRegister(1, arg.name()), arg.at()) });
-}
-*/
 Instruction ResetCircuit::Reset(const Qubit& arg)
 {
     return Instruction("reset", { arg });
 }
 
 ResetCircuit::ResetCircuit()
-//    : Circuit({ ResetCircuit::Reset() }) 
 {
 }
 
@@ -180,20 +173,12 @@ string ResetCircuit::draw() const
 }
 
 /**** Invert Circuit ****/
-/*
-Instruction InvertCircuit::Not(const IoPort& arg) 
-{
-    return Instruction("x",
-        { Qubit(QuantumRegister(1, arg.name()), arg.at()) });
-}
-*/
 Instruction InvertCircuit::Not(const Qubit& arg)
 {
     return Instruction("x", { arg });
 }
 
 InvertCircuit::InvertCircuit()
-//    : Circuit({ InvertCircuit::Not() }) 
 {
 }
 
@@ -716,6 +701,13 @@ string AdderCircuit::draw() const
 D5circuit::D5circuit()
     : Circuit()  
 {
+}
+
+D5circuit::D5circuit(const D5circuit& right)
+    :Circuit(right), mIns(right.mIns), mOuts(right.mOuts), 
+        mOperands(right.mOperands), mInitOperands(right.mInitOperands)
+{
+
 }
 
 void D5circuit::declare(const Qop& op)
