@@ -74,5 +74,3 @@ std::ostream& dann5::operator << (std::ostream& out, const Qevaluations& evaluat
     }
     return out;
 }
-
-

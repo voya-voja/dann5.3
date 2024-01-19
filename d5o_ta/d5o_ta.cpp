@@ -504,7 +504,7 @@ void prime_s2t_prime(ostream& out)
     out << " resulting in :" << endl << pst << endl;
 }
 
-void testQiskit()
+void testQbitQiskit()
 {
     Qbit x("x"), y("y"), z("z", 1);
     Qexpr<Qbit> expr((x & y) ^ z);
@@ -512,15 +512,44 @@ void testQiskit()
     expr.compile(compiler);
     Circuit& circuit = compiler.circuit();
     cout << circuit.instructions();
+    cout << circuit.draw();
 
     cout << endl << expr.solve() << endl;
+}
+
+void testQbinQiskit()
+{
+    Qbin x(2, "x"), y(2, "y"), z("z", 1);
+    Qexpr<Qbin> expr((x & y) ^ z);
+    CircuitCompiler compiler;
+    expr.compile(compiler);
+    Circuit& circuit = compiler.circuit();
+    cout << circuit.instructions();
+    cout << circuit.draw();
+
+    cout << endl << expr.solve() << endl;
+}
+
+void testQwholeQiskit()
+{
+    Qwhole x(2, "x"), y(2, "y"), r(2, "r");
+    Qassign<Qwhole> addAssign(r = x + y);
+    CircuitCompiler compiler;
+    addAssign.compile(compiler);
+    Circuit& circuit = compiler.circuit();
+    cout << circuit.instructions();
+    cout << circuit.draw() << endl;
+
+    cout << addAssign << endl << addAssign.toString(true) << endl << addAssign.solve();
 }
 
 int main(int argc, const char * argv[])
 {
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
-    testQiskit();
+//    testQbitQiskit();
+//    testQbinQiskit();
+    testQwholeQiskit();
 /*
     prime_s2t(cout);
     prime_s4t(cout);

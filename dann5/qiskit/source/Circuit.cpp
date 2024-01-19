@@ -52,8 +52,94 @@ std::ostream& dann5::qiskit::operator<< (std::ostream& out, const Instructions& 
         out << instruction << endl;
     return out;
 }
+/**** QuOperandsMap ****/
+QuOperandsMap& dann5::qiskit::operator+=(QuOperandsMap& left, const QuOperandsMap& right)
+{
+    left.insert(right.begin(), right.end());
+    return left;
+}
+
+QuOperandsMap dann5::qiskit::operator+(const QuOperandsMap& left, const QuOperandsMap& right)
+{
+    QuOperandsMap result(left);
+    result += right;
+    return result;
+}
 
 /**** Circuit ****/
+string Circuit::draw() const
+{
+    vector<string> lines;
+    size_t qbNameSize = 10;
+    // draw qu(antum)-bits
+    for (auto operand : mOperands)
+    {
+        QuantumBit qubit(operand.second.first);
+        string line(qubit.mRegister.mName);
+        line.insert(0, qbNameSize - line.size(), ' ');
+        line += ": ";
+        lines.push_back(line);
+    }
+    const Instructions& instrctns = Circuit::instructions();
+    bool measuresMode = false;
+    vector<string> measures(lines.size(), "");
+    for (auto instruction : instrctns)
+    {
+        Qubits qubits = instruction.qubits();
+        size_t lineCount = 0;
+        for (auto operand : mOperands)
+        {
+            bool emptyLine = true;
+            QuantumBit oprndQubit(operand.second.first);
+            size_t atQubit = 0, lastQubit = qubits.size() - 1;
+            for (auto qubit : qubits)
+            {
+                emptyLine = QuantumBit(qubit).mRegister.mName != oprndQubit.mRegister.mName;
+                if (!emptyLine)
+                {
+                    if (lastQubit == atQubit)
+                    {
+                        Qubits clbits = instruction.clbits();
+                        if (clbits.size() != 0)
+                        {
+                            ClassicalBit clbit(clbits[0]);
+                            measures[lineCount] += " " + to_string(clbit.mAt) + " ";
+                            measuresMode = true;
+                        }
+                        else if (lastQubit == 0)
+                        {
+                            string instrctn = instruction.name();
+                            if (instrctn == "reset")
+                                lines[lineCount] += "|0>";
+                            else
+                                lines[lineCount] += "-" + instrctn + "-";
+                        }
+                        else
+                            lines[lineCount] += "-X-";
+                    }
+                    else if(instruction.name() == "swap")
+                        lines[lineCount] += "-X-";
+                    else
+                        lines[lineCount] += "-+-";
+                    break;
+                }
+                atQubit++;
+            }
+            if (emptyLine && !measuresMode)
+                lines[lineCount] += "---";
+            lineCount += 1;
+        }
+    }
+
+    for (size_t atLine = 0; atLine < lines.size(); atLine++)
+        lines[atLine] += measures[atLine];
+
+    string drawing("");
+    for (auto line : lines)
+        drawing += line + "\n";
+    return drawing;
+}
+
 std::ostream& dann5::qiskit::operator << (std::ostream& out, const Circuit& circuit)
 {
     out << circuit.draw();
@@ -82,57 +168,47 @@ std::ostream& dann5::qiskit::operator<< (std::ostream& out, const Circuits& righ
 }
 
 /**** Measure Circuit ****/
-/*
-Instruction MeasureCircuit::Measure(const IoPort& arg, const IoPort& cl)
-{
-    return Instruction("measure",
-        { Qubit(QuantumRegister(1, arg.name()), arg.at()) },
-        { Clbit(ClassicalRegister(1, cl.name()), cl.at()) });
-}
-*/
 Instruction MeasureCircuit::Measure(const Qubit& arg, const Clbit& cl)
 {
     return Instruction("measure", { arg }, { cl });
 }
 
 MeasureCircuit::MeasureCircuit()
-//    :Circuit({ MeasureCircuit::Measure() }) 
+:mClbit(ClassicalBit(ClReg(1, "cl"), 0))
 {}
 
-Instructions MeasureCircuit::instructions(const Qubits& arguments) const
+MeasureCircuit::MeasureCircuit(const ClassicalBit& clbit)
+    :mClbit(clbit)
+{}
+
+Instructions MeasureCircuit::create(const Qubits& arguments) const
 {
-    return Circuit::instructions();
+    if (arguments.size() != 1)
+        throw logic_error(
+            "Error @MeasureCircuit::instructions: arguments size is "
+            + arguments.size());
+    return { Measure(arguments[0], mClbit) };
 }
 
 string MeasureCircuit::draw() const
 {
-    string 
-        drawing  = "\t   a_0: -M-";
-        drawing += "\t         |";
-        drawing += "\tcl: 1 /= +=";
-        drawing += "\t         0";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string drawing = "\t  a_0: -h-";
     return drawing;
 }
 
 /**** Hadamard Circuit ****/
-/*
-Instruction HadamardCircuit::Hadamard(const IoPort& arg)
-{
-    return Instruction("h",
-        { Qubit(QuantumRegister(1, arg.name()), arg.at()) });
-}
-*/
 Instruction HadamardCircuit::Hadamard(const Qubit& arg)
 {
     return Instruction("h", { arg });
 }
 
 HadamardCircuit::HadamardCircuit()
-//    :Circuit({ HadamardCircuit::Hadamard() })
 {
 }
 
-Instructions HadamardCircuit::instructions(const Qubits& arguments) const
+Instructions HadamardCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 1)
         throw logic_error(
@@ -143,7 +219,9 @@ Instructions HadamardCircuit::instructions(const Qubits& arguments) const
 
 string HadamardCircuit::draw() const
 {
-    string drawing = "\t  a_0: - H -";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string drawing = "\t  a_0: -h-";
     return drawing;
 }
 
@@ -157,18 +235,20 @@ ResetCircuit::ResetCircuit()
 {
 }
 
-Instructions ResetCircuit::instructions(const Qubits& arguments) const
+Instructions ResetCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 1)
         throw logic_error(
-            "Error @HadamardCircuit::instructions: arguments size is "
+            "Error @ResetCircuit::instructions: arguments size is "
             + arguments.size());
     return { Reset(arguments[0]) };
 }
 
 string ResetCircuit::draw() const
 {
-    string drawing = "\t  a_0: -|0>-";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string drawing = "\t  a_0: |0>";
     return drawing;
 }
 
@@ -182,78 +262,46 @@ InvertCircuit::InvertCircuit()
 {
 }
 
-Instructions InvertCircuit::instructions(const Qubits& arguments) const
+Instructions InvertCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 1)
         throw logic_error(
-            "Error @HadamardCircuit::instructions: arguments size is "
+            "Error @InvertCircuit::instructions: arguments size is "
             + arguments.size());
     return { Not(arguments[0]) };
 }
 
 string InvertCircuit::draw() const
 {
-    string drawing = "\t  a_0: - X -";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string drawing = "\t  a_0: -x-";
     return drawing;
 }
 
 /**** Operator Circuit ****/
-/*
-Instruction OperatorCircuit::ControlledNot(const IoPort& in, const IoPort& out) 
-{
-    return Instruction("x",
-        { Qubit(QuantumRegister(1, in.name()), in.at()),
-            Qubit(QuantumRegister(1, out.name()), out.at()) });
-}
-*/
 Instruction OperatorCircuit::ControlledNot(const Qubit& in, const Qubit& out)
 {
     return Instruction("cx", { in, out });
 }
-/*
-Instruction OperatorCircuit::Swap(const IoPort& in, const IoPort& out)
-{
-    return Instruction("swap",
-        { Qubit(QuantumRegister(1, in.name()), in.at()),
-            Qubit(QuantumRegister(1, out.name()), out.at()) });
-}
-*/
+
 Instruction OperatorCircuit::Swap(const Qubit& in, const Qubit& out)
 {
     return Instruction("swap", { in, out });
 }
 
 /**** Binary Operation Circuit ****/
-/*
-Instruction BinaryOpCircuit::Toffoli(const IoPort& in, const IoPort& out) 
-{
-    return Instruction("x",
-        { Qubit(QuantumRegister(2, in.name()), in.at()),
-            Qubit(QuantumRegister(2, in.name()), in.at() + 1),
-            Qubit(QuantumRegister(1, out.name()), out.at()) });
-}
-
-Instruction BinaryOpCircuit::Toffoli(const IoPort& in0, const IoPort& in1,
-                                                            const IoPort& out)
-{
-    return Instruction("x",
-        { Qubit(QuantumRegister(1, in0.name()), in0.at()),
-            Qubit(QuantumRegister(1, in1.name()), in1.at()),
-            Qubit(QuantumRegister(1, out.name()), out.at()) });
-}
-*/
 Instruction BinaryOpCircuit::Toffoli(const Qubit& in0, const Qubit& in1, 
                                                             const Qubit& out)
 {
     return Instruction("ccx", { in0, in1, out });
 }
+
 /**** Equal Operator Circuit ****/
 EqCircuit::EqCircuit() 
-//
-{
-}
+{}
 
-Instructions EqCircuit::instructions(const Qubits& arguments) const
+Instructions EqCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 2)
         throw logic_error(
@@ -264,21 +312,20 @@ Instructions EqCircuit::instructions(const Qubits& arguments) const
 
 string EqCircuit::draw() const
 {
-    string 
-        drawing = "\t  i_0: --+--";
-        drawing += "\t         |";
-        drawing += "\t  o_0: - X -";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
+        drawing  = "\t  i_0: -+-";
+        drawing += "\t  o_0: -X-";
     return drawing;
 }
 
 /**** Not-Equal Operator Circuit ****/
 NeqCircuit::NeqCircuit() 
-/* :OperatorCircuit({OperatorCircuit::ControlledNot(),
-                                 InvertCircuit::Not() }) */
 {
 }
 
-Instructions NeqCircuit::instructions(const Qubits& arguments) const
+Instructions NeqCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 2)
         throw logic_error(
@@ -291,23 +338,21 @@ Instructions NeqCircuit::instructions(const Qubits& arguments) const
 
 string NeqCircuit::draw() const
 {
-    string 
-        drawing = "\t  i_0: --+--";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
+        drawing  = "\t  i_0: -+-";
         drawing += "\t         |";
-        drawing += "\t  o_0: - X -- X -";
+        drawing += "\t  o_0: -X--x-";
     return drawing;
 }
 
 /**** Less-Than Operator Circuit ****/
 LtCircuit::LtCircuit()
-/* : OperatorCircuit({OperatorCircuit::Swap(),
-                        ResetCircuit::Reset(IoPort("o")),
-                        InvertCircuit::Not(IoPort("o")),
-                        OperatorCircuit::ControlledNot() }) */
 {
 }
 
-Instructions LtCircuit::instructions(const Qubits& arguments) const
+Instructions LtCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 2)
         throw logic_error(
@@ -323,21 +368,20 @@ Instructions LtCircuit::instructions(const Qubits& arguments) const
 
 string LtCircuit::draw() const
 {
-    string 
-        drawing = "\t  i_0: -X-------------+--";
-        drawing += "\t       |             | ";
-        drawing += "\t o_0: -X--|0>-- X -- X -";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
+        drawing  = "\t i_0: -X---------+-";
+        drawing += "\t o_0: -X-|0>--x--X-";
     return drawing;
 };
 
 /**** Less-Than-and-Equal Operator Circuit ****/
 LeCircuit::LeCircuit() 
-/* : OperatorCircuit({OperatorCircuit::Swap(),
-                        OperatorCircuit::ControlledNot() }) */
 {
 }
 
-Instructions LeCircuit::instructions(const Qubits& arguments) const
+Instructions LeCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 2)
         throw logic_error(
@@ -351,23 +395,20 @@ Instructions LeCircuit::instructions(const Qubits& arguments) const
 
 string LeCircuit::draw() const
 {
-    string 
-        drawing = "\t  i_0: --X---+-";
-        drawing += "\t        |   |";
-        drawing += "\t o_0: --X-- X -";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
+        drawing  = "\t i_0: -X---+-";
+        drawing += "\t o_0: -X-- X -";
     return drawing;
 }
 
 /**** Greater-Than Operator Circuit ****/
 GtCircuit::GtCircuit() 
-/* : OperatorCircuit({InvertCircuit::Not(IoPort("o")),
-                        OperatorCircuit::Swap(),
-                        OperatorCircuit::ControlledNot(),
-                        ResetCircuit::Reset(IoPort("o")) }) */
 {
 }
 
-Instructions GtCircuit::instructions(const Qubits& arguments) const
+Instructions GtCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 2)
         throw logic_error(
@@ -383,22 +424,20 @@ Instructions GtCircuit::instructions(const Qubits& arguments) const
 
 string GtCircuit::draw() const
 {
-    string 
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
         drawing = "\t  i_0: ------X---+-";
-        drawing += "\t            |   | ";
-        drawing += "\t o_0: - X --X-- X -----|0>-";
+        drawing += "\t o_0: --x---X-- X -|0>";
     return drawing;
 }
 
 /****  Greater-Than-and-Equal Operator Circuit ****/
 GeCircuit::GeCircuit() 
-/* : OperatorCircuit({InvertCircuit::Not(IoPort("o")),
-                        OperatorCircuit::Swap(),
-                        OperatorCircuit::ControlledNot() }) */
 {
 }
 
-Instructions GeCircuit::instructions(const Qubits& arguments) const
+Instructions GeCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 2)
         throw logic_error(
@@ -410,23 +449,21 @@ Instructions GeCircuit::instructions(const Qubits& arguments) const
                                   ControlledNot(arguments[0], arguments[1]) };
     return instructions;
 }
-
 string GeCircuit::draw() const
 {
-    string 
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
         drawing = "\t  i_0: ------X---+-";
-        drawing += "\t            |   | ";
-        drawing += "\t o_0: - X --X-- X -";
+        drawing += "\t o_0: --x---X-- X -";
     return drawing;
 }
-
 /****  And Operation Circuit ****/
 AndCircuit::AndCircuit() 
-//    : BinaryOpCircuit({ BinaryOpCircuit::Toffoli() }) 
 {
 }
 
-Instructions AndCircuit::instructions(const Qubits& arguments) const
+Instructions AndCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 3)
         throw logic_error(
@@ -439,23 +476,21 @@ Instructions AndCircuit::instructions(const Qubits& arguments) const
 
 string AndCircuit::draw() const
 {
-    string 
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
         drawing = "\t  i_0: --+-";
-        drawing += "\t        | ";
         drawing += "\t i_1: --+--";
-        drawing += "\t        | ";
         drawing += "\t o_0: - X -";
     return drawing;
 }
 
 /****  Not-And Operation Circuit ****/
 NandCircuit::NandCircuit() 
-/* : BinaryOpCircuit({InvertCircuit::Not(IoPort("o")),
-                        BinaryOpCircuit::Toffoli() }) */
 {
 }
 
-Instructions NandCircuit::instructions(const Qubits& arguments) const
+Instructions NandCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 3)
         throw logic_error(
@@ -480,15 +515,10 @@ string NandCircuit::draw() const
 
 /**** Or Operation Circuit ****/
 OrCircuit::OrCircuit() 
-/* : BinaryOpCircuit({BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("a")),
-                        OperatorCircuit::ControlledNot(IoPort("i"), IoPort("a", 1)),
-                        OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("a", 1)),
-                        OperatorCircuit::ControlledNot(IoPort("a"), IoPort("o")),
-                        OperatorCircuit::ControlledNot(IoPort("a", 1), IoPort("o")) }) */
 {
 }
 
-Instructions OrCircuit::instructions(const Qubits& arguments) const
+Instructions OrCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 3)
         throw logic_error(
@@ -504,7 +534,9 @@ Instructions OrCircuit::instructions(const Qubits& arguments) const
 
 string OrCircuit::draw() const
 {
-    string 
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
         drawing = "\t  i_0: --+----+-------";
         drawing += "\t        |    |";
         drawing += "\t i_1: --+---------+--";
@@ -515,16 +547,10 @@ string OrCircuit::draw() const
 
 /****  Not-Or Operation Circuit ****/
 NorCircuit::NorCircuit() 
-/* : BinaryOpCircuit({BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("a")),
-                        OperatorCircuit::ControlledNot(IoPort("i"), IoPort("a", 1)),
-                        OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("a", 1)),
-                        OperatorCircuit::ControlledNot(IoPort("a")),
-                        OperatorCircuit::ControlledNot(IoPort("a", 1)),
-                        InvertCircuit::Not(IoPort("o")) }) */
 {
 }
 
-Instructions NorCircuit::instructions(const Qubits& arguments) const
+Instructions NorCircuit::create(const Qubits& arguments) const
 {
     OrCircuit orCrct;
     Instructions instructions = orCrct.instructions(arguments);
@@ -534,7 +560,9 @@ Instructions NorCircuit::instructions(const Qubits& arguments) const
 
 string NorCircuit::draw() const
 {
-    string 
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
         drawing = "\t  i_0: --+----+-------";
         drawing += "\t        |    |";
         drawing += "\t i_1: --+---------+--";
@@ -545,12 +573,10 @@ string NorCircuit::draw() const
 
 /**** Xor Operation Circuit ****/
 XorCircuit::XorCircuit() 
-/* : BinaryOpCircuit({OperatorCircuit::ControlledNot(),
-                        OperatorCircuit::ControlledNot(IoPort("i", 1)) }) */
 {
 }
 
-Instructions XorCircuit::instructions(const Qubits& arguments) const
+Instructions XorCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() < 3)
         throw logic_error(
@@ -564,7 +590,9 @@ Instructions XorCircuit::instructions(const Qubits& arguments) const
 
 string XorCircuit::draw() const
 {
-    string 
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
         drawing = "\t  i_0: --+-------";
         drawing += "\t        |       ";
         drawing += "\t i_1: -------+--";
@@ -575,13 +603,10 @@ string XorCircuit::draw() const
 
 /****  Not-Xor Operation Circuit ****/
 NxorCircuit::NxorCircuit() 
-/* : BinaryOpCircuit({OperatorCircuit::ControlledNot(),
-                        OperatorCircuit::ControlledNot(IoPort("i", 1)),
-                        InvertCircuit::Not(IoPort("o")) }) */
 {
 }
 
-Instructions NxorCircuit::instructions(const Qubits& arguments) const
+Instructions NxorCircuit::create(const Qubits& arguments) const
 {
     XorCircuit xorCrct;
     Instructions instructions = xorCrct.instructions(arguments);
@@ -591,8 +616,10 @@ Instructions NxorCircuit::instructions(const Qubits& arguments) const
 
 string NxorCircuit::draw() const
 {
-    string 
-        drawing = "\t  i_0: --+-------";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
+        drawing  = "\t i_0: --+-------";
         drawing += "\t        |       ";
         drawing += "\t i_1: -------+--";
         drawing += "\t        |    |  ";
@@ -602,13 +629,10 @@ string NxorCircuit::draw() const
 
 /****  Half-Adder Operation Circuit ****/
 HalfAdderCircuit::HalfAdderCircuit()
-/* : BinaryOp2OutCircuit({OperatorCircuit::ControlledNot(),
-                            OperatorCircuit::ControlledNot(IoPort("i", 1)),
-                            BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("c")) }) */
 {
 }
 
-Instructions HalfAdderCircuit::instructions(const Qubits& arguments) const
+Instructions HalfAdderCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 4)
         throw logic_error(
@@ -622,8 +646,10 @@ Instructions HalfAdderCircuit::instructions(const Qubits& arguments) const
 
 string HalfAdderCircuit::draw() const
 {
-    string 
-        drawing = "\t  i_0: --+---------+--";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
+        drawing  = "\t i_0: --+---------+--";
         drawing += "\t        |         |  ";
         drawing += "\t i_1: -------+----+--";
         drawing += "\t        |    |    |  ";
@@ -634,48 +660,60 @@ string HalfAdderCircuit::draw() const
 }
 
 /****  Adder Operation Circuit ****/
-AdderCircuit::AdderCircuit() 
-/* : Circuit({ // half adder { out: a0 = i0 ^ i1; carry: a[1] = i[0] & i[1] }
-                OperatorCircuit::ControlledNot(IoPort("i"), IoPort("a")),
-                OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("a")),
-                BinaryOpCircuit::Toffoli(IoPort("i"), IoPort("a", 1)),
-                // half adder { out: o0 = a0 ^ i2; carry: a[2] = a[0] & i[2] }
-                OperatorCircuit::ControlledNot(IoPort("a"), IoPort("o")),
-                OperatorCircuit::ControlledNot(IoPort("i", 2) , IoPort("o", 1)),
-                BinaryOpCircuit::Toffoli(IoPort("a"), IoPort("i", 2), IoPort("a", 2)),
-                // c0 = a1 | a2
-                BinaryOpCircuit::Toffoli(IoPort("a", 1), IoPort("a", 3)),       // AND
-                OperatorCircuit::ControlledNot(IoPort("a", 1), IoPort("a", 4)),
-                OperatorCircuit::ControlledNot(IoPort("a", 2), IoPort("a", 4)), // XOR
-                OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("c")),
-                OperatorCircuit::ControlledNot(IoPort("i", 1), IoPort("c")) })  // XOR */
+size_t AdderCircuit::gAuxCounter = 0;
+
+string AdderCircuit::AuxRegName()
 {
+    string name = "_add" + to_string(gAuxCounter++) + "a_";
+    return name;
 }
 
-Instructions AdderCircuit::instructions(const Qubits& arguments) const
+AdderCircuit::AdderCircuit() 
+{
+    Qubits auxBits;
+    for (size_t count = 0; count < 3; count++)
+    {
+        QuReg aux(3, AuxRegName() + to_string(count));
+        auxBits.push_back(Qubit(aux, count));
+    }
+    QuOperandsMap& oprnds = operands();
+    for (size_t count = 0; count < 3; count++)
+    {
+        QuantumBit qubit = auxBits[count];
+        oprnds[qubit.mRegister.mName] = QuOperand(qubit, cSuperposition);
+    }
+}
+
+Instructions AdderCircuit::create(const Qubits& arguments) const
 {
     if (arguments.size() != 5)
         throw logic_error(
             "Error @HadamardCircuit::instructions: arguments size is "
             + arguments.size());
-    QuReg aux(3, "_add_a_");
+    
+    Qubits auxs;
+    for (auto auxPair : operands())
+        auxs.push_back(auxPair.second.first);
     // half adder { out: a0 = i0 ^ i1; carry: a[1] = i[0] & i[1] }
     HalfAdderCircuit haCrct;
-    QuantumBit aux0(aux, 0), aux1(aux, 1);
-    Instructions instructions = haCrct.instructions({ arguments[0], arguments[1], aux0, aux1 });
+    Instructions instructions = 
+                            haCrct.instructions({ arguments[0], arguments[1],
+                                                    auxs[0], auxs[1] });
     // half adder { out: o0 = a0 ^ i2; carry: a[2] = a[0] & i[2] }
-    QuantumBit aux2(aux, 2);
-    instructions += haCrct.instructions({ aux0, arguments[2], arguments[3], aux2 });
+    instructions += haCrct.instructions({ auxs[0], arguments[2],
+                                          arguments[3], auxs[2] });
     // c0 = a1 | a2
     OrCircuit orCrct;
-    instructions += orCrct.instructions({ aux1, aux2, arguments[4] });
+    instructions += orCrct.instructions({ auxs[1], auxs[2], arguments[4] });
     return instructions;
 }
 
 string AdderCircuit::draw() const
 {
-    string 
-        drawing = "\t  i_0: - H ------+---------+--------------------------------------";
+    if (Circuit::operands().size() != 0)
+        return Circuit::draw();
+    string
+        drawing  = "\t i_0: - H ------+---------+--------------------------------------";
         drawing += "\t                |         |          ";
         drawing += "\t i_1: - H -----------+----+--------------------------------------";
         drawing += "\t                |    |    |          ";
@@ -704,8 +742,8 @@ D5circuit::D5circuit()
 }
 
 D5circuit::D5circuit(const D5circuit& right)
-    :Circuit(right), mIns(right.mIns), mOuts(right.mOuts), 
-        mOperands(right.mOperands), mInitOperands(right.mInitOperands)
+    :Circuit(right), mIns(right.mIns), mOuts(right.mOuts),
+                    mInitOperands(right.mInitOperands)
 {
 
 }
@@ -760,9 +798,9 @@ QuantumBit D5circuit::input(const Qcell::Sp& pOperand)
             break;
         }
     }
-    if (mOperands.find(QuReg(quOperand.first.first).mName) == mOperands.end())
+    if (operands().find(QuReg(quOperand.first.first).mName) == operands().end())
     {
-        mOperands[QuReg(quOperand.first.first).mName] = quOperand;
+        operands()[QuReg(quOperand.first.first).mName] = quOperand;
         // only input operands to be added
         mInitOperands[QuReg(quOperand.first.first).mName] = quOperand;
     }
@@ -787,15 +825,15 @@ QuantumBit D5circuit::output(const Qcell::Sp& pOperand)
             break;
         }
     }
-    if (mOperands.find(QuReg(quOperand.first.first).mName) == mOperands.end())
-        mOperands[QuReg(quOperand.first.first).mName] = quOperand;
+    if (operands().find(QuReg(quOperand.first.first).mName) == operands().end())
+        operands()[QuReg(quOperand.first.first).mName] = quOperand;
     return quOperand.first;
 }
 void D5circuit::measure()
 {
-    ClReg clReg(mOperands.size(), "cl");
+    ClReg clReg(operands().size(), "cl");
     size_t numClbits = 0;
-    for (auto operand : mOperands)
+    for (auto operand : operands())
     {
         if (numClbits == clReg.mNumClbits)
             throw logic_error("ERROR @D5circuit::measure: clReg["
@@ -809,12 +847,6 @@ void D5circuit::measure()
     }
 }
 
-string D5circuit::draw() const
-{
-    string drawing = "";
-    return drawing;
-}
-
 size_t D5circuit::nodesNo() const
 {
     size_t noNodes = 0;
@@ -825,7 +857,7 @@ size_t D5circuit::nodesNo() const
     return noNodes;
 }
 
-Instructions D5circuit::instructions(const Qubits& arguments) const
+Instructions D5circuit::create(const Qubits& arguments) const
 {
     return Circuit::instructions();
 }

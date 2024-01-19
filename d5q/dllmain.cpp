@@ -213,14 +213,14 @@ PYBIND11_MODULE(d5q, m) {
 		.def("outputs", static_cast<void (D5circuit::*)(const QuRegMap&)>(&D5circuit::outputs),
 			R"pbdoc(Sets a list of the circuit's output quantum registers.)pbdoc")
 
-		.def("operands", static_cast<const D5circuit::QuOperandsMap& (D5circuit::*)() const>(&D5circuit::operands),
+		.def("operands", static_cast<const QuOperandsMap& (D5circuit::*)() const>(&Circuit::operands),
 			R"pbdoc(Returns a list of the circuit's operands.)pbdoc")
-		.def("operands", static_cast<void (D5circuit::*)(const D5circuit::QuOperandsMap&)>(&D5circuit::operands),
+		.def("operands", static_cast<void (D5circuit::*)(const QuOperandsMap&)>(&Circuit::operands),
 			R"pbdoc(Sets a list of the circuit's operands.)pbdoc")
 
-		.def("initOperands", static_cast<const D5circuit::QuOperandsMap& (D5circuit::*)() const>(&D5circuit::initOperands),
+		.def("initOperands", static_cast<const QuOperandsMap& (D5circuit::*)() const>(&D5circuit::initOperands),
 			R"pbdoc(Returns a list of the circuit's operands requiring initialization.)pbdoc")
-		.def("initOperands", static_cast<void (D5circuit::*)(const D5circuit::QuOperandsMap&)>(&D5circuit::initOperands),
+		.def("initOperands", static_cast<void (D5circuit::*)(const QuOperandsMap&)>(&D5circuit::initOperands),
 			R"pbdoc(Sets a list of the circuit's operands requiring initialization.)pbdoc")
 			
 		.def("nodesNo", &D5circuit::nodesNo,

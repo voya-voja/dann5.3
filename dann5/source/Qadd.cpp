@@ -30,7 +30,8 @@ void Qadd::refreshOnInputs()
 	bool checkSize = true;
 	for (size_t atBit = 0; atBit < size; atBit++)
 	{
-		bool assignOutput = pCarry != nullptr || (pLeft->noqbs() > atBit && pRight->noqbs() > atBit);
+		bool assignOutput = pCarry != nullptr || 
+							(pLeft->noqbs() > atBit && pRight->noqbs() > atBit);
 		if (checkSize && !assignOutput)
 		{
 			size--;
@@ -42,46 +43,50 @@ void Qadd::refreshOnInputs()
 	}
 }
 
-Qcell::Sp Qadd::opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight, 
-						size_t atBit, Qaddition::Carry::Sp& pCarry, bool assignOutput) const
+Qcell::Sp Qadd::opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight,
+			size_t atBit, Qaddition::Carry::Sp& pCarry, bool assignOutput) const
 {
 	size_t lSize = pLeft->noqbs(), rSize = pRight->noqbs();
-	// A created Qop object is xor or adder Q cell operation
+	// A created Qop object is half- or full-adder Q cell operation
 	QcellOp::Sp pOp = nullptr;
 	if (atBit < lSize && atBit < rSize)
 	{	// when both left and right operand have defined cells at the bit-level
-		Qcell::Sp pLcell(as_const(*pLeft)[atBit]), pRcell(as_const(*pRight)[atBit]);
+		Qcell::Sp pLcell(as_const(*pLeft)[atBit]), 
+				  pRcell(as_const(*pRight)[atBit]);
 		if (atBit == 0 || pCarry == nullptr)
-		{	// for bit level 0 use xor circuit
-            QxorAdder xorAdder;
-			pOp = xorAdder.process({ pLcell, pRcell } );
+		{	// for bit level 0 use quantum adjusted adder circuit
+            QadjustAdder adjustAdder;
+			pOp = adjustAdder.process({ pLcell, pRcell } );
 		}
 		else
-		{	// otherwise if both left and right cells are defined use adder circuit
+		{	// otherwise if both left and right cells are defined use adder
+			// circuit
 			pOp = Factory<string, QcellOp>::Instance().create(Qadder::cMark());
 			pOp->inputs({ pLcell, pRcell, pCarry });
 		}
 	}
 	else if (atBit < lSize)
-	{	// when only left operand has defined cells use xor circuite to add carry cell
+	{	// when only left operand has defined cells use quantum adjusted adder  
+		// circuite to add carry cell
 		Qcell::Sp pLcell(as_const(*pLeft)[atBit]);
 		if (pCarry == nullptr)
 			pOp = dynamic_pointer_cast<QcellOp>(pLcell);
 		else
         {
-            QxorAdder xorAdder;
-            pOp = xorAdder.process({ pLcell, pCarry });
+            QadjustAdder adjustAdder;
+            pOp = adjustAdder.process({ pLcell, pCarry });
         }
 	}
 	else if (atBit < rSize)
-	{	// when only right operand has defined cells use xor circuite to add carry cell
+	{	// when only right operand has defined cells use xor circuite to add
+		// carry cell
 		Qcell::Sp pRcell(as_const(*pRight)[atBit]);
 		if (pCarry == nullptr)
 			pOp = dynamic_pointer_cast<QcellOp>(pRcell);
 		else
         {
-            QxorAdder xorAdder;
-            pOp = xorAdder.process({ pRcell, pCarry });
+            QadjustAdder adjustAdder;
+            pOp = adjustAdder.process({ pRcell, pCarry });
         }
 	}
 	else // when there is no defined cells for left or right operand
@@ -93,8 +98,9 @@ Qcell::Sp Qadd::opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight,
         Qbit out(pOp->createOutId());
         pOp->output(out.clone());
         Qaddition::Sp pAddition = dynamic_pointer_cast<Qaddition>(pOp);
-        QxorAdder::Sp pXorAdder = dynamic_pointer_cast<QxorAdder>(pOp);
-        if (pAddition == nullptr || (pXorAdder != nullptr && pXorAdder->isExtended()))
+        QadjustAdder::Sp pAdjustAdder = dynamic_pointer_cast<QadjustAdder>(pOp);
+        if (pAddition == nullptr || 
+			(pAdjustAdder != nullptr && pAdjustAdder->isExtended()))
             pCarry = nullptr;
         else
             pCarry = as_const(*pAddition).carry();

@@ -401,37 +401,37 @@ Qvalue Qadder::calculate(const Qvalues& values) const
 
 /*** Q xor-adder operation ***/
 
-QxorAdder::Sp QxorAdder::process(const Qdefs& ins)
+QadjustAdder::Sp QadjustAdder::process(const Qdefs& ins)
 {
-    QxorAdder::Sp pAdder;
+    QadjustAdder::Sp pAdder;
 	if (ins.size() == 3)
 	{
-        pAdder = QxorAdder::Sp(new QxorAdder(true));
+        pAdder = QadjustAdder::Sp(new QadjustAdder(true));
         pAdder->inputs(ins);
 	}
 	else if (ins.size() == 2)
 	{
-		QxorAdder::Sp pLxor(dynamic_pointer_cast<QxorAdder>(ins[0])),
-			pRxor(dynamic_pointer_cast<QxorAdder>(ins[1]));
-		if (pLxor == nullptr && pRxor == nullptr)
+		QadjustAdder::Sp pLAA(dynamic_pointer_cast<QadjustAdder>(ins[0])),
+			pRAA(dynamic_pointer_cast<QadjustAdder>(ins[1]));
+		if (pLAA == nullptr && pRAA == nullptr)
 		{
-            pAdder = QxorAdder::Sp(new QxorAdder());
+            pAdder = QadjustAdder::Sp(new QadjustAdder());
             pAdder->inputs(ins);
 		}
 		else
 		{
 			size_t at = 1;
-			if (pLxor != nullptr) 
-				pAdder = pLxor;
+			if (pLAA != nullptr) 
+				pAdder = pLAA;
 			else
 			{
-				pAdder = pRxor;
+				pAdder = pRAA;
 				at = 0;
 			}
 			if(pAdder->isAdder())
             {
                 Qaddition::inputs(ins);
-                pAdder = Sp(new QxorAdder(*this));
+                pAdder = Sp(new QadjustAdder(*this));
             }
 			else
 			{
@@ -448,12 +448,12 @@ QxorAdder::Sp QxorAdder::process(const Qdefs& ins)
 	return pAdder;
 }
 
-Qvalue QxorAdder::calculate(const Qvalues& values) const
+Qvalue QadjustAdder::calculate(const Qvalues& values) const
 {
 	size_t size = values.size();
 	// returns one Qbit value without carry bit
 	if(size == 2)
-		return(Qvalue((values[0] ^ values[1]) & 1));
+		return(Qvalue((values[0] + values[1]) & 1));
 
 	return(Qvalue(values[0] + values[1] + values[2]) & 1);
 }

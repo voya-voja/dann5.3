@@ -692,7 +692,7 @@ namespace dann5 {
         typedef shared_ptr<QhalfAdder> Sp;
 
         // Quantum binary half-adder addition identifiers
-        static const string cMark() { return "h+"; };
+        static const string cMark() { return ".+"; };
         static const string cName() { return "halfadder"; };
         
         // Default constructor
@@ -750,25 +750,25 @@ namespace dann5 {
     private:
     };
 
-    // A Quantum xOr that can be extended to act as Q adder
-    class QxorAdder : public Qaddition
+    // A Quantum half-adder that can be extended to act as Q adder
+    class QadjustAdder : public Qaddition
     {
     public:
         // Qxor's shared pointer
-        typedef shared_ptr<QxorAdder> Sp;
+        typedef shared_ptr<QadjustAdder> Sp;
 
         // Default constructor for XOr
-        QxorAdder() : Qaddition(Qxor::cMark(), 2) {};
+        QadjustAdder() : Qaddition(QhalfAdder::cMark(), 2) {};
 
         // Constructor for Adder regardless of asAdder value
-        QxorAdder(bool asAdder) : Qaddition(Qadder::cMark(), 3) {};
+        QadjustAdder(bool asAdder) : Qaddition(Qadder::cMark(), 3) {};
 
-        // Copy constructor, Q xo-adder can have up to 3 inputs
-        QxorAdder(const Qxor& right) : Qaddition(right) {};
+        // Copy constructor, Q adjust-adder can have 2 or 3 inputs
+        QadjustAdder(const QadjustAdder& right) : Qaddition(right) {};
 
         // Destruct the Q xor instance with a shared pointer to its carry operand
         // and two inputs
-        ~QxorAdder() {};
+        ~QadjustAdder() {};
 
         // Returns the largest number of Q bits of all its inputs
         virtual std::size_t noqbs() const noexcept { return 1; };
@@ -778,7 +778,7 @@ namespace dann5 {
         virtual Sp process(const Qdefs&);
 
         // Return a Qdef's shared pointer pointing to a copy of this object
-        virtual Qdef::Sp clone() const { return Qdef::Sp(new QxorAdder(*this)); };
+        virtual Qdef::Sp clone() const { return Qdef::Sp(new QadjustAdder(*this)); };
 
         // Returns true if has 2 inputs and acts as an Q xor circuit. Returns false
         // if has 3 inputs and acts as a Q adder circuit.

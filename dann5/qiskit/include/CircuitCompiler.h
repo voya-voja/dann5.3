@@ -59,13 +59,13 @@ namespace dann5{
         protected:
             // Updates circuit instructions as a translation of parsed quantum
             // operation
-            void parse(const Qop&);
+            void parse(const QcellOp*);
             
             // Updates circuit instructions as a translation of parsed quantum
             // cell operation
             // The provided operation should be a QcellOp, otherwise it throws
             // logical_error exception.
-            void parse(const QcellOp*);
+            void parseInstructions(const QcellOp*);
 
             // Compiles quantum cell sub-operations to generate circuit
             // instructions
@@ -79,7 +79,7 @@ namespace dann5{
         private:
 
             D5circuit mCircuit;           // Compiled Circuit
-            size_t    mOpCount = 0;       // Counter of operations on the stack
+            size_t    mStackedOpsCount = 0;       // Counter of operations on the stack
             Stage     mStage = cCompile;  // Compiler's stage
         };
     

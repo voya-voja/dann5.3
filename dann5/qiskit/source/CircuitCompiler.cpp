@@ -19,15 +19,27 @@ using namespace dann5::qiskit;
 /**** Circuit Compiler ****/
 void CircuitCompiler::compile(const Qop& op)
 {
-    mOpCount++;
-    if (mStage == cCompile)
+    const QcellOp* pCellOp = dynamic_cast<const QcellOp*>(&op);
+    if (pCellOp != nullptr)
+        parse(pCellOp);
+    else
     {
-        mCircuit.declare(op);
-        parse(op);
-        mStage = cMeasure;
+        const QnaryOp* pNaryOp = dynamic_cast<const QnaryOp*>(&op);
+        if (pNaryOp != nullptr)
+            compile(pNaryOp);
+        else
+            throw logic_error(string("ERROR @CircuitCompiler: '")
+                + typeid(op).name() + "' unknown operation to be compiled!");
     }
-    mOpCount--;
-    if (mOpCount == 0 && mStage == cMeasure)
+}
+
+void CircuitCompiler::parse(const QcellOp* pCellOp)
+{
+    mStackedOpsCount++;
+    mCircuit.declare(*pCellOp);
+    parseInstructions(pCellOp);
+    mStackedOpsCount--;
+    if (mStackedOpsCount == 0)
     {
         mCircuit.Circuit::instructions() = mCircuit.initialize() + mCircuit.Circuit::instructions();
         mCircuit.measure();
@@ -35,23 +47,7 @@ void CircuitCompiler::compile(const Qop& op)
     }
 }
 
-void CircuitCompiler::parse(const Qop& op)
-{
-    const QcellOp* pCellOp = dynamic_cast<const QcellOp*>(&op);
-    if(pCellOp != nullptr)
-        parse(pCellOp);
-    else
-    {
-        const QnaryOp* pNaryOp = dynamic_cast<const QnaryOp*>(&op);
-        if(pNaryOp != nullptr)
-            compile(pNaryOp);
-        else
-            throw logic_error(string("ERROR @CircuitCompiler: '")
-                  + typeid(op).name() + "' unknown operation to be compiled!");
-    }
-}
-
-void CircuitCompiler::parse(const QcellOp* pCellOp)
+void CircuitCompiler::parseInstructions(const QcellOp* pCellOp)
 {
     const QnullCellOp* pNullOp = dynamic_cast<
                                             const QnullCellOp*>(pCellOp);
@@ -99,7 +95,7 @@ void CircuitCompiler::parse(const QcellOp* pCellOp)
     // create Circuit rule object for this operand
     Circuit::Sp pCircuit = CircuitFactory::Instance().create(pCellOp->identifier());
     mCircuit.Circuit::instructions() += pCircuit->instructions(arguments);
-
+    mCircuit.Circuit::operands() += pCircuit->operands();
 }
 
 Qcell::Sp CircuitCompiler::compile(const QcellOp::Sp& pCellOp)
@@ -121,11 +117,11 @@ Qcell::Sp CircuitCompiler::compile(const QcellOp::Sp& pCellOp)
 
 void CircuitCompiler::compile(const QnaryOp* pOp)
 {
-    Circuits qubo;
     const Qcells& logic = pOp->cells();
     size_t size = pOp->noqbs();
     for (size_t atCell = 0; atCell < size; atCell++)
     {
+        mStackedOpsCount = size - atCell - 1;
         QcellOp::Sp pCellOp = dynamic_pointer_cast<QcellOp>(logic[atCell]);
         if (pCellOp != nullptr)
             pCellOp->compile(*this);

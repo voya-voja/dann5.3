@@ -46,7 +46,7 @@ namespace dann5 {
                 : mNumQubits(quReg.first), mName(quReg.second) {};
 
             // returns a QuantumRegister instance with same size and name
-            operator QuantumRegister() {
+            operator QuantumRegister() const {
                 return QuantumRegister(mNumQubits, mName);
             };
 
@@ -87,7 +87,7 @@ namespace dann5 {
 
             // returns a Qubit instance with the same register and the same
             // position
-            operator Qubit() {
+            operator Qubit() const {
                 return Qubit(mRegister, mAt);
             };
 
@@ -122,7 +122,7 @@ namespace dann5 {
                 : mNumClbits(cntrlReg.first), mName(cntrlReg.second) {};
 
             // returns a ClassicalRegister instance with same size and name
-            operator ClassicalRegister() {
+            operator ClassicalRegister() const {
                 return ClassicalRegister(mNumClbits, mName);
             };
 
@@ -159,7 +159,7 @@ namespace dann5 {
 
             // returns a Clbit instance with the same register and the same
             // position
-            operator Clbit() {
+            operator Clbit() const {
                 return Clbit(mRegister, mAt);
             };
 
@@ -247,7 +247,23 @@ namespace dann5 {
 
         // Sends a representation of Instructions into an output stream
         ostream& operator << (ostream&, const Instructions&);
-        
+
+        // Quantum operand is a Qubit with a value
+        typedef pair<Qubit, Qvalue>      QuOperand;
+
+        // A map of quantum operands with a name of quantum register as a key
+        typedef map<string, QuOperand>   QuOperandsMap;
+
+        // Returns a reference of an updated left QuOperandsMap operand with 
+        // appended elements of right QuOperandsMap object.
+        QuOperandsMap& operator+=(QuOperandsMap& left, 
+                                                    const QuOperandsMap& right);
+
+        // Returns QuOperandsMap that are reslut of appending elements of the
+        // right to the left QuOperandsMap operand 
+        QuOperandsMap operator+(const QuOperandsMap& left,
+                                                    const QuOperandsMap& right);
+
         // An abstraction of a logical circuit predefined using Qiskit
         // instructions and quantum
         class Circuit
@@ -259,13 +275,14 @@ namespace dann5 {
             // Returns a instructions based on this circuit rules using provided
             // argument list. It expects a list of Qu(autum) bit arguments to be
             // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const = 0;
+            virtual Instructions instructions(const Qubits& arguments) {
+                mInstructions = create(arguments);
+                return mInstructions;
+            };
 
-            // override to draw the circuit
-            virtual string draw() const = 0;
-
-            // Sends a representation of Circuit into output stream
-            friend std::ostream& operator << (std::ostream&, const Circuit&);
+            // Draws the circuit based on specifies operands and instructions
+            // using ASCII characters
+            virtual string draw() const;
 
             // returns reference to list of instructions of this circuit
             Instructions& instructions() { return mInstructions; };
@@ -273,16 +290,40 @@ namespace dann5 {
             // returns reference to list of instructions of this circuit
             const Instructions& instructions() const { return mInstructions; };
 
+            // Returns a constant reference to a list of the circuit's operands.
+            const QuOperandsMap& operands() const { return mOperands; };
+
+            // Returns a reference to a list of the circuit's operands.
+            QuOperandsMap& operands() { return mOperands; };
+
+            // Sets a list of the circuit's operands.
+            void operands(const QuOperandsMap& oprnds) { mOperands = oprnds; };
+
+            // Resets a circuit into initial state
+            virtual void reset() {
+                mOperands.clear();
+                mInstructions.clear();
+            };
+
+            // Sends a representation of Circuit into output stream
+            friend std::ostream& operator << (std::ostream&, const Circuit&);
+
         protected:
             // default construct with empty instructions
             Circuit() : mInstructions({}) {};
 
             // construct default circuit object with instructions
             Circuit(const Circuit& right)
-                : mInstructions(right.mInstructions) {};
+                : mInstructions(right.mInstructions),
+                  mOperands(right.mOperands) {};
+
+            // Override to create and return instructions based on the circuit 
+            // rules using provided argument list.
+            virtual Instructions create(const Qubits& arguments) const = 0;
 
         private:
             Instructions    mInstructions;	// Default circuite instructions
+            QuOperandsMap       mOperands;
         };
 
         // Sends a representation of Circuit into output stream
@@ -309,41 +350,51 @@ namespace dann5 {
         class MeasureCircuit : public Circuit
         {
         public:
-            // The qiskit measure gate (M)
-//            static Instruction Measure(const IoPort& arg = IoPort("a"), const IoPort& cl = IoPort("cl"));
+            // Create and returns the qiskit measure gate (M) instruction with 
+            // provided arg(ument) Qu(antum) bit and cl(assical) bit
             static Instruction Measure(const Qubit& arg, const Clbit& cl);
 
+            // default constructor with default classical bit:
+            // ClassicalBit(ClReg(mNumClbits: 1, mName: "cl"), mAt: 0)
             MeasureCircuit();
 
+            // Constructs an instance with the specified clbit
+            MeasureCircuit(const ClassicalBit& clbit);
+
+            // draws a default mesure circuit if operands were not specified
             virtual string draw() const;
 
         protected:
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list and its classical-bit specified at
+            // construction time. It expects a list of arguments with one
+            // Qu(autum) bit.
+            virtual Instructions create(const Qubits& arguments) const;
 
         private:
+            ClassicalBit mClbit;    // default classical bit to be used
         };
 
         // Qiskit hadamard circuit is a specialization of a Circuit
         class HadamardCircuit : public Circuit
         {
         public:
-            // The qiskit hadamard gate (H)
-//            static Instruction Hadamard(const IoPort& arg = IoPort("a"));
+            // Create and returns the qiskit hadamar gate (H) instruction with
+            // provided arg(ument) Qu(antum) bit
             static Instruction Hadamard(const Qubit& arg);
 
+            // default constructor 
             HadamardCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default hadamard circuit if operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one 
+            // Qu(autum) bit as an argument to be initilized using hadamard gate
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -351,20 +402,22 @@ namespace dann5 {
         class ResetCircuit : public Circuit
         {
         public:
-            // The qiskit reset gate
-//            static Instruction Reset(const IoPort& arg = IoPort("a") );
+            // Create and returns the qiskit reset gate instruction with 
+            // provided arg(ument) Qu(antum) bit
             static Instruction Reset(const Qubit& arg);
 
+            // default constructor 
             ResetCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default reset circuit if operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one
+            // Qu(autum) bit argument to be set to 0 using reset gate.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -373,20 +426,22 @@ namespace dann5 {
         class InvertCircuit : public Circuit
         {
         public:
-            // The qiskit NOT gate (X)
-//            static Instruction Not(const IoPort& arg = IoPort("a"));
+            // Create and returns the qiskit NOT gate (X) instruction with 
+            // provided arg(ument) Qu(antum) bit
             static Instruction Not(const Qubit& arg);
 
+            // default constructor 
             InvertCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default invert circuit if operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one
+            // Qu(autum) bit argument to be changed using not gate.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -394,44 +449,17 @@ namespace dann5 {
         class OperatorCircuit : public Circuit
         {
         public:
-            // The qiskit controlled-NOT gate (CX)
-//            static Instruction ControlledNot(const IoPort& in = IoPort("i"), const IoPort& out = IoPort("o") );
+            // Create and returns the qiskit controlled-NOT gate (CX)
+            // instruction with provided in and out Qu(antum) bit
             static Instruction ControlledNot(const Qubit& in, const Qubit& out);
 
-            // The qiskit swap gate
-//            static Instruction Swap(const IoPort& in = IoPort("i"), const IoPort& out = IoPort("o") );
+            // Create and returns the qiskit swap gate instruction with provided
+            // in and out Qu(antum) bit
             static Instruction Swap(const Qubit& in, const Qubit& out);
 
         protected:
+            // default constructor 
             OperatorCircuit() : Circuit() {};
-
-        private:
-        };
-
-        // Binary operation specialization of Circuit has two input and one
-        // output port
-        class BinaryOpCircuit : public Circuit
-        {
-        public:
-            // The qiskit Toffoli gate, also known as the double controlled-NOT gate (CCX)
-//            static Instruction Toffoli(const IoPort& in = IoPort("i"), const IoPort& out = IoPort("o") );
-
-//            static Instruction Toffoli(const IoPort& in0, const IoPort& in1, const IoPort& out);
-            static Instruction Toffoli(const Qubit& in0, const Qubit& in1, const Qubit& out);
-
-        protected:
-            BinaryOpCircuit() : Circuit() {};
-
-        private:
-        };
-
-        // Binary operation specialization of Circuit has two input and two
-        // output ports
-        class BinaryOp2OutCircuit : public Circuit
-        {
-        public:
-        protected:
-            BinaryOp2OutCircuit() : Circuit() {};
 
         private:
         };
@@ -441,16 +469,19 @@ namespace dann5 {
         class EqCircuit : public OperatorCircuit
         {
         public:
+            // default constructor 
             EqCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default equal operator qiskit circuit if operands
+            // were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -459,16 +490,19 @@ namespace dann5 {
         class NeqCircuit : public OperatorCircuit
         {
         public:
+            // default constructor 
             NeqCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default not-equal operator qiskit circuit if operands
+            // were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -477,16 +511,19 @@ namespace dann5 {
         class LtCircuit : public OperatorCircuit
         {
         public:
+            // default constructor 
             LtCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default less-than operator qiskit circuit if operands
+            // were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -495,16 +532,19 @@ namespace dann5 {
         class LeCircuit : public OperatorCircuit
         {
         public:
+            // default constructor 
             LeCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default less-than-and-equal operator qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -513,16 +553,19 @@ namespace dann5 {
         class GtCircuit : public OperatorCircuit
         {
         public:
+            // default constructor 
             GtCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default great-than operator qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -530,19 +573,37 @@ namespace dann5 {
         // qiskit not, swap and controlled-not gates
         class GeCircuit : public OperatorCircuit
         {
-        private:
-        protected:
         public:
+            // default constructor 
             GeCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default great-thanand-equal operator qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with one input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
+        private:
+        };
+
+        // Binary operation specialization of Circuit has two input and one
+        // output port
+        class BinaryOpCircuit : public Circuit
+        {
+        public:
+            // The qiskit Toffoli gate, also known as the double controlled-NOT
+            // gate (CCX)
+            static Instruction Toffoli(const Qubit& in0, const Qubit& in1,
+                const Qubit& out);
+
+        protected:
+            // default constructor 
+            BinaryOpCircuit() : Circuit() {};
+
         private:
         };
 
@@ -551,16 +612,19 @@ namespace dann5 {
         class AndCircuit : public BinaryOpCircuit
         {
         public:
+            // default constructor 
             AndCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default and binary-operation qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with two input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -569,16 +633,19 @@ namespace dann5 {
         class NandCircuit : public BinaryOpCircuit
         {
         public:
+            // default constructor 
             NandCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default not-and binary-operation qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with two input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -587,16 +654,19 @@ namespace dann5 {
         class OrCircuit : public BinaryOpCircuit
         {
         public:
+            // default constructor 
             OrCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default or binary-operation qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with two input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -605,16 +675,19 @@ namespace dann5 {
         class NorCircuit : public BinaryOpCircuit
         {
         public:
+            // default constructor 
             NorCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default not-or binary-operation qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with two input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -623,16 +696,19 @@ namespace dann5 {
         class XorCircuit : public BinaryOpCircuit
         {
         public:
+            // default constructor 
             XorCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default xor binary-operation qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with two input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -641,16 +717,31 @@ namespace dann5 {
         class NxorCircuit : public BinaryOpCircuit
         {
         public:
+            // default constructor 
             NxorCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default not-xor binary-operation qiskit circuit if
+            // operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with two input
+            // and one output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
+        private:
+        };
+
+        // Binary operation specialization of BinaryOpCircuit has two input and
+        // two output ports
+        class BinaryOp2OutCircuit : public BinaryOpCircuit
+        {
+        public:
+        protected:
+            // default constructor 
+            BinaryOp2OutCircuit() : BinaryOpCircuit() {};
+
         private:
         };
 
@@ -659,16 +750,19 @@ namespace dann5 {
         class HalfAdderCircuit : public BinaryOp2OutCircuit
         {
         public:
+            // default constructor 
             HalfAdderCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default half-adder binary-operation with two outpts
+            // qiskit circuit if operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with two input
+            // and two output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
         };
 
@@ -677,27 +771,29 @@ namespace dann5 {
         class AdderCircuit : public Circuit
         {
         public:
+            // default constructor 
             AdderCircuit();
 
-            // Returns a instructions based on this circuit rules using provided
-            // argument list. It expects a list of Qu(autum) bit arguments to be
-            // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
-
+            // draws a default full-adder trinary-operation with two outpts
+            // qiskit circuit if operands were not specified
             virtual string draw() const;
 
         protected:
+            // Creates and returns a instructions based on this circuit rules
+            // using provided argument list. It expects a list with three input
+            // and two output Qu(autum) bit arguments provided in that order.
+            virtual Instructions create(const Qubits& arguments) const;
+
         private:
+            static size_t gAuxCounter;
+
+            static string AuxRegName();
         };
 
         // dann5 circuit is a custom defined circuit
         class D5circuit : public Circuit
         {
         public:
-
-            typedef pair<Qubit, Qvalue>      QuOperand;
-            typedef map<string, QuOperand>   QuOperandsMap;
-
             // default constructor
             D5circuit();
             // copy constructor
@@ -726,11 +822,6 @@ namespace dann5 {
             // Sets a list of the circuit's output quantum registers
             void outputs(const QuRegMap& outs) { mOuts = outs; };
 
-            // Returns a list of the circuit's operands.
-            const QuOperandsMap& operands() const { return mOperands; };
-            // Sets a list of the circuit's operands.
-            void operands(const QuOperandsMap& oprnds) { mOperands = oprnds; };
-
             // Returns a list of the circuit's operands requiring initialization
             const QuOperandsMap& initOperands() const { return mInitOperands; };
             // Sets a list of the circuit's operands requiring initialization
@@ -744,28 +835,24 @@ namespace dann5 {
             // number of logical quantum nodes required for this circuit
             size_t nodesNo() const;
 
-            // Draws a circuit using ASCII characters
-            virtual string draw() const;
-
             // Resets a circuit into initial state
             virtual void reset() {
+                Circuit::reset();
                 mIns.clear();
                 mOuts.clear();
-                mOperands.clear();
-                Circuit::instructions().clear();
+                mInitOperands.clear();
             };
 
         protected:
-            // Returns a instructions based on this circuit rules using provided
+            // Returns a copy of its existing instructions using provided
             // argument list. It expects a list of Qu(autum) bit arguments to be
             // provided in order specified by particual implementation.
-            virtual Instructions instructions(const Qubits& arguments) const;
+            virtual Instructions create(const Qubits& arguments) const;
 
         private:
             QuRegMap            mIns,
                                 mOuts;
-            QuOperandsMap       mOperands, 
-                                mInitOperands;
+            QuOperandsMap       mInitOperands;
         };
     };
 };

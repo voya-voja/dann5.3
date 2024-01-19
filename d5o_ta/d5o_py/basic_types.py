@@ -6,7 +6,7 @@ Created on Fri Sec 22 19:37:12 2023
 """
 import dann5.d5 as d5
 from dann5.d5o import QuboCompiler, QuboAnalyzer, D5QuboSolver
-from dann5.dwave import Solvers as DwaveSolvers, QuboSolvers, DwaveExactSolver, \
+from dann5.dwave import Solvers as Solver, QuboSolvers, DwaveExactSolver, \
                                    DwaveHybridSolver, DwaveAdvantageSolver, \
                                    DwaveAdvantage2Solver
 
@@ -61,7 +61,7 @@ def qbit_test():
     qAssign.add(solver.solution(qubo))
     print("DWave EXACT solver solutions: \n{}\n".format(qAssign.solutions()))
     qAssign.reset()
-    PyQsolver.SetActive(DwaveExactSolver())
+    Solver.SetActive(DwaveExactSolver())
     print("ACTIVE DWave EXACT solver solutions: \n{}\n".format(qAssign.solve()))
     
 
@@ -94,7 +94,7 @@ def qbool_test():
     qAssign.add(solver.solution(qubo))
     print("DWave HYBRID solver solutions: \n{}\n".format(qAssign.solutions()))
     qAssign.reset()
-    PyQsolver.SetActive(solver)
+    Solver.SetActive(solver)
     print("Active DWave HYBRID solver solutions: \n{}\n".format(qAssign.solve()))
 
 
@@ -126,7 +126,7 @@ def qbin_test():
     qAssign.add(solver.solution(qubo))
     print("DWave ADVANTAGE solver solutions: \n{}\n".format(qAssign.solutions()))
     qAssign.reset()
-    PyQsolver.SetActive(solver)
+    Solver.SetActive(solver)
     print("Active DWave ADVANTAGE solver solutions: \n{}\n".format(qAssign.solve()))
 
 
@@ -158,7 +158,7 @@ def qwholeAdd_test():
     aA.add(solver.solution(qubo))
     print("DWave ADVANTAGE 2 solver solutions: \n{}\n".format(aA.solutions()))
     aA.reset()
-    PyQsolver.SetActive(solver)
+    Solver.SetActive(solver)
     print("Active DWave ADVANTAGE 2 solver solutions: \n{}\n".format(aA.solve()))
 
 
@@ -229,7 +229,7 @@ def qwholeLt_test():
         solver.nodesNo(), solver.branchesNo()))
     print("LT solutions block: \n{}\nLT binder: \n{}\n".format( \
                                     comp.solutions(), compArg.solutions()))
-    PyQsolver.SetActive(solver)
+    Solver.SetActive(solver)
 
 
 def qwholeLe_test():
@@ -243,7 +243,7 @@ def qwholeLe_test():
     qubo = compiler.qubo()
     print("\n--- Reduced discrete values Qubo --- {}\n".format(qubo))
     comp.solve()
-    solver = PyQsolver.Active()
+    solver = Solver.Active()
     print("# of nodes: {}\t# of branches: {}".format(
         solver.nodesNo(), solver.branchesNo()))
     print("LE solutions block: \n{}\n".format(comp.solutions()))
@@ -259,7 +259,7 @@ def qwholeGt_test():
     qubo = compiler.qubo()
     print("\n--- Reduced discrete values Qubo --- {}\n".format(qubo))
     comp.solve()
-    solver = PyQsolver.Active()
+    solver = Solver.Active()
     print("# of nodes: {}\t# of branches: {}".format(
         solver.nodesNo(), solver.branchesNo()))
     print("LE solutions block: \n{}\n".format(comp.solutions()))
@@ -275,7 +275,7 @@ def qwholeGe_test():
     qubo = compiler.qubo()
     print("\n--- Reduced discrete values Qubo --- {}\n".format(qubo))
     comp.solve()
-    solver = PyQsolver.Active()
+    solver = Solver.Active()
     print("# of nodes: {}\t# of branches: {}".format(
         solver.nodesNo(), solver.branchesNo()))
     print("LE solutions block: \n{}\n".format(comp.solutions()))
@@ -284,7 +284,7 @@ def qwholeGe_test():
 def main():
     basic_types()
     
-    QuboSolvers.Active()   # activates default D5QuboSolver
+    Solver.Active()   # activates default D5QuboSolver
 
     qbit_test()
     qbool_test()

@@ -16,7 +16,7 @@ from qiskit_ibm_provider import IBMProvider
 import qiskit
 from qiskit_aer import AerSimulator
 
-from dann5.d5 import Qbit
+from dann5.d5 import Qbit, Qbin, Bits, Qwhole
 from dann5.d5q import CircuitCompiler
 from dann5.qiskit import Solver
 
@@ -473,87 +473,8 @@ def logicalGates():
     print("Half Adder:"); testCircuit(halfAdder(), provider);
     """
     print("Adder:"); testCircuit(adder(), provider);
-    
-    #testCircuit(initialize())
-    
-    # constant value
-    #if (c == 1) measure out[0] -> c[0];
-    
-    # up to 4 input bits AND gate
-    #qreg qo[2];
-    #h qo[0];
-    #h qo[1];#c4x qo[1], qo[0], qi[0], qi[1], out[0];
-    #barrier qi, qo, out;
-    
-def testQiskit():
-    x = QuantumRegister(1, 'x')
-    y = QuantumRegister(1, 'y')
-    z = QuantumRegister(1, 'z')
-    _and0 = QuantumRegister(1, '_&0')
-    _xor0 = QuantumRegister(1, '_^0')
-    _cXor0 = QuantumRegister(1, '#[_^0]')
-    cl = ClassicalRegister(6, "cl")
-    
-    qc = QuantumCircuit(x, y, z, _and0, _xor0, _cXor0, cl)
-    qc.h(x)
-    qc.h(y)
-    qc.h(z)
-    #qc.h(_and0)
-    #qc.h(_xor0)
-    
-    qc.ccx(x, y, _and0)
-    qc.cx(_and0, _xor0)
-    qc.cx(z, _xor0)
-    
-    qc.measure(x, cl[0])
-    qc.measure(y, cl[1])
-    qc.measure(z, cl[2])
-    qc.measure(_and0, cl[3])
-    qc.measure(_xor0, cl[4])
-    qc.measure(_cXor0, cl[5])
-    testCircuit(qc, None)
-    
-def testDann5():
-    x = Qbit("x"); y = Qbit("y"); z = Qbit("z")
-    xpr = (x & y) ^ z
-    comp = CircuitCompiler()
-    xpr.compile(comp)
-    circuit = comp.circuit()
-    # create qc
-    #declare qc
-    qc = QuantumCircuit()
-    qubits = {}
-    nclbs = 0
-    regs = []
-    for name, operand in circuit.operands().items():
-        qreg = QuantumRegister(operand[0][0][0], name)
-        regs.append(qreg)
-        qubit = Qubit(qreg, 0)
-        qubits[name] = qubit
-        nclbs += 1
-    clreg = ClassicalRegister(nclbs, "cl")
-    regs.append(clreg)
-    qc = QuantumCircuit(*regs)
-    #print(qc.draw())
-    #print(qubits)
-    for instrctn in circuit.instructions():
-        if instrctn.name() == 'h':
-            qc.h(qubits[instrctn.qubits()[0][0][1]])
-        elif instrctn.name() == 'cx':
-            qc.cx(qubits[instrctn.qubits()[0][0][1]], \
-                  qubits[instrctn.qubits()[1][0][1]])
-        elif instrctn.name() == 'ccx':
-            qc.ccx(qubits[instrctn.qubits()[0][0][1]], \
-                  qubits[instrctn.qubits()[1][0][1]], \
-                  qubits[instrctn.qubits()[2][0][1]])
-        elif instrctn.name() == 'measure':
-            clbit = Clbit(clreg, instrctn.clbits()[0][1] )
-            qc.measure(qubits[instrctn.qubits()[0][0][1]], clbit)
-    #print(qc.draw())
-    testCircuit(qc, None)
-    print(circuit.instructions())
 
-def testSolver():
+def testQbitQiskitSolver():
     x = Qbit("x"); y = Qbit("y"); z = Qbit("z")
     xpr = (x & y) ^ z
     print("\n {} \n\n {}\n".format(xpr, 
@@ -581,15 +502,73 @@ def testSolver():
     print("\n {} \n\n {}\n".format(xpr, 
                                    xpr.toString(True)))    
     print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+
+def testQbinQiskitSolver():
+    x = Qbin(2, "x"); y = Qbin(2, "y"); z = Qbin(2, "z")
+    xpr = (x & y) ^ z
+    compiler = CircuitCompiler()
+    xpr.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(xpr, xpr.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    xpr = (x | y) ^ z
+    compiler.reset()
+    xpr.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(xpr, xpr.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    w = Qbin("w", Bits(0))
+    xpr = (x & y) ^ w
+    compiler.reset()
+    xpr.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(xpr, xpr.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    xpr = (x | y) ^ w
+    compiler.reset()
+    xpr.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(xpr, xpr.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    m = Qbin("m", Bits(1))
+    xpr = (x & y) ^ m
+    compiler.reset()
+    xpr.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(xpr, xpr.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+    xpr = (x | y) ^ m
+    compiler.reset()
+    xpr.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(xpr, xpr.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
+
+def testQwholeQiskitSolver():
+    x = Qwhole(2, "x"); y = Qwhole(2, "y"); z = Qwhole(2, "z")
+    addAssign = z._(x + y)
+    compiler = CircuitCompiler()
+    addAssign.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(addAssign, addAssign.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(
+                                                        addAssign.solve()))
     
 def main():
         
     Solver.Active()   # activates default AerSimulator
-    testSolver()
+    #testQbitQiskitSolver()
+    #testQbinQiskitSolver()
+    testQwholeQiskitSolver()
     
     #logicalGates()
-    #testQiskit()
-    #testDann5()
 
 
 if __name__ == "__main__":
