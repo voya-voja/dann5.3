@@ -5,10 +5,10 @@ Created on Fri Feb 17 19:12:42 2023
 @author: pc
 """
 
-from UTestQwhole import UTestQwhole
-from dann5.dwave import Solvers
-#from dann5.dwave import DwaveSolvers
-from dann5.d5o2 import Qwhole, Qbin, Qblock, Qanalyzer
+#from UTestQwhole import UTestQwhole
+from dann5.dwave import Solver
+from dann5.d5 import Qwhole, Qbin, Qblock
+from dann5.d5o import QuboAnalyzer as Qanalyzer
 from PrimeNumberGenerator import PNGen, PNGen6
 
 import time
@@ -41,6 +41,8 @@ def main():
     
     #x = Qwhole(16, "x")
     #qbsNo = x.noqbs()    # ERROR
+    
+    Solver.Active()
     
     start = time.process_time()
     png = PNGen(18, 20, debug = False)

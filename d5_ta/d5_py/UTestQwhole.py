@@ -5,8 +5,8 @@ Created on Fri Feb 17 18:56:16 2023
 @author: Nebojsa.Vojinovic
 """
 
-import dann5.d5o2 as d5o
-from dann5.d5o2 import Qwhole, Qbin, Qblock, Qanalyzer
+import dann5.d5o as d5o
+from dann5.d5 import Qwhole, Qbin, Qblock, Qanalyzer
 import filecmp
 
 class UTestQwhole:

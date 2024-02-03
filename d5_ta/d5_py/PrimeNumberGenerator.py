@@ -6,7 +6,8 @@ Created on Mon Mar 27 11:28:10 2023
 """
 
 from dann5.dwave import QuboSolvers
-from dann5.d5o2 import Qwhole, Qblock, Qanalyzer, Qbinder, SampleEng, ULint
+from dann5.d5 import Qwhole, Qblock, Qbinder, Qevaluation, ULint
+from dann5.d5o import QuboAnalyzer as Qanalyzer, QuboCompiler
 
 from datetime import datetime
 import time
@@ -139,9 +140,10 @@ class PNGenerator:
         self.qFactor.reset()
         
     # execute quantum code on quantum solver and return samples
-    def execute(self, qCode) -> SampleEng:
-        qubo = qCode.qubo()
-        anlyzer = Qanalyzer(qubo)
+    def execute(self, qCode) -> Qevaluation:
+        compiler = QuboCompiler()
+        qCode.compile(compiler)
+        anlyzer = Qanalyzer(compiler.qubo())
         noNodes = anlyzer.nodesNo(); noBrnchs = anlyzer.branchesNo()
         self.log.nodesNo = noNodes; self.log.brnchNo = noBrnchs
         if self.debug:
@@ -157,7 +159,7 @@ class PNGenerator:
             solverType = 'Advantage';
         start = time.process_time()
         solver = QuboSolvers.solver(solverType, lowest=False)
-        samples = solver.solution(qubo)
+        samples = solver.solution(compiler.qubo())
         self.log.solver = solverType; self.log.solveTime += time.process_time() - start
         self.log.samplesNo += len(samples); self.log.unqSmplsNo += len(set(samples))
         return samples
