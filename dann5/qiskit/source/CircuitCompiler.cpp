@@ -35,13 +35,16 @@ void CircuitCompiler::compile(const Qop& op)
 
 void CircuitCompiler::parse(const QcellOp* pCellOp)
 {
+//    qbitsCount()++;
     mStackedOpsCount++;
     mCircuit.declare(*pCellOp);
     parseInstructions(pCellOp);
     mStackedOpsCount--;
-    if (mStackedOpsCount == 0)
+    if(mStackedOpsCount == 0) qbitsCount()--;
+    mStage = cInitialize;
+    if (mStackedOpsCount == 0 && qbitsCount() == 0 && mStage != cCompile)
     {
-        mCircuit.Circuit::instructions() = mCircuit.initialize() + mCircuit.Circuit::instructions();
+        mCircuit.initialize();
         mCircuit.measure();
         mStage = cCompile;
     }
@@ -119,9 +122,11 @@ void CircuitCompiler::compile(const QnaryOp* pOp)
 {
     const Qcells& logic = pOp->cells();
     size_t size = pOp->noqbs();
+    if(qbitsCount() == 0)
+        qbitsCount(size - 1);
     for (size_t atCell = 0; atCell < size; atCell++)
     {
-        mStackedOpsCount = size - atCell - 1;
+//        mStackedOpsCount = size - atCell - 1;
         QcellOp::Sp pCellOp = dynamic_pointer_cast<QcellOp>(logic[atCell]);
         if (pCellOp != nullptr)
             pCellOp->compile(*this);

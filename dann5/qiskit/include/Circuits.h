@@ -296,6 +296,9 @@ namespace dann5 {
             // Returns a reference to a list of the circuit's operands.
             QuOperandsMap& operands() { return mOperands; };
 
+            // A number of logical quantum nodes required for this circuit
+            size_t nodesNo() const;
+
             // Sets a list of the circuit's operands.
             void operands(const QuOperandsMap& oprnds) { mOperands = oprnds; };
 
@@ -802,9 +805,6 @@ namespace dann5 {
             // Declare circuit's quantum registers
             void declare(const Qop&);
 
-            // Return initialization instructions for qubits in the init list
-            Instructions initialize() const;
-
             // Adds an quantum-cell operand into the list of input quantum 
             // registers, all qubit operands and init qubit operands
             QuantumBit input(const Qcell::Sp&);
@@ -828,12 +828,16 @@ namespace dann5 {
             void initOperands(const QuOperandsMap& oprnds) 
                                                     { mInitOperands = oprnds; };
 
+            // number of logical quantum nodes required for this circuit
+            size_t nodesNo() const;
+
+            // Initialization instructions for qubits in the init list are added
+            // at the begining of instructions list
+            void initialize();
+
             // Appends measure instructions for all operands to the circuit's
             // list of instructions
             void measure();
-
-            // number of logical quantum nodes required for this circuit
-            size_t nodesNo() const;
 
             // Resets a circuit into initial state
             virtual void reset() {
@@ -853,6 +857,8 @@ namespace dann5 {
             QuRegMap            mIns,
                                 mOuts;
             QuOperandsMap       mInitOperands;
+            bool                mInitialized = false,
+                                mMeasured    = false;
         };
     };
 };

@@ -6,7 +6,7 @@ Created on Fri Sec 22 19:37:12 2023
 """
 import dann5.d5 as d5
 from dann5.d5o import QuboCompiler, QuboAnalyzer, D5QuboSolver
-from dann5.dwave import Solvers as Solver, QuboSolvers, DwaveExactSolver, \
+from dann5.dwave import Solver, QuboSolvers, DwaveExactSolver, \
                                    DwaveHybridSolver, DwaveAdvantageSolver, \
                                    DwaveAdvantage2Solver
 

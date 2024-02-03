@@ -178,7 +178,7 @@
     <ClCompile Include="..\dann5\source\QnaryOp.cpp" />
     <ClCompile Include="..\dann5\source\Qop.cpp" />
     <ClCompile Include="..\dann5\source\Qstatement.cpp" />
-    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="d5q_main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

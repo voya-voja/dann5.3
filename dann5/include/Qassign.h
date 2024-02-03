@@ -263,6 +263,81 @@ namespace dann5 {
             Qassign<Q_Type>::expression()->root(pOp);
             return(*this);
         };
+
+        /*** Comparison ***/
+        // Return Q expression with comparison of this assignement assignee and
+        // right argument
+        Qexpr<Q_Type> operator==(const Q_Type& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) == right;
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right assignment assignee
+        Qexpr<Q_Type> operator==(const Qassign<Q_Type>& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) == *dynamic_pointer_cast<Q_Type>(right.assignee());
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right argument
+        Qexpr<Q_Type> operator!=(const Q_Type& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) != right;
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right assignment assignee
+        Qexpr<Q_Type> operator!=(const Qassign<Q_Type>& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) != *dynamic_pointer_cast<Q_Type>(right.assignee());
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right argument
+        Qexpr<Q_Type> operator<(const Q_Type& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) < right;
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right assignment assignee
+        Qexpr<Q_Type> operator<(const Qassign<Q_Type>& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) < *dynamic_pointer_cast<Q_Type>(right.assignee());
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right argument
+        Qexpr<Q_Type> operator<=(const Q_Type& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) <= right;
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right assignment assignee
+        Qexpr<Q_Type> operator<=(const Qassign<Q_Type>& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) <= *dynamic_pointer_cast<Q_Type>(right.assignee());
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right argument
+        Qexpr<Q_Type> operator>(const Q_Type& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) > right;
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right assignment assignee
+        Qexpr<Q_Type> operator>(const Qassign<Q_Type>& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) > *dynamic_pointer_cast<Q_Type>(right.assignee());
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right argument
+        Qexpr<Q_Type> operator>=(const Q_Type& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) >= right;
+        };
+
+        // Return Q expression with comparison of this assignement assignee and
+        // right assignment assignee
+        Qexpr<Q_Type> operator>=(const Qassign<Q_Type>& right) const {
+            return *dynamic_pointer_cast<Q_Type>(assignee()) >= *dynamic_pointer_cast<Q_Type>(right.assignee());
+        };
+
+        /*** Arithmetic ***/
     };
 };
 

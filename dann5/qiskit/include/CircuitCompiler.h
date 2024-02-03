@@ -117,7 +117,7 @@ namespace dann5{
         protected:            
         private:
             Circuits mCircuits;       // Compiled array of QUBO objects
-            size_t mMaxNoNodes; // The maximum of number of nodes in any QUBO
+            size_t mMaxNoNodes;       // The maximum of number of nodes in any Circit
         };
     };
 };

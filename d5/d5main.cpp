@@ -352,9 +352,6 @@ PYBIND11_MODULE(d5, m) {
 		.def("_", &Qassignment::assign, "Assign a Q expression to Q defintion assignee. Use without inputs to remove (one or boath) Q assignment members")
 		.def("assign", &Qassignment::assign, "Assign a Q expression to Q defintion assignee. Use without inputs to remove (one or boath) Q assignment members")
 
-		.def("assignee", static_cast<const Qdef::Sp & (Qassignment::*)() const>(&Qassignment::assignee), "returns a reference to the Q assignee")
-		.def("assignee", static_cast<void (Qassignment::*)(const Qdef::Sp&)>(&Qassignment::assignee), "set a Q definition pointer to a new assignee")
-
 		.def("expression", static_cast<const Qexpression::Sp & (Qassignment::*)() const>(&Qassignment::expression), "returns a reference to the assignment's Q expression")
 		.def("expression", static_cast<void (Qassignment::*)(const Qexpression::Sp&)>(&Qassignment::expression), "set assignment's new Q expression")
 
@@ -382,7 +379,29 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::init<>())
 		.def(py::init<const Qbit&>())
 		.def(py::init<const Qbit&, const Qexpr<Qbit>&>())
-		.def(py::init<const Qassign<Qbit>&>());
+		.def(py::init<const Qassign<Qbit>&>())
+
+		.def("assignee", [](Qassign<Qbit>& self) { return *dynamic_pointer_cast<Qbit>(self.assignee()); }, "returns a reference to the Qbit assignee")
+		.def("assignee", [](Qassign<Qbit>& self, const Qbit& assgn) { return self.assignee(assgn.clone()); }, "set a new assignee Qbit assignee")
+
+		/*** Comparison ***/
+		.def(py::self == Qbit(), "instantiate Q comparison expression, e.g. for Qbit with id 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
+
+		.def(py::self != Qbit(), "instantiate Q comparison expression, e.g. for Qbit with id 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]")
+
+		.def(py::self > Qbit(), "instantiate Q comparison expression, e.g. for Qbit with id 'x' and 'y' the expression is 'x' > 'y'")
+		.def(py::self > py::self, "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' > [right root]")
+
+		.def(py::self >= Qbit(), "instantiate Q comparison expression, e.g. for Qbit with id 'x' and 'y' the expression is 'x' >= 'y'")
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' >= [right root]")
+
+		.def(py::self < Qbit(), "instantiate Q comparison expression, e.g. for Qbit with id 'x' and 'y' the expression is 'x' < 'y'")
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' < [right root]")
+
+		.def(py::self <= Qbit(), "instantiate Q comparison expression, e.g. for Qbit with id 'x' and 'y' the expression is 'x' <= 'y'")
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' <= [right root]");
 
 
 	/*=== QboolAssign ===*/
@@ -391,7 +410,19 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::init<>())
 		.def(py::init<const Qbool&>())
 		.def(py::init<const Qbool&, const Qexpr<Qbool>&>())
-		.def(py::init<const Qassign<Qbool>&>());
+		.def(py::init<const Qassign<Qbool>&>())
+
+		.def("assignee", [](Qassign<Qbool>& self) { return *dynamic_pointer_cast<Qbool>(self.assignee()); })
+
+		.def("assignee", [](Qassign<Qbool>& self) { return *dynamic_pointer_cast<Qbool>(self.assignee()); }, "returns a reference to the Qbool assignee")
+		.def("assignee", [](Qassign<Qbool>& self, const Qbool& assgn) { return self.assignee(assgn.clone()); }, "set a new assignee Qbool assignee")
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbool with id 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qbool(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qbool with id 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qbool(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
 
 
 	/*=== QbinAssign ===*/
@@ -400,7 +431,17 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::init<>())
 		.def(py::init<const Qbin&>())
 		.def(py::init<const Qbin&, const Qexpr<Qbin>&>())
-		.def(py::init<const Qassign<Qbin>&>());
+		.def(py::init<const Qassign<Qbin>&>())
+
+		.def("assignee", [](Qassign<Qbin>& self) { return *dynamic_pointer_cast<Qbin>(self.assignee()); }, "returns a reference to the Qbin assignee")
+		.def("assignee", [](Qassign<Qbin>& self, const Qbin& assgn) { return self.assignee(assgn.clone()); }, "set a new assignee Qbin assignee")
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbin with id 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qbin(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qbin with id 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qbin(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' != [right root]");
 
 
 	/*=== QwholeAssign ===*/
@@ -409,7 +450,30 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::init<>())
 		.def(py::init<const Qwhole&>())
 		.def(py::init<const Qwhole&, const Qexpr<Qwhole>&>())
-		.def(py::init<const Qassign<Qwhole>&>());
+		.def(py::init<const Qassign<Qwhole>&>())
+
+		.def("assignee", [](Qassign<Qwhole>& self) { return *dynamic_pointer_cast<Qwhole>(self.assignee()); }, "returns a reference to the Qwhole assignee")
+		.def("assignee", [](Qassign<Qwhole>& self, const Qwhole& assgn) { return self.assignee(assgn.clone()); }, "set a new assignee Qwhole assignee")
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qwhole expression with id 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qwhole the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qwhole expression with id 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qwhole the expression is 'x' != [right root]")
+
+		.def(py::self > py::self, "instantiate Q comparison expression, e.g. for Qwhole expression with id 'x' and 'y' the expression is 'x' > 'y'")
+		.def(py::self > Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qwhole the expression is 'x' > [right root]")
+
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for Qwhole expression with id 'x' and 'y' the expression is 'x' >= 'y'")
+		.def(py::self >= Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qwhole the expression is 'x' >= [right root]")
+
+		.def(py::self < py::self, "instantiate Q comparison expression, e.g. for Qwhole expression with id 'x' and 'y' the expression is 'x' < 'y'")
+		.def(py::self >= Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qwhole the expression is 'x' < [right root]")
+
+		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qwhole expression with id 'x' and 'y' the expression is 'x' <= 'y'")
+		.def(py::self >= Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qwhole the expression is 'x' <= [right root]");
+
 
 
 	/*--- Qblock.h definitions---*/

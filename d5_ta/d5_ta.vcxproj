@@ -24,6 +24,7 @@
     <ProjectGuid>{3f57ca23-898e-407e-be3f-3cb445bbabb9}</ProjectGuid>
     <RootNamespace>d5ota</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>d5_ta</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -180,7 +181,7 @@
     <ClCompile Include="..\dann5\source\QtoString.cpp" />
     <ClCompile Include="..\dann5\source\Qwhole.cpp" />
     <ClCompile Include="..\dann5\source\ULint.cpp" />
-    <ClCompile Include="d5o_ta.cpp" />
+    <ClCompile Include="d5_ta.cpp" />
     <ClCompile Include="PNGen.cpp" />
     <ClCompile Include="UTestQbin.cpp" />
     <ClCompile Include="UTestQbit.cpp" />

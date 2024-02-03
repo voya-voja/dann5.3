@@ -79,7 +79,7 @@ void Qmultiply::sumDiagonal(const QcellMatrix& matrix)
 			else
 			{	// create addition object according to # of addition-inputs
 				if (addIns.size() == 2)
-					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(Qxor::cMark()));
+					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(QhalfAdder::cMark()));
 				else
 					pAddition = static_pointer_cast<Qaddition>(Factory<string, QcellOp>::Instance().create(Qadder::cMark()));
 				pAddition->inputs(addIns);

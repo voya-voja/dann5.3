@@ -55,6 +55,10 @@ string Qblock::toString(bool decomposed, size_t forBit) const
 
 void Qblock::compile(Qcompiler& compiler) const
 {
+    size_t noqbits = 0;
+    for (auto pStatement : mStatements)
+        noqbits += pStatement->noqbs();
+    compiler.qbitsCount(noqbits);
 	for (auto pStatement : mStatements)
 		pStatement->compile(compiler);
 }

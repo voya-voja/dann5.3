@@ -33,7 +33,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="d5o_ta.cpp">
+    <ClCompile Include="d5_ta.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\dann5\source\Logger.cpp">

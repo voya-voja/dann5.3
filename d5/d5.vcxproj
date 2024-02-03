@@ -211,7 +211,7 @@
     <ClCompile Include="..\dann5\source\QtoString.cpp" />
     <ClCompile Include="..\dann5\source\Qwhole.cpp" />
     <ClCompile Include="..\dann5\source\ULint.cpp" />
-    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="d5main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

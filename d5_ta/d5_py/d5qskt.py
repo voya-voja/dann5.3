@@ -16,7 +16,7 @@ from qiskit_ibm_provider import IBMProvider
 import qiskit
 from qiskit_aer import AerSimulator
 
-from dann5.d5 import Qbit, Qbin, Bits, Qwhole
+from dann5.d5 import Qbit, Qbin, Bits, Qwhole, Qblock
 from dann5.d5q import CircuitCompiler
 from dann5.qiskit import Solver
 
@@ -551,22 +551,49 @@ def testQbinQiskitSolver():
     print("Active Qiskit Aer simulator solutions: \n{}\n".format(xpr.solve()))
 
 def testQwholeQiskitSolver():
-    x = Qwhole(2, "x"); y = Qwhole(2, "y"); z = Qwhole(2, "z")
-    addAssign = z._(x + y)
+    x = Qwhole(2, "x"); y = Qwhole(2, "y"); z = Qwhole(2, "z"); r = Qwhole(2, "r")
+    addAssign = Qblock() << (y == x) << r._(x * y) # 
     compiler = CircuitCompiler()
     addAssign.compile(compiler)
     circuit = compiler.circuit()
     print("\n {} \n\n {}\n\n{}\n".format(addAssign, addAssign.toString(True),   
                                                        circuit.draw()))
     print("Active Qiskit Aer simulator solutions: \n{}\n".format(
-                                                        addAssign.solve()))
+                                                        addAssign.solve()))    
+
+def qiskitPNs():
+    prime = Qwhole(3, "p")
+    _6 = Qwhole("_6", 6)
+    factor = Qwhole(1, "f")
+    _1 = Qwhole("_1", 1)
+    assPN = prime._( _6 * factor + _1)
+    compiler = CircuitCompiler()
+    assPN.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(assPN, assPN.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(
+                                                        assPN.solve()))  
+    pP1 = Qwhole(4, "pP1"); _6Tf = Qwhole(3, "_6Tf")
+    assPp1 = pP1._(prime + _1)
+    ass6tF = _6Tf._(_6 * factor)
+    eqExpr = assPp1 == ass6tF
+    blckPN = Qblock() << ass6tF << eqExpr << assPp1
+    #blckPN = Qblock() << prime._(_6 * factor - _1)
+    compiler = CircuitCompiler()
+    blckPN.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(blckPN, blckPN.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(
+                                                        blckPN.solve()))    
     
 def main():
-        
     Solver.Active()   # activates default AerSimulator
     #testQbitQiskitSolver()
     #testQbinQiskitSolver()
-    testQwholeQiskitSolver()
+    #testQwholeQiskitSolver()
+    qiskitPNs()
     
     #logicalGates()
 

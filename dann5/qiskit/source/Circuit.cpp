@@ -67,6 +67,18 @@ QuOperandsMap dann5::qiskit::operator+(const QuOperandsMap& left, const QuOperan
 }
 
 /**** Circuit ****/
+size_t Circuit::nodesNo() const
+{
+    size_t noNodes = 0;
+    for (auto oprndMapElmnt : mOperands)
+    {
+        // oprndMapElmnt.operand.qubit.qureg
+        QuReg oprndReg(oprndMapElmnt.second.first.first);
+        noNodes += oprndReg.mNumQubits;
+    }
+    return noNodes;
+}
+
 string Circuit::draw() const
 {
     vector<string> lines;
@@ -82,9 +94,9 @@ string Circuit::draw() const
     }
     const Instructions& instrctns = Circuit::instructions();
     bool measuresMode = false;
-    vector<string> measures(lines.size(), "");
     for (auto instruction : instrctns)
     {
+        string instrctn = instruction.name();
         Qubits qubits = instruction.qubits();
         size_t lineCount = 0;
         for (auto operand : mOperands)
@@ -99,16 +111,14 @@ string Circuit::draw() const
                 {
                     if (lastQubit == atQubit)
                     {
-                        Qubits clbits = instruction.clbits();
-                        if (clbits.size() != 0)
+                        if (instrctn == "measure")
                         {
-                            ClassicalBit clbit(clbits[0]);
-                            measures[lineCount] += " " + to_string(clbit.mAt) + " ";
+                            ClassicalBit clbit(instruction.clbits()[0]);
+                            lines[lineCount] += " " + to_string(clbit.mAt) + " ";
                             measuresMode = true;
                         }
                         else if (lastQubit == 0)
                         {
-                            string instrctn = instruction.name();
                             if (instrctn == "reset")
                                 lines[lineCount] += "|0>";
                             else
@@ -117,7 +127,7 @@ string Circuit::draw() const
                         else
                             lines[lineCount] += "-X-";
                     }
-                    else if(instruction.name() == "swap")
+                    else if(instrctn == "swap")
                         lines[lineCount] += "-X-";
                     else
                         lines[lineCount] += "-+-";
@@ -130,10 +140,6 @@ string Circuit::draw() const
             lineCount += 1;
         }
     }
-
-    for (size_t atLine = 0; atLine < lines.size(); atLine++)
-        lines[atLine] += measures[atLine];
-
     string drawing("");
     for (auto line : lines)
         drawing += line + "\n";
@@ -194,7 +200,7 @@ string MeasureCircuit::draw() const
 {
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
-    string drawing = "\t  a_0: -h-";
+    string drawing = "\t  a_0: -M-";
     return drawing;
 }
 
@@ -282,11 +288,15 @@ string InvertCircuit::draw() const
 /**** Operator Circuit ****/
 Instruction OperatorCircuit::ControlledNot(const Qubit& in, const Qubit& out)
 {
+    // i_0: -+-
+    // o_0: -X-
     return Instruction("cx", { in, out });
 }
 
 Instruction OperatorCircuit::Swap(const Qubit& in, const Qubit& out)
 {
+    // i_0: -X-
+    // o_0: -X-
     return Instruction("swap", { in, out });
 }
 
@@ -294,6 +304,9 @@ Instruction OperatorCircuit::Swap(const Qubit& in, const Qubit& out)
 Instruction BinaryOpCircuit::Toffoli(const Qubit& in0, const Qubit& in1, 
                                                             const Qubit& out)
 {
+    // i_0: -+-
+    // i_1: -+-
+    // o_0: -X-
     return Instruction("ccx", { in0, in1, out });
 }
 
@@ -341,9 +354,8 @@ string NeqCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing  = "\t  i_0: -+-";
-        drawing += "\t         |";
-        drawing += "\t  o_0: -X--x-";
+        drawing  = "\t  i_0: -+---";
+        drawing += "\t  o_0: -X-x-";
     return drawing;
 }
 
@@ -371,8 +383,8 @@ string LtCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing  = "\t i_0: -X---------+-";
-        drawing += "\t o_0: -X-|0>--x--X-";
+        drawing  = "\t i_0: -X-------+-";
+        drawing += "\t o_0: -X-|0>-x-X-";
     return drawing;
 };
 
@@ -398,8 +410,8 @@ string LeCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing  = "\t i_0: -X---+-";
-        drawing += "\t o_0: -X-- X -";
+        drawing  = "\t i_0: -X-+-";
+        drawing += "\t o_0: -X-X-";
     return drawing;
 }
 
@@ -427,8 +439,8 @@ string GtCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing = "\t  i_0: ------X---+-";
-        drawing += "\t o_0: --x---X-- X -|0>";
+        drawing = "\t  i_0: ---X-+----";
+        drawing += "\t o_0: -x-X-X-|0>";
     return drawing;
 }
 
@@ -454,8 +466,8 @@ string GeCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing = "\t  i_0: ------X---+-";
-        drawing += "\t o_0: --x---X-- X -";
+        drawing = "\t  i_0: ---X-+-";
+        drawing += "\t o_0: -x-X-X-";
     return drawing;
 }
 /****  And Operation Circuit ****/
@@ -479,9 +491,9 @@ string AndCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing = "\t  i_0: --+-";
-        drawing += "\t i_1: --+--";
-        drawing += "\t o_0: - X -";
+        drawing = "\t  i_0: -+-";
+        drawing += "\t i_1: -+-";
+        drawing += "\t o_0: -X-";
     return drawing;
 }
 
@@ -505,11 +517,9 @@ Instructions NandCircuit::create(const Qubits& arguments) const
 string NandCircuit::draw() const
 {
     string 
-        drawing = "\t  i_0: -------+-";
-        drawing += "\t             | ";
-        drawing += "\t i_1: -------+--";
-        drawing += "\t             | ";
-        drawing += "\t o_0: - X -- X -";
+        drawing = "\t  i_0: ---+-";
+        drawing += "\t i_1: ---+-";
+        drawing += "\t o_0: -x-X-";
     return drawing;
 }
 
@@ -537,11 +547,9 @@ string OrCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing = "\t  i_0: --+----+-------";
-        drawing += "\t        |    |";
-        drawing += "\t i_1: --+---------+--";
-        drawing += "\t        |    |    |";
-        drawing += "\t o_0: - X -- X -- X -";
+        drawing = "\t  i_0: -+-+---";
+        drawing += "\t i_1: -+---+-";
+        drawing += "\t o_0: -X-X-X-";
     return drawing;
 }
 
@@ -563,11 +571,9 @@ string NorCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing = "\t  i_0: --+----+-------";
-        drawing += "\t        |    |";
-        drawing += "\t i_1: --+---------+--";
-        drawing += "\t        |    |    |";
-        drawing += "\t o_0: - X -- X -- X -- X -";
+        drawing = "\t  i_0: -+-+-----";
+        drawing += "\t i_1: -+---+---";
+        drawing += "\t o_0: -X-X-X-x-";
     return drawing;
 };
 
@@ -593,11 +599,9 @@ string XorCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing = "\t  i_0: --+-------";
-        drawing += "\t        |       ";
-        drawing += "\t i_1: -------+--";
-        drawing += "\t        |    |  ";
-        drawing += "\t o_0: - X -- X -";
+        drawing = "\t  i_0: -+---";
+        drawing += "\t i_1: ---+-";
+        drawing += "\t o_0: -X-X-";
     return drawing;
 }
 
@@ -619,11 +623,9 @@ string NxorCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing  = "\t i_0: --+-------";
-        drawing += "\t        |       ";
-        drawing += "\t i_1: -------+--";
-        drawing += "\t        |    |  ";
-        drawing += "\t o_0: - X -- X -- X -";
+        drawing  = "\t i_0: -+-----";
+        drawing += "\t i_1: ---+---";
+        drawing += "\t o_0: -X-X-x-";
     return drawing;
 }
 
@@ -649,13 +651,10 @@ string HalfAdderCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing  = "\t i_0: --+---------+--";
-        drawing += "\t        |         |  ";
-        drawing += "\t i_1: -------+----+--";
-        drawing += "\t        |    |    |  ";
-        drawing += "\t o_0: - X -- X ------";
-        drawing += "\t                  |  ";
-        drawing += "\t c_0: ----------- X -";
+        drawing  = "\t i_0: -+---+-";
+        drawing += "\t i_1: ---+-+-";
+        drawing += "\t o_0: -X-X---";
+        drawing += "\t c_0: -----X-";
     return drawing;
 }
 
@@ -664,18 +663,20 @@ size_t AdderCircuit::gAuxCounter = 0;
 
 string AdderCircuit::AuxRegName()
 {
-    string name = "_add" + to_string(gAuxCounter++) + "a_";
+    string name = "_+" + to_string(gAuxCounter++);
     return name;
 }
 
 AdderCircuit::AdderCircuit() 
 {
     Qubits auxBits;
-    for (size_t count = 0; count < 3; count++)
-    {
-        QuReg aux(3, AuxRegName() + to_string(count));
-        auxBits.push_back(Qubit(aux, count));
-    }
+    string auxRegName = AuxRegName();
+    QuReg aux(1, auxRegName + "_");
+    auxBits.push_back(Qubit(aux, 0));
+    aux.mName = auxRegName + "c0_";
+    auxBits.push_back(Qubit(aux, 0));
+    aux.mName = auxRegName + "c1_";
+    auxBits.push_back(Qubit(aux, 0));
     QuOperandsMap& oprnds = operands();
     for (size_t count = 0; count < 3; count++)
     {
@@ -713,25 +714,14 @@ string AdderCircuit::draw() const
     if (Circuit::operands().size() != 0)
         return Circuit::draw();
     string
-        drawing  = "\t i_0: - H ------+---------+--------------------------------------";
-        drawing += "\t                |         |          ";
-        drawing += "\t i_1: - H -----------+----+--------------------------------------";
-        drawing += "\t                |    |    |          ";
-        drawing += "\t i_3: - H -----------------------------+----+--------------------";
-        drawing += "\t                |    |    |            |    |          ";
-        drawing += "\t a_0: --------- X -- X -----------+---------+--------------------";
-        drawing += "\t                          |       |    |    |          ";
-        drawing += "\t a_1: ------------------- X ------------------------+----+-------";
-        drawing += "\t                                  |    |    |       |     |";
-        drawing += "\t a_2: ------------------------------------- X ------+--------------+-------";
-        drawing += "\t                                  |    |            |     |         |";
-        drawing += "\t a_3: --------------------------------------------- X --------+------------";
-        drawing += "\t                                  |    |                  |    |    |";
-        drawing += "\t a_4: -------------------------------------------------- X ------- X ---+--";
-        drawing += "\t                                  |    |                      |         |";
-        drawing += "\t o_0: --------------------------- X -- X ----------------------------------";
-        drawing += "\t                                                              |         |  ";
-        drawing += "\t c_0: ------------------------------------------------------- X ------- X -";
+        drawing  = "\t i_0: -+-----+-------------------";
+        drawing += "\t i_1: ----+--+-------------------";
+        drawing += "\t i_3: -------------+--+----------";
+        drawing += "\t  _+: -X--X-----+-----+----------";
+        drawing += "\t _c0: -------X-----------+--+----";
+        drawing += "\t _c1: ----------------X--+-----+-";
+        drawing += "\t o_0: ----------X--X-------------";
+        drawing += "\t c_0: -------------------X--X--X-";
     return drawing;
 }
 
@@ -798,11 +788,13 @@ QuantumBit D5circuit::input(const Qcell::Sp& pOperand)
             break;
         }
     }
-    if (operands().find(QuReg(quOperand.first.first).mName) == operands().end())
+    QuReg quReg(quOperand.first.first);
+    QuOperandsMap& oprnds = operands();
+    if (oprnds.find(quReg.mName) == oprnds.end())
     {
-        operands()[QuReg(quOperand.first.first).mName] = quOperand;
-        // only input operands to be added
-        mInitOperands[QuReg(quOperand.first.first).mName] = quOperand;
+        oprnds[quReg.mName] = quOperand;
+        // only input operands are added to the list of initialization operands
+        mInitOperands[quReg.mName] = quOperand;
     }
     return quOperand.first;
 }
@@ -825,25 +817,49 @@ QuantumBit D5circuit::output(const Qcell::Sp& pOperand)
             break;
         }
     }
-    if (operands().find(QuReg(quOperand.first.first).mName) == operands().end())
-        operands()[QuReg(quOperand.first.first).mName] = quOperand;
+    QuReg quReg(quOperand.first.first);
+    QuOperandsMap& oprnds= operands();
+    if (oprnds.find(quReg.mName) == oprnds.end())
+        oprnds[quReg.mName] = quOperand;
     return quOperand.first;
 }
+
+void D5circuit::initialize()
+{
+    if(!mInitialized)
+    {
+        Instructions initInstrcts;
+        for (auto operand : mInitOperands)
+            // if operand.Qvalue == cSuperposition
+            if (operand.second.second == cSuperposition)
+                initInstrcts.push_back(HadamardCircuit::Hadamard(operand.second.first));
+        // if operand.Qvalue == 1
+            else if (operand.second.second == 1)
+                initInstrcts.push_back(InvertCircuit::Not(operand.second.first));
+        Circuit::instructions() = initInstrcts + Circuit::instructions();
+        mInitialized = true;
+    }
+}
+
 void D5circuit::measure()
 {
-    ClReg clReg(operands().size(), "cl");
-    size_t numClbits = 0;
-    for (auto operand : operands())
+    if (!mMeasured)
     {
-        if (numClbits == clReg.mNumClbits)
-            throw logic_error("ERROR @D5circuit::measure: clReg["
-                + to_string(numClbits)
-                + "] is smaller than input QuRegs!");
+        ClReg clReg(operands().size(), "cl");
+        size_t numClbits = 0;
+        for (auto operand : operands())
+        {
+            if (numClbits == clReg.mNumClbits)
+                throw logic_error("ERROR @D5circuit::measure: clReg["
+                    + to_string(numClbits)
+                    + "] is smaller than input QuRegs!");
 
-        ClassicalBit clBit(clReg, numClbits);
-        Instruction measure = MeasureCircuit::Measure(operand.second.first, clBit);
-        Circuit::instructions().push_back(measure);
-        numClbits++;
+            ClassicalBit clBit(clReg, numClbits);
+            Instruction measure = MeasureCircuit::Measure(operand.second.first, clBit);
+            Circuit::instructions().push_back(measure);
+            numClbits++;
+        }
+        mMeasured = true;
     }
 }
 
@@ -860,17 +876,4 @@ size_t D5circuit::nodesNo() const
 Instructions D5circuit::create(const Qubits& arguments) const
 {
     return Circuit::instructions();
-}
-
-Instructions D5circuit::initialize() const
-{
-    Instructions initInstrcts;
-    for(auto operand : mInitOperands)
-        // if operand.Qvalue == cSuperposition
-        if (operand.second.second == cSuperposition)
-            initInstrcts.push_back(HadamardCircuit::Hadamard(operand.second.first));
-        // if operand.Qvalue == 1
-        else if(operand.second.second == 1)
-            initInstrcts.push_back(InvertCircuit::Not(operand.second.first));
-    return initInstrcts;
 }

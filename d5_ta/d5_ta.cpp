@@ -533,14 +533,20 @@ void testQbinQiskit()
 void testQwholeQiskit()
 {
     Qwhole x(2, "x"), y(2, "y"), r(2, "r");
-    Qassign<Qwhole> addAssign(r = x + y);
+    Qassign<Qwhole> addAssign(r = x * y);
+    Qexpr<Qwhole> xXeqY(x == y);
+    Qblock blck; blck = addAssign;// , xXeqY;
     CircuitCompiler compiler;
-    addAssign.compile(compiler);
+    blck.compile(compiler);
     Circuit& circuit = compiler.circuit();
-    cout << circuit.instructions();
+
+    cout << circuit.nodesNo() << " vs " << circuit.Circuit::nodesNo() << endl;
+
+    cout << "INSTRUCTIONS: " << endl << circuit.instructions() << endl;
     cout << circuit.draw() << endl;
 
-    cout << addAssign << endl << addAssign.toString(true) << endl << addAssign.solve();
+    //cout << addAssign << endl << addAssign.toString(true) << endl << addAssign.solve();
+    cout << blck << endl << blck.toString(true) << endl << blck.solve();
 }
 
 int main(int argc, const char * argv[])

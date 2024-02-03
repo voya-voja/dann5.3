@@ -28,8 +28,15 @@ namespace dann5
         // statement.
         virtual void compile(const Qop&) = 0;
 
+        // set and get outstanding count of qubits to be compiled
+        size_t qbitsCount() const { return mQbitsCount; };
+        void qbitsCount(size_t noQbits) { mQbitsCount = noQbits; };
+
     protected:
+        size_t& qbitsCount() { return mQbitsCount; };
+
     private:
+        size_t    mQbitsCount = 0;  // Counter of qubits to be compiled
     };
 };
 
