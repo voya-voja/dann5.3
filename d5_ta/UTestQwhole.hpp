@@ -36,10 +36,44 @@ namespace dann5test
  
         // use Qwhole to solve factorial problem
         void factorial(ostream& out);
-        // use Qwhole to calculate prime numbers
-        void prime(ostream& out);
-        // use (6 * Qwhole +/- 1) algorithm to calculate prime numbers
-        void prime6(ostream& out);
+        // use Qwhole to calculate prime numbers using the triangular theoreme
+        void primeTriangular(ostream& out);
+
+        // using p3 algorithm from the triangular theoreme calculate primes
+        // Prime number p = s^2 + 2t^2, p mod 8 = 3, gcd(s,t) = 1
+        void p3_s2t(ostream& out);
+
+        // using p5 algorithm from the triangular theoreme calculate primes
+        // Prime number p = s^2 + 4t^2, p mod 8 = 5, gcd(s,t) = 1
+        void p5_s4t(ostream& out);
+
+        // using p1 algorithm from the triangular theoreme calculate primes
+        // Prime number p = s^2 + 8t^2, p mod 8 = 1, gcd(s,t) = 1
+        void p1_s8t(ostream& out);
+
+        // using p1 algorithm from the triangular theoreme calculate primes
+        // Prime number p = s^2 + 16t^2, p mod 8 = 1, gcd(s,t) = 1
+        void p1_s16t(ostream& out);
+
+        // using p1 algorithm from the triangular theoreme calculate primes
+        // Prime number p = s2 + 8st + 8t2, p mod 8 = 1, gcd(s,t) = 1
+        void p1_s8st8t(ostream& out);
+
+        // using p1 algorithm from the triangular theoreme calculate primes
+        // Prime number p = s2 + 4st + 2t2, p mod 8 = 7, gcd(s,t) = 1
+        void p7_s4st2t(ostream& out);
+
+        // use p = 6 * Qwhole +/- 1 algorithms to calculate prime numbers
+        void prime6factor(ostream& out);
+
+        // use p = 6 * s - 1 algorithm to calculate prime numbers
+        void p6sm1(ostream& out);
+
+        // use p + 1 == 6 * s algorithm to calculate prime numbers
+        void pp1e6s(ostream& out);
+
+        // use p = 6 * s + 1 algorithm to calculate prime numbers
+        void p6sp1(ostream& out);
     };
 };
 #endif /* UTestQwhole_hpp */

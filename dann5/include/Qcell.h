@@ -50,7 +50,6 @@ namespace dann5 {
         // set and get the value of this Q cell
         virtual void value(Qvalue v) = 0;
         virtual Qvalue value() const = 0;
-        virtual Qvalue value() = 0;
 
         // Override to set solution values from the sample set for this deffinition
         virtual void add(const Qevaluations& evaluations);

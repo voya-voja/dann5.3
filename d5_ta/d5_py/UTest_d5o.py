@@ -45,10 +45,11 @@ def main():
     Solver.Active()
     
     start = time.process_time()
-    png = PNGen(18, 20, debug = False)
+    png = PNGen(19, 20, debug = False)
     png.generate()
     finish = time.process_time()
-    print("PN candidate generation takes", finish - start, "seconds")
+    print("PN candidates generation takes", finish - start, "seconds")
+    print("... per PN candidate generation takes", (finish - start)/20, "seconds")
 """    
     start = time.process_time()
     png = PNGen(4, False)

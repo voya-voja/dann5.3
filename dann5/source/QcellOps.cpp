@@ -19,7 +19,7 @@ void QcellOp::inputs(const Qdefs& ins)
 		if (pOut != nullptr)
 		{
 			Qvalue outV = pOut->value();
-			if (outV == cSuperposition && v != outV && pOut->id()[0] == '_')
+			if (outV == cSuperposition && v != outV)// && pOut->id()[0] == '_')
 				pOut->value(v);
 		}
 	}
@@ -34,7 +34,7 @@ void QcellOp::output(const Qdef::Sp& pOut, size_t forBit)
 		if (pCellOut != nullptr)
 		{
 			Qvalue outV = pCellOut->value();
-			if (outV == cSuperposition && v != outV && pCellOut->id()[0] == '_')
+			if (outV == cSuperposition && v != outV)// && pCellOut->id()[0] == '_')
 				pCellOut->value(v);
 		}
 	}
@@ -52,12 +52,12 @@ void QcellOp::value(Qvalue v)
 
 Qvalue QcellOp::value() const
 {
-	Qdefs ins = Qop::inputs();
+	Qcells ins = Qop::inputs();
 	size_t iSize = ins.size();
 	Qvalues values;
 	for (int at = 0; at < iSize; at++)
 	{
-		Qcell::Sp pIn = dynamic_pointer_cast<Qcell>(ins[at]);
+		Qcell::Sp pIn = ins[at];
 		if (pIn != nullptr)
 		{
 			Qvalue v = pIn->value();
@@ -66,9 +66,7 @@ Qvalue QcellOp::value() const
 			values.push_back(v);
 		}
 	}
-	if(values.size() > 0)
-		return(calculate(values));
-	return(cSuperposition);
+	return(calculate(values));
 }
 
 /*** Q operator ***/
@@ -197,6 +195,14 @@ Qvalue Qge::calculate(const Qvalues& values) const
 }
 
 /*** Q and operation ***/
+Qvalue Qand::value() const
+{
+	Qcells ins = Qop::inputs();
+	Qvalue in0 = ins[0]->value(), in1 = ins[1]->value();
+	if (in0 == 0 || in1 == 0) return 0;
+	if (in0 == cSuperposition || in1 == cSuperposition) return cSuperposition;
+	return 1;
+}
 
 Qvalue Qand::calculate(const Qvalues& values) const
 {
@@ -253,6 +259,14 @@ Qvalue Qor::calculate(const Qvalues& values) const
 }
 
 /*** Q nOr operation ***/
+Qvalue Qnor::value() const
+{
+	Qcells ins = Qop::inputs();
+	Qvalue in0 = ins[0]->value(), in1 = ins[1]->value();
+	if (in0 == 1 || in1 == 1) return 0;
+	if (in0 == cSuperposition || in1 == cSuperposition) return cSuperposition;
+	return 1;
+}
 
 Qvalue Qnor::calculate(const Qvalues& values) const
 {
@@ -303,6 +317,7 @@ inline void Qaddition::initialize()
     if(pCarryOut == nullptr)
     {
         pCarryOut = pAdditionOut->clone();
+		dynamic_pointer_cast<Qcell>(pCarryOut)->value(mpCarry->value());
         mpCarry->output(pCarryOut);
     }
     // refresh carry out id to be consistent with addition out id
@@ -367,11 +382,12 @@ void Qaddition::Carry::addition(Qaddition* pAddition)
 
 Qvalue Qaddition::Carry::calculate(const Qvalues& values) const
 {
-	const Qdefs& ins = as_const(*mpAddition).Qop::inputs();
+	//const Qdefs& ins = as_const(*mpAddition).Qop::inputs();
+	Qcells ins = as_const(*mpAddition).Qop::inputs();
 	size_t iSize = ins.size();
-	Qvalue carry = static_pointer_cast<Qcell>(ins[0])->value() & dynamic_pointer_cast<Qcell>(ins[1])->value();
+	Qvalue carry = ins[0]->value() & ins[1]->value();
 	if (iSize == 3)
-		carry &= static_pointer_cast<Qcell>(ins[2])->value();
+		carry &= ins[2]->value();
 	return carry;
 }
 

@@ -50,7 +50,6 @@ namespace dann5 {
         // set and get the value of this Q cell
         virtual void value(Qvalue v);	// throws logic_error exception
         virtual Qvalue value() const;
-        virtual Qvalue value() { return(as_const(*this).value()); };
 
         // Convert quantum cell operation expression into a string
         virtual string toString(bool decomposed = false,
@@ -241,11 +240,6 @@ namespace dann5 {
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qinvert(*this)); };
         
-        // Returns not-equal mark as this operation identifier
-        virtual string identifier() const noexcept {
-            return Qneq::cMark();
-        };
-
     protected:
         virtual Qvalue calculate(const Qvalues& values) const;
 
@@ -390,6 +384,10 @@ namespace dann5 {
         // Destruct Qand with shared pointers to its two Qdefs
         ~Qand() {};
 
+        // Returns 0 if any of inputs is 0, or 1 if all inputs are 1,
+        // otherwise returns cSuperposition
+        virtual Qvalue value() const;
+
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qand(*this)); };
 
@@ -512,6 +510,10 @@ namespace dann5 {
 
         // Destruct QnOr with shared pointers to its two Qdefs
         ~Qnor() {};
+
+        // Returns 0 if any of inputs is 1, or 1 if all inputs are 0,
+        // otherwise returns cSuperposition
+        virtual Qvalue value() const;
 
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qnor(*this)); };

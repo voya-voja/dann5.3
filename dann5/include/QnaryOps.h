@@ -119,11 +119,6 @@ namespace dann5
 
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new QnaryInvert(*this)); };
-        
-        // Returns not-equal mark as this operation identifier
-        virtual string identifier() const noexcept {
-            return QnaryNeq::cMark();
-        };
 
     protected:
     private:
