@@ -114,8 +114,8 @@ namespace dann5 {
 	// a default constructor of TYPE, which are specializations
 	// of BASE-class.
 	// Instantiate a specific DefaultConstructor as a global variable:
-	// ....DefaultCreator<int, MyBaseClass, MyBaseSpecial_1> gSpecializationCreator(1);
-	// ....DefaultCreator<int, MyBaseClass, MyBaseSpecial_2> gSpecializationCreator(2);
+	// ....DefaultCreator<int, MyBaseClass, MyBaseSpecial_1> gSpecializationCreator_1(1);
+	// ....DefaultCreator<int, MyBaseClass, MyBaseSpecial_2> gSpecializationCreator_2(2);
 	template<typename KEY, typename BASE, typename TYPE>
 	class DefaultCreator : Factory<KEY,BASE>::template Creator<KEY, BASE>
 	{

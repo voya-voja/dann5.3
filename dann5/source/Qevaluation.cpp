@@ -60,16 +60,21 @@ std::ostream& dann5::operator << (std::ostream& out, const Qevaluations& evaluat
     bool tableHeader = true;
     for (auto evltn : evaluations)
     {
+        const Qsample& sample = evltn.sample();
         out << endl;
         if (tableHeader)
         {
-            for (auto element : evltn.sample())
+            for (auto element : sample)
+            {
                 out << element.first << "\t";
+            }
             out << endl;
             tableHeader = false;
         }
-        for (auto element : evltn.sample())
-            out << to_string(element.second) << "\t";
+        for (auto element : sample)
+        {
+            out << int(element.second) << "\t";
+        }
         out << "-->\t" << evltn.energy();
     }
     return out;

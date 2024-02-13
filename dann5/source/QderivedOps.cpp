@@ -22,6 +22,25 @@ QderivedOp::QderivedOp(const QderivedOp& right)
 	: QnaryOp(right), mEq(right.mEq), mpSubstituteOp(right.mpSubstituteOp)
 {}
 
+void QderivedOp::resize(size_t size, Qvalue value)
+{
+    Qcells& logic = cells();
+    size_t oSize = logic.size();
+    logic.resize(size);
+    Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(output());
+    if (pNaryOut != nullptr)
+    {
+        pNaryOut = dynamic_pointer_cast<Qnary>(pNaryOut->clone());
+        for (size_t at = oSize; at < size; at++)
+        {
+            QnullCellOp::Sp pNullOp(new QnullCellOp());
+            logic[at] = pNullOp;
+            pNullOp->output(as_const(*pNaryOut)[at], at);
+            (*pNaryOut)[at].value(cSuperposition);
+        }
+    }
+}
+
 void QderivedOp::refreshOnInputs()
 {
     Qdefs ins = Qop::inputs();
@@ -30,14 +49,13 @@ void QderivedOp::refreshOnInputs()
     if (iSize != 2) return;
     // ... is same as ins[0] = out + ins[1]
     size_t outNoqbs = ins[0]->noqbs();
-//    if(outNoqbs > 2) outNoqbs--;
     if (pOut->noqbs() == 0)
     {
         Qnary::Sp pNaryOut = static_pointer_cast<Qnary>(pOut);
         pNaryOut->resize(outNoqbs);
     }
-    Qwhole out(mpSubstituteOp->createOutId());
-    mpSubstituteOp->operands(out.clone(), {pOut, ins[1]});
+    Qwhole subOut(mpSubstituteOp->createOutId());
+    mpSubstituteOp->operands(subOut.clone(), {pOut, ins[1]});
     mEq.operands(ins[0], {mpSubstituteOp});
     resize(mEq.noqbs());
 }

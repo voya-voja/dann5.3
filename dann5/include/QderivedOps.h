@@ -39,6 +39,13 @@ namespace dann5 {
         // Destruct the Q derived operation instance
         ~QderivedOp() {};
 
+        // Resizes the Q array of oprations to contain a specified size of elements. If the size is
+        // smaller than the current Q array size, the content is reduced to its
+        // first size elements, removing those beyond (and destroying them). If the size
+        // is greater than the current container size, the content is expanded by
+        // inserting at the end as many Q null operations as needed.
+        virtual void resize(size_t size, Qvalue value = 0);
+
         // Return a quantum equal operand representation with substitute operation 
         // as one of the oeprands when decomposed.
         // Otherwise, return a string representation of a Q derived operation

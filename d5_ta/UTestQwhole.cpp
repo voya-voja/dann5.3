@@ -180,7 +180,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 
-    qwExpr = y + x;
+    qwExpr.reset();  qwExpr = y + x;
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
     out << "Addition Expression" << endl << qwExpr << endl
@@ -200,6 +200,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwwExpr.solve() << endl;
 
+    qwExpr.reset();
     Qexpr<Qwhole> qxwExpr = qwExpr + z + _3;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
@@ -210,8 +211,8 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
-    qwExpr = x + y;
-    qxwExpr = z + qwExpr + _3;
+    qwExpr.reset(); qwExpr = x + y;
+    qxwExpr.reset(); qxwExpr = z + qwExpr + _3;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
     out << "Addition Expression" << endl << qxwExpr << endl
@@ -232,8 +233,8 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
 
-    qwExpr = x + y;
-    z_3Expr = z + _3;
+    qwExpr.reset(); qwExpr = x + y;
+    z_3Expr.reset(); z_3Expr = z + _3;
     Qexpr<Qwhole> qxxExpr = qwExpr + z_3Expr;
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
@@ -268,6 +269,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 /* Issue #6 */
+    qwxExpr.reset();
     qwxExpr = z - qwExpr;
     noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
     compiler.reset(); qwxExpr.compile(compiler);
@@ -278,6 +280,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
 
+    qwExpr.reset(); qxwExpr.reset();
     qxwExpr = qwExpr - x;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
@@ -300,6 +303,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << blckSub.solve() << endl;
 /* Issue #6  */
+    qwExpr.reset(); z_3Expr.reset(); qxxExpr.reset();
     qxxExpr = z_3Expr - qwExpr;
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
@@ -310,7 +314,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qxxExpr.solve() << endl;
 
-    qwExpr = x * y;
+    qwExpr.reset(); qwExpr = x * y;
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
     out << "Multiplication Expression" << endl << qwExpr << endl
@@ -320,6 +324,8 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwExpr.solve() << endl;
 
+    qwExpr.reset();
+    qwxExpr.reset();
     qwxExpr = z * qwExpr;
     noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
     compiler.reset(); qwxExpr.compile(compiler);
@@ -330,6 +336,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << endl << " resulting in :" << endl << qwxExpr.solve() << endl;
 
+    qxwExpr.reset(); qwExpr.reset();
     qxwExpr = qwExpr * z;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
@@ -340,9 +347,9 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
-    qwExpr = x * y;
-    z_3Expr = _3 * z;
-    qxxExpr = qwExpr * z_3Expr;
+    qwExpr.reset();  qwExpr = x * y;
+    z_3Expr.reset();  z_3Expr = _3 * z;
+    qxxExpr.reset();  qxxExpr = qwExpr * z_3Expr;
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Multiplication Expression" << endl << qxxExpr << endl
@@ -354,6 +361,7 @@ void UTestQwhole::arithmetic(ostream& out)
     out << endl << " # of nodes: " << anlyze.nodesNo()
         << " # of branches: " << anlyze.branchesNo() << endl << endl;
 
+    qwExpr.reset();
     qwExpr = y / x;
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
@@ -382,6 +390,7 @@ void UTestQwhole::arithmetic(ostream& out)
     out << " resulting in :" << endl << byDx.solve() << endl;
 
     qwExpr.reset();
+    qxwExpr.reset();
     qxwExpr = qwExpr / z;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
@@ -392,8 +401,8 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
-    qwExpr = x + z;
-    qwxExpr = y / qwExpr;
+    qwExpr.reset();  qwExpr = x + z;
+    qwxExpr.reset();  qwxExpr = y / qwExpr;
     noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
     compiler.reset(); qwxExpr.compile(compiler);
     out << "Division Expression" << endl << qwxExpr << endl
@@ -403,7 +412,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
 
-    qxxExpr = z_3Expr / qwExpr;
+    qxxExpr.reset();  qxxExpr = z_3Expr / qwExpr;
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Division Expression" << endl << qxxExpr << endl
@@ -1009,12 +1018,10 @@ void UTestQwhole::p1_s8t(ostream& out)
         << analyse.nodesNo() << " # of node and # of branches: "
         << analyse.branchesNo() << endl;
 
-    /*  Commente out due to a high # of nodes   
-        Qevaluations solution = primeNo.compute();
-        Qbinder pst(solution);
-        pst = prime, s, t;
-        out << " resulting in :" << endl << pst << endl;
-    */
+    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
 }
 
 void UTestQwhole::p1_s16t(ostream& out)
@@ -1048,12 +1055,10 @@ void UTestQwhole::p1_s16t(ostream& out)
         << analyse.nodesNo() << " # of node and # of branches: "
         << analyse.branchesNo() << endl;
 
-    /*  Commente out due to a high # of nodes   
-        Qevaluations solution = primeNo.compute();
-        Qbinder pst(solution);
-        pst = prime, s, t;
-        out << " resulting in :" << endl << pst << endl;
-    */
+    Qevaluations solution = primeNo.compute();
+    Qbinder pst(solution);
+    pst = prime, s, t;
+    out << " resulting in :" << endl << pst << endl;
 }
 
 void UTestQwhole::p1_s8st8t(ostream& out)
@@ -1138,6 +1143,7 @@ void UTestQwhole::prime6factor(ostream& out)
 {
     p6sm1(out);
     pp1e6s(out);
+    p6sp1(out);
 }
 
 void UTestQwhole::p6sm1(ostream& out)
@@ -1183,7 +1189,7 @@ void UTestQwhole::pp1e6s(ostream& out)
 
 void UTestQwhole::p6sp1(ostream& out)
 {
-    Qwhole prime(4, "p"), s(2, "s"), _6("6_", 6);
+    Qwhole prime(5, "p"), s(2, "s"), _6("6_", 6);
     Qblock prime6p1;
     {
         prime6p1 = prime = _6 * s + Qwhole::_1;

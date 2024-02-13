@@ -88,3 +88,21 @@ void Logger::log(const void* pObject, const char* oType, const string& action, c
 	const char* actTxt = actStr.c_str();
 	_DANN5_LOG << "'" << typeTxt << "', " << actTxt << ", " << pObject << ", '" << pTxt << "'" << endl;
 }
+
+
+void Logger::log(const string& action, const string& txt)
+{
+	string txtStr(txt);
+	string actStr(action);
+#ifdef _DANN5_LOG_INTO_CSV
+	replaceAll(txtStr, ",", "_");
+	replaceAll(txtStr, "\t", ";");
+	replaceAll(txtStr, "\n", ";");
+	replaceAll(actStr, ",", "_");
+	replaceAll(actStr, "\t", ";");
+	replaceAll(actStr, "\n", ";");
+#endif
+	const char* pTxt = txtStr.c_str();
+	const char* actTxt = actStr.c_str();
+	_DANN5_LOG << "'" << actTxt << ", " << pTxt << "'" << endl;
+}

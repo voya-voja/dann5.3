@@ -7,6 +7,8 @@
 #include <typeinfo>
 #include <algorithm>
 
+#include <Logger.h>
+
 #include <Qwhole.h>
 
 #include <Qassign.h>
@@ -232,26 +234,54 @@ void qiskitPNs()
 
 int main(int argc, const char * argv[])
 {
+    _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
 //    testQbitQiskit();
 //    testQbinQiskit();
 //    testQwholeQiskit();
 //    qiskitPNs();
+    /*Qwhole prime(6, "p"), _6("6_", 6), s(2, "s");
+    Qassign<Qwhole> assP(prime = _6 * s + Qwhole::_1);
+    cout << assP << endl << assP.toString(true) << endl << assP.solve();
+
+    QuboCompiler noFnlCmplr(true); assP.compile(noFnlCmplr);
+    QuboCompiler compiler; assP.compile(compiler);
+
+    Qevaluations solution2 = assP.compute();
+    Qbinder pst2(solution2);
+    cout << endl << solution2 << endl;
+    pst2 = prime, s;
+    cout << endl << " resulting in :" << endl << pst2 << endl;
+    assP.reset();
+    assP.add(solution2);
+    cout << assP << endl << assP.solutions();*/
 
 
-    UTestQbit utQbit;
-    utQbit.runAll(cout);
-    UTestQbool utQbool;
-    utQbool.runAll(cout);
-    UTestQbin utQbin;
-    utQbin.runAll(cout);
-    UTestQwhole utQwhole;
-    utQwhole.runAll(cout);
+    Qwhole x(2, "x"), y("y", 5), z(1, "z"), _3("_3", 3);
+    Qexpr<Qwhole> qwExpr(y - x), qxwExpr = qwExpr + z + _3;
+    QuboCompiler noFnlCmplr(true); qxwExpr.compile(noFnlCmplr);
+    QuboCompiler compiler; qxwExpr.compile(compiler);
+    cout << "Addition Expression" << endl << qxwExpr << endl
+        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
+    cout << endl << " & finalized Qubo is '"
+        << compiler.qubo() << "'" << endl;
+    cout << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
+
+
+    //UTestQbit utQbit;
+    //utQbit.runAll(cout);
+    //UTestQbool utQbool;
+    //utQbool.runAll(cout);
+    //UTestQbin utQbin;
+    //utQbin.runAll(cout);
+    //UTestQwhole utQwhole;
+    //utQwhole.runAll(cout);
 //    pymain();
 
 //    testPNcandidates();
-
+    _lft("main", "*** END ***");
     return 0;
 }
 

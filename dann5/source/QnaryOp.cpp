@@ -13,7 +13,7 @@ void QnaryOp::resize(size_t size, Qvalue value)
 	Qcells& logic = cells();
 	size_t oSize = logic.size();
 	logic.resize(size);
-	Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(outputs()[0]);
+	Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(output());
 	if (pNaryOut != nullptr)
 	{
 		for (size_t at = oSize; at < size; at++)
