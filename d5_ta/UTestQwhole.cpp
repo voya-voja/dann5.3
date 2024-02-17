@@ -1027,7 +1027,7 @@ void UTestQwhole::p1_s8t(ostream& out)
 void UTestQwhole::p1_s16t(ostream& out)
 {
     Qwhole prime(5, "p"), s(2, "s"), t(1, "t"), _16("16_", 16);
-    Qblock primeNo;
+    Qroutine primeNo("prime");
     {
         Qbin _7("7_", 7);
         Qassign<Qwhole> p_s2_16t2 = prime = s * s + _16 * t * t;

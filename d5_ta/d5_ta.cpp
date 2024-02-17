@@ -258,26 +258,26 @@ int main(int argc, const char * argv[])
     cout << assP << endl << assP.solutions();*/
 
 
-    Qwhole x(2, "x"), y("y", 5), z(1, "z"), _3("_3", 3);
-    Qexpr<Qwhole> qwExpr(y - x), qxwExpr = qwExpr + z + _3;
-    QuboCompiler noFnlCmplr(true); qxwExpr.compile(noFnlCmplr);
-    QuboCompiler compiler; qxwExpr.compile(compiler);
-    cout << "Addition Expression" << endl << qxwExpr << endl
-        << " decomposed logic: " << qxwExpr.toString(true) << endl
-        << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
-    cout << endl << " & finalized Qubo is '"
-        << compiler.qubo() << "'" << endl;
-    cout << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
+    //Qwhole x(2, "x"), y("y", 5), z(1, "z"), _3("_3", 3);
+    //Qexpr<Qwhole> qwExpr(y - x), qxwExpr = qwExpr + z + _3;
+    //QuboCompiler noFnlCmplr(true); qxwExpr.compile(noFnlCmplr);
+    //QuboCompiler compiler; qxwExpr.compile(compiler);
+    //cout << "Addition Expression" << endl << qxwExpr << endl
+    //    << " decomposed logic: " << qxwExpr.toString(true) << endl
+    //    << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
+    //cout << endl << " & finalized Qubo is '"
+    //    << compiler.qubo() << "'" << endl;
+    //cout << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
 
-    //UTestQbit utQbit;
-    //utQbit.runAll(cout);
-    //UTestQbool utQbool;
-    //utQbool.runAll(cout);
-    //UTestQbin utQbin;
-    //utQbin.runAll(cout);
-    //UTestQwhole utQwhole;
-    //utQwhole.runAll(cout);
+    UTestQbit utQbit;
+    utQbit.runAll(cout);
+    UTestQbool utQbool;
+    utQbool.runAll(cout);
+    UTestQbin utQbin;
+    utQbin.runAll(cout);
+    UTestQwhole utQwhole;
+    utQwhole.runAll(cout);
 //    pymain();
 
 //    testPNcandidates();

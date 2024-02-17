@@ -41,7 +41,8 @@ namespace dann5 {
 
         // copy constructor
         Qassignment(const Qassignment& right)
-            : mpAssignee(right.mpAssignee), mpExpr(right.mpExpr) {};
+            : Qstatement(right), 
+                mpAssignee(right.mpAssignee), mpExpr(right.mpExpr) {};
 
         // destructor
         ~Qassignment() {};

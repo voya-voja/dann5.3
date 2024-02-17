@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\dann5\ocean\source\D5QuboSolver.cpp" />
+    <ClCompile Include="..\dann5\ocean\source\DwaveSolver.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QTfactory.cpp" />
     <ClCompile Include="..\dann5\ocean\source\Qubo.cpp" />
     <ClCompile Include="..\dann5\ocean\source\QuboAnalyzer.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="..\dann5\include\ULint.h" />
     <ClInclude Include="..\dann5\include\Utility.h" />
     <ClInclude Include="..\dann5\ocean\include\D5QuboSolver.h" />
+    <ClInclude Include="..\dann5\ocean\include\DwaveSolver.h" />
     <ClInclude Include="..\dann5\ocean\include\Qubo.h" />
     <ClInclude Include="..\dann5\ocean\include\QuboAnalyzer.h" />
     <ClInclude Include="..\dann5\ocean\include\QuboCompiler.h" />
