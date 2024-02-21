@@ -25,6 +25,7 @@
 #include "UTestQbin.hpp"
 #include "UTestQwhole.hpp"
 #include <ULint.h>
+#include "Qbool.h"
 
 #include <Qubo.h>
 #include <D5QuboSolver.h>
@@ -270,14 +271,156 @@ int main(int argc, const char * argv[])
     //cout << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
 
-    UTestQbit utQbit;
+    /*UTestQbit utQbit;
     utQbit.runAll(cout);
     UTestQbool utQbool;
     utQbool.runAll(cout);
     UTestQbin utQbin;
     utQbin.runAll(cout);
     UTestQwhole utQwhole;
-    utQwhole.runAll(cout);
+    utQwhole.runAll(cout);*/
+
+    // boolean statement for all the possible variables called Nik and Shawnie
+    {
+        Qbool nik("nik"), shawnie("shawnie");
+
+        Qexpr<Qbool> expression = nik & shawnie;
+
+        cout << nik << endl;
+        cout << shawnie << endl;
+
+        cout << expression << endl;
+        cout << expression.toString(true) << endl;
+        cout << expression.solve() << endl;
+
+        cout << "====================" << endl;
+
+        Qassign<Qbool> assignment(Qbool::_T = expression);
+        cout << assignment << endl;
+        cout << assignment.toString(true) << endl;
+        cout << assignment.solve() << endl;
+    }
+    cout << "===================" << endl;
+    {
+        Qbit jim("jim"), pam("pam");
+
+        Qexpr<Qbit> expression = jim & pam;
+
+        cout << jim << endl;
+        cout << pam << endl;
+
+        cout << expression << endl;
+        cout << expression.toString(true) << endl;
+        cout << expression.solve() << endl;
+
+        cout << "====================" << endl;
+
+        Qassign<Qbit> assignment(Qbit::_0 = expression);
+        cout << assignment << endl;
+        cout << assignment.toString(true) << endl;
+        cout << assignment.solve() << endl;
+    }
+    cout << "===================" << endl;
+    try
+    {
+        Qbin jim(2, "jim"), pam(2, "pam");
+
+        Qexpr<Qbin> expression = jim & pam;
+
+        cout << jim << endl;
+        cout << pam << endl;
+
+        cout << expression << endl;
+        cout << expression.toString(true) << endl;
+        cout << expression.solve() << endl;
+
+        cout << "====================" << endl;
+
+        Qbin _3("_3_", 3);
+        Qassign<Qbin> assignment(_3 = expression);
+        cout << assignment << endl;
+        cout << assignment.toString(true) << endl;
+        cout << assignment.solve() << endl;
+
+        cout << "====================" << endl;
+
+        Qbin _i_(3, "_i_");
+        assignment = (_i_ = expression);
+        cout << assignment << endl;
+        cout << assignment.toString(true) << endl;
+        cout << assignment.solve() << endl;
+    }
+    catch (exception& e) {
+        cout << e.what() << endl;
+    }
+
+    cout << "===================" << endl;
+    try
+    {
+        Qwhole kurt(3, "kurt"), john(3, "john");
+
+        Qexpr<Qbin> expression = kurt & john;
+
+        cout << kurt << endl;
+        cout << john << endl;
+
+        cout << expression << endl;
+        cout << expression.toString(true) << endl;
+        cout << expression.solve() << endl;
+
+        cout << "====================" << endl;
+
+        Qbin _10("_10_", 0b1010);
+        Qassign<Qbin> assignment(_10 = expression);
+        cout << assignment << endl;
+        cout << assignment.toString(true) << endl;
+        cout << assignment.solve() << endl;
+
+        cout << "====================" << endl;
+        assignment.reset();
+        Qbin _i_(3, "_i_");
+        assignment = (_i_ = expression);
+        cout << assignment << endl;
+        cout << assignment.toString(true) << endl;
+        cout << assignment.solve() << endl;
+
+        cout << "====================" << endl;
+
+        Qwhole _11("_11_", 11);
+        Qassign<Qwhole> assignment1 = (_11 = kurt + john);
+        cout << assignment1 << endl;
+        cout << assignment1.toString(true) << endl;
+        cout << assignment1.solve() << endl;
+    }
+    catch (exception& e) {
+        cout << e.what() << endl;
+    }
+
+    cout << "===================" << endl;
+    try
+    {
+        Qint curtis(3, "curtis"), jimmy(3, "jimmy");
+
+        Qexpr<Qint> expression = curtis + jimmy;
+
+        cout << curtis << endl;
+        cout << jimmy << endl;
+
+        cout << expression << endl;
+        cout << expression.toString(true) << endl;
+        cout << expression.solve() << endl;
+
+        cout << "====================" << endl;
+
+        Qint _n8(4, "_n8_", -8);
+        Qassign<Qint> assignment = (_n8 = expression);
+        cout << assignment << endl;
+        cout << assignment.toString(true) << endl;
+        cout << assignment.solve() << endl;
+    }
+    catch (exception& e) {
+        cout << e.what() << endl;
+    }
 //    pymain();
 
 //    testPNcandidates();

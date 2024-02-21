@@ -86,6 +86,8 @@ namespace dann5 {
         };
     };
 
+    
+
     // Quantum Eigen vector of Q cell references
     typedef Matrix<Qcell::Sp, Dynamic, 1> QcellVector;
 
