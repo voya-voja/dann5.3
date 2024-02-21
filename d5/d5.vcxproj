@@ -194,6 +194,7 @@
     <ClCompile Include="..\dann5\source\Qbool.cpp" />
     <ClCompile Include="..\dann5\source\Qcell.cpp" />
     <ClCompile Include="..\dann5\source\QcellOps.cpp" />
+    <ClCompile Include="..\dann5\source\Qdef.cpp" />
     <ClCompile Include="..\dann5\source\QderivedOps.cpp" />
     <ClCompile Include="..\dann5\source\Qevaluation.cpp" />
     <ClCompile Include="..\dann5\source\Qexpr.cpp" />

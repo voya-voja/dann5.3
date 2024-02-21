@@ -215,5 +215,8 @@
     <ClCompile Include="..\dann5\source\ULint.cpp">
       <Filter>Source Files\dann5</Filter>
     </ClCompile>
+    <ClCompile Include="..\dann5\source\Qdef.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

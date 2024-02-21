@@ -162,6 +162,9 @@
     <ClCompile Include="..\dann5\ocean\source\DwaveSolver.cpp">
       <Filter>Source Files\dann5\ocean</Filter>
     </ClCompile>
+    <ClCompile Include="..\dann5\source\Qdef.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h">

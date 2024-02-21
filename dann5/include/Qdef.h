@@ -79,6 +79,10 @@ namespace dann5 {
         string mID;	// The identity of a Q definition
     };
 
+    // Send a string representation of a Q cell into an output
+    // stream
+    ostream& operator << (std::ostream& out, const Qdef& right);
+
     // An std::vector containing a list of shared pointers pointing to
     // quantum definitions
     typedef vector <Qdef::Sp> Qdefs;
