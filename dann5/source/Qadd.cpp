@@ -1,6 +1,7 @@
 #include <Qadd.h>
 #include <Factory.h>
 #include <Qbit.h>
+#include <Qint.h>
 
 using namespace dann5;
 
@@ -112,10 +113,8 @@ Qcell::Sp Qadd::opAt(const Qnary::Sp& pLeft, const Qnary::Sp& pRight,
 /*** Addition of Quantum integers ***/
 
 QaddQints::QaddQints()
-	:Qadd()
-{
-	noLastCarryBit() = 0;
-}
+	:Qadd(0)
+{}
 
 QaddQints::QaddQints(const QaddQints& right)
 	: Qadd(right)
@@ -123,3 +122,48 @@ QaddQints::QaddQints(const QaddQints& right)
 
 QaddQints::~QaddQints()
 {}
+
+string QaddQints::solution(size_t atEvltn) const
+{
+	string opStr(Qadd::solution(atEvltn));
+	size_t valueStart = opStr.find(':') + 1;
+	string valueStr = opStr.substr(valueStart, opStr.find('\\', valueStart) - valueStart);
+	int result = stoi(valueStr);
+	valueStart = opStr.find(':', valueStart) + 1;
+	valueStr = opStr.substr(valueStart, opStr.find('\\', valueStart) - valueStart);
+	int argument0 = stoi(valueStr);
+	valueStart = opStr.find(':', valueStart) + 1;
+	valueStr = opStr.substr(valueStart, opStr.find('\\', valueStart) - valueStart);
+	int argument1 = stoi(valueStr);
+	if (argument0 + argument1 != result)
+	{
+		Bits resultBits(result);
+		string updatedStr = opStr.substr(0, opStr.find(':') + 1);
+		updatedStr += to_string(argument0 + argument1);
+		size_t restStart = opStr.find("\\; ");
+		updatedStr += opStr.substr(restStart, opStr.size() - restStart);
+		opStr = updatedStr;
+ 	}
+	return opStr;
+}
+
+void QaddQints::refreshOnInputs()
+{
+	Qnaries ins = Qnaries(Qop::inputs());
+	size_t nqbts0 = ins[0]->noqbs(), nqbts1 = ins[1]->noqbs();
+	if (nqbts0 < nqbts1)
+		ins[0]->resize(nqbts1);
+	else if (nqbts0 > nqbts1)
+		ins[1]->resize(nqbts0);
+	Qadd::refreshOnInputs();
+}
+// 
+//void QaddQints::refreshOnOutput()
+//{
+//	Qadd::refreshOnOutput();
+//	Qint::Sp pIntOut = dynamic_pointer_cast<Qint>(Qop::output());
+//	if (pIntOut == nullptr)
+//		throw logic_error("ERROR @QaddQints: Output is not Qint or is not defined!");
+//	size_t size = pIntOut->noqbs() + 1;
+//	pIntOut->resize(size);
+//}

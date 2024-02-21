@@ -107,6 +107,7 @@ namespace dann5 {
         // Override to refresh the Q-nary operation cells according to the derived
         // operation logic on output assignment
         virtual void refreshOnOutput();
+
     private:
     };
 

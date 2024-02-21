@@ -53,7 +53,7 @@ namespace dann5 {
 
         // Initialize Q int with a given id and a deterministic value as a bitset
         // by default it will trim leading 0, unless asis is true
-        Qint(const string& id, const Bits& value, bool asis = false);
+        Qint(const string& id, const long long& value, bool asis = false);
 
         // Initialize Q int of given size, with a given id and a deterministic
         // value as a bitset

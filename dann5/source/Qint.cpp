@@ -4,17 +4,30 @@
 #include <Qadd.h>
 #include <Qmultiply.h>
 
+#include <stdlib.h>
+
+using namespace std;
 using namespace dann5;
 
 const Qint Qint::_0("_0", 0);
 const Qint Qint::_1("_1", 1);
-const Qint Qint::_1_("_1_", -1, true);
+const Qint Qint::_1_("_1_", -1);
 
-Qint::Qint(const string& id, const Bits& value, bool asis)
-	: Qbin(id, value, asis)
+Qint::Qint(const string& id, const long long& value, bool asis)
+	: Qbin(id, abs(value), asis)
 {
-	if(!asis && noqbs() < 64)
-		Qbin::resize(noqbs() + 1);
+	size_t size = noqbs() + 1;
+	if (!asis && noqbs() < 64)
+		Qbin::resize(size);
+	else
+		size--;
+	if (value < 0)
+	{
+		Bits vBits(value);
+		Qcells thisBits = cells();
+		for (size_t at = 0; at < size; at++)
+			thisBits[at]->value(vBits[at]);
+	}
 }
 
 Qint::Qint(size_t size, const string& id, const Bits& value)
