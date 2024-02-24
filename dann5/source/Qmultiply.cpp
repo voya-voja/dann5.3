@@ -8,9 +8,16 @@ using namespace dann5;
 void Qmultiply::refreshOnInputs()
 {
 	const Qdefs& args = Qop::inputs();
-	QcellMatrix xMatrix = x(args);	// this * right vectors => xMatrix
+	QcellMatrix xMatrix = x(args);	// left * right vectors => xMatrix
 	// Rotate xMatrix left-90-digrees to change the values on main diagonal
+	// | l0&r0 l0&r1 | => | l0&r1 l1&r1 | 
+	// | l1&r0 l1&r1 | 90 | l0&r0 l1&r0 |
 	QcellMatrix matrix = xMatrix.rowwise().reverse();
+	// Strating from bottom right add diagonals
+	// | r0 = l0&r0				|
+	// | r1 = l0&r1 + l1&r0	    |
+	// | r2 = l1&r1 + carry(r1) |
+	// | r3 = carry(r2)			|
 	sumDiagonal(matrix);
 }
 
@@ -23,7 +30,7 @@ QcellMatrix Qmultiply::x(const Qdefs& args) const
 	for (size_t atRow = 0; atRow < rows; atRow++)
 	{
 		for (size_t atCol = 0; atCol < columns; atCol++)
-		{
+		{	// Qand operation used for multiplication of left and right quantum-bits
 			QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qand::cMark());
 			Qbit out(pOp->createOutId());
             pOp->operands(out.clone(), {(*pLeft)[atRow].clone(), (*pRight)[atCol].clone()});

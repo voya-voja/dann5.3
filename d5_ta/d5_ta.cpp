@@ -41,6 +41,55 @@ using namespace dann5::qiskit;
 using namespace dann5;
 using namespace dann5test;
 
+void testQint()
+{
+    {
+        Qint x(2, "x"), y(2, "y");
+        Qint _3("_3_", 3);
+        Qint _n3("_n3_", -3);
+
+        Qexpr<Qint> expr = x + y;
+        cout << x.toString() << ", " << _3.toString() << ", " << _n3.toString() << endl;
+        cout << expr << endl << expr.toString(true) << endl << expr.solve() << endl;
+        cout << Bits(-4) << ", " << Bits(-8) << ", " << Bits(-7) << ", " << Bits(-6) << ", " << Bits(-5) << endl;
+        cout << "==========================================================" << endl;
+        expr.reset();
+        Qassign<Qint> assN3 = _n3 = expr;
+        cout << assN3 << endl << assN3.toString(true) << endl << assN3.solve() << endl;
+        cout << "==========================================================" << endl;
+        expr.reset();
+        Qassign<Qint> ass3 = _3 = expr;
+        cout << ass3 << endl << ass3.toString(true) << endl << ass3.solve() << endl;
+        cout << "==========================================================" << endl;
+    }
+    {
+        Qint x(2, "x"), y(3, "y");
+
+        Qexpr<Qint> expr = x + y;
+        cout << x.toString() << endl;
+        cout << expr << endl << expr.toString(true) << endl << expr.solve() << endl;
+        cout << "==========================================================" << endl;
+    }
+    {
+        Qwhole i0(1, "i0"), i1(1, "i1"), ic(1, "ic"), o(1, "o");
+
+        Qassign<Qwhole> assign = o = i0 + i1 + ic;
+        QuboCompiler compiler;
+        assign.compile(compiler);
+        cout << assign << endl << assign.toString(true) << endl << assign.solve() << endl;
+        cout << compiler.qubo();
+        cout << "==========================================================" << endl;
+    }
+    {
+        Qint x(2, "x"), y(2, "y");
+
+        Qexpr<Qint> expr = x * y;
+        cout << x.toString() << endl;
+        cout << expr << endl << expr.toString(true) << endl << expr.solve() << endl;
+        cout << "==========================================================" << endl;
+    }
+}
+
 void qintNegativeAdd_test()
 {
     std::cout << "Dann5.ocean Tests Qint Negative Add!\n";
@@ -237,29 +286,91 @@ int main(int argc, const char * argv[])
 {
     _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
+    {
+        Qwhole x(1, "x"), y(1, "y"), w(2, "w");
+        Qassign<Qwhole> ass = w = x * y;
+        cout << ass << endl << ass.toString(true) << endl;
+        cout << ass.solve() << endl;
+
+        QuboCompiler c;
+        ass.compile(c);
+        cout << c.qubo() << endl;
+
+        Qsolver::Sp pSolver = Qsolver::Sp(new D5QuboSolver());
+        Qevaluations evaluations = pSolver->solution(ass);
+
+        Qbinder b(evaluations); b = x, y, w;
+        cout << b << endl;
+     }
+
+    // testQint();
 
 //    testQbitQiskit();
 //    testQbinQiskit();
 //    testQwholeQiskit();
 //    qiskitPNs();
-    /*Qwhole prime(6, "p"), _6("6_", 6), s(2, "s");
-    Qassign<Qwhole> assP(prime = _6 * s + Qwhole::_1);
-    cout << assP << endl << assP.toString(true) << endl << assP.solve();
+    {
+        Qwhole x(2, "x"), y(2, "y");
+        Qexpr<Qwhole> xpr = x  > y;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    }
+    {
+        Qwhole x(2, "x"), y(2, "y");
+        Qexpr<Qwhole> xpr = x >= y;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    }
 
-    QuboCompiler noFnlCmplr(true); assP.compile(noFnlCmplr);
-    QuboCompiler compiler; assP.compile(compiler);
+    {
+        Qwhole x(2, "x"), y(2, "y");
+        Qexpr<Qwhole> xpr = x < y;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    }
 
-    Qevaluations solution2 = assP.compute();
-    Qbinder pst2(solution2);
-    cout << endl << solution2 << endl;
-    pst2 = prime, s;
-    cout << endl << " resulting in :" << endl << pst2 << endl;
-    assP.reset();
-    assP.add(solution2);
-    cout << assP << endl << assP.solutions();*/
+    {
+        Qwhole x(2, "x"), y(2, "y");
+        Qexpr<Qwhole> xpr = x <= y;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    }
 
 
-    //Qwhole x(2, "x"), y("y", 5), z(1, "z"), _3("_3", 3);
+    {
+        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
+        Qexpr<Qwhole> xpr = (y + z) <= x;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+        Qassign<Qwhole> ass = w = y + z;
+        Qblock blck; blck = ass, w <= x;
+        cout << blck << endl << blck.toString(true) << endl << blck.solve();
+        cout << (w <= x) << endl << (w <= x).toString(true) << endl << (w <= x).solve();
+    }
+
+    {
+        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
+        Qexpr<Qwhole> xpr = (y + z) < x;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+        Qassign<Qwhole> ass = w = y + z;
+        Qblock blck; blck = ass, w < x;
+        cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    }
+
+    {
+        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
+        Qexpr<Qwhole> xpr = (y + z) >= x;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+        Qassign<Qwhole> ass = w = y + z;
+        Qblock blck; blck = ass, w >= x;
+        cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    }
+
+    {
+        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
+        Qexpr<Qwhole> xpr = (y + z) > x;
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+        Qassign<Qwhole> ass = w = y + z;
+        Qblock blck; blck = ass, w > x;
+        cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    }
+
+
     //Qexpr<Qwhole> qwExpr(y - x), qxwExpr = qwExpr + z + _3;
     //QuboCompiler noFnlCmplr(true); qxwExpr.compile(noFnlCmplr);
     //QuboCompiler compiler; qxwExpr.compile(compiler);
@@ -281,7 +392,7 @@ int main(int argc, const char * argv[])
     utQwhole.runAll(cout);*/
 
     // boolean statement for all the possible variables called Nik and Shawnie
-    {
+   /* {
         Qbool nik("nik"), shawnie("shawnie");
 
         Qexpr<Qbool> expression = nik & shawnie;
@@ -420,7 +531,7 @@ int main(int argc, const char * argv[])
     }
     catch (exception& e) {
         cout << e.what() << endl;
-    }
+    }*/
 //    pymain();
 
 //    testPNcandidates();

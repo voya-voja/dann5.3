@@ -69,29 +69,29 @@ namespace dann5 {
 		private:
 			static const double cMaxEnergy; // numeric_limits<double>::max()
 
-            // RawElement coresponds to a QUBO node
-			struct RawElement
+            // SampleElement coresponds to a QUBO node
+			struct SampleElement
 			{
                 // A coresponding a QUBO node, i.e. a QUBO linear element
                 QuboAnalyzer::Node* pNode = nullptr;
-                // The list of energies between this and all previous elements
-                // (nodes) in a sample, i.e. a list of energy weight of
+                // The list of energies weights between this and all previous
+                // elements (nodes) in a sample, i.e. a list of energy weight of
                 // branches between this and all previous nodes concluding with
                 // weight energy of this node
 				vector<double>	nodesEnergy;
-                // The RawElement value in a sample
+                // The SampleElement value in a sample
 				Qvalue	value = 0;
                 // The total energy of this element is calcualted based on
-                // values of this and previous RawElement's (nodes) within the
+                // values of this and previous SampleElement's (nodes) within the
                 // sample and coresponding energies contained in nodesEnergy
 				double	valuesXenergySum = cMaxEnergy;
 			};
             
-            // Returns a pointer to a head RawElement array (created sample),
-            // where eachRawElement instance corresponds to one of the nodes in
-            // the assigned QUBO. The RawElement value will be initialized to
+            // Returns a pointer to a head SampleElement array (created sample),
+            // where eachSampleElement instance corresponds to one of the nodes in
+            // the assigned QUBO. The SampleElement value will be initialized to
             // provided init value.
-			inline RawElement* createSample(Qvalue init = 0);
+			inline SampleElement* createSample(Qvalue init = 0);
 
             // implementation of quantume solve algorithm
 			friend class Qsolve;
