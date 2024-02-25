@@ -285,6 +285,7 @@ def main():
     basic_types()
     
     Solver.Active()   # activates default D5QuboSolver
+    #Solver.SetActive(QuboSolvers.solver("exact"))
 
     qbit_test()
     qbool_test()

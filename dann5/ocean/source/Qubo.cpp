@@ -241,8 +241,8 @@ InvertQT::InvertQT()
     :OperatorQT()
 {
     *this << "i", "o";
-    *this << -1,   2,
-              0,  -1;
+    *this << -1,   2, // i
+              0,  -1; // o
 }
 
 /**** Equal operator Qubo Table ****/
@@ -250,8 +250,8 @@ EqQT::EqQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
-	*this <<  1,  -2,
-			  0,   1;
+	*this <<  1,  -2, // i
+			  0,   1; // o
 }
 
 /**** Not equal operator Qubo Table ****/
@@ -259,8 +259,8 @@ NeqQT::NeqQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
-	*this << -1,   2, 
-			  0,  -1;
+	*this << -1,   2, // i
+			  0,  -1; // o
 }
 
 /**** Greater-than operator Qubo Table ****/
@@ -270,8 +270,8 @@ GtQT::GtQT()
 	*this << "i", "o";
 //	*this <<  2,   4,
 //			  0,  -6;
-	*this << 0.5,  1,
-			 0,   -1.5;
+	*this << 0.5,  1,	// i
+			 0,   -1.5;	// o
 }
 
 /**** Greater-than-or-equal operator Qubo Table ****/
@@ -279,9 +279,8 @@ GeQT::GeQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
-//	*this <<  4,  -4,
-	* this << 1,  -1,
-			  0,   0;
+	* this << 1,  -1, // i
+			  0,   0; // o
 }
 
 /**** Less-than operator Qubo Table ****/
@@ -289,8 +288,10 @@ LtQT::LtQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
-	*this << -6,   4,
-			  0,   2;
+//	*this << -6,   4, // i
+//			  0,   2; // o
+	*this << -1.5, 1,	// i
+			  0,   0.5; // o
 }
 
 /**** Less-than-or-equal operator Qubo Table ****/
@@ -298,8 +299,10 @@ LeQT::LeQT()
 	:OperatorQT()
 {
 	*this << "i", "o";
-	*this <<  0,  -4,
-			  0,   4;
+//	*this <<  0,  -4, // i
+//			  0,   4; // o
+	*this <<  0,  -1, // i
+			  0,   1; // o
 }
 
 /**** And binary operation Qubo Table ****/
@@ -307,9 +310,9 @@ AndQT::AndQT()
 	:BinaryOpQT()
 {
 	*this << "i0", "i1", "o";
-	*this <<   0,    1,  -2,
-			   0,    0,  -2,
-			   0,    0,   3;
+	*this <<   0,    1,  -2, // i0
+			   0,    0,  -2, // i1
+			   0,    0,   3; // o
 }
 
 /**** Nand binary operation Qubo Table with two outputs****/
@@ -318,10 +321,10 @@ NandQT::NandQT()
 {
 	// assuming x = 1 - ab
 	*this << "i0", "i1", "o0", "o1";
-	*this <<   0,    5,    0,   -7,
-			   0,    0,    0,   -8,
-			   0,    0,   -5,   10,
-			   0,    0,    0,    5;
+	*this <<   0,    5,    0,   -7, // i0
+			   0,    0,    0,   -8, // i1
+			   0,    0,   -5,   10, // o0
+			   0,    0,    0,    5; // o1
 }
 
 /**** Or binary operation Qubo Table ****/
@@ -329,9 +332,9 @@ OrQT::OrQT()
 	:BinaryOpQT()
 {
 	*this << "i0", "i1", "o";
-	*this <<   1,    1,  -2,
-			   0,    1,  -2,
-			   0,    0,   1;
+	*this <<   1,    1,  -2, // i0
+			   0,    1,  -2, // i1
+			   0,    0,   1; // o
 }
 
 /**** Nand binary operation Qubo Table with two outputs****/
@@ -340,10 +343,10 @@ NorQT::NorQT()
 {
 	// assuming x = 1 - ab
 	*this << "i0", "i1", "o0", "o1";
-	*this <<  -1,    2,    2,   -2,
-			   0,   -1,    2,   -2,
-			   0,    0,   -1,   -1,
-			   0,    0,    0,    3;
+	*this <<  -1,    2,    2,   -2, // i0
+			   0,   -1,    2,   -2, // i1
+			   0,    0,   -1,   -1, // o0
+			   0,    0,    0,    3; // o1
 }
 
 /**** Not-left-or-right binary operation Qubo Table with two outputs****/
@@ -351,10 +354,10 @@ NotLeftOrRightQT::NotLeftOrRightQT()
 	:BinaryOp2OutQT()
 {
 	*this << "i0", "i1", "o0", "o1";
-	*this <<  -1,    1,    2,   -3,
-			   0,    0,    0,   -2,
-			   0,    0,   -1,   -2,
-			   0,    0,    0,    5;
+	*this <<  -1,    1,    2,   -3, // i0
+			   0,    0,    0,   -2, // i1
+			   0,    0,   -1,   -2, // o0
+			   0,    0,    0,    5; // o1
 }
 
 /**** DWave not-left-or-right binary operation Qubo Table with two outputs****/
@@ -362,37 +365,32 @@ DwNotLeftOrRightQT::DwNotLeftOrRightQT()
 	:BinaryOp2OutQT()
 {
 	*this << "i0", "i1", "o0", "o1";
-	*this <<  -1,    4,    2,   -6,
-			   0,    0,    0,   -6,
-			   0,    0,   -1,   -2,
-			   0,    0,    0,    9;
+	*this <<  -1,    4,    2,   -6, // i0
+			   0,    0,    0,   -6, // i1
+			   0,    0,   -1,   -2, // o0
+			   0,    0,    0,    9; // o1
 }
 
 /**** Xor binary operation Qubo Table with two outputs****/
 XorQT::XorQT()
 	:BinaryOp2OutQT()
 {
-	*this << "i0", "i1", "o0", "o1";
-	*this <<   1,    2,   -2,   -4,
-			   0,    1,   -2,   -4,
-			   0,    0,    1,    4,
-			   0,    0,    0,    4; 
+	*this << "i0", "i1",  "o",  "c";
+	*this <<   1,    2,   -2,   -4, // i0
+			   0,    1,   -2,   -4, // i1
+			   0,    0,    1,    4, // o
+			   0,    0,    0,    4; // c
 }
 
 /**** Nxor binary operation Qubo Table with two outputs****/
 NxorQT::NxorQT()
 	:BinaryOp2OutQT()
 {
-	*this << "i0", "i1", "o0", "o1";
-/*	*this <<  -1,    2,   -4,    2,
-			   0,   -1,   -4,    2,
-			   0,    0,    8,   -4,
-			   0,    0,    0,   -1;
-*/
-	*this <<  -1,    2,    2,   -4,
-			   0,   -1,    2,   -4,
-			   0,    0,   -1,   -4,
-			   0,    0,    0,    8;
+	*this << "i0", "i1",  "o",  "c";
+	*this <<  -1,    2,    2,   -4,	// i0
+			   0,   -1,    2,   -4,	// i1
+			   0,    0,   -1,   -4,	// o
+			   0,    0,    0,    8; // c
 
 }
 
@@ -400,12 +398,12 @@ NxorQT::NxorQT()
 AdderQT::AdderQT()
 	:QuboTable(QuboTable::Size(5))
 {
-	*this << "i0", "i1", "i3", "o0", "o1";
-	*this <<   1,    2,    2,   -2,   -4,
-			   0,    1,    2,   -2,   -4,
-			   0,    0,    1,   -2,   -4,
-			   0,    0,    0,    1,    4,
-			   0,    0,    0,    0,    4;
+	*this << "i0", "i1", "ic",  "o",  "c";
+	*this <<   1,	2,	  2,    -2,   -4, // i0
+			   0,	1,	  2,	-2,	  -4, // i1
+			   0,	0,	  1,	-2,   -4, // ic
+			   0,	0,	  0,	 1,	   4, // o
+			   0,	0,	  0,	 0,	   4; // c
 }
 
 QuboTable::Labels AdderQT::format(const QuboTable::Labels& args) const

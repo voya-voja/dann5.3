@@ -74,8 +74,23 @@ namespace dann5 {
         // Copy constructor
         QaddQints(const QaddQints& right);
 
-        // Destruct the Q addition instance with a shared pointer to its carry operand
+        // Destruct the Q addition instance with a shared pointer to its carry
+        // operand
         ~QaddQints();
+
+        // Returns a string representation of a solution value of this
+        // Qnary-operation for an evaluation at 'atEvltn'
+        virtual string solution(size_t atEvltn) const;
+
+    protected:
+        // Equalizes the size of addition input arguments and calls 
+        // Qadd::refreshOnInputs()
+        virtual void refreshOnInputs();
+
+        // Override to refresh the Q-add quantum integers operation cells
+        // according to the derived operation logic on output assignment
+        /*virtual void refreshOnOutput();*/
+    private:
     };
 };
 
