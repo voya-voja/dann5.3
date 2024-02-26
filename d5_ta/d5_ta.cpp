@@ -288,6 +288,10 @@ int main(int argc, const char * argv[])
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
     {
         Qwhole x(1, "x"), y(1, "y"), w(2, "w");
+        Qexpr<Qwhole> xpr = x * y;
+        cout << xpr << endl << xpr.toString(true) << endl;
+        cout << xpr.solve() << endl;
+
         Qassign<Qwhole> ass = w = x * y;
         cout << ass << endl << ass.toString(true) << endl;
         cout << ass.solve() << endl;
@@ -302,6 +306,23 @@ int main(int argc, const char * argv[])
         Qbinder b(evaluations); b = x, y, w;
         cout << b << endl;
      }
+
+    {
+        Qwhole x(1, "x"), y(1, "y"), w(2, "w");
+        Qassign<Qwhole> ass = w = x * y;
+        cout << ass << endl << ass.toString(true) << endl;
+        cout << ass.solve() << endl;
+
+        CircuitCompiler c;
+        ass.compile(c);
+        cout << c.circuit() << endl;
+
+        Qsolver::Sp pSolver = Qsolver::Sp(new D5QuboSolver());
+        Qevaluations evaluations = pSolver->solution(ass);
+
+        Qbinder b(evaluations); b = x, y, w;
+        cout << b << endl;
+    }
 
     // testQint();
 

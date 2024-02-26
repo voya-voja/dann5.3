@@ -122,7 +122,7 @@ void QnaryNeq::refresh()
     }
 }
 
-void QnaryGe::refresh()
+void QnaryLt::refresh()
 {
     Qfunction::refresh();
     // define aux variable
@@ -165,7 +165,7 @@ void QnaryGe::refresh()
     }
 }
 
-void QnaryGt::refresh()
+void QnaryLe::refresh()
 {
     Qfunction::refresh();
     // define aux variable
@@ -208,7 +208,7 @@ void QnaryGt::refresh()
     }
 }
 
-void QnaryLe::refresh()
+void QnaryGt::refresh()
 {
     Qfunction::refresh();
     // define aux variable
@@ -250,7 +250,7 @@ void QnaryLe::refresh()
         static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 != inOpOut;
     }
 }
-void QnaryLt::refresh()
+void QnaryGe::refresh()
 {
     Qfunction::refresh();
     // define aux variable

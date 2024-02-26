@@ -217,7 +217,7 @@ void  D5QuboSolver::solve()
 	for (size_t at = 0; at < noSolveThreads; ++at)		// 
 	{
 		// set initial sample nodes values, e.g. 
-		// between 0b0...0...0 to 0b1...1...0
+		// between 0b0...00...0 to 0b1...10...0
 		size_t atNoBuffer = at;
 		for (size_t atNode = 0; atNode < noInitNodes; atNode++)
 		{
