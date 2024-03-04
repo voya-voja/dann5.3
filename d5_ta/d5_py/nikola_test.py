@@ -16,7 +16,7 @@ def qBoolTest():
 
     print(nik)
     print(shawnie)
-    print(expression.toString())
+    print(expression)
     
     print(expression.toString(True))
     print(expression.solve())
@@ -32,7 +32,7 @@ def qBoolTest():
 
     assignment = result._(expression)
     
-    print(assignment.toString())
+    print(assignment)
     print(assignment.solve())
     
     print()
@@ -48,7 +48,7 @@ def qBitTest():
    
     print(jim.toString())
     print(pam.toString())
-    print(expression.toString())
+    print(expression)
     
     print(expression.toString(True))
     print(expression.solve())
@@ -61,7 +61,7 @@ def qBitTest():
 
     assignment = result.assign(expression)
     
-    print(assignment.toString())
+    print(assignment)
     print(assignment.solve())
     
     print()
@@ -77,7 +77,7 @@ def qBinTest():
 
     print(dan.toString())
     print(flora.toString())
-    print(expression.toString())
+    print(expression)
     
     print(expression.toString(True))
     print(expression.solve())
@@ -85,10 +85,10 @@ def qBinTest():
     print("============\n")
     
     result = Qbin("result", Bits(3))
-    
+    expression.reset()
     assignment = result.assign(expression)
     
-    print(assignment.toString())
+    print(assignment)
     print(assignment.solve())
     
     print()
@@ -104,7 +104,7 @@ def qBinTest2():
 
     print(phil.toString())
     print(claire.toString())
-    print(expression.toString())
+    print(expression)
     
     print(expression.toString(True))
     print(expression.solve())
@@ -112,10 +112,10 @@ def qBinTest2():
     print("============\n")
     
     result = Qbin(3, "result")
-    
+    expression.reset()
     assignment = result.assign(expression)
     
-    print(assignment.toString())
+    print(assignment)
     print(assignment.solve())
     
     print()
@@ -127,12 +127,11 @@ def qWholeTest():
     kurt = Qwhole(3, "kurt")
     john = Qwhole(3, "john")
     
-    # cannot use & in this version as the QbinExpr will not allow qWhole values
     expression = kurt & john;
 
     print(kurt.toString())
     print(john.toString())
-    print(expression.toString())
+    print(expression)
     
     print(expression.toString(True))
     print(expression.solve())
@@ -143,7 +142,7 @@ def qWholeTest():
     expression.reset()
     assignment = _10.assign(expression)
 
-    print(assignment.toString())
+    print(assignment)
 
     print(assignment.solve())
     
