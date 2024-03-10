@@ -162,10 +162,11 @@ void QnaryLt::refresh()
     {
         Qexpr<Qwhole> out(pOutOp);
         Qexpr<Qwhole> in(pInOp);
+        Qexpr<Qwhole> compare = aux + in;
         Qcell::Sp pOutCell = as_const(*pOutOp)[pOutOp->noqbs() - 1];
         QcellOp::Sp pOutCellOp = dynamic_pointer_cast<QcellOp>(pOutCell);
         Qbit& outOpOut = *dynamic_pointer_cast<Qbit>(pOutCellOp->Qop::output());
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_0 != outOpOut;
+        static_cast<Qfunction&>(*this) = out == compare, Qbit::_0 != outOpOut;
     }
 }
 
