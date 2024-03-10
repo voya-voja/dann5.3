@@ -281,8 +281,7 @@ void qiskitPNs()
     cout << blckPN.solve() << endl;
 }
 
-
-int main(int argc, const char * argv[])
+int main(int argc, const char* argv[])
 {
     _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
@@ -292,72 +291,74 @@ int main(int argc, const char * argv[])
 //    testQbinQiskit();
 //    testQwholeQiskit();
 //    qiskitPNs();
-    /*{
-        Qwhole x(2, "x"), y(2, "y");
-        Qexpr<Qwhole> xpr = x  > y;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-    }
+    /*
     {
         Qwhole x(2, "x"), y(2, "y");
-        Qexpr<Qwhole> xpr = x >= y;
+        Qexpr<Qwhole> xpr = x < y;
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
     }*/
 
     {
         Qwhole x(2, "x"), y(2, "y");
-        Qexpr<Qwhole> xpr = x < y;
+        Qexpr<Qwhole> xpr = x >= y;
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
     }
-  
-    { // WORKING when x is of proper size, e.g. 4 qbits when operands are 3 qbits and 1 qbit
-        Qwhole x(4, "x"), y("y", 5), z(1, "z");
-        Qexpr<Qwhole> xpr = (y + z) < x;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
 
-        Qwhole w(4, "w");
-        Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w < x;
-        cout << blck << endl << blck.toString(true) << endl << blck.solve();
-    }
-
-    { // WORKING when x is 3 or more qbits 
+    { // WORKING when x is 3 or more qbits
         Qwhole x(3, "x"), y("y", 5), z(1, "z");
-        Qexpr<Qwhole> xpr = x < (y + z);
+        Qexpr<Qwhole> xpr = (y + z) >= x;
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
 
         Qwhole w(3, "w");
         Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, x < w;
+        Qblock blck; blck = ass, w >= x;
+        cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    }
+
+    { // WORKING when x is of proper size, e.g. 4 qbits when operands are 3 qbits and 1 qbit 
+        Qwhole x(4, "x"), y("y", 5), z(1, "z");
+        Qexpr<Qwhole> xpr = x >= (y + z);
+        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+
+        Qwhole w(4, "w");
+        Qassign<Qwhole> ass = w = y + z;
+        Qblock blck; blck = ass, x >= w;
         cout << blck << endl << blck.toString(true) << endl << blck.solve();
     }
 
     { // WORKING 
-        Qwhole x(3, "x"), y("y", 5), z(1, "z"), o(2,"o"), p(2, "p");
-        Qexpr<Qwhole> xpr = (o + p) < (y + z);
+        Qwhole x(3, "x"), y("y", 5), z(1, "z"), o(2, "o"), p(2, "p");
+        Qexpr<Qwhole> xpr = (o + p) >= (y + z);
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
 
         Qwhole w(3, "w");
         Qassign<Qwhole> ass = w = y + z;
         Qassign<Qwhole> ass2 = x = o + p;
-        Qblock blck; blck = ass, ass2, x < w;
+        Qblock blck; blck = ass, ass2, x >= w;
         cout << blck << endl << blck.toString(true) << endl << blck.solve();
     }
 
-    //{ // 
-    //    Qwhole x(4, "x"), y("y", 5), z(1, "z"), w(4, "w"), _3("_3", 3);
-    //    Qexpr<Qwhole> xpr = (y + z) >= x;
+    //{
+    //    Qbit a("a"), b("b", 0);
+    //    Qexpr<Qbit> xpr = a == b;
+    //    cout << xpr << endl << xpr.toString(true) << endl;
+    //}
+
+    //{ // NOT working
+    //    Qwhole x(3, "x"), y(2, "y"), z(1, "z"), w(3, "w"), _3("_3", 3);
+    //    Qexpr<Qwhole> xpr = (y + z) < x;
     //    cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
     //    Qassign<Qwhole> ass = w = y + z;
-    //    Qblock blck; blck = ass, w >= x;
+    //    Qblock blck; blck = ass, w < x;
     //    cout << blck << endl << blck.toString(true) << endl << blck.solve();
     //}
 
-    //{
+    //{ // NOT working
     //    Qwhole x(4, "x"), y("y", 5), z(1, "z"), w(4, "w"), _3("_3", 3);
-    //    Qexpr<Qwhole> xpr = (y + z) > x;
+    //    Qexpr<Qwhole> xpr = (y + z) < x;
     //    cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
     //    Qassign<Qwhole> ass = w = y + z;
-    //    Qblock blck; blck = ass, w > x;
+    //    Qblock blck; blck = ass, w < x;
     //    cout << blck << endl << blck.toString(true) << endl << blck.solve();
     //}
 
@@ -523,12 +524,13 @@ int main(int argc, const char * argv[])
     catch (exception& e) {
         cout << e.what() << endl;
     }*/
-//    pymain();
+    //    pymain();
 
-//    testPNcandidates();
+    //    testPNcandidates();
     _lft("main", "*** END ***");
     return 0;
 }
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
