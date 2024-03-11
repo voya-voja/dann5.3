@@ -182,10 +182,24 @@ namespace dann5 {
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qeq(*this)); };
 
+        // Override operands to set output and input into same value 
+        // 0 if any is 0, 1 if any is 1. Otherwise, they are in superposition.
+        // Throws logic_error, when one is 0 and the other is 1.
+        void operands(const Qdef::Sp& pOut, const Qdefs& ins);
+
+        // Override operands to set output and input into same value 
+        // 0 if any is 0, 1 if any is 1. Otherwise, they are in superposition.
+        // Throws logic_error, when one is 0 and the other is 1.
+        void output(const Qdef::Sp& pOut, size_t forBit);
+
     protected:
         virtual Qvalue calculate(const Qvalues& values) const;
 
     private:
+        // Validates operands to set output and input into same value 
+        // 0 if any is 0, 1 if any is 1. Otherwise, they are in superposition.
+        // Throws logic_error, when one is 0 and the other is 1.
+        void validate(const Qcell::Sp& pOut, const Qcell::Sp& pIn);
     };
 
     // A Quantum not-equal is an operator
@@ -384,6 +398,16 @@ namespace dann5 {
         // Destruct Qand with shared pointers to its two Qdefs
         ~Qand() {};
 
+        // override operands to set output variable value to 0 when any of the
+        // inputs is 0, or to set to 1 when both inputshave value 1.
+        // Otherwise, output stays in superposition.
+        void operands(const Qdef::Sp& pOut, const Qdefs& ins);
+
+        // override output to set output variable value to 0 when any of the
+        // inputs is 0, or to set to 1 when both inputs have value 1.
+        // Otherwise, output stays in superposition.
+        void output(const Qdef::Sp& pOut, size_t forBit);
+
         // Returns 0 if any of inputs is 0, or 1 if all inputs are 1,
         // otherwise returns cSuperposition
         virtual Qvalue value() const;
@@ -392,6 +416,8 @@ namespace dann5 {
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qand(*this)); };
 
     protected:
+        // Returns 0 if any of values is 0, or 1 if all values are 1,
+        // otherwise returns cSuperposition
         virtual Qvalue calculate(const Qvalues& values) const;
 
     private:
@@ -511,6 +537,16 @@ namespace dann5 {
         // Destruct QnOr with shared pointers to its two Qdefs
         ~Qnor() {};
 
+        // override operands to set output variable value to 0 when any of the
+        // inputs is 1, or to set to 1 when both inputs have value 0.
+        // Otherwise, output stays in superposition.
+        void operands(const Qdef::Sp& pOut, const Qdefs& ins);
+
+        // override output to set output variable value to 0 when any of the
+        // inputs is 1, or to set to 1 when both inputs have value 0.
+        // Otherwise, output stays in superposition.
+        void output(const Qdef::Sp& pOut, size_t forBit);
+
         // Returns 0 if any of inputs is 1, or 1 if all inputs are 0,
         // otherwise returns cSuperposition
         virtual Qvalue value() const;
@@ -519,6 +555,8 @@ namespace dann5 {
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qnor(*this)); };
 
     protected:
+        // Returns 0 if any of the values is 1, or 1 if all the values are 0,
+        // otherwise returns cSuperposition
         virtual Qvalue calculate(const Qvalues& values) const;
 
     private:

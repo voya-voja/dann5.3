@@ -586,14 +586,28 @@ def qiskitPNs():
     print("\n {} \n\n {}\n\n{}\n".format(blckPN, blckPN.toString(True),   
                                                        circuit.draw()))
     print("Active Qiskit Aer simulator solutions: \n{}\n".format(
-                                                        blckPN.solve()))    
+                                                        blckPN.solve()))
+    
+def addTest():
+    p = Qwhole(2, "p")
+    q = Qwhole(2, "q")
+    A = Qwhole("A", 3)
+    aA = A.assign(p + q)
+    compiler = CircuitCompiler()
+    aA.compile(compiler)
+    circuit = compiler.circuit()
+    print("\n {} \n\n {}\n\n{}\n".format(aA, aA.toString(True),   
+                                                       circuit.draw()))
+    print("Active Qiskit Aer simulator solutions: \n{}\n".format(
+                                                        aA.solve()))   
     
 def main():
     Solver.Active()   # activates default AerSimulator
+    addTest()
     #testQbitQiskitSolver()
     #testQbinQiskitSolver()
     #testQwholeQiskitSolver()
-    qiskitPNs()
+    #qiskitPNs()
     
     #logicalGates()
 

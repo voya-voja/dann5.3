@@ -919,13 +919,13 @@ PYBIND11_MODULE(d5, m) {
 
 		.def("Unknown", []() { return Qint::cUnknown; }, R"pbdoc(Qint is unknown, if any of its Q bits is in superposition state.)pbdoc")
 
-		.def(py::init<>())
+		//.def(py::init<>())
 		.def(py::init<const Qint&>())
 		.def(py::init<const string&>())
 		.def(py::init<size_t, const string&>())
 		.def(py::init<const string&, const Qbits&>())
-		//		.def(py::init<const string&, long long>())
-		.def(py::init<const string&, const Bits&, bool>())
+		.def(py::init<const string&, long long>())
+		//.def(py::init<const string&, const Bits&, bool>())
 		.def(py::init<size_t, const string&, const Bits&>())
 
 		.def("value", static_cast<long long (Qbin::*)()>(&Qint::operator long long), "get long long value")

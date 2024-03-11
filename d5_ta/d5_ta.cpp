@@ -286,51 +286,13 @@ int main(int argc, const char * argv[])
 {
     _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
-    {
-        Qwhole x(1, "x"), y(1, "y"), w(2, "w");
-        Qexpr<Qwhole> xpr = x * y;
-        cout << xpr << endl << xpr.toString(true) << endl;
-        cout << xpr.solve() << endl;
-
-        Qassign<Qwhole> ass = w = x * y;
-        cout << ass << endl << ass.toString(true) << endl;
-        cout << ass.solve() << endl;
-
-        QuboCompiler c;
-        ass.compile(c);
-        cout << c.qubo() << endl;
-
-        Qsolver::Sp pSolver = Qsolver::Sp(new D5QuboSolver());
-        Qevaluations evaluations = pSolver->solution(ass);
-
-        Qbinder b(evaluations); b = x, y, w;
-        cout << b << endl;
-     }
-
-    {
-        Qwhole x(1, "x"), y(1, "y"), w(2, "w");
-        Qassign<Qwhole> ass = w = x * y;
-        cout << ass << endl << ass.toString(true) << endl;
-        cout << ass.solve() << endl;
-
-        CircuitCompiler c;
-        ass.compile(c);
-        cout << c.circuit() << endl;
-
-        Qsolver::Sp pSolver = Qsolver::Sp(new D5QuboSolver());
-        Qevaluations evaluations = pSolver->solution(ass);
-
-        Qbinder b(evaluations); b = x, y, w;
-        cout << b << endl;
-    }
-
     // testQint();
 
 //    testQbitQiskit();
 //    testQbinQiskit();
 //    testQwholeQiskit();
 //    qiskitPNs();
-    {
+    /*{
         Qwhole x(2, "x"), y(2, "y");
         Qexpr<Qwhole> xpr = x  > y;
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
@@ -345,51 +307,89 @@ int main(int argc, const char * argv[])
         Qwhole x(2, "x"), y(2, "y");
         Qexpr<Qwhole> xpr = x < y;
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-    }
+    }*/
 
     {
         Qwhole x(2, "x"), y(2, "y");
         Qexpr<Qwhole> xpr = x <= y;
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
     }
-
-
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
+  
+    { // WORKING when x is of proper size, e.g. 4 qbits when operands are 3 qbits and 1 qbit
+        Qwhole x(4, "x"), y("y", 5), z(1, "z");
         Qexpr<Qwhole> xpr = (y + z) <= x;
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+
+        Qwhole w(4, "w");
         Qassign<Qwhole> ass = w = y + z;
         Qblock blck; blck = ass, w <= x;
         cout << blck << endl << blck.toString(true) << endl << blck.solve();
-        cout << (w <= x) << endl << (w <= x).toString(true) << endl << (w <= x).solve();
     }
 
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
-        Qexpr<Qwhole> xpr = (y + z) < x;
+    { // WORKING when x is 3 or more qbits 
+        Qwhole x(3, "x"), y("y", 5), z(1, "z");
+        Qexpr<Qwhole> xpr = x <= (y + z);
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+
+        Qwhole w(3, "w");
         Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w < x;
+        Qblock blck; blck = ass, x <= w;
         cout << blck << endl << blck.toString(true) << endl << blck.solve();
     }
 
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
-        Qexpr<Qwhole> xpr = (y + z) >= x;
+    { // WORKING 
+        Qwhole x(3, "x"), y("y", 5), z(1, "z"), o(2,"o"), p(2, "p");
+        Qexpr<Qwhole> xpr = (o + p) <= (y + z);
         cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+
+        Qwhole w(3, "w");
         Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w >= x;
+        Qassign<Qwhole> ass2 = x = o + p;
+        Qblock blck; blck = ass, ass2, x <= w;
         cout << blck << endl << blck.toString(true) << endl << blck.solve();
     }
 
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
-        Qexpr<Qwhole> xpr = (y + z) > x;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-        Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w > x;
-        cout << blck << endl << blck.toString(true) << endl << blck.solve();
-    }
+    //{
+    //    Qbit a("a"), b("b", 0);
+    //    Qexpr<Qbit> xpr = a == b;
+    //    cout << xpr << endl << xpr.toString(true) << endl;
+    //}
+
+    //{ // NOT working
+    //    Qwhole x(3, "x"), y(2, "y"), z(1, "z"), w(3, "w"), _3("_3", 3);
+    //    Qexpr<Qwhole> xpr = (y + z) < x;
+    //    cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    //    Qassign<Qwhole> ass = w = y + z;
+    //    Qblock blck; blck = ass, w < x;
+    //    cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    //}
+
+    //{ // NOT working
+    //    Qwhole x(4, "x"), y("y", 5), z(1, "z"), w(4, "w"), _3("_3", 3);
+    //    Qexpr<Qwhole> xpr = (y + z) < x;
+    //    cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    //    Qassign<Qwhole> ass = w = y + z;
+    //    Qblock blck; blck = ass, w < x;
+    //    cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    //}
+
+    //{ // 
+    //    Qwhole x(4, "x"), y("y", 5), z(1, "z"), w(4, "w"), _3("_3", 3);
+    //    Qexpr<Qwhole> xpr = (y + z) >= x;
+    //    cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    //    Qassign<Qwhole> ass = w = y + z;
+    //    Qblock blck; blck = ass, w >= x;
+    //    cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    //}
+
+    //{
+    //    Qwhole x(4, "x"), y("y", 5), z(1, "z"), w(4, "w"), _3("_3", 3);
+    //    Qexpr<Qwhole> xpr = (y + z) > x;
+    //    cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
+    //    Qassign<Qwhole> ass = w = y + z;
+    //    Qblock blck; blck = ass, w > x;
+    //    cout << blck << endl << blck.toString(true) << endl << blck.solve();
+    //}
 
 
     //Qexpr<Qwhole> qwExpr(y - x), qxwExpr = qwExpr + z + _3;
