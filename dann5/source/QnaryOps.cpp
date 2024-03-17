@@ -110,7 +110,7 @@ void QnaryNeq::refresh()
     }
     else if(pInOp == nullptr)
     {
-        Qexpr<Qwhole> out(pOutOp);;
+        Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_1 = qbXpr;
     }
@@ -137,22 +137,26 @@ void QnaryLt::refresh()
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_0 != out[out.noqbs() - 1];
+        Qassign<Qwhole> addition = out = aux + in;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != out[addition.noqbs() - 1];
     }
     else if(pOutOp == nullptr)
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qexpr<Qwhole> in(pInOp);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_0 != out[out.noqbs() - 1];
+        Qassign<Qwhole> addition = out = aux + in;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != out[addition.noqbs() - 1];
     }
     else if(pInOp == nullptr)
     {
-        Qexpr<Qwhole> out(pOutOp);;
+        Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        Qcell::Sp pOutCell = as_const(*pOutOp)[pOutOp->noqbs() - 1];
+        Qexpr<Qwhole> compare = aux + in;
+        const QnaryOp& compOp = dynamic_cast<const QnaryOp&>(compare.root());
+        Qcell::Sp pOutCell = compOp[compOp.noqbs() - 1];
         QcellOp::Sp pOutCellOp = dynamic_pointer_cast<QcellOp>(pOutCell);
         Qbit& outOpOut = *dynamic_pointer_cast<Qbit>(pOutCellOp->Qop::output());
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_0 != outOpOut;
+        static_cast<Qfunction&>(*this) = out == compare, Qbit::_0 != outOpOut;
     }
     else
     {
@@ -180,7 +184,8 @@ void QnaryLe::refresh()
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 == in[in.noqbs() - 1];
+        Qassign<Qwhole> addition = in = aux + out;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == in[addition.noqbs() - 1];
     }
     else if(pOutOp == nullptr)
     {
@@ -189,13 +194,15 @@ void QnaryLe::refresh()
         Qcell::Sp pInCell = as_const(*pInOp)[pInOp->noqbs() - 1];
         QcellOp::Sp pInCellOp = dynamic_pointer_cast<QcellOp>(pInCell);
         Qbit& inOpOut = *dynamic_pointer_cast<Qbit>(pInCellOp->Qop::output());
-        static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 == inOpOut;
+        Qexpr<Qwhole> addition = in == aux + out;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == inOpOut;
     }
     else if(pInOp == nullptr)
     {
-        Qexpr<Qwhole> out(pOutOp);;
+        Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 == in[in.noqbs() - 1];
+        Qassign<Qwhole> addition = in = aux + out;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == in[addition.noqbs() - 1];
     }
     else
     {
@@ -204,7 +211,8 @@ void QnaryLe::refresh()
         Qcell::Sp pInCell = as_const(*pInOp)[pInOp->noqbs() - 1];
         QcellOp::Sp pInCellOp = dynamic_pointer_cast<QcellOp>(pInCell);
         Qbit& inOpOut = *dynamic_pointer_cast<Qbit>(pInCellOp->Qop::output());
-        static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 == inOpOut;
+        Qexpr<Qwhole> addition = in == aux + out;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == inOpOut;
     }
 }
 
@@ -223,7 +231,8 @@ void QnaryGt::refresh()
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 != in[in.noqbs() - 1];
+        Qassign<Qwhole> addition = in = aux + out;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != in[addition.noqbs() - 1];
     }
     else if(pOutOp == nullptr)
     {
@@ -236,9 +245,10 @@ void QnaryGt::refresh()
     }
     else if(pInOp == nullptr)
     {
-        Qexpr<Qwhole> out(pOutOp);;
+        Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 != in[in.noqbs() - 1];
+        Qassign<Qwhole> addition = in = aux + out;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != in[addition.noqbs() - 1];
     }
     else
     {
@@ -250,6 +260,7 @@ void QnaryGt::refresh()
         static_cast<Qfunction&>(*this) = in = aux + out, Qbit::_0 != inOpOut;
     }
 }
+
 void QnaryGe::refresh()
 {
     Qfunction::refresh();
@@ -265,17 +276,19 @@ void QnaryGe::refresh()
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_0 == out[out.noqbs() - 1];
+        Qassign<Qwhole> addition = out = aux + in;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == out[addition.noqbs() - 1];
     }
     else if(pOutOp == nullptr)
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qexpr<Qwhole> in(pInOp);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_0 == out[out.noqbs() - 1];
+        Qassign<Qwhole> addition = out = aux + in;
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == out[addition.noqbs() - 1];
     }
     else if(pInOp == nullptr)
     {
-        Qexpr<Qwhole> out(pOutOp);;
+        Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         Qcell::Sp pOutCell = as_const(*pOutOp)[pOutOp->noqbs() - 1];
         QcellOp::Sp pOutCellOp = dynamic_pointer_cast<QcellOp>(pOutCell);
