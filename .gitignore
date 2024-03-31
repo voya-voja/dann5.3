@@ -384,3 +384,6 @@ d5o2.xcworkspace/xcuserdata/nvojinov.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkp
 d5o_ta/build
 /d5o_ta/d5o_py/.spyproject/config/backups/workspace.ini.bak
 *.xcbkptlist
+/notebooks/d5o/Lib/site-packages
+/notebooks/d5o/Scripts
+/notebooks/d5o/pyvenv.cfg
