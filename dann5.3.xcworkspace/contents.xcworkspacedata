@@ -2,9 +2,15 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:d5o_ta/d5o_ta_Xc/d5o_ta_Xc.xcodeproj">
+      location = "group:d5/d5_Xc/d5_Xc.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:d5_ta/d5_ta_Xc/d5o_ta_Xc.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:d5o/d5o_Xc/d5o_Xc.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:d5q/d5q_Xc/d5q_Xc.xcodeproj">
    </FileRef>
 </Workspace>
