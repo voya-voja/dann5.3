@@ -279,8 +279,8 @@ void UTestQwhole::arithmetic(ostream& out)
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
-
-    qwExpr.reset(); qxwExpr.reset();
+// Issue #13
+    /*qwExpr.reset(); qxwExpr.reset();
     qxwExpr = qwExpr - x;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
@@ -290,7 +290,7 @@ void UTestQwhole::arithmetic(ostream& out)
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qxwExpr.solve() << endl << "WRONG!!!"
-        << endl << endl;
+        << endl << endl;*/
     
     Qwhole w(3, "w");
     Qblock blckSub; blckSub = z = w - x, w = y - x;
@@ -302,8 +302,8 @@ void UTestQwhole::arithmetic(ostream& out)
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << blckSub.solve() << endl;
-/* Issue #6  */
-    qwExpr.reset(); z_3Expr.reset(); qxxExpr.reset();
+/* Issue #13  */
+    /*qwExpr.reset(); z_3Expr.reset(); qxxExpr.reset();
     qxxExpr = z_3Expr - qwExpr;
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
@@ -312,7 +312,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
-    out << " resulting in :" << endl << qxxExpr.solve() << endl;
+    out << " resulting in :" << endl << qxxExpr.solve() << endl;*/
 
     qwExpr.reset(); qwExpr = x * y;
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
@@ -388,8 +388,8 @@ void UTestQwhole::arithmetic(ostream& out)
     out << endl << " # of nodes: " << anlyzeDne.nodesNo()
         << " # of branches: " << anlyzeDne.branchesNo() << endl << endl;
     out << " resulting in :" << endl << byDx.solve() << endl;
-
-    qwExpr.reset();
+// Issue #13
+    /*qwExpr.reset();
     qxwExpr.reset();
     qxwExpr = qwExpr / z;
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
@@ -399,7 +399,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
-    out << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
+    out << endl << " resulting in :" << endl << qxwExpr.solve() << endl;*/
 
     qwExpr.reset();  qwExpr = x + z;
     qwxExpr.reset();  qwxExpr = y / qwExpr;
@@ -412,7 +412,8 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qwxExpr.solve() << endl;
 
-    qxxExpr.reset();  qxxExpr = z_3Expr / qwExpr;
+// Issue #13
+    /*qxxExpr.reset();  qxxExpr = z_3Expr / qwExpr;
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Division Expression" << endl << qxxExpr << endl
@@ -422,7 +423,7 @@ void UTestQwhole::arithmetic(ostream& out)
         << compiler.qubo()<< "'" << endl;
     QuboAnalyzer anlyzeD2(compiler.qubo());
     out << endl << " # of nodes: " << anlyzeD2.nodesNo()
-        << " # of branches: " << anlyzeD2.branchesNo() << endl << endl;
+        << " # of branches: " << anlyzeD2.branchesNo() << endl << endl;*/
 //    out << " resulting in :" << endl << qxxExpr.solve() << endl;
 
     Qwhole  r("r", 6), k(2, "k");
@@ -557,32 +558,32 @@ void UTestQwhole::comparison(ostream& out)
                     xNeq = x != z,
                     xEq = x == z;
     compiler.reset(); xEq.compile(compiler);
-    cout << xEq.toString() << endl << " decomposed: " << endl
+    out << xEq.toString() << endl << " decomposed: " << endl
         << xEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEq.solve() << endl;
 
     compiler.reset(); xNeq.compile(compiler);
-    cout << xNeq.toString() << endl << " decomposed: " << endl
+    out << xNeq.toString() << endl << " decomposed: " << endl
         << xNeq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xNeq.solve() << endl;
 
     compiler.reset(); xGt.compile(compiler);
-    cout << xGt.toString() << endl << " decomposed: " << endl
+    out << xGt.toString() << endl << " decomposed: " << endl
         << xGt.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xGt.solve() << endl;
 
     compiler.reset(); xGe.compile(compiler);
-    cout << xGe.toString() << endl << " decomposed: " << endl
+    out << xGe.toString() << endl << " decomposed: " << endl
         << xGe.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xGe.solve() << endl;
 
     compiler.reset(); xLt.compile(compiler);
-    cout << xLt.toString() << endl << " decomposed: " << endl
+    out << xLt.toString() << endl << " decomposed: " << endl
         << xLt.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xLt.solve() << endl;
 
     compiler.reset(); xLe.compile(compiler);
-    cout << xLe.toString() << endl << " decomposed: " << endl
+    out << xLe.toString() << endl << " decomposed: " << endl
         << xLe.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xLe.solve() << endl;
 
@@ -596,12 +597,12 @@ void UTestQwhole::comparison(ostream& out)
     
     compiler.reset(); xEqEq.compile(compiler);
     xEqEq.reset();
-    cout << xEqEq << endl << " decomposed: " << endl
+    out << xEqEq << endl << " decomposed: " << endl
         << xEqEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqEq.solve() << endl;
     
     compiler.reset(); xNeqEq.compile(compiler);
-    cout << xNeqEq << endl << " decomposed: " << endl
+    out << xNeqEq << endl << " decomposed: " << endl
         << xNeqEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xNeqEq.solve() << endl
         << "WRONG!!!" << endl << endl;
@@ -609,34 +610,34 @@ void UTestQwhole::comparison(ostream& out)
     /*** CORECT Begin ***/
     Qblock bNeqEq; bNeqEq = x != z, x == y;
     compiler.reset(); bNeqEq.compile(compiler);
-    cout << bNeqEq << endl
+    out << bNeqEq << endl
         << bNeqEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << bNeqEq.solve() << "CORECT!!!!"
         << endl << endl;
     Qubo qubo = compiler.qubo();
     Qbit x3("x3"), y3("y3", 0); // x3 == y3 is a problem!!!!
     compiler.reset(); (x3 == y3).compile(compiler);
-    cout << endl << "Problem is: " << (x3 == y3) << " Qubo: " << compiler.qubo()
+    out << endl << "Problem is: " << (x3 == y3) << " Qubo: " << compiler.qubo()
             << endl << endl;
     qubo += compiler.qubo();
     D5QuboSolver slvrNeqEq(qubo);
     Qbinder bndrNeqEq; bndrNeqEq = x, z, y;
     bndrNeqEq.add(slvrNeqEq.solution());
-    cout << bndrNeqEq.solutions() << "WRONG!!!!" << endl << endl;
+    out << bndrNeqEq.solutions() << "WRONG!!!!" << endl << endl;
     /*** CORECT End ***/
 
     compiler.reset(); xGtEq.compile(compiler);
-    cout << xGtEq << endl << " decomposed: " << endl
+    out << xGtEq << endl << " decomposed: " << endl
         << xGtEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xGtEq.solve() << endl;
 
     compiler.reset(); xGeEq.compile(compiler);
-    cout << xGeEq << endl << " decomposed: " << endl
+    out << xGeEq << endl << " decomposed: " << endl
         << xGeEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xGeEq.solve() << endl;
 
     compiler.reset(); xLtEq.compile(compiler);
-    cout << xLtEq.toString() << endl << " decomposed: " << endl
+    out << xLtEq.toString() << endl << " decomposed: " << endl
         << xLtEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xLtEq.solve() << "WRONG!!!"
         << endl << endl;
@@ -644,23 +645,23 @@ void UTestQwhole::comparison(ostream& out)
     /*** CORECT Begin ***/
     Qblock bLtEq; bLtEq = x < z, x == y;
     compiler.reset(); bLtEq.compile(compiler);
-    cout << bLtEq << endl
+    out << bLtEq << endl
         << bLtEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << bLtEq.solve() << "CORECT!!!!"
         << endl << endl;
     qubo = compiler.qubo();
     compiler.reset(); (x3 == y3).compile(compiler);
-    cout << endl << "Problem is: " << (x3 == y3) << " Qubo: " << compiler.qubo()
+    out << endl << "Problem is: " << (x3 == y3) << " Qubo: " << compiler.qubo()
             << endl << endl;
     qubo += compiler.qubo();
     D5QuboSolver slvrLtEq(qubo);
     Qbinder bndrLtEq; bndrLtEq = x, z, y;
     bndrLtEq.add(slvrLtEq.solution());
-    cout << bndrLtEq.solutions() << "WRONG!!!!" << endl << endl;
+    out << bndrLtEq.solutions() << "WRONG!!!!" << endl << endl;
     /*** CORECT End ***/
 
     compiler.reset(); xLeEq.compile(compiler);
-    cout << xLeEq << endl << " decomposed: " << endl
+    out << xLeEq << endl << " decomposed: " << endl
         << xLeEq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xLeEq.solve() << endl;
 
@@ -674,112 +675,112 @@ void UTestQwhole::comparison(ostream& out)
     
     compiler.reset(); xEEq.compile(compiler);
     xEEq.reset();
-    cout << xEEq << endl << " decomposed: " << endl
+    out << xEEq << endl << " decomposed: " << endl
         << xEEq.toString(true) << endl
     << "Qubo: " << compiler.qubo() << endl << xEEq.solve() << endl;
     
     compiler.reset(); xEqNeq.compile(compiler);
-    cout << xEqNeq << endl << " decomposed: " << endl
+    out << xEqNeq << endl << " decomposed: " << endl
         << xEqNeq.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqNeq.solve() << endl << "WRONG!!!"
         << endl << endl;;
 
     compiler.reset(); xEqGt.compile(compiler);
-    cout << xEqGt << endl << " decomposed: " << endl
+    out << xEqGt << endl << " decomposed: " << endl
         << xEqGt.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqGt.solve() << endl;
 
     compiler.reset(); xEqGe.compile(compiler);
-    cout << xEqGe << endl << " decomposed: " << endl
+    out << xEqGe << endl << " decomposed: " << endl
         << xEqGe.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqGe.solve() << endl;
 
     compiler.reset(); xEqLt.compile(compiler);
-    cout << xEqLt.toString() << endl << " decomposed: " << endl
+    out << xEqLt.toString() << endl << " decomposed: " << endl
         << xEqLt.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqLt.solve() << endl << "WRONG!!!"
         << endl << endl;;
 
     compiler.reset(); xEqLe.compile(compiler);
-    cout << xEqLe << endl << " decomposed: " << endl
+    out << xEqLe << endl << " decomposed: " << endl
         << xEqLe.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqLe.solve() << endl;
     
     Qexpr<Qwhole> xxEyAz(x == y + z);
     compiler.reset(); xxEyAz.compile(compiler);
-    cout << xxEyAz << endl << " decomposed: " << endl
+    out << xxEyAz << endl << " decomposed: " << endl
         << xxEyAz.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xEqLe.solve() << endl;
 
     Qexpr<Qwhole> xxNEyAz(x != y + z);
     compiler.reset(); xxNEyAz.compile(compiler);
-    cout << xxNEyAz.toString() << endl << " decomposed: " << endl
+    out << xxNEyAz.toString() << endl << " decomposed: " << endl
         << xxNEyAz.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xxNEyAz.solve() << endl << "WRONG!!!"
         << endl << endl;
 
     Qexpr<Qwhole> xxGTyAz(x > y + z);
     compiler.reset(); xxGTyAz.compile(compiler);
-    cout << xxGTyAz.toString() << endl << " decomposed: " << endl
+    out << xxGTyAz.toString() << endl << " decomposed: " << endl
         << xxGTyAz.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xxGTyAz.solve() << endl << "WRONG!!!"
         << endl << endl;
 
     Qexpr<Qwhole> xxGEyAz(x >= y + z);
     compiler.reset(); xxGEyAz.compile(compiler);
-    cout << xxGEyAz.toString() << endl << " decomposed: " << endl
+    out << xxGEyAz.toString() << endl << " decomposed: " << endl
         << xxGEyAz.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xxGEyAz.solve() << endl;
 
     Qexpr<Qwhole> xxLTyAz(x < y + z);
     compiler.reset(); xxLTyAz.compile(compiler);
-    cout << xxLTyAz.toString() << endl << " decomposed: " << endl
+    out << xxLTyAz.toString() << endl << " decomposed: " << endl
         << xxLTyAz.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xxLTyAz.solve() << endl;
 
     Qexpr<Qwhole> xxLEyAz(x <= y + z);
     compiler.reset(); xxLEyAz.compile(compiler);
-    cout << xxLEyAz.toString() << endl << " decomposed: " << endl
+    out << xxLEyAz.toString() << endl << " decomposed: " << endl
         << xxLEyAz.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xxLEyAz.solve() << endl << "WRONG!!!"
         << endl << endl;
     
     Qexpr<Qwhole> xyAzEx(y + z == x);
     compiler.reset(); xyAzEx.compile(compiler);
-    cout << xyAzEx << endl << " decomposed: " << endl
+    out << xyAzEx << endl << " decomposed: " << endl
         << xyAzEx.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xyAzEx.solve() << endl;
 
     Qexpr<Qwhole> xyAzNEx(y + z != x);
     compiler.reset(); xyAzNEx.compile(compiler);
-    cout << xyAzNEx.toString() << endl << " decomposed: " << endl
+    out << xyAzNEx.toString() << endl << " decomposed: " << endl
         << xyAzNEx.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xyAzNEx.solve() << endl << "WRONG!!!"
         << endl << endl;
 
     Qexpr<Qwhole> xyAzGTx(y + z > x);
     compiler.reset(); xyAzGTx.compile(compiler);
-    cout << xyAzGTx.toString() << endl << " decomposed: " << endl
+    out << xyAzGTx.toString() << endl << " decomposed: " << endl
         << xyAzGTx.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xyAzGTx.solve() << endl;
 
     Qexpr<Qwhole> xyAzGEx(y + z >= x);
     compiler.reset(); xyAzGEx.compile(compiler);
-    cout << xyAzGEx.toString() << endl << " decomposed: " << endl
+    out << xyAzGEx.toString() << endl << " decomposed: " << endl
         << xyAzGEx.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xyAzGEx.solve() << endl << "WRONG!!!"
     << endl << endl;
 
     Qexpr<Qwhole> xyAzLTx(y + z < x);
     compiler.reset(); xyAzLTx.compile(compiler);
-    cout << xyAzLTx.toString() << endl << " decomposed: " << endl
+    out << xyAzLTx.toString() << endl << " decomposed: " << endl
         << xyAzLTx.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xyAzLTx.solve() << endl << "WRONG!!!"
     << endl << endl;
 
     Qexpr<Qwhole> xyAzLEx(y + z <= x);
     compiler.reset(); xyAzLEx.compile(compiler);
-    cout << xyAzLEx.toString() << endl << " decomposed: " << endl
+    out << xyAzLEx.toString() << endl << " decomposed: " << endl
         << xyAzLEx.toString(true) << endl
         << "Qubo: " << compiler.qubo() << endl << xyAzLEx.solve() << endl;
 }

@@ -188,6 +188,7 @@
     <ClCompile Include="UTestQbin.cpp" />
     <ClCompile Include="UTestQbit.cpp" />
     <ClCompile Include="UTestQbool.cpp" />
+    <ClCompile Include="UTestQint.cpp" />
     <ClCompile Include="UTestQwhole.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +237,7 @@
     <ClInclude Include="UTestQbin.hpp" />
     <ClInclude Include="UTestQbit.h" />
     <ClInclude Include="UTestQbool.hpp" />
+    <ClInclude Include="UTestQint.hpp" />
     <ClInclude Include="UTestQwhole.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

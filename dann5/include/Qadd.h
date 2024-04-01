@@ -78,6 +78,10 @@ namespace dann5 {
         // operand
         ~QaddQints();
 
+        // Adds a evaluation set containing nodes with solutions values,
+        // the nodes should correspond to carryover this Q add operation
+        virtual void add(const Qevaluations& samples);
+
         // Returns a string representation of a solution value of this
         // Qnary-operation for an evaluation at 'atEvltn'
         virtual string solution(size_t atEvltn) const;
@@ -87,10 +91,12 @@ namespace dann5 {
         // Qadd::refreshOnInputs()
         virtual void refreshOnInputs();
 
-        // Override to refresh the Q-add quantum integers operation cells
-        // according to the derived operation logic on output assignment
-        /*virtual void refreshOnOutput();*/
+        // Override to add a quantum integer carryover variable for Q-add
+        // operation
+        virtual void refreshOnOutput();
+
     private:
+        Qdefs mCarryoverBits;
     };
 };
 

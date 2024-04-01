@@ -19,12 +19,18 @@ void Qcell::add(const Qevaluations& evaluations)
 	string identity = id();
 	for (auto evltn : evaluations)
 	{
-		mSolutions.push_back(evltn.sample()[identity]);
+		Qsample& sample = evltn.sample();
+		Qsample::const_iterator at = sample.find(identity);
+		if (at != sample.cend())
+		{
+			mSolutions.push_back(evltn.sample()[identity]);
+		}
 	}
 }
 
 string Qcell::solution(size_t atEvltn) const
 {
+
 	string sStr = id() + "\\";
 	Qvalue v = solutionValue(atEvltn);
 	if (v > 1)
@@ -43,7 +49,11 @@ void Qcell::reset()
 Qvalue Qcell::solutionValue(size_t atEvltn) const
 {
 	Qvalue v = value();
-	if (v == cSuperposition)
-		v = mSolutions[atEvltn];
+	if(v == cSuperposition)
+	{
+		size_t size = mSolutions.size();
+		if (size > 0 && atEvltn < size)
+			v = mSolutions[atEvltn];
+	}
 	return v;
 }

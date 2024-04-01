@@ -50,11 +50,16 @@ void Qbool::add(const Qevaluations& evaluations)
 	string identity = id();
 	for (auto evltn : evaluations)
 	{
-		Qvalue v = evltn.sample()[identity];
-		if(v == 0)
-			sltns.push_back(Qbool::cFalse);
-		else
-			sltns.push_back(Qbool::cTrue);
+		Qsample& sample = evltn.sample();
+		Qsample::const_iterator at = sample.find(identity);
+		if(at != sample.cend())
+		{
+			Qvalue v = sample[identity];
+			if (v == 0)
+				sltns.push_back(Qbool::cFalse);
+			else
+				sltns.push_back(Qbool::cTrue);
+		}
 	}
 }
 

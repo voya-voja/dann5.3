@@ -201,6 +201,21 @@ class Solver(Qsolver):
         Solver.gActive = solver
         Qsolver.Active(solver)
     
+    def Activate(solverType):
+        """
+        Sets an active qubo solver used to solve quantum statements. It sets
+        both as python's Solver.gActive and dann5.d5 library static reference
+        It supports following Solver types:
+            - 'dann5'      =>   A local dann5 quantum annealing simulator
+            - 'exact'      =>   A local DWave quantum annealing simulator
+            - 'Advantage2' =>   DWave qpu with zephyr topology
+            - 'Advantage'  =>   DWave qpu with pegasus topology
+            - 'Hybrid'     =>   DWave hybrid BQM solver
+        """
+        solver = QuboSolvers.solver(solverType)
+        Solver.gActive = solver
+        Qsolver.Active(solver)
+        
     def Active():
         """
         Returns an active qubo solver used to solve quantum statements.
