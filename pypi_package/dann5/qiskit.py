@@ -280,6 +280,29 @@ class Solver(Qsolver):
         Solver.gActive = solver
         Qsolver.Active(solver)
     
+    def Activate(solverType):
+        """
+        Sets an active qiskit solver used to solve quantum statements. It sets
+        both as python's Solver.gActive and dann5.d5 library static reference
+        It supports following Solver types:
+            - 'aer'       =>   A local Qiskit Aer Simulator
+            #backend = AerSimulator()
+
+            - 'qasm'      =>   A remote Qiskit QasmSimulator
+            #backend = QasmSimulator()
+
+            #backend = provider.get_backend('ibm_brisbane')
+        
+            #backend = provider.get_backend('ibm_perth')
+        
+            #backend = provider.get_backend('ibm_nairobi')
+        
+            #backend = provider.get_backend('ibmq_qasm_simulator')
+        """
+        solver = QiskitSolvers.solver(solverType)
+        Solver.gActive = solver
+        Qsolver.Active(solver)
+     
     def Active():
         """
         Returns an active qiskit solver used to solve quantum statements.

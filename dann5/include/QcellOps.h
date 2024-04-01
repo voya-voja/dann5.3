@@ -607,6 +607,10 @@ namespace dann5 {
             // Return a string representation of Q carry operand
             virtual string toString(bool decomposed = false, size_t atBit = cAllBits) const;
 
+            // Sets solution values from the evaluation set for a its carryover 
+            // operation
+            virtual void add(const Qevaluations& evaluations);
+
             // Set a pointer to a new parent Q addition
             void addition(Qaddition*);
 
@@ -643,6 +647,12 @@ namespace dann5 {
 
         // Return Q addition result and carry outputs
         virtual Qdefs outputs() const;
+
+        // Sets solution values from the evaluation set for a its carryover 
+        // operation
+        virtual void add(const Qevaluations& evaluations) {
+             mpCarry->add(evaluations);
+        };
 
         // get carry cell output
         Carry::Sp carry() const { return mpCarry; };
