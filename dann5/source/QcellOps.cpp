@@ -135,6 +135,19 @@ Qvalue Qinvert::calculate(const Qvalues& values) const
 }
 
 /*** Q eq operation ***/
+void Qeq::operands(const Qdef::Sp& pOut, const Qdefs& ins)
+{
+	validate(dynamic_pointer_cast<Qcell>(pOut), Qcells(ins)[0]);
+	Qoperator::operands(pOut, ins);
+}
+
+void Qeq::output(const Qdef::Sp& pOut, size_t forBit)
+{
+	Qdefs ins = Qop::inputs();
+	if(ins.size() == 1)
+		validate(dynamic_pointer_cast<Qcell>(pOut), Qcells(ins)[0]);
+	QcellOp::output(pOut, forBit);
+}
 
 Qvalue Qeq::calculate(const Qvalues& values) const
 {
@@ -143,6 +156,24 @@ Qvalue Qeq::calculate(const Qvalues& values) const
 		return(cSuperposition);
 	return(Qvalue(values[0] == pOut->value()));
 }
+
+void Qeq::validate(const Qcell::Sp& pOut, const Qcell::Sp& pIn)
+{
+	/*Qvalue outValue = pOut->value(), inValue = pIn->value();
+	if (outValue != inValue)
+	{
+		if (outValue == cSuperposition)
+			pOut->value(inValue);
+		else if (inValue == cSuperposition)
+			pIn->value(outValue);
+		else
+			throw logic_error("ERROR @Qeq::operands: output "
+				+ pOut->id() + " = " + to_string(outValue)
+				+ " can not ne equal to input "
+				+ pIn->id() + " = " + to_string(outValue));
+	}*/
+}
+
 
 /*** Q ne operation ***/
 
@@ -195,18 +226,38 @@ Qvalue Qge::calculate(const Qvalues& values) const
 }
 
 /*** Q and operation ***/
+void Qand::operands(const Qdef::Sp& pOut, const Qdefs& ins)
+{
+	Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
+	Qcells inCells = ins;
+	Qvalues values;
+	for (auto in : inCells)
+		values.push_back(in->value());
+	pCellOut->value(calculate(values));
+	QcellOp::operands(pOut, ins);
+}
+
+void Qand::output(const Qdef::Sp& pOut, size_t forBit)
+{
+	Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
+	pCellOut->value(value());
+	QcellOp::output(pOut, forBit);
+}
+
 Qvalue Qand::value() const
 {
 	Qcells ins = Qop::inputs();
-	Qvalue in0 = ins[0]->value(), in1 = ins[1]->value();
-	if (in0 == 0 || in1 == 0) return 0;
-	if (in0 == cSuperposition || in1 == cSuperposition) return cSuperposition;
-	return 1;
+	Qvalues values;
+	for (auto in : ins)
+		values.push_back(in->value());
+	return calculate(values);
 }
 
 Qvalue Qand::calculate(const Qvalues& values) const
 {
-	return(Qvalue(values[0] & values[1]));
+	if (values[0] == 0 || values[1] == 0) return 0;
+	if (values[0] == cSuperposition || values[1] == cSuperposition) return cSuperposition;
+	return 1;
 }
 
 /*** Q cell 2 outputs operation ***/
@@ -259,18 +310,38 @@ Qvalue Qor::calculate(const Qvalues& values) const
 }
 
 /*** Q nOr operation ***/
+void Qnor::operands(const Qdef::Sp& pOut, const Qdefs& ins)
+{
+	Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
+	Qcells inCells = ins;
+	Qvalues values;
+	for (auto in : inCells)
+		values.push_back(in->value());
+	pCellOut->value(calculate(values));
+	Qcell2outOp::operands(pOut, ins);
+}
+
+void Qnor::output(const Qdef::Sp& pOut, size_t forBit)
+{
+	Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
+	pCellOut->value(value());
+	Qcell2outOp::output(pOut, forBit);
+}
+
 Qvalue Qnor::value() const
 {
 	Qcells ins = Qop::inputs();
-	Qvalue in0 = ins[0]->value(), in1 = ins[1]->value();
-	if (in0 == 1 || in1 == 1) return 0;
-	if (in0 == cSuperposition || in1 == cSuperposition) return cSuperposition;
-	return 1;
+	Qvalues values;
+	for (auto in : ins)
+		values.push_back(in->value());
+	return calculate(values);
 }
 
 Qvalue Qnor::calculate(const Qvalues& values) const
 {
-	return(Qvalue(!(values[0] | values[1])));
+	if (values[0] == 1 || values[1] == 1) return 0;
+	if (values[0] == cSuperposition || values[1] == cSuperposition) return cSuperposition;
+	return 1;
 }
 
 /*** Q addition operation ***/

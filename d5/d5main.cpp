@@ -208,13 +208,13 @@ PYBIND11_MODULE(d5, m) {
 		.def("nor", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qbit&) const>(&Qexpr<Qbit>::nor), "instantiate Q expression with nor logic, e.g. for Qbit with id 'x' and 'y' the expression is !('x' | 'y')")
 		.def("nor", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qexpr<Qbit>&) const>(&Qexpr<Qbit>::nor), "instantiate Q expression with nor logic, e.g. for Qbit id 'x' and [right] object the expression is !('x' | [right])")
 
-		.def("unlike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qbit&) const>(&Qexpr<Qbit>::unlike), "instantiate Q expression with xor logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' ^ 'y'")
-		.def("unlike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qexpr<Qbit>&) const>(&Qexpr<Qbit>::unlike), "instantiate Q expression with xor logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' ^ [right]")
+		.def("unlike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qbit&) const>(&Qexpr<Qbit>::unlike), "instantiate Q expression with unlike logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' ^ 'y'")
+		.def("unlike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qexpr<Qbit>&) const>(&Qexpr<Qbit>::unlike), "instantiate Q expression with unlike logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' ^ [right]")
 		.def(py::self ^ Qbit(), "instantiate Q expression with xor logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' ^ 'y'")
 		.def(py::self ^ py::self, "instantiate Q expression with xor logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' ^ [right]")
 
-		.def("alike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qbit&) const>(&Qexpr<Qbit>::alike), "instantiate Q expression with nxor logic, e.g. for Qexpr with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("alike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qexpr<Qbit>&) const>(&Qexpr<Qbit>::alike), "instantiate Q expression with nxor logic, e.g. for Qexpr id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("alike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qbit&) const>(&Qexpr<Qbit>::alike), "instantiate Q expression with alike logic, e.g. for Qexpr with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("alike", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qexpr<Qbit>&) const>(&Qexpr<Qbit>::alike), "instantiate Q expression with alike logic, e.g. for Qexpr id 'x' and [right] object the expression is !('x' ^ [right])")
 		.def("nxor", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qbit&) const>(&Qexpr<Qbit>::nxor), "instantiate Q expression with nxor logic, e.g. for Qexpr with id 'x' and 'y' the expression is !('x' ^ 'y')")
 		.def("nxor", static_cast<Qexpr<Qbit>(Qexpr<Qbit>::*)(const Qexpr<Qbit>&) const>(&Qexpr<Qbit>::nxor), "instantiate Q expression with nxor logic, e.g. for Qexpr id 'x' and [right] object the expression is !('x' ^ [right])")
 
@@ -254,15 +254,15 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::self | Qbool(), "instantiate Q expression with or logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' | 'y'")
 		.def(py::self | py::self, "instantiate Q expression with or logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' | [right]")
 
-		.def("unlike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qbool&) const>(&Qexpr<Qbool>::unlike), "instantiate Q expression with nand logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' ^ 'y'")
-		.def("unlike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qexpr<Qbool>&) const>(&Qexpr<Qbool>::unlike), "instantiate Q expression with nand logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' ^ [right]")
+		.def("unlike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qbool&) const>(&Qexpr<Qbool>::unlike), "instantiate Q expression with unlike logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' ^ 'y'")
+		.def("unlike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qexpr<Qbool>&) const>(&Qexpr<Qbool>::unlike), "instantiate Q expression with unlike logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' ^ [right]")
 		.def(py::self ^ Qbool(), "instantiate Q expression with xor logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' ^ 'y'")
 		.def(py::self ^ py::self, "instantiate Q expression with xor logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' ^ [right]")
 
-		.def("alike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qbool&) const>(&Qexpr<Qbool>::alike), "instantiate Q expression with nand logic, e.g. for Qexpr with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("alike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qexpr<Qbool>&) const>(&Qexpr<Qbool>::alike), "instantiate Q expression with nand logic, e.g. for Qexpr id 'x' and [right] object the expression is !('x' ^ [right])")
-		.def("nxor", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qbool&) const>(&Qexpr<Qbool>::nxor), "instantiate Q expression with nand logic, e.g. for Qexpr with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("nxor", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qexpr<Qbool>&) const>(&Qexpr<Qbool>::nxor), "instantiate Q expression with nand logic, e.g. for Qexpr id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("alike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qbool&) const>(&Qexpr<Qbool>::alike), "instantiate Q expression with alike logic, e.g. for Qexpr with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("alike", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qexpr<Qbool>&) const>(&Qexpr<Qbool>::alike), "instantiate Q expression with alike logic, e.g. for Qexpr id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("nxor", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qbool&) const>(&Qexpr<Qbool>::nxor), "instantiate Q expression with nxor logic, e.g. for Qexpr with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("nxor", static_cast<Qexpr<Qbool>(Qexpr<Qbool>::*)(const Qexpr<Qbool>&) const>(&Qexpr<Qbool>::nxor), "instantiate Q expression with nxor logic, e.g. for Qexpr id 'x' and [right] object the expression is !('x' ^ [right])")
 
 		/*** Comparison ***/
 		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbool with id 'x' and 'y' the expression is 'x' == 'y'")
@@ -676,15 +676,15 @@ PYBIND11_MODULE(d5, m) {
 		.def("nor", static_cast<Qexpr<Qbit>(Qbit::*)(const Qbit&) const>(&Qbit::nor), "instantiate Q expression with nor logic, e.g. for Qbit with id 'x' and 'y' the expression is !('x' | 'y')")
 		.def("nor", static_cast<Qexpr<Qbit>(Qbit::*)(const Qexpr<Qbit>&) const>(&Qbit::nor), "instantiate Q expression with nor logic, e.g. for Qbit id 'x' and [right] object the expression is !('x' | [right])")
 
-		.def("unlike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qbit&) const>(&Qbit::unlike), "instantiate Q expression with nand logic, e.g. for Qbit with id 'x' and 'y' the expression is 'x' ^ 'y'")
-		.def("unlike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qexpr<Qbit>&) const>(&Qbit::unlike), "instantiate Q expression with nand logic, e.g. for Qbit id 'x' and [right] object the expression is 'x' ^ [right]")
+		.def("unlike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qbit&) const>(&Qbit::unlike), "instantiate Q expression with unlike logic, e.g. for Qbit with id 'x' and 'y' the expression is 'x' ^ 'y'")
+		.def("unlike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qexpr<Qbit>&) const>(&Qbit::unlike), "instantiate Q expression with unlike logic, e.g. for Qbit id 'x' and [right] object the expression is 'x' ^ [right]")
 		.def(py::self ^ py::self, "instantiate Q expression with xor logic, e.g. for Qbit with id 'x' and 'y' the expression is 'x' ^ 'y'")
 		.def(py::self ^ Qexpr<Qbit>(), "instantiate Q expression with xor logic, e.g. for Qbit id 'x' and [right] object the expression is 'x' ^ [right]")
 
-		.def("alike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qbit&) const>(&Qbit::alike), "instantiate Q expression with nand logic, e.g. for Qbit with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("alike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qexpr<Qbit>&) const>(&Qbit::alike), "instantiate Q expression with nand logic, e.g. for Qbit id 'x' and [right] object the expression is !('x' ^ [right])")
-		.def("nxor", static_cast<Qexpr<Qbit>(Qbit::*)(const Qbit&) const>(&Qbit::nxor), "instantiate Q expression with nand logic, e.g. for Qbit with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("nxor", static_cast<Qexpr<Qbit>(Qbit::*)(const Qexpr<Qbit>&) const>(&Qbit::nxor), "instantiate Q expression with nand logic, e.g. for Qbit id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("alike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qbit&) const>(&Qbit::alike), "instantiate Q expression with alike logic, e.g. for Qbit with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("alike", static_cast<Qexpr<Qbit>(Qbit::*)(const Qexpr<Qbit>&) const>(&Qbit::alike), "instantiate Q expression with alike logic, e.g. for Qbit id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("nxor", static_cast<Qexpr<Qbit>(Qbit::*)(const Qbit&) const>(&Qbit::nxor), "instantiate Q expression with nxor logic, e.g. for Qbit with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("nxor", static_cast<Qexpr<Qbit>(Qbit::*)(const Qexpr<Qbit>&) const>(&Qbit::nxor), "instantiate Q expression with nxor logic, e.g. for Qbit id 'x' and [right] object the expression is !('x' ^ [right])")
 
 		/*** Comparison ***/
 		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbit with id 'x' and 'y' the expression is 'x' == 'y'")
@@ -717,6 +717,7 @@ PYBIND11_MODULE(d5, m) {
 		.def("true", []() { return Qbool::cTrue; })
 		.def("false", []() { return Qbool::cFalse; })
 
+		.def(py::init<>())
 		.def(py::init<const Qbool&>())
 		.def(py::init<const string&>())
 		.def(py::init<const string&, Qvalue>())
@@ -763,15 +764,15 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::self | py::self, "instantiate Q expression with or logic, e.g. for Qbool with id 'x' and 'y' the expression is 'x' || 'y'")
 		.def(py::self | Qexpr<Qbool>(), "instantiate Q expression with or logic, e.g. for Qbool id 'x' and [right] object the expression is 'x' || [right]")
 
-		.def("unlike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qbool&) const>(&Qbool::unlike), "instantiate Q expression with nand logic, e.g. for Qbool with id 'x' and 'y' the expression is 'x' ^ 'y'")
-		.def("unlike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qexpr<Qbool>&) const>(&Qbool::unlike), "instantiate Q expression with nand logic, e.g. for Qbool id 'x' and [right] object the expression is 'x' ^ [right]")
+		.def("unlike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qbool&) const>(&Qbool::unlike), "instantiate Q expression with nand unlikelogic, e.g. for Qbool with id 'x' and 'y' the expression is 'x' ^ 'y'")
+		.def("unlike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qexpr<Qbool>&) const>(&Qbool::unlike), "instantiate Q expression with unlike logic, e.g. for Qbool id 'x' and [right] object the expression is 'x' ^ [right]")
 		.def(py::self ^ py::self, "instantiate Q expression with xor logic, e.g. for Qbool with id 'x' and 'y' the expression is 'x' ^ 'y'")
 		.def(py::self ^ Qexpr<Qbool>(), "instantiate Q expression with xor logic, e.g. for Qbool id 'x' and [right] object the expression is 'x' ^ [right]")
 
-		.def("alike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qbool&) const>(&Qbool::alike), "instantiate Q expression with nand logic, e.g. for Qbool with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("alike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qexpr<Qbool>&) const>(&Qbool::alike), "instantiate Q expression with nand logic, e.g. for Qbool id 'x' and [right] object the expression is !('x' ^ [right])")
-		.def("nxor", static_cast<Qexpr<Qbool>(Qbool::*)(const Qbool&) const>(&Qbool::nxor), "instantiate Q expression with nand logic, e.g. for Qbool with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("nxor", static_cast<Qexpr<Qbool>(Qbool::*)(const Qexpr<Qbool>&) const>(&Qbool::nxor), "instantiate Q expression with nand logic, e.g. for Qbool id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("alike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qbool&) const>(&Qbool::alike), "instantiate Q expression with alike logic, e.g. for Qbool with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("alike", static_cast<Qexpr<Qbool>(Qbool::*)(const Qexpr<Qbool>&) const>(&Qbool::alike), "instantiate Q expression with alike logic, e.g. for Qbool id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("nxor", static_cast<Qexpr<Qbool>(Qbool::*)(const Qbool&) const>(&Qbool::nxor), "instantiate Q expression with nxor logic, e.g. for Qbool with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("nxor", static_cast<Qexpr<Qbool>(Qbool::*)(const Qexpr<Qbool>&) const>(&Qbool::nxor), "instantiate Q expression with nxor logic, e.g. for Qbool id 'x' and [right] object the expression is !('x' ^ [right])")
 
 		/*** Comparison ***/
 		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbool with id 'x' and 'y' the expression is 'x' == 'y'")
@@ -882,15 +883,15 @@ PYBIND11_MODULE(d5, m) {
 		.def("nor", static_cast<Qexpr<Qbin>(Qbin::*)(const Qexpr<Qbin>&) const>(&Qbin::nor), "instantiate Q expression with nor logic, e.g. for Qbin id 'x' and [right] object the expression is !('x' | [right])")
 
 
-		.def("unlike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qbin&) const>(&Qbin::unlike), "instantiate Q expression with nand logic, e.g. for Qbin with id 'x' and 'y' the expression is 'x' ^ 'y'")
-		.def("unlike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qexpr<Qbin>&) const>(&Qbin::unlike), "instantiate Q expression with nand logic, e.g. for Qbin id 'x' and [right] object the expression is 'x' ^ [right]")
+		.def("unlike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qbin&) const>(&Qbin::unlike), "instantiate Q expression with unlike logic, e.g. for Qbin with id 'x' and 'y' the expression is 'x' ^ 'y'")
+		.def("unlike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qexpr<Qbin>&) const>(&Qbin::unlike), "instantiate Q expression with unlike logic, e.g. for Qbin id 'x' and [right] object the expression is 'x' ^ [right]")
 		.def(py::self ^ py::self, "instantiate Q expression with xor logic, e.g. for Qbin with id 'x' and 'y' the expression is 'x' ^ 'y'")
 		.def(py::self ^ Qexpr<Qbin>(), "instantiate Q expression with xor logic, e.g. for Qbin id 'x' and [right] object the expression is 'x' ^ [right]")
 
-		.def("alike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qbin&) const>(&Qbin::alike), "instantiate Q expression with nand logic, e.g. for Qbin with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("alike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qexpr<Qbin>&) const>(&Qbin::alike), "instantiate Q expression with nand logic, e.g. for Qbin id 'x' and [right] object the expression is !('x' ^ [right])")
-		.def("nxor", static_cast<Qexpr<Qbin>(Qbin::*)(const Qbin&) const>(&Qbin::nxor), "instantiate Q expression with nand logic, e.g. for Qbin with id 'x' and 'y' the expression is !('x' ^ 'y')")
-		.def("nxor", static_cast<Qexpr<Qbin>(Qbin::*)(const Qexpr<Qbin>&) const>(&Qbin::nxor), "instantiate Q expression with nand logic, e.g. for Qbin id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("alike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qbin&) const>(&Qbin::alike), "instantiate Q expression with alike logic, e.g. for Qbin with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("alike", static_cast<Qexpr<Qbin>(Qbin::*)(const Qexpr<Qbin>&) const>(&Qbin::alike), "instantiate Q expression with alike logic, e.g. for Qbin id 'x' and [right] object the expression is !('x' ^ [right])")
+		.def("nxor", static_cast<Qexpr<Qbin>(Qbin::*)(const Qbin&) const>(&Qbin::nxor), "instantiate Q expression with nxor logic, e.g. for Qbin with id 'x' and 'y' the expression is !('x' ^ 'y')")
+		.def("nxor", static_cast<Qexpr<Qbin>(Qbin::*)(const Qexpr<Qbin>&) const>(&Qbin::nxor), "instantiate Q expression with nxor logic, e.g. for Qbin id 'x' and [right] object the expression is !('x' ^ [right])")
 		/*** Comparison ***/
 		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qbool with id 'x' and 'y' the expression is 'x' == 'y'")
 		.def(py::self == Qexpr<Qbin>(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] the expression is 'x' == [right root]")

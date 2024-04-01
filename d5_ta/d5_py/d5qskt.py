@@ -589,10 +589,10 @@ def qiskitPNs():
                                                         blckPN.solve()))
     
 def addTest():
-    r = Qwhole(2, "r")
+    p = Qwhole(2, "p")
     q = Qwhole(2, "q")
     A = Qwhole("A", 3)
-    aA = A.assign(r + q)
+    aA = A.assign(p + q)
     compiler = CircuitCompiler()
     aA.compile(compiler)
     circuit = compiler.circuit()
