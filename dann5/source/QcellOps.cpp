@@ -446,6 +446,12 @@ string Qaddition::Carry::toString(bool decomposed, size_t forBit) const
 	return Symbol(mpAddition->Qop::toString(decomposed));
 }
 
+void Qaddition::Carry::add(const Qevaluations& evaluations)
+{
+	Qdef::Sp pOut = Qop::output();
+	pOut->add(evaluations);
+}
+
 void Qaddition::Carry::addition(Qaddition* pAddition)
 {
 	mpAddition = pAddition;

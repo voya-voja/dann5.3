@@ -39,6 +39,10 @@ namespace dann5 {
         // Destruct the Q derived operation instance
         ~QderivedOp() {};
 
+        // Returns the number of Q bits of the that the operation's right 
+        // argument, e.g. for x - y, returns y.noqbs()
+        virtual size_t noqbs() const noexcept;
+
         // Resizes the Q array of oprations to contain a specified size of elements. If the size is
         // smaller than the current Q array size, the content is reduced to its
         // first size elements, removing those beyond (and destroying them). If the size
@@ -47,7 +51,7 @@ namespace dann5 {
         virtual void resize(size_t size, Qvalue value = 0);
 
         // Return a quantum equal operand representation with substitute operation 
-        // as one of the oeprands when decomposed.
+        // as one of the operands when decomposed.
         // Otherwise, return a string representation of a Q derived operation
         virtual string toString(bool decomposed = false,
             size_t forBit = cAllBits) const
@@ -113,7 +117,6 @@ namespace dann5 {
     private:
     };
 
-
     // A quantum divide is a specific implementation of a Q derived operation
     class Qdivide : public QderivedOp
     {
@@ -139,6 +142,46 @@ namespace dann5 {
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qdivide(*this)); };
     protected:
     private:
+    };
+
+    class QsubtractQints : public QderivedOp
+    {
+    public:
+        // Qadd's shared pointer 
+        typedef shared_ptr<QsubtractQints> Sp;
+
+        // An Q addition has identity and should have at least two argument
+        QsubtractQints();
+
+        // Copy constructor
+        QsubtractQints(const QsubtractQints& right);
+
+        // Destruct the Q addition instance with a shared pointer to its carry
+        // operand
+        ~QsubtractQints();
+
+        // Return a Qdef's shared pointer pointing to a copy of this object
+        virtual Qdef::Sp clone() const { return Qdef::Sp(new QsubtractQints(*this)); };
+
+        // Adds a evaluation set containing nodes with solutions values,
+        // the nodes should correspond to carryover this Q add operation
+        virtual void add(const Qevaluations& samples);
+
+        // Returns a string representation of a solution value of this
+        // Qnary-operation for an evaluation at 'atEvltn'
+        virtual string solution(size_t atEvltn) const;
+
+    protected:
+        // Equalizes the size of addition input arguments and calls 
+        // Qadd::refreshOnInputs()
+        virtual void refreshOnInputs();
+
+        // Override to add a quantum integer carryover variable for Q-add
+        // operation
+        virtual void refreshOnOutput();
+
+    private:
+        Qdefs mCarryoverBits;
     };
 };
 

@@ -427,37 +427,59 @@ void UTestQbin::vertex(ostream& out)
     Qbit _1("_1", 1), _0("_0", 0);
     Qbin vertices(5, "a");
 
-    Qexpr<Qbit> xbTV = (vertices[2] ^ vertices[3])
-                        & (vertices[3] ^ vertices[4]) & (vertices[3] *= _0)
-                    | (vertices[3] ^ vertices[2])
-                        & (vertices[2] ^ vertices[4]) & (vertices[2] *= _0)
-                    | (vertices[2] ^ vertices[4])
-                        & (vertices[4] ^ vertices[3]) & (vertices[4] *= _0);
-    Qassign<Qbit> axbTV = _1 = xbTV;
-    QuboCompiler compiler; axbTV.compile(compiler);
-    out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString()
-        << endl << "     QUBO: " << compiler.qubo() << endl
-        << "---- Triangle c-d-e solutions:" << endl << axbTV.solve() << endl;
     // sqare
-    Qexpr<Qbit> xbSV = ((vertices[0] ^ vertices[1]) & (vertices[0] ^ vertices[3])
-                        & (vertices[2] ^ vertices[1]) & (vertices[2] ^ vertices[3]))
-                        & (((vertices[0] *= _0) & (vertices[2] *= _0))
-                           | ((vertices[1] *= _0) & (vertices[3] *= _0)));
+    out << "==========================================================" << endl;
+    out << "a --- d" << endl
+        << "|     |" << endl
+        << "|     |" << endl
+        << "|     |" << endl
+        << "b --- c" << endl;
+    Qexpr<Qbit> xbSV = ((vertices[0] ^ vertices[1])
+                        & (vertices[0] ^ vertices[3])
+                        & (vertices[2] ^ vertices[1]));
     Qassign<Qbit> axbSV = _1 = xbSV;
-    compiler.reset(); axbSV.compile(compiler);
+    QuboCompiler compiler; axbSV.compile(compiler);
     out << endl << "---- Square a-b-c-d equation:" << endl << axbSV.toString()
-        << endl << "     QUBO: " << compiler.qubo() << endl
-        << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
+        << endl << "     QUBO: " << compiler.qubo() << endl;
+    out << "---- Square a-b-c-d solutions:" << endl << axbSV.solve() << endl;
 
-    Qassign<Qbit> problemAssignment = _1 = xbSV & xbTV;
-    out << endl << "---- DWave square(a-b-c-d) "
+    // triangle
+    out << "==========================================================" << endl;
+    out << "d" << endl
+        << "|\\" << endl
+        << "| e" << endl
+        << "|/" << endl
+        << "c" << endl;
+    Qexpr<Qbit> xbTV = (((vertices[2] ^ vertices[3]) | (vertices[3] ^ vertices[4]))
+                        & vertices[2].alike(vertices[3]).alike(vertices[4]));
+    Qassign<Qbit> axbTV = _1 = xbTV;
+    compiler.reset(); axbTV.compile(compiler);
+    out << endl << "---- Triangle c-d-e equation:" << endl << axbTV.toString()
+        << endl << "     QUBO: " << compiler.qubo() << endl;
+    out << "---- Triangle c-d-e solutions:" << endl << axbTV.solve() << endl;
+
+    // squer & triangle
+    out << "==========================================================" << endl;
+    out << "a --- d" << endl
+        << "|     |\\" << endl
+        << "|     | e" << endl
+        << "|     |/" << endl
+        << "b --- c" << endl;
+    Qexpr<Qbit> triangleXpr = (((vertices[2] ^ vertices[3]) | (vertices[3] ^ vertices[4]))
+                                & vertices[2].alike(vertices[3]).alike(vertices[4]));
+    Qexpr<Qbit> sqareXpr = ((vertices[0] ^ vertices[1])
+        & ((vertices[0] ^ vertices[3])
+            | (vertices[2] ^ vertices[1])));
+    Qassign<Qbit> problemAssignment = _1 = sqareXpr & triangleXpr;
+    out << endl << "---- Square(a-b-c-d) "
         << "+ triangle (c-d-e) vertex problem equation:"
         << endl << problemAssignment.toString() << endl;
     compiler.reset(); problemAssignment.compile(compiler);
     out << endl << "     QUBO: " << compiler.qubo() << endl;
     QuboAnalyzer anlyze(compiler.qubo());
-    out << endl << "---- DWave square(a-b-c-d) "
-        << "+ triangle (c-d-e) vertex problem :";
-    out << endl << "     # of nodes: " << anlyze.nodesNo()
-        << " # of branches: " << anlyze.branchesNo();
+    out << endl << "---- Square(a-b-c-d) "
+        << "+ triangle (c-d-e) vertex problem with ";
+    out << anlyze.nodesNo() << " nodes and " << anlyze.branchesNo()
+        << " branches " << " solutions:" << endl;
+    out << problemAssignment.solve() << endl;
 }
