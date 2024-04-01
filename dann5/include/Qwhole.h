@@ -83,6 +83,10 @@ namespace dann5 {
         // whole number for an evaluation at 'atEvltn'
         virtual string solution(size_t atEvltn) const;
 
+        // Returns a long long integer as a solution value of this quantum
+        // integer for an evaluation at 'atEvltn'
+        ULint solutionValue(size_t atEvltn) const;
+
         // Returns the list of assigned solutions as unsigned long long numbers
         vector<unsigned long long> results() const;
 

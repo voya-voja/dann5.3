@@ -165,6 +165,9 @@
     <ClCompile Include="..\dann5\source\Qdef.cpp">
       <Filter>Source Files\dann5</Filter>
     </ClCompile>
+    <ClCompile Include="UTestQint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h">
@@ -304,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="..\dann5\ocean\include\DwaveSolver.h">
       <Filter>Header Files\dann5\ocean</Filter>
+    </ClInclude>
+    <ClInclude Include="UTestQint.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

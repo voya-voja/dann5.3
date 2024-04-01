@@ -67,6 +67,18 @@ string Qwhole::solution(size_t atEvltn) const
 	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
 }
 
+ULint Qwhole::solutionValue(size_t atEvltn) const
+{
+	ULint value;
+	const Qcells& _cells = cells();
+	size_t size = noqbs();
+	for (size_t at = 0; at < size; at++)
+	{
+		value.set(at, _cells[at]->solutionValue(atEvltn));
+	}
+	return value;
+}
+
 vector<unsigned long long>  Qwhole::results() const
 {
 	const Qcells& _cells = cells();
@@ -87,18 +99,12 @@ vector<unsigned long long>  Qwhole::results() const
 
 vector<ULint>  Qwhole::ulints() const
 {
-    const Qcells& _cells = cells();
-    size_t size = noqbs();
-    size_t noSolutions = _cells[0]->solutions().size();
+	const Qcells& _cells = cells();
+	size_t noSolutions = _cells[0]->solutions().size();
     vector<ULint> rslts;
     for (size_t sampleId = 0; sampleId < noSolutions; sampleId++)
     {
-		ULint value;
-        for (size_t at = 0; at < size; at++)
-        {
-            value.set(at, _cells[at]->solutionValue(sampleId));
-        }
-        rslts.push_back(value);
+        rslts.push_back(solutionValue(sampleId));
     }
     return rslts;
 }

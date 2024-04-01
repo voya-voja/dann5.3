@@ -262,7 +262,7 @@ def qwholeGt_test():
     solver = Solver.Active()
     print("# of nodes: {}\t# of branches: {}".format(
         solver.nodesNo(), solver.branchesNo()))
-    print("LE solutions block: \n{}\n".format(comp.solutions()))
+    print("GT solutions block: \n{}\n".format(comp.solutions()))
 
 def qwholeGe_test():
     print("\n\n==== qwholeGe_test() =====")
@@ -278,7 +278,7 @@ def qwholeGe_test():
     solver = Solver.Active()
     print("# of nodes: {}\t# of branches: {}".format(
         solver.nodesNo(), solver.branchesNo()))
-    print("LE solutions block: \n{}\n".format(comp.solutions()))
+    print("GE solutions block: \n{}\n".format(comp.solutions()))
 
     
 def main():

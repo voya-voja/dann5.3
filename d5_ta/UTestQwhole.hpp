@@ -36,6 +36,7 @@ namespace dann5test
  
         // use Qwhole to solve factorial problem
         void factorial(ostream& out);
+
         // use Qwhole to calculate prime numbers using the triangular theoreme
         void primeTriangular(ostream& out);
 
