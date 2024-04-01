@@ -1,8 +1,10 @@
 #include <Qint.h>
-#include <QcellOps.h>
+
+#include <QnaryOps.h>
 #include <Factory.h>
 #include <Qadd.h>
 #include <Qmultiply.h>
+#include <QderivedOps.h>
 
 #include <stdlib.h>
 
@@ -18,7 +20,7 @@ Qint::Qint(const string& id, const long long& value, bool asis)
 {
 	size_t size = noqbs() + 1;
 	if (!asis && noqbs() < 64)
-		Qbin::resize(size);
+		Qbin::resize(size, 0);
 	else
 		size--;
 	if (value < 0)
@@ -63,20 +65,24 @@ void Qint::resize(size_t size, Qvalue value)
 {
 	// if unknown, resize as Q binary
 	if (noqbs() == 0 || any())
-		Qbin::resize(size, cSuperposition);
+		Qbin::resize(size, value);
 	// if last bit is negative, add 1's to the end
 	else if ((*this)[noqbs() - 1] == 1) 
 		Qbin::resize(size, 1);
 	// otherwise, add 0's to the end
 	else 
-		Qbin::resize(size);
+		Qbin::resize(size, 0);
 }
 
 string Qint::toString(bool decomposed, size_t forBit) const
 {
 	if (decomposed) return Qnary::toString(decomposed, forBit);
 	string vStr = Qnary::cUnknownSign;
-	if (!any())
+	if (noqbs() == 0)
+	{
+		vStr = "0";
+	}
+	else if (!any())
 	{
 		long long value = (*this);
 		vStr = to_string(value);
@@ -88,6 +94,14 @@ string Qint::toString(bool decomposed, size_t forBit) const
 
 string Qint::solution(size_t atEvltn) const
 {
+	long long v = solutionValue(atEvltn);
+	string valueStr = to_string(v);
+	string id = Qdef::toString();
+	return id + "\\" + to_string(noqbs()) + ":" + valueStr + "\\";
+}
+
+long long Qint::solutionValue(size_t atEvltn) const
+{
 	const Qcells& _cells = cells();
 	size_t size = noqbs();
 	Bits value;
@@ -98,9 +112,7 @@ string Qint::solution(size_t atEvltn) const
 		for (size_t at = size; at < value.size(); at++)
 			value[at] = 1;
 	long long v = (long long)value.to_ullong();
-	string valueStr = to_string(v);
-	string id = Qdef::toString();
-	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
+	return(v);
 }
 
 Qassign<Qint > Qint ::operator=(const Qint & right) const
@@ -174,8 +186,17 @@ Qassign<Qint > Qint ::operator/=(const Qexpr<Qint >& right) const
 
 Qexpr<Qint> Qint::operator==(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryEq::cMark());
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark());
     pOp->operands(clone(), {right.clone()});
+
+	Qexpr<Qint> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qint> Qint::operator==(const Qexpr<Qint>& right) const
+{
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark());
+	pOp->operands(clone(), { right.rootDef()->clone() });
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -183,8 +204,17 @@ Qexpr<Qint> Qint::operator==(const Qint& right) const
 
 Qexpr<Qint> Qint::operator!=(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryNeq::cMark());
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryNeq::cMark());
     pOp->operands(clone(), {right.clone()});
+
+	Qexpr<Qint> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qint> Qint::operator!=(const Qexpr<Qint>& right) const
+{
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryNeq::cMark());
+	pOp->operands(clone(), { right.rootDef()->clone() });
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -192,8 +222,17 @@ Qexpr<Qint> Qint::operator!=(const Qint& right) const
 
 Qexpr<Qint> Qint::operator>(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryGt::cMark());
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGt::cMark());
     pOp->operands(clone(), {right.clone()});
+
+	Qexpr<Qint> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qint> Qint::operator>(const Qexpr<Qint>& right) const
+{
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGt::cMark());
+	pOp->operands(clone(), { right.rootDef()->clone() });
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -201,8 +240,17 @@ Qexpr<Qint> Qint::operator>(const Qint& right) const
 
 Qexpr<Qint> Qint::operator>=(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryGe::cMark());
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGe::cMark());
     pOp->operands(clone(), {right.clone()});
+
+	Qexpr<Qint> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qint> Qint::operator>=(const Qexpr<Qint>& right) const
+{
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryGe::cMark());
+	pOp->operands(clone(), { right.rootDef()->clone() });
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -210,8 +258,17 @@ Qexpr<Qint> Qint::operator>=(const Qint& right) const
 
 Qexpr<Qint> Qint::operator<(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryLt::cMark());
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark());
     pOp->operands(clone(), {right.clone()});
+
+	Qexpr<Qint> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qint> Qint::operator<(const Qexpr<Qint>& right) const
+{
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLt::cMark());
+	pOp->operands(clone(), { right.rootDef()->clone() });
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -219,8 +276,17 @@ Qexpr<Qint> Qint::operator<(const Qint& right) const
 
 Qexpr<Qint> Qint::operator<=(const Qint& right) const
 {
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(QnaryLe::cMark());
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLe::cMark());
     pOp->operands(clone(), {right.clone()});
+
+	Qexpr<Qint> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qint> Qint::operator<=(const Qexpr<Qint>& right) const
+{
+	QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryLe::cMark());
+	pOp->operands(clone(), { right.rootDef()->clone() });
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -240,7 +306,7 @@ Qexpr<Qint> Qint::operator+(const Qexpr<Qint>& right) const
 {
 	Qop::Sp pOp(new QaddQints());
 	Qint out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -260,7 +326,7 @@ Qexpr<Qint> Qint::operator*(const Qexpr<Qint>& right) const
 {
 	Qop::Sp pOp(new Qmultiply());
     Qint out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
 
 	Qexpr<Qint> expr(pOp);
 	return expr;
@@ -268,7 +334,7 @@ Qexpr<Qint> Qint::operator*(const Qexpr<Qint>& right) const
 
 Qexpr<Qint> Qint::operator-(const Qint& right) const
 {
-    Qop::Sp pOp(new Qsubtract());
+    Qop::Sp pOp(new QsubtractQints());
     Qint out(pOp->createOutId());
     pOp->operands(out.clone(), {clone(), right.clone()});
     Qexpr<Qint> expr(pOp);
@@ -277,9 +343,9 @@ Qexpr<Qint> Qint::operator-(const Qint& right) const
 
 Qexpr<Qint> Qint::operator-(const Qexpr<Qint>& right) const
 {
-    Qop::Sp pOp(new Qsubtract());
+    Qop::Sp pOp(new QsubtractQints());
     Qint out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
     Qexpr<Qint> expr(pOp);
     return expr;
 }
@@ -297,7 +363,7 @@ Qexpr<Qint> Qint::operator/(const Qexpr<Qint>& right) const
 {
     Qop::Sp pOp(new Qdivide());
     Qint out(pOp->createOutId());
-    pOp->operands(out.clone(), {clone(), right.rootDef()});
+    pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
     Qexpr<Qint> expr(pOp);
     return expr;
 }

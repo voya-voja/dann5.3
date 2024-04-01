@@ -53,6 +53,9 @@ namespace dann5 {
 
         // Initialize Q int with a given id and a deterministic value as a bitset
         // by default it will trim leading 0, unless asis is true
+        // NOTE: to be replaced with
+        // dann5::Qint(const string& id, const Lint& value, bool asis = false); and
+        // dann5::Lint(const long long&);
         Qint(const string& id, const long long& value, bool asis = false);
 
         // Initialize Q int of given size, with a given id and a deterministic
@@ -63,6 +66,9 @@ namespace dann5 {
         Qint(const Qint& right) : Qbin(right) {};
 
         // type conversion operator
+        // NOTE: to be replaced with
+        // dann5::Lint solutionValue(size_t atEvltn) const; and
+        // dann5::Lint::operator long long() const;
         operator long long();
         operator const long long() const;
 
@@ -81,6 +87,13 @@ namespace dann5 {
         // Returns a string representation of a solution value of this quantum
         // integer for an evaluation at 'atEvltn'
         virtual string solution(size_t atEvltn) const;
+
+        // Returns a long long integer as a solution value of this quantum
+        // integer for an evaluation at 'atEvltn'
+        // NOTE: to be replaced with
+        // dann5::Lint solutionValue(size_t atEvltn) const; and
+        // dann5::Lint::operator long long() const;
+        long long solutionValue(size_t atEvltn) const;
 
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new Qint(*this)); };
@@ -133,25 +146,49 @@ namespace dann5 {
         // the expression is 'x' == 'y'
         Qexpr<Qint> operator==(const Qint& right) const;
 
+        // instantiate Q expression with comparison, e.g. for Qint ids 'x' and
+        // [right] expression the expression is 'x' == [right]
+        Qexpr<Qint> operator==(const Qexpr<Qint>& right) const;
+
         // instantiate Q expression with comparison, e.g. for Qint ids 'x' and 'y'
         // the expression is 'x' != 'y'
         Qexpr<Qint> operator!=(const Qint& right) const;
+
+        // instantiate Q expression with comparison, e.g. for Qint ids 'x' and
+        // [right] expression the expression is 'x' != [right]
+        Qexpr<Qint> operator!=(const Qexpr<Qint>& right) const;
 
         // instantiate Q expression with comparison, e.g. for Qint ids 'x' and 'y'
         // the expression is 'x' > 'y'
         Qexpr<Qint> operator>(const Qint& right) const;
 
+        // instantiate Q expression with comparison, e.g. for Qint ids 'x' and
+        // [right] expression the expression is 'x' <==> [right]
+        Qexpr<Qint> operator> (const Qexpr<Qint>&right) const;
+
         // instantiate Q expression with comparison, e.g. for Qint ids 'x' and 'y'
         // the expression is 'x' >= 'y'
         Qexpr<Qint> operator>=(const Qint& right) const;
+
+        // instantiate Q expression with comparison, e.g. for Qint ids 'x' and
+        // [right] expression the expression is 'x' >= [right]
+        Qexpr<Qint> operator>=(const Qexpr<Qint>& right) const;
 
         // instantiate Q expression with comparison, e.g. for Qint ids 'x' and 'y'
         // the expression is 'x' < 'y'
         Qexpr<Qint> operator<(const Qint& right) const;
 
+        // instantiate Q expression with comparison, e.g. for Qint ids 'x' and
+        // [right] expression the expression is 'x' < [right]
+        Qexpr<Qint> operator<(const Qexpr<Qint>& right) const;
+
         // instantiate Q expression with comparison, e.g. for Qint ids 'x' and 'y'
         // the expression is 'x' <= 'y'
         Qexpr<Qint> operator<=(const Qint& right) const;
+
+        // instantiate Q expression with comparison, e.g. for Qint ids 'x' and
+        // [right] expression the expression is 'x' <= [right]
+        Qexpr<Qint> operator<=(const Qexpr<Qint>& right) const;
 
         /*** Arithmetic ***/
         // instantiate Q expression with add logic, e.g. for Qint ids 'x' and 'y'
