@@ -185,6 +185,7 @@ void qiskitPNs()
     cout << blckPN.solve() << endl;
 }
 
+
 void basicQint()
 {
     Qint q_int;
@@ -253,67 +254,6 @@ int main(int argc, const char * argv[])
 //    testQbinQiskit();
 //    testQwholeQiskit();
 //    qiskitPNs();
-    {
-        Qwhole x(2, "x"), y(2, "y");
-        Qexpr<Qwhole> xpr = x  > y;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-    }
-    {
-        Qwhole x(2, "x"), y(2, "y");
-        Qexpr<Qwhole> xpr = x >= y;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-    }
-
-    {
-        Qwhole x(2, "x"), y(2, "y");
-        Qexpr<Qwhole> xpr = x < y;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-    }
-
-    {
-        Qwhole x(2, "x"), y(2, "y");
-        Qexpr<Qwhole> xpr = x <= y;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-    }
-
-
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
-        Qexpr<Qwhole> xpr = (y + z) <= x;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-        Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w <= x;
-        cout << blck << endl << blck.toString(true) << endl << blck.solve();
-        cout << (w <= x) << endl << (w <= x).toString(true) << endl << (w <= x).solve();
-    }
-
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
-        Qexpr<Qwhole> xpr = (y + z) < x;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-        Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w < x;
-        cout << blck << endl << blck.toString(true) << endl << blck.solve();
-    }
-
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
-        Qexpr<Qwhole> xpr = (y + z) >= x;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-        Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w >= x;
-        cout << blck << endl << blck.toString(true) << endl << blck.solve();
-    }
-
-    {
-        Qwhole x(2, "x"), y("y", 5), z(1, "z"), w(2, "w"), _3("_3", 3);
-        Qexpr<Qwhole> xpr = (y + z) > x;
-        cout << xpr << endl << xpr.toString(true) << endl << xpr.solve();
-        Qassign<Qwhole> ass = w = y + z;
-        Qblock blck; blck = ass, w > x;
-        cout << blck << endl << blck.toString(true) << endl << blck.solve();
-    }
-
 
     //Qexpr<Qwhole> qwExpr(y - x), qxwExpr = qwExpr + z + _3;
     //QuboCompiler noFnlCmplr(true); qxwExpr.compile(noFnlCmplr);
@@ -326,7 +266,7 @@ int main(int argc, const char * argv[])
     //cout << endl << " resulting in :" << endl << qxwExpr.solve() << endl;
 
 
-    /*UTestQbit utQbit;
+    UTestQbit utQbit;
     utQbit.runAll(cout);
     UTestQbool utQbool;
     utQbool.runAll(cout);
@@ -337,12 +277,11 @@ int main(int argc, const char * argv[])
     UTestQint utQint;
     utQint.runAll(cout);
 
-//    pymain();
-
-//    testPNcandidates();
+    //    testPNcandidates();
     _lft("main", "*** END ***");
     return 0;
 }
+
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
