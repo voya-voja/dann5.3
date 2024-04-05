@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A227E6932BBC408700306B92 /* UTestQint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A227E6922BBC408700306B92 /* UTestQint.cpp */; };
 		A25189192BB9B3FD00FDEAED /* PNGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25189122BB9B3FD00FDEAED /* PNGen.cpp */; };
 		A251891A2BB9B3FD00FDEAED /* UTestQwhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25189132BB9B3FD00FDEAED /* UTestQwhole.cpp */; };
 		A251891B2BB9B3FD00FDEAED /* UTestQbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25189142BB9B3FD00FDEAED /* UTestQbit.cpp */; };
@@ -67,6 +68,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A227E6922BBC408700306B92 /* UTestQint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQint.cpp; path = ../UTestQint.cpp; sourceTree = "<group>"; };
+		A227E6942BBC40A900306B92 /* UTestQint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UTestQint.hpp; path = ../UTestQint.hpp; sourceTree = "<group>"; };
 		A25189122BB9B3FD00FDEAED /* PNGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PNGen.cpp; path = ../PNGen.cpp; sourceTree = "<group>"; };
 		A25189132BB9B3FD00FDEAED /* UTestQwhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQwhole.cpp; path = ../UTestQwhole.cpp; sourceTree = "<group>"; };
 		A25189142BB9B3FD00FDEAED /* UTestQbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbit.cpp; path = ../UTestQbit.cpp; sourceTree = "<group>"; };
@@ -181,6 +184,7 @@
 				A25189212BB9B42400FDEAED /* UTestQbin.hpp */,
 				A25189242BB9B42400FDEAED /* UTestQbit.h */,
 				A25189232BB9B42400FDEAED /* UTestQbool.hpp */,
+				A227E6942BBC40A900306B92 /* UTestQint.hpp */,
 				A25189222BB9B42400FDEAED /* UTestQwhole.hpp */,
 				A25189252BB9B42400FDEAED /* UTestULint.hpp */,
 			);
@@ -196,6 +200,7 @@
 				A25189172BB9B3FD00FDEAED /* UTestQbin.cpp */,
 				A25189142BB9B3FD00FDEAED /* UTestQbit.cpp */,
 				A25189152BB9B3FD00FDEAED /* UTestQbool.cpp */,
+				A227E6922BBC408700306B92 /* UTestQint.cpp */,
 				A25189132BB9B3FD00FDEAED /* UTestQwhole.cpp */,
 				A25189182BB9B3FD00FDEAED /* UTestULint.cpp */,
 			);
@@ -412,6 +417,7 @@
 				A25189722BB9B4CF00FDEAED /* Qbool.cpp in Sources */,
 				A251897E2BB9B4CF00FDEAED /* Qblock.cpp in Sources */,
 				A251896D2BB9B4CF00FDEAED /* Logger.cpp in Sources */,
+				A227E6932BBC408700306B92 /* UTestQint.cpp in Sources */,
 				A251897B2BB9B4CF00FDEAED /* ULint.cpp in Sources */,
 				A251891E2BB9B3FD00FDEAED /* UTestQbin.cpp in Sources */,
 				A251897A2BB9B4CF00FDEAED /* Qwhole.cpp in Sources */,

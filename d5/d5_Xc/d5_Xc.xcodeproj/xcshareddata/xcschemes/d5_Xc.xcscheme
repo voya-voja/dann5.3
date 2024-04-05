@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A2882ACA2BB87127003E2372"
-               BuildableName = "libd5.cpython-310-darwin.dylib"
+               BuildableName = "d5.cpython-310-darwin.so"
                BlueprintName = "d5.cpython-310-darwin"
                ReferencedContainer = "container:d5_Xc.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A2882ACA2BB87127003E2372"
-            BuildableName = "libd5.cpython-310-darwin.dylib"
+            BuildableName = "d5.cpython-310-darwin.so"
             BlueprintName = "d5.cpython-310-darwin"
             ReferencedContainer = "container:d5_Xc.xcodeproj">
          </BuildableReference>
