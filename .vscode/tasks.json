@@ -17,10 +17,11 @@
 				"-I/usr/include/python3.10",
 				"-I/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
 				"-I${workspaceFolder}/dann5/include",
-				"-I${workspaceFolder}/dann5/ocean/include"
+				"-I${workspaceFolder}/dann5/ocean/include",
+				"-I${workspaceFolder}/dann5/qiskit/include"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/d5o_ta"
+				"cwd": "${workspaceFolder}/d5_ta"
 			},
 			"problemMatcher": {
 				"base": "$gcc",
@@ -31,7 +32,7 @@
 		},
 		{
 			"type": "cppbuild",
-			"label": "g++ build build/d5o_ta",
+			"label": "g++ build d5_ta",
 			"command": "/usr/bin/g++",
 			"args": [
 				"-fdiagnostics-color=always",
@@ -39,19 +40,21 @@
 				"-g",
 				"${workspaceFolder}/dann5/source/*.cpp",
 				"${workspaceFolder}/dann5/ocean/source/*.cpp",
-				"${workspaceFolder}/d5o_ta/*.cpp",
+				"${workspaceFolder}/dann5/qiskit/source/*.cpp",
+				"${workspaceFolder}/d5_ta/*.cpp",
 				"-o",
-				"${workspaceFolder}/../build/d5o_ta",
+				"${workspaceFolder}/../build/d5_ta",
 				"-I/usr/include/eigen3",
 				"-I/usr/include/python3.10",
 				"-I/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
 				"-I${workspaceFolder}/dann5/include",
 				"-I${workspaceFolder}/dann5/ocean/include",
+				"-I${workspaceFolder}/dann5/qiskit/include",
 				"-L/usr/lib/x86_64-linux-gnu/",
 				"-lpython3.10"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/d5o_ta"
+				"cwd": "${workspaceFolder}/d5_ta"
 			},
 			"problemMatcher": {
 				"base": "$gcc",
@@ -62,7 +65,7 @@
 		},
 		{
 			"type": "cppbuild",
-			"label": "g++ build d5o2 library",
+			"label": "g++ build d5 library",
 			"command": "/usr/bin/g++",
 			"args": [
 				"-fdiagnostics-color=always",
@@ -70,20 +73,18 @@
 				"-shared",
 				"-fPIC",
 				"${workspaceFolder}/dann5/source/*.cpp",
-				"${workspaceFolder}/dann5/ocean/source/*.cpp",
-				"${workspaceFolder}/d5o/*.cpp",
+				"${workspaceFolder}/d5/d5main.cpp",
 				"-o",
-				"${workspaceFolder}/../build/d5o2.so",
+				"${workspaceFolder}/../build/d5.so",
 				"-I/usr/include/eigen3",
 				"-I/usr/include/python3.10",
 				"-I/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
 				"-I${workspaceFolder}/dann5/include",
-				"-I${workspaceFolder}/dann5/ocean/include",
 				"-L/usr/lib/x86_64-linux-gnu/",
 				"-lpython3.10"
 			],
 			"options": {
-				"cwd": "${workspaceFolder}/d5o_ta"
+				"cwd": "${workspaceFolder}/d5o"
 			},
 			"problemMatcher": {
 				"base": "$gcc",
@@ -93,26 +94,82 @@
 			"detail": "compiler: /usr/bin/g++"
 		},
 		{
-			"type": "cmake",
-			"label": "CMake: configure",
-			"command": "configure",
-			"problemMatcher": [],
-			"detail": "CMake template configure task",
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
+			"type": "cppbuild",
+			"label": "g++ build d5o library",
+			"command": "/usr/bin/g++",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-std=c++17",
+				"-shared",
+				"-fPIC",
+				"${workspaceFolder}/dann5/source/Qcell.cpp",
+				"${workspaceFolder}/dann5/source/QcellOps.cpp",
+				"${workspaceFolder}/dann5/source/Qdef.cpp",
+				"${workspaceFolder}/dann5/source/Qevaluation.cpp",
+				"${workspaceFolder}/dann5/source/Qnary.cpp",
+				"${workspaceFolder}/dann5/source/QnaryOp.cpp",
+				"${workspaceFolder}/dann5/source/Qop.cpp",
+				"${workspaceFolder}/dann5/source/Qstatement.cpp",
+				"${workspaceFolder}/dann5/ocean/source/*.cpp",
+				"${workspaceFolder}/d5o/d5o_main.cpp",
+				"-o",
+				"${workspaceFolder}/../build/d5o.so",
+				"-I/usr/include/eigen3",
+				"-I/usr/include/python3.10",
+				"-I/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
+				"-I${workspaceFolder}/dann5/include",
+				"-I${workspaceFolder}/dann5/ocean/include",
+				"-L/usr/lib/x86_64-linux-gnu/",
+				"-lpython3.10"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}/d5o"
+			},
+			"problemMatcher": {
+				"base": "$gcc",
+				"fileLocation": "absolute"
+			},
+			"group": "build",
+			"detail": "compiler: /usr/bin/g++"
 		},
 		{
-			"type": "cmake",
-			"label": "CMake: build",
-			"command": "build",
-			"targets": [
-				""
+			"type": "cppbuild",
+			"label": "g++ build d5q library",
+			"command": "/usr/bin/g++",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-std=c++17",
+				"-shared",
+				"-fPIC",
+				"${workspaceFolder}/dann5/source/Qcell.cpp",
+				"${workspaceFolder}/dann5/source/QcellOps.cpp",
+				"${workspaceFolder}/dann5/source/Qdef.cpp",
+				"${workspaceFolder}/dann5/source/Qevaluation.cpp",
+				"${workspaceFolder}/dann5/source/Qnary.cpp",
+				"${workspaceFolder}/dann5/source/QnaryOp.cpp",
+				"${workspaceFolder}/dann5/source/Qop.cpp",
+				"${workspaceFolder}/dann5/source/Qstatement.cpp",
+				"${workspaceFolder}/dann5/qiskit/source/*.cpp",
+				"${workspaceFolder}/d5q/d5q_main.cpp",
+				"-o",
+				"${workspaceFolder}/../build/d5q.so",
+				"-I/usr/include/eigen3",
+				"-I/usr/include/python3.10",
+				"-I/home/voya/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
+				"-I${workspaceFolder}/dann5/include",
+				"-I${workspaceFolder}/dann5/qiskit/include",
+				"-L/usr/lib/x86_64-linux-gnu/",
+				"-lpython3.10"
 			],
+			"options": {
+				"cwd": "${workspaceFolder}/d5q"
+			},
+			"problemMatcher": {
+				"base": "$gcc",
+				"fileLocation": "absolute"
+			},
 			"group": "build",
-			"problemMatcher": [],
-			"detail": "CMake template build task"
+			"detail": "compiler: /usr/bin/g++"
 		}
 	]
 }

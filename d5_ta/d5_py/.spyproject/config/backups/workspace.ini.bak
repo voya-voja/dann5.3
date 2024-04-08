@@ -1,0 +1,12 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+project_type = empty-project-type
+recent_files = ['basic_types.py', 'nikola_test.py', 'PNs.txt', 'shipping-sample.py', 'd5o2_tests.py', 'qiskitBasic.py', 'd5qskt.py', 'UTest_d5o.py']
+
+[main]
+version = 0.2.0
+recent_files = []
+
