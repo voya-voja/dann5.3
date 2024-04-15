@@ -151,13 +151,11 @@ namespace dann5 {
         // same value Q expression with nxor logic, e.g. for Qbit ids 'x' and 'y'
         // the expression is 'x' ^ 'y'
         Qexpr<Qbit> alike(const Qbit& right) const;
-        Qexpr<Qbit> operator*=(const Qbit& right) const { return alike(right); };
         Qexpr<Qbit> nxor(const Qbit& right) const { return alike(right); };
 
         // same value Q expression with nxor logic, e.g. for Qbit id 'x' and [right]
         // object the expression is 'x' ^ [right]
         Qexpr<Qbit> alike(const Qexpr<Qbit>& right) const;
-        Qexpr<Qbit> operator*=(const Qexpr<Qbit>& right) const { return alike(right); };
         Qexpr<Qbit> nxor(const Qexpr<Qbit>& right) const { return alike(right); };
 
         /*** Comparison ***/

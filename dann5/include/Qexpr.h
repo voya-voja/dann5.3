@@ -268,8 +268,6 @@ namespace dann5 {
         Qexpr<Q_Type> alike(const Q_Type& right) const {
             return bitwiselogicOp(right.clone(), Qnxor::cMark());
         };
-        Qexpr<Q_Type> operator*=(const Q_Type& right) const
-                                                    { return alike(right); };
         Qexpr<Q_Type> nxor(const Q_Type& right) const { return alike(right); };
 
         // Update Q expression with nxor logic, e.g. for an argument with id 'x'
@@ -277,7 +275,6 @@ namespace dann5 {
         Qexpr<Q_Type> alike(const Qexpr<Q_Type>& right) const {
             return bitwiselogicOp(right.rootDef()->clone(), Qnxor::cMark());
         };
-        Qexpr<Q_Type> operator*=(const Qexpr<Q_Type>& right) const { return alike(right); };
         Qexpr<Q_Type> nxor(const Qexpr<Q_Type>& right) const { return alike(right); };
 
         /*** Comparison ***/

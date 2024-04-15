@@ -168,6 +168,9 @@
     <ClCompile Include="UTestQint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\dann5\include\Factory.h">
@@ -309,6 +312,9 @@
       <Filter>Header Files\dann5\ocean</Filter>
     </ClInclude>
     <ClInclude Include="UTestQint.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

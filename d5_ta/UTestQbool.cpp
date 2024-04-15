@@ -37,14 +37,14 @@ void UTestQbool::runAll(ostream& out)
 void UTestQbool::initialization(ostream& out)
 {
     // Default constructor initializes Q bool with an empty id and
-    // supperposition value, plus initialize Q bool with a given id and
-    // supperposition value
+    // superposition value, plus initialize Q bool with a given id and
+    // superposition value
     Qbool dcQbool, idQbool("id");
     out << "Qbool default constructor: " << dcQbool.toString()
-        << ", creates an object with empty id, i.e. '',\n"
-        << " and it is set to superposition state, i.e. S" << endl
-        << "Qbool with an id only: " << idQbool.toString()
-        << " is set to supportposition state, too." << endl;
+        << ", creates an object with empty id, i.e. '',"
+        << " which is set to superposition state, i.e. S" << endl
+        << "Qbool with an id in quantum space as 'id' will be represented as " << idQbool.toString()
+        << " is set to superposition state, too." << endl;
     
 
     // Initialize Q bool with a given id and value.
@@ -61,17 +61,17 @@ void UTestQbool::initialization(ostream& out)
     out << endl << "'b' was set to 5, but it is " << bIsS.toString() << endl;
 
     Qbool cQbool(aIsT);
-    out << "A copy of 'a' has id '" << cQbool.id() << "' and value "
-        << to_string(cQbool.value()) << endl;
+    out << "A copy of 'a' has id '" << cQbool.id() << "', value "
+        << to_string(cQbool.value()) << " and representation " << cQbool << endl;
     cQbool.value(4);
-    out << "After copy of 'a' is set to 4 => " << cQbool.toString() << endl;
+    out << "After the copy of 'a' is set to 4 => " << cQbool.toString() << endl;
     
     cQbool.value(Qbool::cFalse);
-    out << "After copy of 'a' is set to 'Qbool::cFalse' => "
+    out << "After the copy of 'a' is set to 'Qbool::cFalse' => "
         << cQbool.toString() << endl;
     
     cQbool.value(cSuperposition);
-    out << "After copy of 'a' is set to S => " << cQbool.toString() << endl;
+    out << "After the copy of 'a' is set to S => " << cQbool.toString() << endl;
 }
 
 void UTestQbool::logical(ostream& out)
@@ -83,20 +83,20 @@ void UTestQbool::logical(ostream& out)
     out << q;
     QuboCompiler compiler; xI.compile(compiler);
     out << "Expression '!x', NOT (invert) x is: " << xI << endl
-        << " decomposed logic: " << xI.toString(true) << endl
+        << " Dann5 virtual code: " << xI.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo() << "'" << endl
         << " resulting in :" << endl << xI.solve() << endl;
     Qexpr<Qbool> qbExpr = x & y;
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression AND: " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
     qbExpr = x | y;
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression OR: " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 }
@@ -128,22 +128,22 @@ void UTestQbool::comparison(ostream& out)
     Qexpr<Qbool> qbExpr = x ^ y;
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression UNLIKE (XOR): " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
     
-    qbExpr = x *= y;
+    qbExpr = x.alike(y);
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression ALIKE (NXOR): " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
 
-    qbExpr = (_T & (x or y) ^ (_F *= (y | x)));
+    qbExpr = (_T & (x or y) ^ (_F.alike(y | x)));
     compiler.reset(); qbExpr.compile(compiler);
     QuboCompiler noFnlCmplr(false); qbExpr.compile(noFnlCmplr);
     out << "Complex Expression" << endl << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
         << " & finalized Qubo is '" << compiler.qubo() << "'" << endl
         << " resulting in :" << endl << qbExpr.solve() << endl;
@@ -182,7 +182,7 @@ void UTestQbool::assignment(ostream& out)
         << " It's Qubo is '" << compiler.qubo() << "'" << endl;
     out << "resulting in solutions:"<< endl << qboolAssign.solve() << endl;
     
-    Qbool b0("0b"), b1("1b", 'F'), b2("2b", 33), b3("3b"), b4("4b"),
+    Qbool b0("b0"), b1("b1", 'F'), b2("b2", 33), b3("b3"), b4("b4"),
           br("br", Qbool::cTrue);
     qboolAssign = br = ((b3 != b4) & (b2 == b0)) | b1;
     compiler.reset(); qboolAssign.compile(compiler);

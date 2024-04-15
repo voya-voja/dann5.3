@@ -159,13 +159,11 @@ namespace dann5 {
         // same value Q expression with nXor logic, e.g. for Qbool ids 'x' and 'y'
         // the expression is 'x' || 'y'
         Qexpr<Qbool> alike(const Qbool& right) const;
-        Qexpr<Qbool> operator*=(const Qbool& right) const { return alike(right); };
         Qexpr<Qbool> nxor(const Qbool& right) const { return alike(right); };
 
         // same value Q expression with nXor logic, e.g. for arguments
         // 'x' and [right] the expression is 'x' || [right root]
         Qexpr<Qbool> alike(const Qexpr<Qbool>& right) const;
-        Qexpr<Qbool> operator*=(const Qexpr<Qbool>& right) const { return alike(right); };
         Qexpr<Qbool> nxor(const Qexpr<Qbool>& right) const { return alike(right); };
 
         // unlike Q expression with xor logic, e.g. for Qbool ids 'x' and 'y'

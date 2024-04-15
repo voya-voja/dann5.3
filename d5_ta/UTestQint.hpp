@@ -6,14 +6,14 @@
 #ifndef UTestQint_hpp
 #define UTestQint_hpp
 
-#include <iostream>
+#include "UTest.h"
 
 using namespace std;
 
 namespace dann5test
 {
     // Unit tests of Qint operations
-    class UTestQint
+    class UTestQint : public UTest
     {
     public:
         // Default constructor
@@ -35,6 +35,11 @@ namespace dann5test
  
         // use Qint to solve factorial problem
         void factorial(ostream& out);
+    protected:
+        // Provides a unique prefix of the test file name
+        virtual string filePrefix() { return "qint"; };
+
+    private:
     };
 };
 #endif /* UTestQint_hpp */

@@ -651,7 +651,8 @@ namespace dann5 {
         // Sets solution values from the evaluation set for a its carryover 
         // operation
         virtual void add(const Qevaluations& evaluations) {
-             mpCarry->add(evaluations);
+            QcellOp::add(evaluations);
+            mpCarry->add(evaluations);
         };
 
         // get carry cell output

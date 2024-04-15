@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../../eigen-master;../../../../AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;../../../../AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../dann5/qiskit/include;../../eigen-master;../../../../AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;../../../../AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -185,6 +185,7 @@
     <ClCompile Include="..\dann5\source\ULint.cpp" />
     <ClCompile Include="d5_ta.cpp" />
     <ClCompile Include="PNGen.cpp" />
+    <ClCompile Include="UTest.cpp" />
     <ClCompile Include="UTestQbin.cpp" />
     <ClCompile Include="UTestQbit.cpp" />
     <ClCompile Include="UTestQbool.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="..\dann5\qiskit\include\Circuits.h" />
     <ClInclude Include="..\dann5\qiskit\include\QiskitSolver.h" />
     <ClInclude Include="PNGen.h" />
+    <ClInclude Include="UTest.h" />
     <ClInclude Include="UTestQbin.hpp" />
     <ClInclude Include="UTestQbit.h" />
     <ClInclude Include="UTestQbool.hpp" />

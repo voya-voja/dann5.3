@@ -1,6 +1,6 @@
 //
 //  UTestQbin.hpp
-//  d5o_ta_Xc
+//  d5o_ta
 //
 //  Created by Nebojsa Vojinovic on 2022-12-24.
 //
@@ -8,14 +8,14 @@
 #ifndef UTestQbin_hpp
 #define UTestQbin_hpp
 
-#include <iostream>
+#include "UTest.h"
 
 using namespace std;
 
 namespace dann5test
 {
     // Unit tests of Qbin operations
-    class UTestQbin
+    class UTestQbin : public UTest
     {
     public:
         // Default constructor
@@ -43,6 +43,9 @@ namespace dann5test
         void vertex(ostream& out);
 
     protected:
+        // Provides a unique prefix of the test file name
+        virtual string filePrefix() { return "qbin"; };
+
     private:
     };
 };

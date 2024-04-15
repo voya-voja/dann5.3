@@ -97,21 +97,21 @@ void UTestQwhole::bitwise(ostream& out)
  
     QuboCompiler compiler; xI.compile(compiler);
     out << "Expression '~x', INVERT (not) x is: " << xI << endl
-        << " decomposed logic: " << xI.toString(true) << endl;
+        << " Dann5 virtual code: " << xI.toString(true) << endl;
     out << " It's Qubo is '" << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << xI.solve() << endl;
 
     Qexpr<Qbin> qbExpr = x & y;
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression AND: " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qbExpr.solve() << endl;
 
     qbExpr = x.nand(y);
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression NAND: " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -122,14 +122,14 @@ void UTestQwhole::bitwise(ostream& out)
     qbExpr = x | y;
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression OR: " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qbExpr.solve() << endl;
 
     qbExpr = x.nor(y);
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression NOR: " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -140,14 +140,14 @@ void UTestQwhole::bitwise(ostream& out)
     qbExpr = x ^ y;
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression UNLIKE (XOR): " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qbExpr.solve() << endl;
 
     qbExpr = x.nxor(y);
     compiler.reset(); qbExpr.compile(compiler);
     out << "Expression ALIKE (NXOR): " << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo()<< "'" << endl;
     out << " resulting in :" << endl << qbExpr.solve() << endl;
 
@@ -156,11 +156,11 @@ void UTestQwhole::bitwise(ostream& out)
         << " decomposed: " << x.toString(true) << endl
         << " decomposed: " << y.toString(true) << endl << endl;
 
-    qbExpr = (_1 & (x.nand(y))) ^ (Qbin(_0) *= (y | x));
+    qbExpr = (_1 & (x.nand(y))) ^ (Qbin(_0).alike(y | x));
     QuboCompiler noFnlCmplr(false); qbExpr.compile(noFnlCmplr);
     compiler.reset(); qbExpr.compile(compiler);
     out << "Complex Expression" << endl << qbExpr << endl
-        << " decomposed logic: " << qbExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qbExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -174,7 +174,7 @@ void UTestQwhole::arithmetic(ostream& out)
     QuboCompiler noFnlCmplr(false); qwExpr.compile(noFnlCmplr);
     QuboCompiler compiler; qwExpr.compile(compiler);
     out << "Addition Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -184,7 +184,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
     out << "Addition Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -194,7 +194,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwwExpr.compile(noFnlCmplr);
     compiler.reset(); qwwExpr.compile(compiler);
     out << "Addition Expression" << endl << qwwExpr << endl
-        << " decomposed logic: " << qwwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -205,7 +205,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
     out << "Addition Expression" << endl << qxwExpr << endl
-        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -216,7 +216,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
     out << "Addition Expression" << endl << qxwExpr << endl
-        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -227,7 +227,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
     compiler.reset(); qwxExpr.compile(compiler);
     out << "Addition Expression" << endl << qwxExpr << endl
-        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -239,7 +239,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Addition Expression" << endl << qxxExpr << endl
-        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -252,7 +252,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Addition Expression" << endl << qxxExpr << endl
-        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -263,7 +263,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
     out << "Subtraction Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -274,7 +274,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
     compiler.reset(); qwxExpr.compile(compiler);
     out << "Subtraction Expression" << endl << qwxExpr << endl
-        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -285,7 +285,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
     out << "Subtraction Expression" << endl << qxwExpr << endl
-        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -297,7 +297,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); blckSub.compile(noFnlCmplr);
     compiler.reset(); blckSub.compile(compiler);
     out << "Subtraction Expression" << endl << blckSub << endl
-        << " decomposed logic: " << blckSub.toString(true) << endl
+        << " Dann5 virtual code: " << blckSub.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -308,7 +308,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Subtraction Expression" << endl << qxxExpr << endl
-        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -318,7 +318,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
     out << "Multiplication Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -330,7 +330,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
     compiler.reset(); qwxExpr.compile(compiler);
     out << "Multiplication Expression" << endl << qwxExpr << endl
-        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -341,7 +341,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
     out << "Multiplication Expression" << endl << qxwExpr << endl
-        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -353,7 +353,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Multiplication Expression" << endl << qxxExpr << endl
-        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -366,7 +366,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
     out << "Division Expression" << endl << qwExpr << endl
-        << " decomposed logic: " << qwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -380,7 +380,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); byDx.compile(noFnlCmplr);
     compiler.reset(); byDx.compile(compiler);
     out << "Division Expression" << endl << byDx << endl
-        << " decomposed logic: " << byDx.toString(true) << endl
+        << " Dann5 virtual code: " << byDx.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -395,7 +395,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxwExpr.compile(noFnlCmplr);
     compiler.reset(); qxwExpr.compile(compiler);
     out << "Division Expression" << endl << qxwExpr << endl
-        << " decomposed logic: " << qxwExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxwExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -406,7 +406,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qwxExpr.compile(noFnlCmplr);
     compiler.reset(); qwxExpr.compile(compiler);
     out << "Division Expression" << endl << qwxExpr << endl
-        << " decomposed logic: " << qwxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qwxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -417,7 +417,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); qxxExpr.compile(noFnlCmplr);
     compiler.reset(); qxxExpr.compile(compiler);
     out << "Division Expression" << endl << qxxExpr << endl
-        << " decomposed logic: " << qxxExpr.toString(true) << endl
+        << " Dann5 virtual code: " << qxxExpr.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -433,7 +433,7 @@ void UTestQwhole::arithmetic(ostream& out)
     noFnlCmplr.reset(); blck.compile(noFnlCmplr);
     compiler.reset(); blck.compile(compiler);
     out << "Subtraction Expression" << endl << blck << endl
-        << " decomposed logic: " << blck.toString(true) << endl
+        << " Dann5 virtual code: " << blck.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -458,7 +458,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     QuboCompiler noFnlCmplr(false); neBlck.compile(noFnlCmplr);
     QuboCompiler compiler; neBlck.compile(compiler);
     out << "Qwhole x != y " << endl << neBlck << endl
-        << " decomposed logic: " << neBlck.toString(true) << endl
+        << " Dann5 virtual code: " << neBlck.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -477,7 +477,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     noFnlCmplr.reset(); blck2.compile(noFnlCmplr);
     compiler.reset(); blck2.compile(compiler);
     out << "Qwhole x < y " << endl << blck2 << endl
-        << " decomposed logic: " << blck2.toString(true) << endl
+        << " Dann5 virtual code: " << blck2.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -496,7 +496,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     noFnlCmplr.reset(); blck3.compile(noFnlCmplr);
     compiler.reset(); blck3.compile(compiler);
     out << "Qwhole x >= y " << endl << blck3 << endl
-        << " decomposed logic: " << blck3.toString(true) << endl
+        << " Dann5 virtual code: " << blck3.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -515,7 +515,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     noFnlCmplr.reset(); blck1.compile(noFnlCmplr);
     compiler.reset(); blck1.compile(compiler);
     out << "Qwhole x <= y " << endl << blck1 << endl
-        << " decomposed logic: " << blck1.toString(true) << endl
+        << " Dann5 virtual code: " << blck1.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -534,7 +534,7 @@ void UTestQwhole::comparisonLogic(ostream& out)
     noFnlCmplr.reset(); blck4.compile(noFnlCmplr);
     compiler.reset(); blck4.compile(compiler);
     out << "Qwhole x > y " << endl << blck4 << endl
-        << " decomposed logic: " << blck4.toString(true) << endl
+        << " Dann5 virtual code: " << blck4.toString(true) << endl
         << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl;
     out << endl << " & finalized Qubo is '"
         << compiler.qubo()<< "'" << endl;
@@ -835,7 +835,7 @@ void UTestQwhole::assignment(ostream& out)
     QuboCompiler noFnlCmplr(false); blck.compile(noFnlCmplr);
     compiler.reset(); blck.compile(compiler);
     out << "Subtraction Expression" << endl << blck << endl
-        << " decomposed logic: " << blck.toString(true) << endl;
+        << " Dann5 virtual code: " << blck.toString(true) << endl;
     out << " It's generic Qubo is '" << noFnlCmplr.qubo() << "'" << endl
         << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
     out  << " resulting in :" << endl << blck.solve() << endl;

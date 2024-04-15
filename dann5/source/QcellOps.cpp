@@ -159,7 +159,7 @@ Qvalue Qeq::calculate(const Qvalues& values) const
 
 void Qeq::validate(const Qcell::Sp& pOut, const Qcell::Sp& pIn)
 {
-	/*Qvalue outValue = pOut->value(), inValue = pIn->value();
+	Qvalue outValue = pOut->value(), inValue = pIn->value();
 	if (outValue != inValue)
 	{
 		if (outValue == cSuperposition)
@@ -171,7 +171,7 @@ void Qeq::validate(const Qcell::Sp& pOut, const Qcell::Sp& pIn)
 				+ pOut->id() + " = " + to_string(outValue)
 				+ " can not ne equal to input "
 				+ pIn->id() + " = " + to_string(outValue));
-	}*/
+	}
 }
 
 
@@ -240,7 +240,8 @@ void Qand::operands(const Qdef::Sp& pOut, const Qdefs& ins)
 void Qand::output(const Qdef::Sp& pOut, size_t forBit)
 {
 	Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
-	pCellOut->value(value());
+	if(pCellOut->value() == cSuperposition)
+		pCellOut->value(value());
 	QcellOp::output(pOut, forBit);
 }
 
@@ -324,7 +325,8 @@ void Qnor::operands(const Qdef::Sp& pOut, const Qdefs& ins)
 void Qnor::output(const Qdef::Sp& pOut, size_t forBit)
 {
 	Qcell::Sp pCellOut = dynamic_pointer_cast<Qcell>(pOut);
-	pCellOut->value(value());
+	if (pCellOut->value() == cSuperposition)
+		pCellOut->value(value());
 	Qcell2outOp::output(pOut, forBit);
 }
 

@@ -8,14 +8,14 @@
 #ifndef UTestQbool_hpp
 #define UTestQbool_hpp
 
-#include <iostream>
+#include "UTest.h"
 
 using namespace std;
 
 namespace dann5test
 {
     // Unit tests of Qbit operations
-    class UTestQbool
+    class UTestQbool : public UTest
     {
     public:
         // Default constructor
@@ -39,6 +39,9 @@ namespace dann5test
         void vertex(ostream& out);
 
     protected:
+        // Provides a unique prefix of the test file name
+        virtual string filePrefix() { return "qbool"; };
+
     private:
     };
 };

@@ -6,14 +6,14 @@
 #ifndef UTestQwhole_hpp
 #define UTestQwhole_hpp
 
-#include <iostream>
+#include "UTest.h"
 
 using namespace std;
 
 namespace dann5test
 {
     // Unit tests of Qwhole operations
-    class UTestQwhole
+    class UTestQwhole : public UTest
     {
     public:
         // Default constructor
@@ -75,6 +75,11 @@ namespace dann5test
 
         // use p = 6 * s + 1 algorithm to calculate prime numbers
         void p6sp1(ostream& out);
+    protected:
+        // Provides a unique prefix of the test file name
+        virtual string filePrefix() { return "qwhole"; };
+
+    private:
     };
 };
 #endif /* UTestQwhole_hpp */
