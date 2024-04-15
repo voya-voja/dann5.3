@@ -86,8 +86,8 @@ setup(
     include_package_data=True,
     package_data={
         'dann5': ['d5.cp310-win_amd64.pyd', 'd5o.cp310-win_amd64.pyd', 'd5q.cp310-win_amd64.pyd',
-                  'd5o2.cpython-310-darwin.so'
-                  'd5o2.so'],
+                  'd5.cpython-310-darwin.so', 'd5o.cpython-310-darwin.so', 'd5q.cpython-310-darwin.so',
+                  'd5.so', 'd5o.so', 'd5q.so'],
     },
     install_requires=['pybind11'],
     python_requires=">=3.10",

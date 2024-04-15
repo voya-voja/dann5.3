@@ -346,6 +346,45 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::self / Qwhole(), "instantiate Q expression with or logic, e.g. for Qwhole expression with id 'x' and [right] Qwhole object the expression is 'x' * [right]");
 
 
+	/*=== QintExpr ===*/
+	py::class_<Qexpr<Qint>, Qexpr<Qint>::Sp, Qexpression>(m, "QintExpr",
+		R"pbdoc( Instantiation of quantum whole expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qop::Sp&>())
+		.def(py::init<const Qexpr<Qint>&>())
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' != [right root]")
+
+		.def(py::self > py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' > 'y'")
+		.def(py::self > Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' > [right root]")
+
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' >= 'y'")
+		.def(py::self >= Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' >= [right root]")
+
+		.def(py::self < py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' < 'y'")
+		.def(py::self >= Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' < [right root]")
+
+		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' <= 'y'")
+		.def(py::self >= Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' <= [right root]")
+
+		/*** Arithmetic ***/
+		.def(py::self + py::self, "instantiate Q expression with and logic, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' + 'y'")
+		.def(py::self + Qint(), "instantiate Q expression with and logic, e.g. for Qint expression with id 'x' and [right] Qint object the expression is 'x' + [right]")
+
+		.def(py::self - py::self, "instantiate Q expression with or logic, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' - 'y'")
+		.def(py::self - Qint(), "instantiate Q expression with or logic, e.g. for Qint expression with id 'x' and [right] Qint object the expression is 'x' - [right]")
+
+		.def(py::self* py::self, "instantiate Q expression with or logic, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' * 'y'")
+		.def(py::self* Qint(), "instantiate Q expression with or logic, e.g. for Qint expression with id 'x' and [right] Qint object the expression is 'x' * [right]")
+
+		.def(py::self / py::self, "instantiate Q expression with or logic, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' * 'y'")
+		.def(py::self / Qint(), "instantiate Q expression with or logic, e.g. for Qint expression with id 'x' and [right] Qint object the expression is 'x' * [right]");
+
 	/*--- Qassign.h definitions ---*/
 	py::class_<Qassignment, Qassignment::Sp, Qstatement>(m, "Qassignment",
 		R"pbdoc( Quantum assignment of an expression to a result)pbdoc")
@@ -475,6 +514,35 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::self >= Qwhole(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qwhole the expression is 'x' <= [right root]");
 
 
+	/*=== QintAssign ===*/
+	py::class_<Qassign<Qint>, Qassign<Qint>::Sp, Qassignment>(m, "QintAssign",
+		R"pbdoc( Instantiation of quantum whole expression)pbdoc")
+		.def(py::init<>())
+		.def(py::init<const Qint&>())
+		.def(py::init<const Qint&, const Qexpr<Qint>&>())
+		.def(py::init<const Qassign<Qint>&>())
+
+		.def("assignee", [](Qassign<Qint>& self) { return *dynamic_pointer_cast<Qint>(self.assignee()); }, "returns a reference to the Qint assignee")
+		.def("assignee", [](Qassign<Qint>& self, const Qint& assgn) { return self.assignee(assgn.clone()); }, "set a new assignee Qint assignee")
+
+		/*** Comparison ***/
+		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' == 'y'")
+		.def(py::self == Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' == [right root]")
+
+		.def(py::self != py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' != 'y'")
+		.def(py::self != Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' != [right root]")
+
+		.def(py::self > py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' > 'y'")
+		.def(py::self > Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' > [right root]")
+
+		.def(py::self >= py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' >= 'y'")
+		.def(py::self >= Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' >= [right root]")
+
+		.def(py::self < py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' < 'y'")
+		.def(py::self >= Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' < [right root]")
+
+		.def(py::self <= py::self, "instantiate Q comparison expression, e.g. for Qint expression with id 'x' and 'y' the expression is 'x' <= 'y'")
+		.def(py::self >= Qint(), "instantiate Q comparison expression, e.g. for arguments 'x' and [right] Qint the expression is 'x' <= [right root]");
 
 	/*--- Qblock.h definitions---*/
 	py::class_<Qblock, Qblock::Sp, Qstatement>(m, "Qblock",
@@ -920,15 +988,14 @@ PYBIND11_MODULE(d5, m) {
 
 		.def("Unknown", []() { return Qint::cUnknown; }, R"pbdoc(Qint is unknown, if any of its Q bits is in superposition state.)pbdoc")
 
-		//.def(py::init<>())
-		.def(py::init<const Qint&>())
-		.def(py::init<const string&>())
-		.def(py::init<size_t, const string&>())
-		.def(py::init<const string&, const Qbits&>())
-		//		.def(py::init<const string&, long long>())
-		//      .def(py::init<const string&, const Bits&, bool>())
-
-		.def(py::init<size_t, const string&, const Bits&>())
+		.def(py::init<>(), "Default constructor initializes Q integer an empty number")
+		.def(py::init<const Qint&>(), "a copy constructor")
+		.def(py::init<const string&>(), "Initialize a quantum integer instance with a given id and 0 quantum bits.")
+		.def(py::init<size_t, const string&>(), "Initialize quantum integer instance with specified number of quantum bits and a given id, but the unknown value.")
+		.def(py::init<const string&, const Qbits&>(), "Initialize Qint isntance with a given id and a given Qbit vector.")
+		.def(py::init<const string&, const long long&>(), "Initialize Qint instance with a given id and a deterministic value as a 64 bit integer.")
+		.def(py::init<const string&, const long long&, bool>(), "Initialize Qint instance with a given id and a deterministic value as a 64 bit integer, when 3rd .")
+		.def(py::init<size_t, const string&, const Bits&>(), "Initialize Q int of given size, with a given id and a deterministic value as a Bits (bitset).")
 
 		.def("value", static_cast<long long (Qbin::*)()>(&Qint::operator long long), "get long long value")
 		.def("value", static_cast<const long long (Qbin::*)() const>(&Qint::operator const long long), "get long long value")

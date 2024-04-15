@@ -9,7 +9,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/../build/d5o_ta",
+            "program": "${workspaceFolder}/../build/d5_ta",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${fileDirname}",

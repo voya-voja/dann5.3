@@ -598,15 +598,16 @@ def addTest():
     circuit = compiler.circuit()
     print("\n {} \n\n {}\n\n{}\n".format(aA, aA.toString(True),   
                                                        circuit.draw()))
+    print(Solver.Active().qiskitCircuit(circuit).draw())
     print("Active Qiskit Aer simulator solutions: \n{}\n".format(
                                                         aA.solve()))   
     
 def main():
     Solver.Active()   # activates default AerSimulator
-    addTest()
+    #addTest()
     #testQbitQiskitSolver()
     #testQbinQiskitSolver()
-    #testQwholeQiskitSolver()
+    testQwholeQiskitSolver()
     #qiskitPNs()
     
     #logicalGates()

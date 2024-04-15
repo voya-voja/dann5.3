@@ -117,38 +117,48 @@ QaddQints::QaddQints()
 {}
 
 QaddQints::QaddQints(const QaddQints& right)
-	: Qadd(right)
+	: Qadd(right), mCarryoverBits(right.mCarryoverBits)
 {}
 
 QaddQints::~QaddQints()
 {}
 
+void QaddQints::add(const Qevaluations& samples)
+{
+	Qadd::add(samples);
+	for(auto carryover: mCarryoverBits)
+		carryover->add(samples);
+}
+
 string QaddQints::solution(size_t atEvltn) const
 {
-	string opStr(Qadd::solution(atEvltn));
-	size_t valueStart = opStr.find(':') + 1;
-	string valueStr = opStr.substr(valueStart, opStr.find('\\', valueStart) - valueStart);
-	int result = stoi(valueStr);
-	valueStart = opStr.find(':', valueStart) + 1;
-	valueStr = opStr.substr(valueStart, opStr.find('\\', valueStart) - valueStart);
-	int argument0 = stoi(valueStr);
-	valueStart = opStr.find(':', valueStart) + 1;
-	valueStr = opStr.substr(valueStart, opStr.find('\\', valueStart) - valueStart);
-	int argument1 = stoi(valueStr);
-	if (argument0 + argument1 != result)
+	string opStr(Qop::solution(atEvltn));
+
+	Qbit& lastCarryoverBit = *dynamic_pointer_cast<Qbit>(mCarryoverBits[1]);
+	Qbit& last2CarryoverBit = *dynamic_pointer_cast<Qbit>(mCarryoverBits[0]);
+
+	// when carryover last bit != carryover 2nd last bit
+	Qvalue lastValue = lastCarryoverBit.solutionValue(atEvltn);
+	Qvalue last2Value = last2CarryoverBit.solutionValue(atEvltn);
+	if (lastValue != last2Value)
 	{
-		Bits resultBits(result);
-		string updatedStr = opStr.substr(0, opStr.find(':') + 1);
-		updatedStr += to_string(argument0 + argument1);
-		size_t restStart = opStr.find("\\; ");
-		updatedStr += opStr.substr(restStart, opStr.size() - restStart);
-		opStr = updatedStr;
- 	}
+		Qint::Sp pOut = static_pointer_cast<Qint>(Qop::output());
+		long long outValue = pOut->solutionValue(atEvltn);
+		size_t size = pOut->noqbs();
+		Bits bOut(outValue);
+		// when last carryover bit == 1 add to the result (output) n-th bit = 1
+		// when 2nd last carryover bit == 1 add to the result (output) n-th bit = 0
+		bOut[size] = lastValue == 1;
+		Qint correct(size, pOut->id(), bOut);
+		// replace result value
+		size_t index = opStr.find(";");
+		opStr = correct.toString() + opStr.substr(index,opStr.size() - index);
+	}
 	return opStr;
 }
 
 void QaddQints::refreshOnInputs()
-{
+{	// NOTE: test without resizing them
 	Qnaries ins = Qnaries(Qop::inputs());
 	size_t nqbts0 = ins[0]->noqbs(), nqbts1 = ins[1]->noqbs();
 	if (nqbts0 < nqbts1)
@@ -157,13 +167,17 @@ void QaddQints::refreshOnInputs()
 		ins[1]->resize(nqbts0);
 	Qadd::refreshOnInputs();
 }
-// 
-//void QaddQints::refreshOnOutput()
-//{
-//	Qadd::refreshOnOutput();
-//	Qint::Sp pIntOut = dynamic_pointer_cast<Qint>(Qop::output());
-//	if (pIntOut == nullptr)
-//		throw logic_error("ERROR @QaddQints: Output is not Qint or is not defined!");
-//	size_t size = pIntOut->noqbs() + 1;
-//	pIntOut->resize(size);
-//}
+ 
+void QaddQints::refreshOnOutput()
+{
+	Qadd::refreshOnOutput();
+
+	// Save last 2 carryover quantum bits
+	Qnary::Sp pOut = static_pointer_cast<Qnary>(Qop::output());
+	size_t size = pOut->noqbs();
+	for (size_t at = size - 2; at < size; at++)
+	{
+		Qbit carryoverBit(Qaddition::Carry::Symbol(pOut->id() + to_string(at)));
+		mCarryoverBits.push_back(carryoverBit.clone());
+	}
+}
