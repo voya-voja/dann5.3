@@ -21,7 +21,9 @@ To start learning about quantum programming and quantum computing platforms, any
 7.	Download [dann5 notebooks folder]( https://github.com/voya-voja/dann5.3/tree/master/notebooks) and start emerging into quantum programming
 
 ### 1. Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
-    #### Windows installation
+
+    ***Windows installation***
+    
     **python.exe** will be installed in *%userprofile%/AppData/Local/Programs/Python/Python310* folder.
     Set up Python environment variables:
     1. Open *Administrative Tools* (i.e. *Control Panel*)
@@ -40,7 +42,8 @@ To start learning about quantum programming and quantum computing platforms, any
 
     Python 3.10.11
 
-    #### MAC and Linux installation
+    ***MAC and Linux installation***
+    
     **python3** will be installed in */usr/bin* folder, which is on the path.
 
     > python3 --version
