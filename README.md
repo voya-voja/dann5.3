@@ -11,7 +11,7 @@ You can download dann5 libraries as a [Python package] (https://pypi.org/project
 
 ## Quantum programming with *dann5*
 To start learning about quantum programming and quantum computing platforms, any developer can very quickly prepare a quantum programming environment by following these five steps:
-1.	Download and install [Python 3.10.11 (64-bit)] (https://www.python.org/downloads/release/python-31011/)
+1.	Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
 2.	Create Python virtual environment for quantum programming
 3.	Install and test [dann5](https://pypi.org/project/dann5/) package
 4.	Install Use D-Wave [Ocean SDK](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html)
