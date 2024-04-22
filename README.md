@@ -52,16 +52,27 @@ Python 3.10.11
 
 Now **python** is ready to set up a new virtual environment. To verify all is ready, open *Command Prompt* window and run 
 
-### 2. Create Python virtual environment for quantum programming
-Create a virtual environment for your Quantum work. To create **d5** virtual environment:
+### 2. Create Python virtual environment for quantum programming (VE4QP)
+Create a virtual environment for your Quantum work. To create **d5 VE4QP**):
 1. Open *Command Prompt* window
 2. Go to folder where *d5* virtual environment folder should be created
-    - e.g. you can create *Envs* folder in *%userprofile%/AppData/Local* folder and run the following command
+    - e.g. in case of windows you can create *Envs* folder in *%userprofile%/AppData/Local* folder and run the following command
     > cd %userprofile%/AppData/Local/Envs
-3. Run the following command to create a virtual environment called *d5*
+    - in case of mac or linux *Envs* folder can be created in user's 'HOME' folder. Make shure the *Envs* is a working directory by moving into it:
+    > cd ~/Envs
+3. Run the following command to create a virtual environment called **d5**
+    - in case of Windows:
+    
     > python -m venv d5
-4. *Activate* the virtual environment by running:
+    
+    - or in case of mac or linux:
+    
+    > python3 -m venv d5
+4. *Activate* the VE4QP by running:
+    - in case of Windows:
     > %userprofile%/AppData/Local/Envs/d5/Scripts/activate
+    - or in case of mac and linux
+    > source ~/Envs/d5/Scripts/activate
 5. As a result, the prompt will change to begin with *(d5)*
 6. Upgrade *pip* by running:
     > python -m pip install --upgrade pip
@@ -69,71 +80,94 @@ Create a virtual environment for your Quantum work. To create **d5** virtual env
     > pip install --upgrade jupyterlab
     
     > pip install --upgrade notebook
-8. To be able to write or debug python code download and install [Spyder 5.5.1](https://www.spyder-ide.org/)
-    - Spyder comes with selected python 3.7.9 package. To use the *quantum virtual environment (QVE)* and Python 3.10.11
-    1. Install spyder-kernels and matplotlib, using *Command Prompt* in the **active QVE** 
-        > pip install --upgrade matplotlib
-        >
-        > pip install spyder‐kernels==5.5.*
+
+    
+***Install Spyder***
+
+To be able to write or debug python code download and install [Spyder 5.5.1](https://www.spyder-ide.org/)
+- Spyder comes with selected python 3.7.9 package. To use Python 3.10.11 in your *virtual environment for quantum programming (VE4QP)* 
+    1. Install spyder-kernels and matplotlib, using *Command Prompt* in the **active VE4QP**, e.g. *d5* 
+    
+    > pip install --upgrade matplotlib
+    >
+    > pip install spyder-kernels==5.5.*
+        
+    - **Note**: make sure spyder kernel version is correct!
+        
     2. Open Spyder from *Windows Start menu*
     3. Change Spyder’s default Python interpreter by click the name of the current environment (i.e. *custom(Python 3.7.5)*) in the status bar, 
     4. then click *Change default environment in Preferences...*, which will open the *Preferences* dialog in the Python interpreter section. 
     5. select the option *Use the following Python interpreter*, 
-    6. use the text box or the Select file button to enter the path to the Python interpreter you want to use, e.g.:
+    6. use the text box or the Select file button to enter the path to the Python interpreter in your VE4QP, e.g.:
         > %userprofile%/AppData/Local/Envs/d5/Scripts/python.exe 
     - The name of the current environment in the status bar should change to *custom(Python 3.10.11)*. 
     - See the [IPython Console](https://docs.spyder-ide.org/current/panes/ipythonconsole.html)  for more information.
 
-### 3. Quantum coding with [dann5](https://pypi.org/project/dann5/) 
-To write a simple quantum code that you can run on a quantum simulator, annealer or computer you should install *dann5* library **d5**, version 3 for Windows.
+**Now your *d5* virtual environment is ready for installation of quantum programming packages!** 
+
+### 3. Quantum programming with [dann5.d5](https://pypi.org/project/dann5/) 
+To write a simple quantum program that you can run on a quantum simulator, quantum annealer or quantum computer you should install **dann5 package of libraries**, in your VE4QP, e.g. *active d5 virtual environment*:
+
 > pip install --upgrade dann5
 
-This will install pybind11 and dann5 packages into %userprofile%/AppData/Local/Envs/d5/Lib/site-packages.
+This will install pybind11 and dann5 packages into %userprofile%/AppData/Local/Envs/d5/Lib/site-packages, in case of Windows, or ~/Envs/d5/Lib/site-packages, in case of mac or linux.
 
-To test your local quantum virtual environment, you can run the following code using **python** from a *Command Prompt* or use **spyder** as an *IDE*.
-> The following code finds all possible combinations of 3 numbers that will add to the number 10, where number **p** is *unknown q-whole number with 3 q-bits in superposition state*, while **q** and **r** are two *unknown q-whole numbers with 2 q-bits* each.
->
-> The *mM.solve()* method uses dann5 quantum simulator to identify all possible solutions for **p, q and r** (shown below).
->
-	>
-	> import dann5.d5 as d5
-	>
-> from dann5.D-Wave import Solver
-	>
-> Solver.Active()
-	>
+To test your local VE4QP, you can run the following code using **python** from a *Command Prompt*, or use **spyder** as an *IDE*.
+- The following code finds all possible combinations of 3 numbers that will add to the number 10, where number **p** is *unknown q-whole number with 3 q-bits in superposition state*, while **q** and **r** are two *unknown q-whole numbers with 2 q-bits* each, and where python variable **Sum** references **S** q-whole number with deterministic value 10.
+
+- **sumAssignmnet** is a python variable which references **a quantum assignment of p, q and r addition expression to the S q-whole number**.
+
+
+> import dann5.d5 as d5
+> 
+> from dann5.dwave import Solver
+> 
 > p = d5.Qwhole(3,"p")
-	>
+> 
 > q = d5.Qwhole(2, "q")
-	>
+> 
 > r = d5.Qwhole(2, "r")
-	>
-> M = d5.Qwhole("M", 10)
-	>
-> mM = M.assign(p + q + r)
-	>
-> mM.solve()
-	>
->print("d5o simulation solutions: \n{}".format(mM.solutions()))
+> 
+> Sum = d5.Qwhole("S", 10)
+> 
+> sumAssignment = Sum.assign(p + q + r)
+> 
+> print(sumAssignment)
+>
+S\4:10\ = ((p\3:U\ + q\2:U\) + r\2:U\)
+
+-  The *sumAssignment.solve()* method uses dann5.d5o quantum annealing simulator to identify all possible solutions for **p, q and r** (shown in code below).
+
+- Before *solve()* methd is called, we need to call *Solver.Active()* to activate the default dann5 solver simulating solutions.
+
+>
+> Solver.Active()
+>
+> sumAssignment.solve()
+>
+> print("d5o simulation solutions: \n{}".format(sumAssignment.solutions()))
 
 The *mM.solutions()* method returns line by line all found solutions of expression **M = 10 = p[3] + q[2] + r[2]**, where each variable is presented as 
 - *variable_name* ***/*** *#_of_q-bits* ***:*** *varaible_value* ***/***
 
 d5 simulation solutions: 
-M\4:10\; _+0\4:0\; p\3:6\; q\2:2\; r\2:2\
-M\4:10\; _+0\4:0\; p\3:4\; q\2:3\; r\2:3\
-M\4:10\; _+0\4:0\; p\3:6\; q\2:1\; r\2:3\
-M\4:10\; _+0\4:0\; p\3:5\; q\2:2\; r\2:3\
-M\4:10\; _+0\4:0\; p\3:5\; q\2:3\; r\2:2\
-M\4:10\; _+0\4:0\; p\3:7\; q\2:0\; r\2:3\
-M\4:10\; _+0\4:0\; p\3:7\; q\2:1\; r\2:2\
-M\4:10\; _+0\4:2\; p\3:6\; q\2:3\; r\2:1\
-M\4:10\; _+0\4:2\; p\3:7\; q\2:2\; r\2:1\
-M\4:10\; _+0\4:2\; p\3:7\; q\2:3\; r\2:0\
+S\4:10\; _+0\4:13\; p\3:6\; q\2:2\; r\2:2\
+S\4:10\; _+0\4:13\; p\3:4\; q\2:3\; r\2:3\
+S\4:10\; _+0\4:13\; p\3:6\; q\2:1\; r\2:3\
+S\4:10\; _+0\4:13\; p\3:5\; q\2:2\; r\2:3\
+S\4:10\; _+0\4:13\; p\3:5\; q\2:3\; r\2:2\
+S\4:10\; _+0\4:13\; p\3:7\; q\2:0\; r\2:3\
+S\4:10\; _+0\4:13\; p\3:7\; q\2:1\; r\2:2\
+S\4:10\; _+0\4:15\; p\3:6\; q\2:3\; r\2:1\
+S\4:10\; _+0\4:15\; p\3:7\; q\2:2\; r\2:1\
+S\4:10\; _+0\4:15\; p\3:7\; q\2:3\; r\2:0\
 
--	**Note**: Any variable named **'_*#'** (where *#* is a number) is a temporary addition variable representing a result of **_*# = p + q** expression.
+The *sumAssignment.solutions()* method returns line by line all found solutions of expression **S = 10 = p[3 qb] + q[2 qb] + r[2 qb]**, where each variable is presented as 
+> **variable_name** \\ **#_of_q-bits : varaible_value** \\, e.g. p\\3:6\\; q\\2:2\\; r\\2:2\\.
 
-### To Use D-Wave Install [Ocean SDK](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html)
+Additionally, any variable named **'_< sign >#'** (where *#* is a number) is an auxiliary variable. For example, an addition auxiliary variable is **_+0** with **4 qbits** and **value 13**.
+
+### 4. To Use D-Wave Install [Ocean SDK](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html)
 If you would like to develop a quantum solution to be executed on *D-Wave quantum annealer, hybrid-computer or simulator*, you have to create a developer account in *D-Wave Leap* cloud and install *D-Wave Ocean SDK* in local *QVE*.
 1. To create D-Wave Leap developer account you need a *[github account](https://github.com/)*. If you don't, [create one](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account).
 2. Create a developer account on [*D-Wave Leap*](https://cloud.D-Wavesys.com/leap/signup/).
@@ -175,7 +209,7 @@ Now your local *QVE* is ready for development of quantum solutions, which you ca
 Also, you can use installed *python* and *spyder* IDEs to develop python code and test it on [D-Wave simulators](https://docs.ocean.D-Wavesys.com/en/latest/docs_dimod/reference/sampler_composites/samplers.html), [quantum solvers](https://docs.ocean.D-Wavesys.com/en/stable/overview/qpu.html#using-qpu) or [hybrid  sampler](https://docs.ocean.D-Wavesys.com/en/stable/overview/samplers.html).
 
 
-### Attach your GitHub account to your D-Wave Leap account: [Leap Link](https://cloud.D-Wavesys.com/leap/)
+### 5. Attach your GitHub account to your D-Wave Leap account: [Leap Link](https://cloud.D-Wavesys.com/leap/)
 For your D-Wave license to renew every month for free you will need to pass your GitHub account to the D-Wave account profile you have created. 
 
 Use the link above to sign in and then click on the profile name in the top right corner of the D-Wave leap home page. A dropdown will appear and click on the button labeled "Expand you access".
@@ -184,28 +218,35 @@ Once the button is clicked you will be moved to a page with the D-Wave account o
 
 On that page you should have the option to input your GitHub username and a repository link, insert any repository you have, save the information and you will get the automatic renewed license for your D-Wave Leap account. 
 
-## Add [IBM Qiskit](https://qiskit.org/documentation/getting_started.html) to local quantum virtual environment 
+### 6. Add [IBM Qiskit](https://qiskit.org/documentation/getting_started.html) to local quantum virtual environment 
 To be able to use IBM's analog quantum gates computer you will need to create IBM Quantum cloud account, install Qiskit python package and set up your API key. 
-1. Run the following command in your local quantum virtual environment to install Qiskit package
+1. You can sign in to [IBM Quantum](https://quantum-computing.ibm.com/) using your github account
+2. Run the following command in your local virtual environment for quantum programming (VE4QP) to install qiskit package
 
-    > pip install --upgrade qiskit[visualization]==0.45.1
+    > pip install qiskit==0.44.3
     >
-    > pip install qiskit_ibm_provider
+    > pip install qiskit-aer==0.13.0
     >
-    > pip install qiskit_aer
+    > pip install qiskit-ibm-provider==0.7.0
     
-    This will install the Qiskit package with the extra visualization support to use visualization functionality or Jupyter notebooks.
-2. You can sign in to remote [IBM Quantum](https://quantum-computing.ibm.com/) services using your GitHub account
-3. [Install your IBM Quantum API key](https://subscription.packtpub.com/book/programming/9781838828448/1/ch01lvl1sec06/installing-your-api-key-and-accessing-your-provider)
+3. After installation check the version of installed 'qiskit-terra' package is 0.25.3 by running:
+
+    > pip list
+    
+3. [Instal your IBM Quantum API key](https://subscription.packtpub.com/book/programming/9781838828448/1/ch01lvl1sec06/installing-your-api-key-and-accessing-your-provider)
     1. Copy API token from you IBM Quantum dashboard
-    2. From *Command Prompt* with active quantum virtual environment run 
+    2. From *Command Prompt* with active VE4QP (e.g. d5) run 
         > python
-        
     3. In python run
-        > \>>>  from qiskit_ibm_provider import IBMProvider       
+        > \>>> from qiskit_ibm_provider import IBMProvider
         >
         > \>>> IBMProvider.save_account('#########')
         >
         > \>>> exit()
         
         - NOTE: in the code above replace *#########* with the **API token** that you have copied
+
+Once all is done, you can run the follwing code to execute a block of quantum code **timesBlock** on IBM's qiskit simulator.
+> **The problem statement**: When two quantum whole numbers with 2 q-bits each, named x and y, are equal, a multiplication expression of x times y has to be eaqual to z q-whole number.
+
+- **Note**: also *timesBlock.toString(True)* call provides a view into a decomposed dann5 virtual quantum machine code of *timesBlock*.
