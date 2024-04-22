@@ -8,7 +8,7 @@ To write a quantum program, a Python or C++ developer uses dann5 predefined quan
 
 In a way *dann5* is 3rd generation quantum programming language with built-in virtual machine that interprets a quantum program in a real time and executes a specific quantum assembler interpretation on a targeted quantum computing resource. In the case of IBM, *dann5 virtual code (d5vc)* is converted into a Qiskit interpretation forming a bespoke quantum-circuit. The bespoke Qiskit circuit can be executed on targets such as QasmSimulator or any IBM quantum computing backend. Also, dann5 virtual code can be translated into a QUBO interpretation and as such executed using D-Wave Ocean SDK on D-Wave’s quantum simulator, annealer and hybrid computing resources, such as Advantage2, or Hybrid Solver.
 
-You can download *dann5* libraries as a [Python package] (https://pypi.org/project/dann5/), or cross platform (Windows, Mac and Linux) [dann5 C++ source code projects]( https://github.com/voya-voja/dann5.3 ) .
+You can download *dann5* libraries as a [Python package](https://pypi.org/project/dann5/), or cross platform (Windows, Mac and Linux) [dann5 C++ source code projects]( https://github.com/voya-voja/dann5.3 ) .
 
 ## Quantum programming with *dann5*
 To start learning about quantum programming and quantum computing platforms, any developer can very quickly prepare a quantum programming environment by following these seven steps:
@@ -20,7 +20,7 @@ To start learning about quantum programming and quantum computing platforms, any
 6.	Install [IBM Qiskit](https://qiskit.org/documentation/getting_started.html)
 7.	Download [dann5 notebooks folder]( https://github.com/voya-voja/dann5.3/tree/master/notebooks) and start emerging into quantum programming
 
-### 1. Download and install [Python 3.10.11 (64-bit)] (https://www.python.org/downloads/release/python-31011/)
+### 1. Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
     #### Windows installation
     **python.exe** will be installed in *%userprofile%/AppData/Local/Programs/Python/Python310* folder.
     Set up Python environment variables:
