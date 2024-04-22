@@ -22,35 +22,35 @@ To start learning about quantum programming and quantum computing platforms, any
 
 ### 1. Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
 
-    ***Windows installation***
-    
-    **python.exe** will be installed in *%userprofile%/AppData/Local/Programs/Python/Python310* folder.
-    Set up Python environment variables:
-    1. Open *Administrative Tools* (i.e. *Control Panel*)
-    2. Using *Search Control Panel* box (in top right corner) search for *environment* and press *enter*
-    3. Click on *Edit the system environment variables* link
-    4. *System Properties* box will open, click on *Environment variables...* button (at bottom-right corner)
-    5. *Environment variables* box will open
-    6. If *PYTHONHOME* already exist in *User variables for ...*, use *Edit..." button to change it, otherwise use *New...* button
-    7. Set *PYTHONHOME* to *%userprofile%/AppData/Local/Programs/Python/Python310*
-    8. If *PYTHONPATH* already exist in *User variables for ...*, use *Edit..." button to change it, otherwise use *New...* button
-    9. Set *PYTHONPATH* to *%PYTHONHOME%*
-    10. If *PATH* already exist in *User variables for ...*, use *Edit..." button to change it, otherwise use *New...* button
-    11. Make sure that *PATH* includes *%userprofile%\AppData\Local\Programs\Python\Python310\Scripts\* and %userprofile%\AppData\Local\Programs\Python\Python310\* paths
+***Windows installation***
 
-    > python --version
+**python.exe** will be installed in *%userprofile%/AppData/Local/Programs/Python/Python310* folder.
+Set up Python environment variables:
+1. Open *Administrative Tools* (i.e. *Control Panel*)
+2. Using *Search Control Panel* box (in top right corner) search for *environment* and press *enter*
+3. Click on *Edit the system environment variables* link
+4. *System Properties* box will open, click on *Environment variables...* button (at bottom-right corner)
+5. *Environment variables* box will open
+6. If *PYTHONHOME* already exist in *User variables for ...*, use *Edit..." button to change it, otherwise use *New...* button
+7. Set *PYTHONHOME* to *%userprofile%/AppData/Local/Programs/Python/Python310*
+8. If *PYTHONPATH* already exist in *User variables for ...*, use *Edit..." button to change it, otherwise use *New...* button
+9. Set *PYTHONPATH* to *%PYTHONHOME%*
+10. If *PATH* already exist in *User variables for ...*, use *Edit..." button to change it, otherwise use *New...* button
+11. Make sure that *PATH* includes *%userprofile%\AppData\Local\Programs\Python\Python310\Scripts\* and %userprofile%\AppData\Local\Programs\Python\Python310\* paths
 
-    Python 3.10.11
+> python --version
 
-    ***MAC and Linux installation***
-    
-    **python3** will be installed in */usr/bin* folder, which is on the path.
+Python 3.10.11
 
-    > python3 --version
+***MAC and Linux installation***
 
-    Python 3.10.11 
+**python3** will be installed in */usr/bin* folder, which is on the path.
 
-    Now **python** is ready to set up a new virtual environment. To verify all is ready, open *Command Prompt* window and run 
+> python3 --version
+
+Python 3.10.11 
+
+Now **python** is ready to set up a new virtual environment. To verify all is ready, open *Command Prompt* window and run 
 
 ### 2. Create Python virtual environment for quantum programming
 Create a virtual environment for your Quantum work. To create **d5** virtual environment:
