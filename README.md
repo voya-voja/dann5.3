@@ -147,7 +147,7 @@ S\4:10\ = ((p\3:U\ + q\2:U\) + r\2:U\)
 >
 > print("d5o simulation solutions: \n{}".format(sumAssignment.solutions()))
 
-The *mM.solutions()* method returns line by line all found solutions of expression **M = 10 = p[3] + q[2] + r[2]**, where each variable is presented as 
+The *sumAssignment.solutions()* method returns line by line all found solutions of expression **S = 10 = p[3] + q[2] + r[2]**, where each variable is presented as 
 - *variable_name* ***/*** *#_of_q-bits* ***:*** *varaible_value* ***/***
 
 d5 simulation solutions: 
