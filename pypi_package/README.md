@@ -18,7 +18,7 @@ To start learning about quantum programming and quantum computing platforms, any
 4.	Install Use D-Wave [Ocean SDK](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html)
 5.	Set up your D-Wave [Leap](https://cloud.D-Wavesys.com/leap/) account
 6.	Install [IBM Qiskit](https://qiskit.org/documentation/getting_started.html)
-7.	Download [dann5 notebooks folder]( https://github.com/voya-voja/dann5.3/tree/master/notebooks) and start emerging into quantum programming
+7.	Download [dann5 notebooks]( https://github.com/voya-voja/dann5.3/tree/master/notebooks) and start emerging into quantum programming
 
 ### 1. Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
 
@@ -250,3 +250,14 @@ Once all is done, you can run the follwing code to execute a block of quantum co
 > **The problem statement**: When two quantum whole numbers with 2 q-bits each, named x and y, are equal, a multiplication expression of x times y has to be eaqual to z q-whole number.
 
 - **Note**: also *timesBlock.toString(True)* call provides a view into a decomposed dann5 virtual quantum machine code of *timesBlock*.
+
+### 7. Download [dann5 jupyter notebooks](https://github.com/voya-voja/dann5.3/tree/master/notebooks)
+
+1. Create a folder on your local machine
+2. Open a remote [dann5 notebooks folder](https://github.com/voya-voja/dann5.3/tree/master/notebooks) in your browser
+3. Right click on a jupiter notebook you would like to download and select *'Save Link As'* from the popup menu
+4. Save a notebook to the local folder
+5. In a comand prompt/terminal window activate your VE4QP, e.g. *d5*
+6. Go to the local notebook folder and start a jupiter notebook application
+    - In *Windows* the command is:  start jupyter notebook
+    - In *Mac* or *Linux* the comand is: (jupyter notebook)&
