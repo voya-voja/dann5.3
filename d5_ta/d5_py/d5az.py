@@ -4,21 +4,24 @@ Created on Fri Oct 15 13:16:43 2021
 
 @author: Nebojsa.Vojinovic
 """
-import dann5.d5o2 as d5o
+from dann5.d5 import Qwhole, Qassignment
+from dann5.d5o import QuboCompiler, QuboAnalyzer
 from dann5.azure import QuantumRequest
+from dann5.dwave import Solver
 
 import time
 
-def qwholeXlarge_test() -> d5o.Qassignment:
+def qwholeXlarge_test() -> Qassignment:
     print("\n\n==== qwholeXlarge_test() =====")
-    p = d5o.Qwhole(2,"p")
-    q = d5o.Qwhole(2, "q")
+    p = Qwhole(2,"p")
+    q = Qwhole(2, "q")
     #r = d5o.Qwhole(5, "r")
-    M = d5o.Qwhole("M", 3)
+    M = Qwhole("M", 3)
     mM = M.assign(p * q) # * r)
     print(f"\n{mM.toString()}\n{mM.toString(True)}")
-    qubo = mM.qubo()
-    analyze = d5o.Qanalyzer(qubo)
+    compiler = QuboCompiler()
+    mM.compile(compiler)
+    analyze = QuboAnalyzer(compiler.qubo())
     print("# of nodes: {}\t# of branches: {}".format(
         analyze.nodesNo(), analyze.branchesNo()))
     mM.solve()
@@ -27,6 +30,7 @@ def qwholeXlarge_test() -> d5o.Qassignment:
     return mM;
     
 def main():
+    Solver.Active()
     assignment = qwholeXlarge_test()
     assignment.reset()
     request = QuantumRequest(assignment)

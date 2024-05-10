@@ -159,19 +159,23 @@ Qvalue Qeq::calculate(const Qvalues& values) const
 
 void Qeq::validate(const Qcell::Sp& pOut, const Qcell::Sp& pIn)
 {
-	Qvalue outValue = pOut->value(), inValue = pIn->value();
-	if (outValue != inValue)
-	{
-		if (outValue == cSuperposition)
-			pOut->value(inValue);
-		else if (inValue == cSuperposition)
-			pIn->value(outValue);
-		else
-			throw logic_error("ERROR @Qeq::operands: output "
-				+ pOut->id() + " = " + to_string(outValue)
-				+ " can not ne equal to input "
-				+ pIn->id() + " = " + to_string(outValue));
-	}
+	// when value changed to deterministic value it prevents definition of 
+	// a condition, e.g.:
+	// {	antr\T\ = ((ant1\S\ ^ ant2\S\) & (ant1\S\ ^ ant5\S\));
+	// (ant1\T\ == antr\T\); }
+	//Qvalue outValue = pOut->value(), inValue = pIn->value();
+	//if (outValue != inValue)
+	//{
+	//	if (outValue == cSuperposition)
+	//		pOut->value(inValue);
+	//	else if (inValue == cSuperposition)
+	//		pIn->value(outValue);
+	//	else
+	//		throw logic_error("ERROR @Qeq::operands: output "
+	//			+ pOut->id() + " = " + to_string(outValue)
+	//			+ " can not ne equal to input "
+	//			+ pIn->id() + " = " + to_string(outValue));
+	//}
 }
 
 

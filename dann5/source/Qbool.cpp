@@ -131,10 +131,10 @@ Qassign<Qbool> Qbool::operator^=(const Qexpr<Qbool>& right) const
 }
 
 
-Qexpr<Qbool> Qbool::operator !() const
+Qexpr<Qbool> Qbool::operator ~() const
 {
-	Qbool inverted("!" + id());
-	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qneq::cMark());
+	Qbool inverted("~" + id());
+	QcellOp::Sp pOp = Factory<string, QcellOp>::Instance().create(Qinvert::cMark());
     pOp->operands(inverted.clone(), {clone()});
 Qexpr<Qbool> expr(pOp);
 	return expr;

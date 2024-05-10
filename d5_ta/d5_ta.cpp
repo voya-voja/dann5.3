@@ -254,38 +254,14 @@ void unitTests()
     cout << utQint.run() << endl;
 }
 
-void fNe()
-{
-    Qbin w(2, "wolf"), x(2, "xenia"), y(2, "yael"), z(2, "zeke"), s(2, "sean"),
-        t(2, "tea"), u(2, "una"), v(2, "veda"), _3("_3", 0b11);
-    Qexpr<Qbin> aWXfYZe = ((w == x) != (y == z));
-    Qexpr<Qbin> aSTfUVe = ((s == t) != (u == v));
-    Qassign<Qbit> aSorW = Qbit::_1 = ((s[1] != w[1]) | (s[0] != w[0]));
-    Qassign<Qbit> aSorY = Qbit::_1 = ((s[1] != y[1]) | (s[0] != y[0]));
-    Qblock xPrFnE;
-    xPrFnE = (s == t), (u == v), (w == x), (y == z), (t != v), (x != z), (x ^ v) | (x ^ t) /*, (s != u), (s ^ u) aSorW, aSorY*/;
-    cout << endl << "*** Extended friends & enemies problem block:" << endl
-        << xPrFnE.toString() << endl;
-    QuboCompiler compiler; xPrFnE.compile(compiler);
-    Qubo qXprFnE = compiler.qubo();
-    cout << endl << "*** Extended friends & enemies problem qubo:" << endl
-        << qXprFnE << endl;
-    QuboAnalyzer analyseXprFnE(qXprFnE);
-    cout << endl << "*** Extended friends & enemies problem # of nodes: "
-        << analyseXprFnE.nodesNo() << ", # of branches: "
-        << analyseXprFnE.branchesNo() << endl;
-    Qbinder binder;
-    binder = s, t, u, v, w, x, y, z;
-    binder.add(xPrFnE.compute());
-    //cout << xPrFnE.solve() << endl;
-    cout << binder << endl;
-}
-
 int main(int argc, const char * argv[])
 {
     _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
-    fNe();
+
+    UTestQbin utestQbin;
+    utestQbin.friends_enemies(cout);
+
     // unitTests();
 
 //    testQbitQiskit();

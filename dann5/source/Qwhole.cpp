@@ -51,7 +51,7 @@ string Qwhole::toString(bool decomposed, size_t forBit) const
 	}
 	size_t size = noqbs();
 	string id = Qdef::toString(decomposed);
-	return id + "\\" + to_string(size) + ":" + vStr + "\\";
+	return id + "\\" + to_string(size) + "q:" + vStr + "\\";
 }
 
 string Qwhole::solution(size_t atEvltn) const
@@ -64,7 +64,7 @@ string Qwhole::solution(size_t atEvltn) const
 
 	string valueStr = to_string(value.to_ullong());
 	string id = Qdef::toString();
-	return id + "\\" + to_string(size) + ":" + valueStr + "\\";
+	return id + "\\" + to_string(size) + "b:" + valueStr + "\\";
 }
 
 ULint Qwhole::solutionValue(size_t atEvltn) const

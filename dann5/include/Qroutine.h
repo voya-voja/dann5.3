@@ -93,6 +93,10 @@ namespace dann5 {
         // quantum routine
         virtual void add(const Qevaluations& evaluations);
 
+        // Solves this Q routine and return a quantum evaluation
+        // with all solutions
+        virtual string solve() { return mLogic.solve(); };
+
         // Override to provide a string representation of all solutions of
         // this Q statement. Return empty string, when solutions samples
         // are not assigned by add() or solve method

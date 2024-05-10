@@ -400,7 +400,7 @@ void UTestQbin::friends_enemies(ostream& out)
 {
     Qbin w(2, "wolf"), x(2, "xenia"), y(2, "yael"), z(2, "zeke"), s(2, "sean"),
          t(2, "tea"), u(2, "una"), v(2, "veda"), _3("_3", 0b11);
-    Qassign<Qbin> aWXfYZe = _3 = w.alike(x) & (x ^ y) & y.alike(z);
+    Qassign<Qbin> aWXfYZe = _3 = w.alike(x) & (x != y) & y.alike(z);
     out << endl << "*** Dwave's friends & enemies problem equation:" << endl
         << aWXfYZe.toString() << endl;
     out << endl << "*** Dwave's friends & enemies problem solutions:" << endl

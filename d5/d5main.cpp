@@ -246,7 +246,7 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::init<const Qexpr<Qbool>&>())
 
 		/*** Logical ***/
-		.def(!py::self, "instantiate Q boolean expression with inversion logic, e.g. for Qbool with id 'x' the expression is '!x' != 'x'")
+		.def(~py::self, "instantiate Q boolean expression with inversion logic, e.g. for Qbool with id 'x' the expression is '!x' != 'x'")
 
 		.def(py::self & Qbool(), "instantiate Q expression with and logic, e.g. for Qexpr with id 'x' and 'y' the expression is 'x' & 'y'")
 		.def(py::self & py::self, "instantiate Q expression with and logic, e.g. for Qexpr id 'x' and [right] object the expression is 'x' & [right]")
@@ -590,7 +590,11 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::self << Qassign<Qbin>())
 		.def(py::self << Qassign<Qwhole>())
 		.def("_", [](Qblock& self, const Qassign<Qwhole>& right)
-			{ self << right; return self; });
+			{ self << right; return self; })
+		
+		.def(py::self << Qblock())
+		.def(py::self << Qroutine())
+		;
 
 
 	/*--- Qdef.h definitions---*/
@@ -756,7 +760,7 @@ PYBIND11_MODULE(d5, m) {
 		//		.def(py::self ^= Qexpr<Qbool>(), "'xor assignment' of an Q expression creates a following Q bit assignment [this] = [this] ^ [right]")
 
 		/*** Logical ***/
-		.def(!py::self, "instantiate Q boolean expression with inversion logic, e.g. for Qbool with id 'x' the expression is '!x' != 'x'")
+		.def(~py::self, "instantiate Q boolean expression with inversion logic, e.g. for Qbool with id 'x' the expression is '!x' != 'x'")
 
 		.def(py::self & py::self, "instantiate Q expression with and logic, e.g. for Qbool with id 'x' and 'y' the expression is 'x' && 'y'")
 		.def(py::self & Qexpr<Qbool>(), "instantiate Q expression with and logic, e.g. for Qbool id 'x' and [right] object the expression is 'x' && [right]")
@@ -1068,35 +1072,52 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::init<const string&, const Qblock&>(),
 			"creates a named quantum routine with a given logic as a quantum block")
 		.def(py::init<const string&, const Qbinder&, const Qblock&>(),
-			"creates a named quantum routine with a given arguments in a quantum binder and a given logic as a quantum block")
+			R"pbdoc( creates a named quantum routine with a given arguments in a quantum
+					 binder and a given logic as a quantum block)pbdoc")
 
-		.def("noqbs", &Qroutine::noqbs, "Returns the number of Q bits that the Q routine holds")
+		.def("noqbs", &Qroutine::noqbs, 
+			"Returns the number of Q bits that the Q routine holds")
 
 		.def("compile", &Qroutine::compile,
 			"Compiles this quantum block to generate quantum solver code")
 
-		.def("toString", &Qroutine::toString, "returns string presentation of this Q routine object")
-		.def("toString", [](Qroutine& self, bool decomposed) { return self.toString(decomposed); })
+		.def("toString", &Qroutine::toString, 
+			"returns string presentation of this Q routine object")
+		.def("toString", [](Qroutine& self, bool decomposed) 
+										{ return self.toString(decomposed); })
 		.def("toString", [](Qroutine& self) { return self.toString(); })
 		.def("__str__", [](Qroutine& self) { return self.toString(); })
 		.def("__repr__", [](Qroutine& self) { return self.toString(); })
 
-		.def("add", &Qroutine::add, "Add a quantum evaluation to this Q routine.")
-		.def("solution", &Qroutine::solution, "For added sample set(s), returns a string represnting 'at' solution of operands of statements within this Q routine")
-		.def("compute", &Qroutine::compute, "Returns computed sample set with all solutions for the Q routine logic")
-		.def("reset", &Qroutine::reset, "Clear all solution samples")
+		.def("add", &Qroutine::add, 
+			"Add a quantum evaluation to this Q routine.")
+		.def("solution", &Qroutine::solution, 
+			R"pbdoc( For added sample set(s), returns a string represnting 'at'
+				solution of operands of statements within this Q routine)pbdoc")
+		.def("solve", &Qroutine::solve,
+			"Solve this Q routine and return a string with all solutions")
+		.def("compute", &Qroutine::compute, 
+			"Returns computed sample set with all solutions for the Q routine logic")
+		.def("reset", &Qroutine::reset, 
+"Clear all solution samples")
 
 		.def(py::self << Qexpr<Qbit>())
 		.def(py::self << Qexpr<Qbool>())
 		.def(py::self << Qexpr<Qbin>())
 		.def(py::self << Qexpr<Qwhole>())
-		.def("_", [](Qroutine& self, const Qexpr<Qwhole>& right) { self << right; return self; })
+		.def("_", [](Qroutine& self, const Qexpr<Qwhole>& right) 
+			{ self << right; return self; })
 
 		.def(py::self << Qassign<Qbit>())
 		.def(py::self << Qassign<Qbool>())
 		.def(py::self << Qassign<Qbin>())
 		.def(py::self << Qassign<Qwhole>())
-		.def("_", [](Qroutine& self, const Qassign<Qwhole>& right) { self << right; return self; });
+		.def("_", [](Qroutine& self, const Qassign<Qwhole>& right) 
+			{ self << right; return self; })
+
+		.def(py::self << Qblock())
+		.def(py::self << Qroutine())
+		;
 
 
 	/*--- Qbinder.h definitions---*/

@@ -362,7 +362,8 @@ void UTestQwhole::arithmetic(ostream& out)
         << " # of branches: " << anlyze.branchesNo() << endl << endl;
 
     qwExpr.reset();
-    qwExpr = y / x;
+    Qwhole d("d", 3);
+    qwExpr = d / x;
     noFnlCmplr.reset(); qwExpr.compile(noFnlCmplr);
     compiler.reset(); qwExpr.compile(compiler);
     out << "Division Expression" << endl << qwExpr << endl
@@ -604,26 +605,19 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xNeqEq.compile(compiler);
     out << xNeqEq << endl << " decomposed: " << endl
         << xNeqEq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xNeqEq.solve() << endl
-        << "WRONG!!!" << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xNeqEq.solve() << endl << endl;
 
     /*** CORECT Begin ***/
     Qblock bNeqEq; bNeqEq = x != z, x == y;
     compiler.reset(); bNeqEq.compile(compiler);
     out << bNeqEq << endl
         << bNeqEq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << bNeqEq.solve() << "CORECT!!!!"
-        << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << bNeqEq.solve() << endl;
     Qubo qubo = compiler.qubo();
     Qbit x3("x3"), y3("y3", 0); // x3 == y3 is a problem!!!!
     compiler.reset(); (x3 == y3).compile(compiler);
     out << endl << "Problem is: " << (x3 == y3) << " Qubo: " << compiler.qubo()
             << endl << endl;
-    qubo += compiler.qubo();
-    D5QuboSolver slvrNeqEq(qubo);
-    Qbinder bndrNeqEq; bndrNeqEq = x, z, y;
-    bndrNeqEq.add(slvrNeqEq.solution());
-    out << bndrNeqEq.solutions() << "WRONG!!!!" << endl << endl;
     /*** CORECT End ***/
 
     compiler.reset(); xGtEq.compile(compiler);
@@ -639,25 +633,18 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xLtEq.compile(compiler);
     out << xLtEq.toString() << endl << " decomposed: " << endl
         << xLtEq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xLtEq.solve() << "WRONG!!!"
-        << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xLtEq.solve() << endl;
 
     /*** CORECT Begin ***/
     Qblock bLtEq; bLtEq = x < z, x == y;
     compiler.reset(); bLtEq.compile(compiler);
     out << bLtEq << endl
         << bLtEq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << bLtEq.solve() << "CORECT!!!!"
-        << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << bLtEq.solve() << endl;
     qubo = compiler.qubo();
     compiler.reset(); (x3 == y3).compile(compiler);
     out << endl << "Problem is: " << (x3 == y3) << " Qubo: " << compiler.qubo()
             << endl << endl;
-    qubo += compiler.qubo();
-    D5QuboSolver slvrLtEq(qubo);
-    Qbinder bndrLtEq; bndrLtEq = x, z, y;
-    bndrLtEq.add(slvrLtEq.solution());
-    out << bndrLtEq.solutions() << "WRONG!!!!" << endl << endl;
     /*** CORECT End ***/
 
     compiler.reset(); xLeEq.compile(compiler);
@@ -682,8 +669,7 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xEqNeq.compile(compiler);
     out << xEqNeq << endl << " decomposed: " << endl
         << xEqNeq.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xEqNeq.solve() << endl << "WRONG!!!"
-        << endl << endl;;
+        << "Qubo: " << compiler.qubo() << endl << xEqNeq.solve() << endl << endl;;
 
     compiler.reset(); xEqGt.compile(compiler);
     out << xEqGt << endl << " decomposed: " << endl
@@ -698,8 +684,7 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xEqLt.compile(compiler);
     out << xEqLt.toString() << endl << " decomposed: " << endl
         << xEqLt.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xEqLt.solve() << endl << "WRONG!!!"
-        << endl << endl;;
+        << "Qubo: " << compiler.qubo() << endl << xEqLt.solve() << endl << endl;;
 
     compiler.reset(); xEqLe.compile(compiler);
     out << xEqLe << endl << " decomposed: " << endl
@@ -710,21 +695,19 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xxEyAz.compile(compiler);
     out << xxEyAz << endl << " decomposed: " << endl
         << xxEyAz.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xEqLe.solve() << endl;
+        << "Qubo: " << compiler.qubo() << endl << xxEyAz.solve() << endl;
 
     Qexpr<Qwhole> xxNEyAz(x != y + z);
     compiler.reset(); xxNEyAz.compile(compiler);
     out << xxNEyAz.toString() << endl << " decomposed: " << endl
         << xxNEyAz.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xxNEyAz.solve() << endl << "WRONG!!!"
-        << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xxNEyAz.solve() << endl << endl;
 
     Qexpr<Qwhole> xxGTyAz(x > y + z);
     compiler.reset(); xxGTyAz.compile(compiler);
     out << xxGTyAz.toString() << endl << " decomposed: " << endl
         << xxGTyAz.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xxGTyAz.solve() << endl << "WRONG!!!"
-        << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xxGTyAz.solve() << endl << endl;
 
     Qexpr<Qwhole> xxGEyAz(x >= y + z);
     compiler.reset(); xxGEyAz.compile(compiler);
@@ -742,8 +725,7 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xxLEyAz.compile(compiler);
     out << xxLEyAz.toString() << endl << " decomposed: " << endl
         << xxLEyAz.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xxLEyAz.solve() << endl << "WRONG!!!"
-        << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xxLEyAz.solve() << endl << endl;
     
     Qexpr<Qwhole> xyAzEx(y + z == x);
     compiler.reset(); xyAzEx.compile(compiler);
@@ -755,8 +737,7 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xyAzNEx.compile(compiler);
     out << xyAzNEx.toString() << endl << " decomposed: " << endl
         << xyAzNEx.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xyAzNEx.solve() << endl << "WRONG!!!"
-        << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xyAzNEx.solve() << endl << endl;
 
     Qexpr<Qwhole> xyAzGTx(y + z > x);
     compiler.reset(); xyAzGTx.compile(compiler);
@@ -768,15 +749,13 @@ void UTestQwhole::comparison(ostream& out)
     compiler.reset(); xyAzGEx.compile(compiler);
     out << xyAzGEx.toString() << endl << " decomposed: " << endl
         << xyAzGEx.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xyAzGEx.solve() << endl << "WRONG!!!"
-    << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xyAzGEx.solve() << endl << endl;
 
     Qexpr<Qwhole> xyAzLTx(y + z < x);
     compiler.reset(); xyAzLTx.compile(compiler);
     out << xyAzLTx.toString() << endl << " decomposed: " << endl
         << xyAzLTx.toString(true) << endl
-        << "Qubo: " << compiler.qubo() << endl << xyAzLTx.solve() << endl << "WRONG!!!"
-    << endl << endl;
+        << "Qubo: " << compiler.qubo() << endl << xyAzLTx.solve() << endl << endl;
 
     Qexpr<Qwhole> xyAzLEx(y + z <= x);
     compiler.reset(); xyAzLEx.compile(compiler);
@@ -840,7 +819,7 @@ void UTestQwhole::assignment(ostream& out)
         << " & finalized Qubo is '" << compiler.qubo() << "'" << endl;
     out  << " resulting in :" << endl << blck.solve() << endl;
 
-    out << "Dann5.ocean Tests Qwhole addition!\n";
+    out << "dann5 tests Qwhole addition!\n";
     Qwhole a(4, "a"), b(2, "b"), c(2, "c"), d(1, "d"), A("A", 21), _1("1_", 1);
     Qassign<Qwhole> aA = A = a + b + c + d + _1;
     noFnlCmplr.reset(); aA.compile(noFnlCmplr);

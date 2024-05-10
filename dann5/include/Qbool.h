@@ -115,8 +115,8 @@ namespace dann5 {
 
         /*** Logical ***/
         // instantiate Q expression with inversion logic, e.g. for Qbool with id 'x'
-        // the expression is '!x' != 'x'
-        Qexpr<Qbool> operator !() const;
+        // the expression is '~x' ~ 'x'
+        Qexpr<Qbool> operator ~() const;
 
         // instantiate Q expression with and logic, e.g. for Qbool ids 'x' and 'y'
         // the expression is 'x' & 'y'

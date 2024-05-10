@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = empty-project-type
-recent_files = ['basic_types.py', 'nikola_test.py', 'PNs.txt', 'shipping-sample.py', 'd5o2_tests.py', 'qiskitBasic.py', 'd5qskt.py', 'UTest_d5o.py']
+recent_files = ['basic_types.py', 'nikola_test.py', 'PNs.txt', 'shipping-sample.py', 'd5o2_tests.py', 'qiskitBasic.py', 'd5qskt.py', 'UTest_d5o.py', '..\\..\\..\\..\\..\\AppData\\Local\\Envs\\d5o\\lib\\site-packages\\dann5\\dwave.py', '..\\..\\..\\..\\..\\AppData\\Local\\Envs\\d5o\\lib\\site-packages\\dann5\\qiskit.py', 'qiskitQUBO.py', 'azureWS.py', 'd5az.py', '..\\..\\..\\..\\..\\appdata\\local\\envs\\d5o\\lib\\site-packages\\dann5\\azure.py']
 
 [main]
 version = 0.2.0
