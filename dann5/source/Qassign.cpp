@@ -20,6 +20,13 @@ void Qassignment::assign(const Qdef::Sp& pAssignee, const Qexpression::Sp& pExpr
 	expression(pExpr);
 }
 
+void Qassignment::assignee(const Qdef::Sp& pAssignee)
+{
+	mpAssignee = pAssignee;
+	if (mpAssignee != nullptr && mpExpr != nullptr)
+		bind();
+}
+
 void Qassignment::expression(const Qexpression::Sp& pExpr)
 { 
 	mpExpr = pExpr; 

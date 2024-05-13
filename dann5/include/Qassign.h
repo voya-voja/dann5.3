@@ -70,7 +70,7 @@ namespace dann5 {
         Qdef::Sp assignee() { return mpAssignee; };
 
         // Sets a Q definition pointer to a new assignee
-        void assignee(const Qdef::Sp& pAssignee) { mpAssignee = pAssignee; };
+        void assignee(const Qdef::Sp& pAssignee);
 
         // Returns a pointer to the Q expression
         const Qexpression::Sp& expression() const { return mpExpr; };
