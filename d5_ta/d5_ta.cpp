@@ -259,10 +259,10 @@ int main(int argc, const char * argv[])
     _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
-    UTestQbin utestQbin;
-    utestQbin.friends_enemies(cout);
+//    UTestQbin utestQbin;
+//    utestQbin.friends_enemies(cout);
 
-    // unitTests();
+    unitTests();
 
 //    testQbitQiskit();
 //    testQbinQiskit();

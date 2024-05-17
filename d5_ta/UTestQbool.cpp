@@ -77,7 +77,7 @@ void UTestQbool::initialization(ostream& out)
 void UTestQbool::logical(ostream& out)
 {
     Qbool x("x"), y("y", 5), _F("_F", false), _T("_1", 1);
-    Qexpr<Qbool> xI = !x;
+    Qexpr<Qbool> xI = ~x;
 
     Qubo q;
     out << q;
