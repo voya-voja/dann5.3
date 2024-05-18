@@ -53,6 +53,7 @@
 		A25189902BB9B51500FDEAED /* QTfactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A251898A2BB9B51500FDEAED /* QTfactory.cpp */; };
 		A25189912BB9B51500FDEAED /* D5QuboSolver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A251898B2BB9B51500FDEAED /* D5QuboSolver.cpp */; };
 		A25189922BB9B51500FDEAED /* QuboCompiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A251898C2BB9B51500FDEAED /* QuboCompiler.cpp */; };
+		A2F834612BF7FD5F002A8D4C /* UTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2F834602BF7FD5F002A8D4C /* UTest.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -163,6 +164,8 @@
 		A251899A2BB9B56A00FDEAED /* D5QuboSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = D5QuboSolver.h; path = ../../dann5/ocean/include/D5QuboSolver.h; sourceTree = "<group>"; };
 		A251899B2BB9B56A00FDEAED /* Qubo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qubo.h; path = ../../dann5/ocean/include/Qubo.h; sourceTree = "<group>"; };
 		A2A5354428C6C5E8002C4145 /* d5o_ta_Xc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = d5o_ta_Xc; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2F834602BF7FD5F002A8D4C /* UTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTest.cpp; path = ../UTest.cpp; sourceTree = "<group>"; };
+		A2F834622BF7FD89002A8D4C /* UTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UTest.h; path = ../UTest.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +184,7 @@
 			children = (
 				A251890C2BB9B34500FDEAED /* dann5 */,
 				A25189202BB9B42400FDEAED /* PNGen.h */,
+				A2F834622BF7FD89002A8D4C /* UTest.h */,
 				A25189212BB9B42400FDEAED /* UTestQbin.hpp */,
 				A25189242BB9B42400FDEAED /* UTestQbit.h */,
 				A25189232BB9B42400FDEAED /* UTestQbool.hpp */,
@@ -197,6 +201,7 @@
 				A251890D2BB9B35100FDEAED /* dann5 */,
 				A25189162BB9B3FD00FDEAED /* d5_ta.cpp */,
 				A25189122BB9B3FD00FDEAED /* PNGen.cpp */,
+				A2F834602BF7FD5F002A8D4C /* UTest.cpp */,
 				A25189172BB9B3FD00FDEAED /* UTestQbin.cpp */,
 				A25189142BB9B3FD00FDEAED /* UTestQbit.cpp */,
 				A25189152BB9B3FD00FDEAED /* UTestQbool.cpp */,
@@ -445,6 +450,7 @@
 				A25189692BB9B4CF00FDEAED /* Qmultiply.cpp in Sources */,
 				A251891A2BB9B3FD00FDEAED /* UTestQwhole.cpp in Sources */,
 				A25189912BB9B51500FDEAED /* D5QuboSolver.cpp in Sources */,
+				A2F834612BF7FD5F002A8D4C /* UTest.cpp in Sources */,
 				A251898D2BB9B51500FDEAED /* DwaveSolver.cpp in Sources */,
 				A25189702BB9B4CF00FDEAED /* Qglbls_fctrs.cpp in Sources */,
 				A251891B2BB9B3FD00FDEAED /* UTestQbit.cpp in Sources */,
