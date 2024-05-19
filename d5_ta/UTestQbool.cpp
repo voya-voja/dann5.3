@@ -82,7 +82,7 @@ void UTestQbool::logical(ostream& out)
     Qubo q;
     out << q;
     QuboCompiler compiler; xI.compile(compiler);
-    out << "Expression '!x', NOT (invert) x is: " << xI << endl
+    out << "Expression '~x', NOT (invert) x is: " << xI << endl
         << " Dann5 virtual code: " << xI.toString(true) << endl
         << " It's Qubo is '" << compiler.qubo() << "'" << endl
         << " resulting in :" << endl << xI.solve() << endl;
@@ -288,22 +288,24 @@ void UTestQbool::vertex(ostream& out)
         << "|       e" << endl
         << "|      /" << endl
         << "b --- c" << endl;
-    /*Qexpr<Qbool> pentagonXpr = ((vertices[0] ^ vertices[1])
-                                & ((vertices[0] ^ vertices[3]) | (vertices[2] ^ vertices[1])))
-                                & (((vertices[2] ^ vertices[4]) | (vertices[3] ^ vertices[4]))
-                                    & vertices[2].alike(vertices[3]).alike(vertices[4]));*/
-    Qexpr<Qbool> pentagonXpr = (((vertices[0] ^ vertices[1])
-                                & ((vertices[0] ^ vertices[3]) | (vertices[2] ^ vertices[1])))
-                                    & vertices[2].alike(vertices[3]).alike(vertices[4]));
-    Qassign<Qbool> axbPV = _T = pentagonXpr;
-    compiler.reset(); axbPV.compile(compiler);
-    out << endl << "---- Pentagon a-b-c-d-e equation:" << endl << axbPV.toString()
+    // initialize expression
+    Qexpr<Qbool> pentagonXprNe = vertices[4] != vertices[0], pentagonXprSum = vertices[4] ^ vertices[0];
+    for (size_t count = 0; count < 4; count++)
+    {
+        pentagonXprNe = pentagonXprNe | (vertices[count] != vertices[count + 1]);
+        if(count != 0)
+            pentagonXprSum = pentagonXprSum ^ vertices[count];
+    }
+            
+    Qassign<Qbool> pentagonAssign = _T = pentagonXprNe.nand(pentagonXprSum);
+    compiler.reset(); pentagonAssign.compile(compiler);
+    out << endl << "---- Pentagon a-b-c-d-e equation:" << endl << pentagonAssign.toString()
         << endl << "     QUBO: " << compiler.qubo() << endl;
     QuboAnalyzer anlyzeP(compiler.qubo());
     out << endl << "---- Pentagon a-b-c-d-e equation vertex problem with ";
     out << anlyze.nodesNo() << " nodes and " << anlyze.branchesNo() 
         << " branches " << " solutions:" << endl;
-    verticesBinder.reset(); verticesBinder.add(axbPV.compute());
+    verticesBinder.reset(); verticesBinder.add(pentagonAssign.compute());
     out << verticesBinder << endl;
 
 
