@@ -18,7 +18,8 @@ To start learning about quantum programming and quantum computing platforms, any
 4.	Install Use D-Wave [Ocean SDK](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html)
 5.	Set up your D-Wave [Leap](https://cloud.D-Wavesys.com/leap/) account
 6.	Install [IBM Qiskit](https://qiskit.org/documentation/getting_started.html)
-7.	Download [dann5 notebooks]( https://github.com/voya-voja/dann5.3/tree/master/notebooks) and start emerging into quantum programming
+7.	Add [Azure Quantum](https://docs.microsoft.com/en-us/azure/quantum/quickstart-microsoft-qio?pivots=platform-microsoft)
+8.	Download [dann5 notebooks]( https://github.com/voya-voja/dann5.3/tree/master/notebooks) and start emerging into quantum programming
 
 ### 1. Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
 
@@ -251,7 +252,17 @@ Once all is done, you can run the follwing code to execute a block of quantum co
 
 - **Note**: also *timesBlock.toString(True)* call provides a view into a decomposed dann5 virtual quantum machine code of *timesBlock*.
 
-### 7. Download [dann5 jupyter notebooks](https://github.com/voya-voja/dann5.3/tree/master/notebooks)
+### 7. Add [Azure Quantum](https://docs.microsoft.com/en-us/azure/quantum/quickstart-microsoft-qio?pivots=platform-microsoft) to local quantum virtual environment
+To be able to solve optimization problems from your local quantum virtual environment using Azure Quantum, you'll need to perform following 3 steps:
+
+1. **[Create an Azure account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F)** with an active subscription account for free.
+2. **[Create an Azure Quantum workspace](https://docs.microsoft.com/en-us/azure/quantum/how-to-create-workspace)** with the Microsoft QIO provider enabled.
+3. **[Install azure-quantum python package](https://docs.microsoft.com/en-us/azure/quantum/install-python-optimization)** into your local quantum environment. From *command prompt* with active virtual environment, e.g. d5o, run the following command:
+    > pip install --upgrade azure-quantum
+
+To test connection to Azure Quantum you can *dann5.azure* module to create *QuantumRequest* for *mM multiplication*. In this example the QuantumRequest will use **Asure Quantum ParallelTempering solver** to solve the multiplication. The solver will return only one of possible five solutions.
+
+### 8. Download [dann5 jupyter notebooks](https://github.com/voya-voja/dann5.3/tree/master/notebooks)
 
 1. Create a folder on your local machine
 2. Open a remote [dann5 notebooks folder](https://github.com/voya-voja/dann5.3/tree/master/notebooks) in your browser
