@@ -15,11 +15,11 @@ To start learning about quantum programming and quantum computing platforms, any
 1.	Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
 2.	Create Python virtual environment for quantum programming
 3.	Install and test [dann5](https://pypi.org/project/dann5/) package
-4.	Install Use D-Wave [Ocean SDK](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html)
-5.	Set up your D-Wave [Leap](https://cloud.D-Wavesys.com/leap/) account
+4.	Install Use D-Wave [Ocean SDK](https://docs.ocean.dwavesys.com/en/latest/overview/install.html)
+5.	Set up your D-Wave [Leap](https://cloud.dwavesys.com/leap/) account
 6.	Install [IBM Qiskit](https://qiskit.org/documentation/getting_started.html)
 7.	Add [Azure Quantum](https://docs.microsoft.com/en-us/azure/quantum/quickstart-microsoft-qio?pivots=platform-microsoft)
-8.	Download [dann5 notebooks]( https://github.com/voya-voja/dann5.3/tree/master/notebooks) and start emerging into quantum programming
+8.	Download [dann5 notebooks](https://github.com/voya-voja/dann5.3/releases/tag/3.0.1) and start emerging into quantum programming
 
 ### 1. Download and install [Python 3.10.11 (64-bit)](https://www.python.org/downloads/release/python-31011/)
 
@@ -91,7 +91,7 @@ To be able to write or debug python code download and install [Spyder 5.5.1](htt
     
     > pip install --upgrade matplotlib
     >
-    > pip install spyder-kernels==5.5.*
+    > pip install spyder-kernels==2.5.*
         
     - **Note**: make sure spyder kernel version is correct!
         
@@ -168,27 +168,27 @@ The *sumAssignment.solutions()* method returns line by line all found solutions 
 
 Additionally, any variable named **'_< sign >#'** (where *#* is a number) is an auxiliary variable. For example, an addition auxiliary variable is **_+0** with **4 qbits** and **value 13**.
 
-### 4. To Use D-Wave Install [Ocean SDK](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html)
+### 4. To Use D-Wave Install [Ocean SDK](https://docs.ocean.dwavesys.com/en/latest/overview/install.html)
 If you would like to develop a quantum solution to be executed on *D-Wave quantum annealer, hybrid-computer or simulator*, you have to create a developer account in *D-Wave Leap* cloud and install *D-Wave Ocean SDK* in local *QVE*.
 1. To create D-Wave Leap developer account you need a *[github account](https://github.com/)*. If you don't, [create one](https://docs.github.com/en/get-started/signing-up-for-github/signing-up-for-a-new-github-account).
-2. Create a developer account on [*D-Wave Leap*](https://cloud.D-Wavesys.com/leap/signup/).
-3. [Log in](https://cloud.D-Wavesys.com/leap/login/?next=/leap/) using your D-Wave Leap developer account.
+2. Create a developer account on [*D-Wave Leap*](https://cloud.dwavesys.com/leap/signup/).
+3. [Log in](https://cloud.dwavesys.com/leap/login/?next=/leap/) using your D-Wave Leap developer account.
     - Explore D-Wave Leap landing page and locate *API Token*, which you will need to configure D-Wave Ocean in your local QVE.
     - You can develop/debug D-Wave specialized quantum solutions in Leap, by creating your *Leap IDE*, under *Resources*.
-4. [Install](https://docs.ocean.D-Wavesys.com/en/latest/overview/install.html) and  by running following commands using *Command Prompt* in your local **active QVE**
+4. [Install](https://docs.ocean.dwavesys.com/en/latest/overview/install.html) and  by running following commands using *Command Prompt* in your local **active QVE**
     > pip install --upgrade D-Wave-ocean-sdk
-5. [configure](https://docs.ocean.D-Wavesys.com/en/stable/docs_cli.html) D-Wave Ocean in your local QVE by running:
-    > D-Wave config create
+5. [configure](https://docs.ocean.dwavesys.com/en/stable/docs_cli.html) D-Wave Ocean in your local QVE by running:
+    > dwave config create
     1. when prompted *Available profiles: defaults* just press *enter* 
     2. when prompted *Profile (select existing or create new) [defaults]:* just press *enter* 
     3. when prompted to enter *Authentication token [skip]:* past the *API Token* that you have copied from your D-Wave Leap landing page and press *enter*
     - The result should be:
         > Using the simplified configuration flow.
         >
-        > Try 'D-Wave config create --full' for more options.
+        > Try 'dwave config create --full' for more options.
         >
         >
-        > Updating existing configuration file: %userprofile%\AppData\Local\D-Wavesystem\D-Wave\D-Wave.conf
+        > Updating existing configuration file: %userprofile%\AppData\Local\dwavesystem\dwave\dwave.conf
         >
         > **Available profiles: defaults**
         >
@@ -200,17 +200,17 @@ If you would like to develop a quantum solution to be executed on *D-Wave quantu
         >
         > Configuration saved.
 
-6. [Test communications](https://docs.ocean.D-Wavesys.com/en/latest/overview/sapi.html) with the D-Wave quantum computer by running:
-    > D-Wave ping --client qpu
-    - If you encounter SSLError, you need to download and past certificates recognized by D-Wave endpoint into *cacert.pem* file located in *Lib\site-packages\certifi\* in your local *QVE* by following these [instructions](https://support.D-Wavesys.com/hc/en-us/community/posts/360018930954-Resolving-SSL-certificate-verify-fails-error-message-from-D-Wave-ping-command). Step-by-step instructions for Windows are one third down the page. Search for *Windows specific instructions* to locate them.
+6. [Test communications](https://docs.ocean.dwavesys.com/en/latest/overview/sapi.html) with the D-Wave quantum computer by running:
+    > dwave ping --client qpu
+    - If you encounter SSLError, you need to download and past certificates recognized by D-Wave endpoint into *cacert.pem* file located in *Lib\site-packages\certifi\* in your local *QVE* by following these [instructions](https://support.dwavesys.com/hc/en-us/community/posts/360018930954-Resolving-SSL-certificate-verify-fails-error-message-from-dwave-ping-command). Step-by-step instructions for Windows are one third down the page. Search for *Windows specific instructions* to locate them.
 
 Now your local *QVE* is ready for development of quantum solutions, which you can confirm by submitting a random problem to a remote solver by running following command using *Command Prompt* in **active QVE**.
-> D-Wave sample --random-problem
+> dwave sample --random-problem
 
-Also, you can use installed *python* and *spyder* IDEs to develop python code and test it on [D-Wave simulators](https://docs.ocean.D-Wavesys.com/en/latest/docs_dimod/reference/sampler_composites/samplers.html), [quantum solvers](https://docs.ocean.D-Wavesys.com/en/stable/overview/qpu.html#using-qpu) or [hybrid  sampler](https://docs.ocean.D-Wavesys.com/en/stable/overview/samplers.html).
+Also, you can use installed *python* and *spyder* IDEs to develop python code and test it on [D-Wave simulators](https://docs.ocean.dwavesys.com/en/latest/docs_dimod/reference/sampler_composites/samplers.html), [quantum solvers](https://docs.ocean.dwavesys.com/en/stable/overview/qpu.html#using-qpu) or [hybrid  sampler](https://docs.ocean.dwavesys.com/en/stable/overview/samplers.html).
 
 
-### 5. Attach your GitHub account to your D-Wave Leap account: [Leap Link](https://cloud.D-Wavesys.com/leap/)
+### 5. Attach your GitHub account to your D-Wave Leap account: [Leap Link](https://cloud.dwavesys.com/leap/)
 For your D-Wave license to renew every month for free you will need to pass your GitHub account to the D-Wave account profile you have created. 
 
 Use the link above to sign in and then click on the profile name in the top right corner of the D-Wave leap home page. A dropdown will appear and click on the button labeled "Expand you access".
@@ -259,13 +259,15 @@ To be able to solve optimization problems from your local quantum virtual enviro
 2. **[Create an Azure Quantum workspace](https://docs.microsoft.com/en-us/azure/quantum/how-to-create-workspace)** with the Microsoft QIO provider enabled.
 3. **[Install azure-quantum python package](https://docs.microsoft.com/en-us/azure/quantum/install-python-optimization)** into your local quantum environment. From *command prompt* with active virtual environment, e.g. d5o, run the following command:
     > pip install --upgrade azure-quantum
+    >
+    > pip install azure-quantum[cirq]
 
 To test connection to Azure Quantum you can *dann5.azure* module to create *QuantumRequest* for *mM multiplication*. In this example the QuantumRequest will use **Asure Quantum ParallelTempering solver** to solve the multiplication. The solver will return only one of possible five solutions.
 
-### 8. Download [dann5 jupyter notebooks](https://github.com/voya-voja/dann5.3/tree/master/notebooks)
+### 8. Download [dann5 jupyter notebooks](https://github.com/voya-voja/dann5.3/releases/tag/3.0.1)
 
 1. Create a folder on your local machine
-2. Open a remote [dann5 notebooks folder](https://github.com/voya-voja/dann5.3/tree/master/notebooks) in your browser
+2. Open a remote [dann5 notebooks folder](https://github.com/voya-voja/dann5.3/releases/tag/3.0.1) in your browser
 3. Right click on a jupiter notebook you would like to download and select *'Save Link As'* from the popup menu
 4. Save a notebook to the local folder
 5. In a comand prompt/terminal window activate your VE4QP, e.g. *d5*
