@@ -5,7 +5,7 @@
     <ProjectGuid>d93397d5-6d9d-4b79-bc1e-9f19fe494749</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>d5py.py</StartupFile>
-    <SearchPath>..\pypi_package\dann5</SearchPath>
+    <SearchPath>..\pypi_package\dann5;..\d5py</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>d5py</Name>
@@ -26,6 +26,7 @@
     <Compile Include="d5py.py" />
     <Compile Include="dwave.py" />
     <Compile Include="qiskit.py" />
+    <Compile Include="setup.py" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="..\..\..\..\AppData\Local\Envs\d5o\">
