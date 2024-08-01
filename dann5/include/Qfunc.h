@@ -184,7 +184,6 @@ namespace dann5
                 *mpFunction << right;
                 return *this;
             };
-
         protected:
         private:
             Qfunction* mpFunction;    // pointer to Q function
@@ -204,10 +203,10 @@ namespace dann5
         // Insert string representation of a Q function into an output stream
         friend std::ostream& operator << (std::ostream&, const Qfunction&);
 
-    protected:
         // Adds assigned output and inputs into quantum function's binder
         virtual void refresh();
 
+    protected:
         // Adds assigned inputs into quantum function's binder
         virtual void refreshOnInputs();
 
@@ -249,6 +248,37 @@ namespace dann5
 
     // Insert string representation of a Q routine into an output stream
     std::ostream& operator << (std::ostream&, const Qfunction&);
+
+
+    class PyQfunction : public Qfunction {
+    public:
+        /* Inherit the constructors */
+        using Qfunction::Qfunction;
+
+        /* Trampoline (need one for each virtual function) */
+
+        // Return a Qdef's shared pointer pointing to a copy of this object
+        virtual Qdef::Sp clone() const override {
+            // PYBIND11_OVERRIDE_PURE(
+            PYBIND11_OVERRIDE(
+                Qdef::Sp,           /* Return type */
+                Qfunction,    /* Parent class */
+                clone,          /* Name of function in C++ (must match Python name) */
+                /* Argument(s) */
+                );
+        };
+
+        // Adds assigned output and inputs into quantum function's binder
+        virtual void refresh() override {
+            //                PYBIND11_OVERRIDE_PURE(
+            PYBIND11_OVERRIDE(
+                void,           /* Return type */
+                Qfunction,    /* Parent class */
+                refresh,          /* Name of function in C++ (must match Python name) */
+                /* Argument(s) */
+                );
+        };
+    };
 };
 
 #endif /* Qfunc_h */

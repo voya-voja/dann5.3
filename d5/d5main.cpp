@@ -32,6 +32,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 #include <Qint.h>
 #include <Qwhole.h>
 
+#include <Qfunc.h>
+
 #include <Qstatement.h>
 #include <Qexpr.h>
 #include <Qassign.h>
@@ -312,6 +314,25 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::init<>())
 		.def(py::init<const Qop::Sp&>())
 		.def(py::init<const Qexpr<Qwhole>&>())
+
+		/*** Bitwise ***/
+		.def(~py::self, "instantiate Q bit expression with inversion logic, e.g. for Qwhole with id 'x' the expression is '~x' != 'x'")
+
+		.def(py::self & py::self, "instantiate Q expression with and logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' & 'y'")
+		.def(py::self & Qwhole(), "instantiate Q expression with and logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' & [right]")
+
+		.def("nand", static_cast<Qexpr<Qwhole>(Qexpr<Qwhole>::*)(const Qwhole&) const>(&Qexpr<Qwhole>::nand), "instantiate Q expression with nand logic, e.g. for Qwhole with id 'x' and 'y' the expression is !('x' & 'y')")
+		.def("nand", static_cast<Qexpr<Qwhole>(Qexpr<Qwhole>::*)(const Qexpr<Qwhole>&) const>(&Qexpr<Qwhole>::nand), "instantiate Q expression with nand logic, e.g. for Qwhole id 'x' and [right] object the expression is !('x' & [right])")
+
+		.def(py::self | py::self, "instantiate Q expression with or logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' | 'y'")
+		.def(py::self | Qwhole(), "instantiate Q expression with or logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' | [right]")
+
+		.def("nor", static_cast<Qexpr<Qwhole>(Qexpr<Qwhole>::*)(const Qwhole&) const>(&Qexpr<Qwhole>::nor), "instantiate Q expression with nor logic, e.g. for Qwhole with id 'x' and 'y' the expression is !('x' | 'y')")
+		.def("nor", static_cast<Qexpr<Qwhole>(Qexpr<Qwhole>::*)(const Qexpr<Qwhole>&) const>(&Qexpr<Qwhole>::nor), "instantiate Q expression with nor logic, e.g. for Qwhole id 'x' and [right] object the expression is !('x' | [right])")
+
+
+		.def(py::self^ py::self, "instantiate Q expression with xor logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' ^ 'y'")
+		.def(py::self^ Qwhole(), "instantiate Q expression with xor logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' ^ [right]")
 
 		/*** Comparison ***/
 		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qwhole expression with id 'x' and 'y' the expression is 'x' == 'y'")
@@ -1122,8 +1143,8 @@ PYBIND11_MODULE(d5, m) {
 
 	/*--- Qbinder.h definitions---*/
 	py::class_<Qbinder>(m, "Qbinder",
-		R"pbdoc( Quantum binder is a Q definition with a sequence of logical 
-				 quantum statements organized as Q block)pbdoc")
+		R"pbdoc(A Q binder is a collection quantum operands, used to be report
+					together on thier added solutions.)pbdoc")
 		.def(py::init<>())
 		.def(py::init<const Qbinder&>())
 		.def(py::init<const Qevaluations&>())
@@ -1194,4 +1215,24 @@ PYBIND11_MODULE(d5, m) {
 //		.def(py::init<>())
 		.def("compile", &Qcompiler::compile, "A method to be executed by active Qsolver when solving a quantum statement.");
 
+	/*--- DwaveSolver.h definitions ---*/
+	py::class_<Qfunction, Qfunction::Sp, PyQfunction>(m, "Qfunction", 
+		R"pbdoc( A generic quantum function definition.)pbdoc")
+		.def(py::init<const string&>(), R"pbdoc( Construct quantum function instance with name as 
+			its identity and the default number of arguments is 0.)pbdoc")
+		.def(py::init<const string&, size_t>(), R"pbdoc( Construct quantum function instance with name as 
+			its identity and  number of arguments.)pbdoc")
+		.def(py::init<const string&, const Qblock&>(), R"pbdoc( Construct quantum function instance with name as its identity with a
+			logic defined by the block and the default number of arguments is 0.)pbdoc")
+		.def(py::init<const string&, const Qblock&, size_t>(), R"pbdoc(  Construct quantum function instance with name as its identity with a
+			logic defined by the block and  number of arguments.)pbdoc")
+		.def(py::init<const string&, const Qstatements&>(), R"pbdoc( Construct quantum function instance with name as its identity with a
+			logic defined by the list of quantum statetments and the default number of arguments is 0.)pbdoc")
+		.def(py::init<const string&, const Qstatements&, size_t>(), R"pbdoc(  Construct quantum function instance with name as its identity with a
+			logic defined by the list of quantum statetments and  number of arguments.)pbdoc")
+
+		.def("clone", &Qfunction::clone,
+			R"pbdoc(Override to return a copy of this object)pbdoc")
+		.def("refresh", &Qfunction::refresh,
+			R"pbdoc(Override to define logic and to add assigned output and inputs into quantum function's binder)pbdoc");
 }

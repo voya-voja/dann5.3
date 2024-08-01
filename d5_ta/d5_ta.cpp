@@ -254,12 +254,37 @@ void unitTests()
     cout << utQint.run() << endl;
 }
 
+void neTest()
+{
+    Qwhole w(2, "w"), c(2, "c"), w1("w1", 1), w0("w0", 0), w2("w2", 2);
+    Qexpr<Qwhole> ltXpr = c != w1, lt1Xpr = w1 != c;
+    QuboCompiler compiler, fullC(false);
+    cout << ltXpr << endl << ltXpr.toString(true) << endl << endl;
+    cout << ltXpr.solve() << endl << endl;
+    cout << lt1Xpr << endl << lt1Xpr.toString(true) << endl << endl;
+    cout << lt1Xpr.solve() << endl << endl;
+
+    ltXpr.compile(fullC);
+    cout << fullC.qubo() << endl << endl;
+    ltXpr.compile(compiler);
+    cout << compiler.qubo() << endl << endl;
+
+    fullC.reset(); 
+    compiler.reset();
+
+    lt1Xpr.compile(fullC);
+    cout << fullC.qubo() << endl << endl;
+    lt1Xpr.compile(compiler);
+    cout << compiler.qubo() << endl << endl;
+}
+
 int main(int argc, const char * argv[])
 {
     _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
-    unitTests();
+    neTest();
+//    unitTests();
 
 //    testQbitQiskit();
 //    testQbinQiskit();

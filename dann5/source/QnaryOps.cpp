@@ -97,28 +97,35 @@ void QnaryNeq::refresh()
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        Qfunction* pThis = static_cast<Qfunction*>(this);
-        static_cast<Qfunction&>(*this) = 
-            out = aux + in, 
-            Qbit::_1 = qbXpr;
+        Qassign<Qwhole> addition = out = aux + in;
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_1 = qbXpr;
     }
     else if(pOutOp == nullptr)
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qexpr<Qwhole> in(pInOp);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_1 = qbXpr;
+        Qassign<Qwhole> addition = out = aux + in;
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_1 = qbXpr;
     }
     else if(pInOp == nullptr)
     {
         Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_1 = qbXpr;
+        static_cast<Qfunction&>(*this) = out == aux + in, Qbit::_1 = qbXpr;
     }
     else
     {
         Qexpr<Qwhole> out(pOutOp);
         Qexpr<Qwhole> in(pInOp);
-        static_cast<Qfunction&>(*this) = out = aux + in, Qbit::_1 = qbXpr;
+        static_cast<Qfunction&>(*this) = out == aux + in, Qbit::_1 = qbXpr;
     }
 }
 
@@ -138,14 +145,22 @@ void QnaryLt::refresh()
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         Qassign<Qwhole> addition = out = aux + in;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != out[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != additionLastBit;
     }
     else if(pOutOp == nullptr)
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qexpr<Qwhole> in(pInOp);
         Qassign<Qwhole> addition = out = aux + in;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != out[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != additionLastBit;
     }
     else if(pInOp == nullptr)
     {
@@ -176,7 +191,7 @@ void QnaryLe::refresh()
     // define aux variable
     Qdef::Sp pOut = Qop::output();
     Qdef::Sp pIn = Qop::inputs()[0];
-    Qwhole aux(pOut->noqbs(), createOutId());
+    Qwhole aux(pIn->noqbs(), createOutId());
     // define less-than-or-equal expression considering the argumens can be
     // quantum whole or quantum operations
     QnaryOp::Sp pOutOp = dynamic_pointer_cast<QnaryOp>(pOut),
@@ -186,7 +201,11 @@ void QnaryLe::refresh()
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         Qassign<Qwhole> addition = in = aux + out;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == in[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == additionLastBit;
     }
     else if(pOutOp == nullptr)
     {
@@ -203,7 +222,11 @@ void QnaryLe::refresh()
         Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         Qassign<Qwhole> addition = in = aux + out;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == in[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == additionLastBit;
     }
     else
     {
@@ -223,7 +246,7 @@ void QnaryGt::refresh()
     // define aux variable
     Qdef::Sp pOut = Qop::output();
     Qdef::Sp pIn = Qop::inputs()[0];
-    Qwhole aux(pOut->noqbs(), createOutId());
+    Qwhole aux(pIn->noqbs(), createOutId());
     // define greater-than expression considering the argumens can be
     // quantum whole or quantum operations
     QnaryOp::Sp pOutOp = dynamic_pointer_cast<QnaryOp>(pOut),
@@ -233,7 +256,11 @@ void QnaryGt::refresh()
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         Qassign<Qwhole> addition = in = aux + out;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != in[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != additionLastBit;
     }
     else if (pOutOp == nullptr)
     {
@@ -250,7 +277,11 @@ void QnaryGt::refresh()
         Qexpr<Qwhole> out(pOutOp);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         Qassign<Qwhole> addition = in = aux + out;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != in[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 != additionLastBit;
     }
     else
     {
@@ -270,7 +301,7 @@ void QnaryGe::refresh()
     // define aux variable
     Qdef::Sp pOut = Qop::output();
     Qdef::Sp pIn = Qop::inputs()[0];
-    Qwhole aux(pIn->noqbs(), createOutId());
+    Qwhole aux(pOut->noqbs(), createOutId());
     // define greater-than-or-equal expression considering the argumens can be
     // quantum whole or quantum operations
     QnaryOp::Sp pOutOp = dynamic_pointer_cast<QnaryOp>(pOut),
@@ -280,14 +311,22 @@ void QnaryGe::refresh()
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qwhole& in = *static_pointer_cast<Qwhole>(pIn);
         Qassign<Qwhole> addition = out = aux + in;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == out[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == additionLastBit;
     }
     else if(pOutOp == nullptr)
     {
         Qwhole& out = *static_pointer_cast<Qwhole>(pOut);
         Qexpr<Qwhole> in(pInOp);
         Qassign<Qwhole> addition = out = aux + in;
-        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == out[addition.noqbs() - 1];
+        Qwhole& additionResult = *static_pointer_cast<Qwhole>(addition.assignee());
+        Qbit& additionLastBit = additionResult[addition.noqbs() - 1];
+        if (additionLastBit.value() != cSuperposition)
+            additionLastBit.value(cSuperposition);
+        static_cast<Qfunction&>(*this) = addition, Qbit::_0 == additionLastBit;
     }
     else if(pInOp == nullptr)
     {

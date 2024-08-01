@@ -4,6 +4,7 @@
 #include <thread>
 #include <utility>
 #include <future>
+#include <string>
 
 using namespace std;
 using namespace dann5test;
