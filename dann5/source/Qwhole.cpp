@@ -5,6 +5,7 @@
 #include <Qmultiply.h>
 #include <Qint.h>
 #include <Qfunc.h>
+#include <Qmod.h>
 
 using namespace dann5;
 
@@ -178,6 +179,20 @@ Qassign<Qwhole> Qwhole::operator/=(const Qexpr<Qwhole>& right) const
 	return assign;
 }
 
+Qassign<Qwhole> Qwhole::operator%=(const Qwhole& right) const
+{
+	Qexpr<Qwhole> expr = *this % right;
+	Qassign<Qwhole> assign(*this, expr);
+	return assign;
+}
+
+Qassign<Qwhole> Qwhole::operator%=(const Qexpr<Qwhole>& right) const
+{
+	Qexpr<Qwhole> expr = *this % right;
+	Qassign<Qwhole> assign(*this, expr);
+	return assign;
+}
+
 Qexpr<Qwhole> Qwhole::operator==(const Qwhole& right) const
 {
     QnaryOp::Sp pOp = Factory<string, QnaryOp>::Instance().create(QnaryEq::cMark());
@@ -342,6 +357,24 @@ Qexpr<Qwhole> Qwhole::operator/(const Qexpr<Qwhole>& right) const
 	Qop::Sp pOp(new Qdivide());
     Qwhole out(pOp->createOutId());
     pOp->operands(out.clone(), {clone(), right.rootDef()->clone()});
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qwhole> Qwhole::operator%(const Qwhole& right) const
+{
+	Qop::Sp pOp(new QwholeMod());
+	Qwhole out(pOp->createOutId());
+	pOp->operands(out.clone(), { clone(), right.clone() });
+	Qexpr<Qwhole> expr(pOp);
+	return expr;
+}
+
+Qexpr<Qwhole> Qwhole::operator%(const Qexpr<Qwhole>& right) const
+{
+	Qop::Sp pOp(new QwholeMod());
+	Qwhole out(pOp->createOutId());
+	pOp->operands(out.clone(), { clone(), right.rootDef()->clone() });
 	Qexpr<Qwhole> expr(pOp);
 	return expr;
 }

@@ -126,6 +126,9 @@
     <ClInclude Include="..\dann5\include\Utility.h">
       <Filter>Header Files\dann5</Filter>
     </ClInclude>
+    <ClInclude Include="..\dann5\include\Qmod.h">
+      <Filter>Header Files\dann5</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="d5main.cpp">
@@ -216,6 +219,9 @@
       <Filter>Source Files\dann5</Filter>
     </ClCompile>
     <ClCompile Include="..\dann5\source\Qdef.cpp">
+      <Filter>Source Files\dann5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dann5\source\Qmod.cpp">
       <Filter>Source Files\dann5</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,6 +12,15 @@
 
 using namespace dann5;
 
+string QwholeMod::toString(bool decomposed, size_t forBit) const
+{
+    if (decomposed) return Qfunction::toString(decomposed, forBit);
+    Qdefs ins(Qop::inputs());
+    string presentMod = ins[0]->toString() + " " 
+                        + id() + " " + ins[1]->toString();
+    return presentMod;
+}
+
 void QwholeMod::refresh()
 {
     Qfunction::refresh();

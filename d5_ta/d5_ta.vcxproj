@@ -115,7 +115,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../dann5/qiskit/include;../../eigen-master;%userprofile%/AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;%userprofile%/AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -131,7 +131,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_WINDOWS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../dann5/include;../dann5/ocean/include;../dann5/qiskit/include;../../eigen-master;../../../../AppData/Local/Envs/d5o/Lib/site-packages/pybind11/include;../../../../AppData/Local/Programs/Python/Python310/Include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -173,6 +173,7 @@
     <ClCompile Include="..\dann5\source\Qglbls_fctrs.cpp" />
     <ClCompile Include="..\dann5\source\Qint.cpp" />
     <ClCompile Include="..\dann5\source\QlogicCompiler.cpp" />
+    <ClCompile Include="..\dann5\source\Qmod.cpp" />
     <ClCompile Include="..\dann5\source\Qmultiply.cpp" />
     <ClCompile Include="..\dann5\source\Qnary.cpp" />
     <ClCompile Include="..\dann5\source\QnaryOp.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="..\dann5\include\Qfunc.h" />
     <ClInclude Include="..\dann5\include\Qint.h" />
     <ClInclude Include="..\dann5\include\QlogicCompiler.h" />
+    <ClInclude Include="..\dann5\include\Qmod.h" />
     <ClInclude Include="..\dann5\include\Qmultiply.h" />
     <ClInclude Include="..\dann5\include\Qnary.h" />
     <ClInclude Include="..\dann5\include\QnaryOp.h" />

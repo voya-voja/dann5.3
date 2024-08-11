@@ -130,7 +130,6 @@ namespace dann5 {
         // [this] = [this] - [right]
         Qassign<Qwhole> operator-=(const Qexpr<Qwhole>& right) const;
 
-
         // 'add assignment' of a Q whole creates a following Q whole assignment
         // [this] = [this] / [right]
         Qassign<Qwhole> operator/=(const Qwhole& right) const;
@@ -138,6 +137,14 @@ namespace dann5 {
         // 'add assignment' of a Q expression creates a following Q whole assignment
         // [this] = [this] / [right]
         Qassign<Qwhole> operator/=(const Qexpr<Qwhole>& right) const;
+
+        // 'mod assignment' of a Q whole creates a following Q whole assignment
+        // [this] = [this] % [right]
+        Qassign<Qwhole> operator%=(const Qwhole& right) const;
+
+        // 'mod assignment' of a Q expression creates a following Q whole assignment
+        // [this] = [this] % [right]
+        Qassign<Qwhole> operator%=(const Qexpr<Qwhole>& right) const;
 
         /*** Comparison ***/
         // instantiate Q expression with comparison, e.g. for Qwhole ids 'x' and 'y'
@@ -223,6 +230,15 @@ namespace dann5 {
         // instantiate Q expression with divide logic, e.g. for Qwhole id 'x' and [right]
         // expression the expression is 'x' / [right]
         Qexpr<Qwhole> operator/(const Qexpr<Qwhole>& right) const;
+
+        // instantiate Q expression with modulo logic, e.g. for Qwhole ids 'x' and 'y'
+        // the expression is 'x' % 'y'
+        Qexpr<Qwhole> operator%(const Qwhole& right) const;
+
+        // Modulo with EXPRESSION needs to be tested
+        // instantiate Q expression with modulo logic, e.g. for Qwhole id 'x' and [right]
+        // expression the expression is 'x' % [right]
+        Qexpr<Qwhole> operator%(const Qexpr<Qwhole>& right) const;
 
     protected:
     private:

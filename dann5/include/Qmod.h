@@ -38,6 +38,9 @@ namespace dann5
         // Return a Qdef's shared pointer pointing to a copy of this object
         virtual Qdef::Sp clone() const { return Qdef::Sp(new QwholeMod(*this)); };
 
+        // Returns a string representation of the modulo function
+        virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
+
     protected:
         // Refreshes the Quantum function cells according to modulo logic
         void refresh();

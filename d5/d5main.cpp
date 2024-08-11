@@ -972,6 +972,9 @@ PYBIND11_MODULE(d5, m) {
 		.def(py::self /= py::self, "change value of this object as result of divide operation between this and right Q whole")
 		.def(py::self /= Qexpr<Qwhole>(), "'divide assignment' of an Q expression creates a following Q whole assignment [this] = [this] / [right]")
 
+		.def(py::self %= py::self, "change value of this object as result of modulo operation between this and right Q whole")
+		.def(py::self %= Qexpr<Qwhole>(), "'modulo assignment' of an Q expression creates a following Q whole assignment [this] = [this] % [right]")
+
 
 		/*** Comparison ***/
 		.def(py::self == py::self, "instantiate Q comparison expression, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' == 'y'")
@@ -994,17 +997,20 @@ PYBIND11_MODULE(d5, m) {
 
 		/*** Arithmetic ***/
 
-		.def(py::self + py::self, "instantiate Q expression with and logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' + 'y'")
+		.def(py::self + py::self, "instantiate Q expression with add logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' + 'y'")
 		.def(py::self + Qexpr<Qwhole>(), "instantiate Q expression with add logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' + [right]")
 
 		.def(py::self * py::self, "instantiate Q expression with multiply logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' * 'y'")
 		.def(py::self * Qexpr<Qwhole>(), "instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' * [right]")
 
-		.def(py::self - py::self, "instantiate Q expression with and logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' + 'y'")
-		.def(py::self - Qexpr<Qwhole>(), "instantiate Q expression with add logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' + [right]")
+		.def(py::self - py::self, "instantiate Q expression with subtract logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' - 'y'")
+		.def(py::self - Qexpr<Qwhole>(), "instantiate Q expression with subtract logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' - [right]")
 
-		.def(py::self / py::self, "instantiate Q expression with multiply logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' * 'y'")
-		.def(py::self / Qexpr<Qwhole>(), "instantiate Q expression with multiply logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' * [right]");
+		.def(py::self / py::self, "instantiate Q expression with division logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' / 'y'")
+		.def(py::self / Qexpr<Qwhole>(), "instantiate Q expression with division logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' / [right]")
+
+		.def(py::self % py::self, "instantiate Q expression with modulo logic, e.g. for Qwhole with id 'x' and 'y' the expression is 'x' % 'y'")
+		.def(py::self % Qexpr<Qwhole>(), "instantiate Q expression with modulo logic, e.g. for Qwhole id 'x' and [right] object the expression is 'x' % [right]");
 
 
 	/*--- Qint.h definitions ---*/
@@ -1119,8 +1125,7 @@ PYBIND11_MODULE(d5, m) {
 			"Solve this Q routine and return a string with all solutions")
 		.def("compute", &Qroutine::compute, 
 			"Returns computed sample set with all solutions for the Q routine logic")
-		.def("reset", &Qroutine::reset, 
-"Clear all solution samples")
+		.def("reset", &Qroutine::reset, "Clear all solution samples")
 
 		.def(py::self << Qexpr<Qbit>())
 		.def(py::self << Qexpr<Qbool>())
@@ -1216,8 +1221,9 @@ PYBIND11_MODULE(d5, m) {
 		.def("compile", &Qcompiler::compile, "A method to be executed by active Qsolver when solving a quantum statement.");
 
 	/*--- DwaveSolver.h definitions ---*/
-	py::class_<Qfunction, Qfunction::Sp, PyQfunction>(m, "Qfunction", 
+	py::class_<Qfunction, Qfunction::Sp, PyQfunction>(m, "Qfunction",
 		R"pbdoc( A generic quantum function definition.)pbdoc")
+		.def(py::init<const PyQfunction&>(), R"pbdoc( Copy constructor.)pbdoc")
 		.def(py::init<const string&>(), R"pbdoc( Construct quantum function instance with name as 
 			its identity and the default number of arguments is 0.)pbdoc")
 		.def(py::init<const string&, size_t>(), R"pbdoc( Construct quantum function instance with name as 
@@ -1234,5 +1240,29 @@ PYBIND11_MODULE(d5, m) {
 		.def("clone", &Qfunction::clone,
 			R"pbdoc(Override to return a copy of this object)pbdoc")
 		.def("refresh", &Qfunction::refresh,
-			R"pbdoc(Override to define logic and to add assigned output and inputs into quantum function's binder)pbdoc");
+			R"pbdoc(Override to define logic and to add assigned output and inputs into quantum function's binder)pbdoc")
+		.def("operands", &Qfunction::operands,
+			R"pbdoc(Set quantum operation output and the list of inputs and calls refresh() method
+					 throws invalid_argument exception when # of inputs in the list is not
+					 the same as value defined by noInputs() const)pbdoc")
+
+		.def("__str__", [](Qblock& o) { return o.toString(); })
+		.def("__repr__", [](Qblock& o) { return o.toString(); })
+
+		.def(py::self << Qexpr<Qbit>())
+		.def(py::self << Qexpr<Qbool>())
+		.def(py::self << Qexpr<Qbin>())
+		.def(py::self << Qexpr<Qwhole>())
+		.def("_", [](Qroutine& self, const Qexpr<Qwhole>& right)
+			{ self << right; return self; })
+
+		.def(py::self << Qassign<Qbit>())
+		.def(py::self << Qassign<Qbool>())
+		.def(py::self << Qassign<Qbin>())
+		.def(py::self << Qassign<Qwhole>())
+		.def("_", [](Qroutine& self, const Qassign<Qwhole>& right)
+			{ self << right; return self; })
+
+		.def(py::self << Qblock())
+		.def(py::self << Qroutine());
 }

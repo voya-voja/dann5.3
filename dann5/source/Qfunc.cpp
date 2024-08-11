@@ -16,7 +16,7 @@ string Qatomicity::toString(bool decomposed, size_t forBit) const
     if(!decomposed) return QcellOp::toString(decomposed);
     string opStr = "{ ";
     for(auto pOp : mOps)
-        opStr += pOp->toString(decomposed) + "; ";
+        opStr += pOp->toString(decomposed, forBit) + "; ";
     opStr += "}";
     return(opStr);
 }

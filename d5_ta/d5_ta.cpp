@@ -278,12 +278,50 @@ void neTest()
     cout << compiler.qubo() << endl << endl;
 }
 
+void modTest()
+{
+    Qwhole r(2, "r"), n(5, "n"), d(3, "d");
+
+    Qassign<Qwhole> modAssign = r = n % d;
+    cout << modAssign << endl << modAssign.toString(true) << endl;
+
+    Qroutine mod("r = n % d"); // {
+    Qwhole _7("7_", 7), f(2, "f");
+
+    mod = n = r + f * d, (r < d), (n == _7);
+    //mod = n = r + f * _7, (r < _7);
+    // # } m = s % k
+    cout << mod << endl;
+
+    QuboCompiler compiler;
+    mod.compile(compiler);
+    QuboAnalyzer analyzer(compiler.qubo());
+    cout << analyzer.nodesNo() << " nodes & " << analyzer.branchesNo() << " branches" << endl;
+     
+    std::time_t result_s = std::time(nullptr);
+    std::cout << std::asctime(std::localtime(&result_s));
+
+    auto solutions = mod.compute();
+
+    Qbinder modBinder;
+    modBinder << n << d << f << r;
+    modBinder.add(solutions);
+    cout << modBinder << endl;
+
+    std::time_t result_e = std::time(nullptr);
+    std::cout << std::asctime(std::localtime(&result_e))
+        << "diration: " << result_e - result_s << " seconds\n";
+    /***************************************/
+
+}
+
 int main(int argc, const char * argv[])
 {
     _lf("main");
     Qsolver::Active(D5QuboSolver::Sp(new D5QuboSolver()));
 
-    neTest();
+    modTest();
+//    neTest();
 //    unitTests();
 
 //    testQbitQiskit();
