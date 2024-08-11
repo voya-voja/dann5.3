@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A23A50442C69478C004B8ABF /* Qmod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A23A50432C69478C004B8ABF /* Qmod.cpp */; };
+		A23A50462C6947B0004B8ABF /* Qmod.h in Headers */ = {isa = PBXBuildFile; fileRef = A23A50452C6947B0004B8ABF /* Qmod.h */; };
 		A25188A42BB8776300FDEAED /* Qroutine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25188882BB8776200FDEAED /* Qroutine.cpp */; };
 		A25188A52BB8776300FDEAED /* Qint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25188892BB8776200FDEAED /* Qint.cpp */; };
 		A25188A62BB8776300FDEAED /* Qexpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A251888A2BB8776200FDEAED /* Qexpr.cpp */; };
@@ -72,6 +74,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A23A50432C69478C004B8ABF /* Qmod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qmod.cpp; path = ../../dann5/source/Qmod.cpp; sourceTree = "<group>"; };
+		A23A50452C6947B0004B8ABF /* Qmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Qmod.h; path = ../../dann5/include/Qmod.h; sourceTree = "<group>"; };
 		A25188882BB8776200FDEAED /* Qroutine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qroutine.cpp; path = ../../dann5/source/Qroutine.cpp; sourceTree = "<group>"; };
 		A25188892BB8776200FDEAED /* Qint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qint.cpp; path = ../../dann5/source/Qint.cpp; sourceTree = "<group>"; };
 		A251888A2BB8776200FDEAED /* Qexpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qexpr.cpp; path = ../../dann5/source/Qexpr.cpp; sourceTree = "<group>"; };
@@ -169,6 +173,7 @@
 				A25188952BB8776200FDEAED /* Qglbls_fctrs.cpp */,
 				A25188892BB8776200FDEAED /* Qint.cpp */,
 				A25188972BB8776200FDEAED /* QlogicCompiler.cpp */,
+				A23A50432C69478C004B8ABF /* Qmod.cpp */,
 				A25188A32BB8776300FDEAED /* Qmultiply.cpp */,
 				A25188A02BB8776300FDEAED /* Qnary.cpp */,
 				A25188942BB8776200FDEAED /* QnaryOp.cpp */,
@@ -213,6 +218,7 @@
 				A25188CA2BB877D800FDEAED /* Qfunc.h */,
 				A25188D22BB877D900FDEAED /* Qint.h */,
 				A25188DC2BB877D900FDEAED /* QlogicCompiler.h */,
+				A23A50452C6947B0004B8ABF /* Qmod.h */,
 				A25188D12BB877D800FDEAED /* Qmultiply.h */,
 				A25188CE2BB877D800FDEAED /* Qnary.h */,
 				A25188E42BB877D900FDEAED /* QnaryOp.h */,
@@ -271,6 +277,7 @@
 				A25188FE2BB877DA00FDEAED /* Qbool.h in Headers */,
 				A25188FC2BB877DA00FDEAED /* Qblock.h in Headers */,
 				A25188F62BB877DA00FDEAED /* Qassign.h in Headers */,
+				A23A50462C6947B0004B8ABF /* Qmod.h in Headers */,
 				A25189052BB877DA00FDEAED /* QnaryOp.h in Headers */,
 				A25188F82BB877DA00FDEAED /* QtoString.hpp in Headers */,
 				A25189082BB877DA00FDEAED /* Qbin.h in Headers */,
@@ -381,6 +388,7 @@
 				A2882AE32BB8765A003E2372 /* d5main.cpp in Sources */,
 				A25188BE2BB8776300FDEAED /* Qblock.cpp in Sources */,
 				A25188B52BB8776300FDEAED /* Qevaluation.cpp in Sources */,
+				A23A50442C69478C004B8ABF /* Qmod.cpp in Sources */,
 				A25188BA2BB8776300FDEAED /* ULint.cpp in Sources */,
 				A25188A92BB8776300FDEAED /* Qbool.cpp in Sources */,
 				A25188AE2BB8776300FDEAED /* QcellOps.cpp in Sources */,

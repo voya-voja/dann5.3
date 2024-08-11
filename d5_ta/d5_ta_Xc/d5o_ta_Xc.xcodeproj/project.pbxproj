@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A227E6932BBC408700306B92 /* UTestQint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A227E6922BBC408700306B92 /* UTestQint.cpp */; };
+		A23A50422C67FA29004B8ABF /* Qmod.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A23A50412C67FA29004B8ABF /* Qmod.cpp */; };
 		A25189192BB9B3FD00FDEAED /* PNGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25189122BB9B3FD00FDEAED /* PNGen.cpp */; };
 		A251891A2BB9B3FD00FDEAED /* UTestQwhole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25189132BB9B3FD00FDEAED /* UTestQwhole.cpp */; };
 		A251891B2BB9B3FD00FDEAED /* UTestQbit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A25189142BB9B3FD00FDEAED /* UTestQbit.cpp */; };
@@ -71,6 +72,8 @@
 /* Begin PBXFileReference section */
 		A227E6922BBC408700306B92 /* UTestQint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQint.cpp; path = ../UTestQint.cpp; sourceTree = "<group>"; };
 		A227E6942BBC40A900306B92 /* UTestQint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UTestQint.hpp; path = ../UTestQint.hpp; sourceTree = "<group>"; };
+		A23A50402C67FA06004B8ABF /* Qmod.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Qmod.h; path = ../../dann5/include/Qmod.h; sourceTree = "<group>"; };
+		A23A50412C67FA29004B8ABF /* Qmod.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Qmod.cpp; path = ../../dann5/source/Qmod.cpp; sourceTree = "<group>"; };
 		A25189122BB9B3FD00FDEAED /* PNGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PNGen.cpp; path = ../PNGen.cpp; sourceTree = "<group>"; };
 		A25189132BB9B3FD00FDEAED /* UTestQwhole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQwhole.cpp; path = ../UTestQwhole.cpp; sourceTree = "<group>"; };
 		A25189142BB9B3FD00FDEAED /* UTestQbit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UTestQbit.cpp; path = ../UTestQbit.cpp; sourceTree = "<group>"; };
@@ -236,6 +239,7 @@
 				A251893D2BB9B48F00FDEAED /* Qfunc.h */,
 				A25189362BB9B48F00FDEAED /* Qint.h */,
 				A251893F2BB9B48F00FDEAED /* QlogicCompiler.h */,
+				A23A50402C67FA06004B8ABF /* Qmod.h */,
 				A25189462BB9B49000FDEAED /* Qmultiply.h */,
 				A25189292BB9B48E00FDEAED /* Qnary.h */,
 				A25189312BB9B48E00FDEAED /* QnaryOp.h */,
@@ -277,6 +281,7 @@
 				A25189542BB9B4CE00FDEAED /* Qglbls_fctrs.cpp */,
 				A25189552BB9B4CE00FDEAED /* Qint.cpp */,
 				A25189532BB9B4CE00FDEAED /* QlogicCompiler.cpp */,
+				A23A50412C67FA29004B8ABF /* Qmod.cpp */,
 				A251894D2BB9B4CE00FDEAED /* Qmultiply.cpp */,
 				A251894C2BB9B4CE00FDEAED /* Qnary.cpp */,
 				A251895A2BB9B4CF00FDEAED /* QnaryOp.cpp */,
@@ -453,6 +458,7 @@
 				A2F834612BF7FD5F002A8D4C /* UTest.cpp in Sources */,
 				A251898D2BB9B51500FDEAED /* DwaveSolver.cpp in Sources */,
 				A25189702BB9B4CF00FDEAED /* Qglbls_fctrs.cpp in Sources */,
+				A23A50422C67FA29004B8ABF /* Qmod.cpp in Sources */,
 				A251891B2BB9B3FD00FDEAED /* UTestQbit.cpp in Sources */,
 				A251898E2BB9B51500FDEAED /* Qubo.cpp in Sources */,
 				A251891C2BB9B3FD00FDEAED /* UTestQbool.cpp in Sources */,
