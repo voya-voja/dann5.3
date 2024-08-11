@@ -16,7 +16,7 @@ namespace dann5
     // function mod = number % divisor, where mod is always a Qwhole variable,
     // and number and divisor can be Qwhole variable or QnaryOp (i.e. a root
     // operation of a linked Qexpr<Qwhole>
-    class QwholeMod : public Qfunction
+    class QwholeMod : public Qfunction 
     {
     public:
         // QnaryNeq's shared pointer
