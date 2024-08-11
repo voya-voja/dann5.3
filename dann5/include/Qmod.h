@@ -40,7 +40,7 @@ namespace dann5
 
         // Returns a string representation of the modulo function
         virtual string toString(bool decomposed = false, size_t forBit = cAllBits) const;
-
+        
     protected:
         // Refreshes the Quantum function cells according to modulo logic
         void refresh();
