@@ -280,7 +280,7 @@ void neTest()
 
 void modTest()
 {
-    Qwhole r(2, "r"), n(5, "n"), d(3, "d");
+    Qwhole r(2, "r"), n(5, "n"), d(2, "d");
 
     Qassign<Qwhole> modAssign = r = n % d;
     cout << modAssign << endl << modAssign.toString(true) << endl;
@@ -288,9 +288,7 @@ void modTest()
     Qroutine mod("r = n % d"); // {
     Qwhole _7("7_", 7), f(2, "f");
 
-    mod = n = r + f * d, (r < d), (n == _7);
-    //mod = n = r + f * _7, (r < _7);
-    // # } m = s % k
+    mod = n = r + f * d, (r < d), (d > Qwhole::_1);
     cout << mod << endl;
 
     QuboCompiler compiler;
@@ -312,7 +310,6 @@ void modTest()
     std::cout << std::asctime(std::localtime(&result_e))
         << "diration: " << result_e - result_s << " seconds\n";
     /***************************************/
-
 }
 
 int main(int argc, const char * argv[])

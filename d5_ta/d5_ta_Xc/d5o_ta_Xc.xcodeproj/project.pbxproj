@@ -586,7 +586,7 @@
 				HEADER_SEARCH_PATHS = (
 					"../../../eigen-master",
 					/Library/Frameworks/Python.framework/Versions/3.10/include/python3.10,
-					"$(HOME)/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
+					"$(HOME)/Envs/d5/lib/python3.10/site-packages/pybind11/include",
 					../../dann5/include,
 					../../dann5/ocean/include,
 					../../dann5/qiskit/include,
@@ -607,7 +607,7 @@
 				HEADER_SEARCH_PATHS = (
 					"../../../eigen-master",
 					/Library/Frameworks/Python.framework/Versions/3.10/include/python3.10,
-					"$(HOME)/Envs/d5o/lib/python3.10/site-packages/pybind11/include",
+					"$(HOME)/Envs/d5/lib/python3.10/site-packages/pybind11/include",
 					../../dann5/include,
 					../../dann5/ocean/include,
 					../../dann5/qiskit/include,
