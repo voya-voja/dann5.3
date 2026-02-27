@@ -205,6 +205,8 @@ namespace dann5
 
         // Adds assigned output and inputs into quantum function's binder
         virtual void refresh();
+        
+        virtual void output(const Qdef::Sp& out, size_t forBit = cAllBits);
 
     protected:
         // Adds assigned inputs into quantum function's binder

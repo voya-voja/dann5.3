@@ -89,6 +89,10 @@ string Qfunction::declaration() const
 
 void Qfunction::add(const Qevaluations& evaluations) {
     mVariables.add(evaluations);
+    // set the result output variable to same id as output id
+    // finishing the re-id of output variable started in
+    // void output(const Qdef::Sp& pOut, size_t forBit)
+    mVariables[0]->id(Qop::output()->id());
     QnaryOp::add(evaluations);
 }
 
@@ -116,6 +120,22 @@ Qfunction::CommaOp Qfunction::operator=(const Qstatement& statement)
     (*this) << statement;
     return(CommaOp(this));
 }
+
+void Qfunction::output(const Qdef::Sp& pOut, size_t forBit)
+{
+    if (forBit == cAllBits)
+    {
+        // set the size of output to be same as result output
+        Qnary::Sp pNaryOut = dynamic_pointer_cast<Qnary>(pOut);
+        pNaryOut->resize(mVariables[0]->noqbs());
+        // update the function output id to same value as id of the output
+        Qop::output()->id(pOut->id());
+    }
+    else
+    {
+        QnaryOp::output(pOut, forBit);
+    }
+ }
 
 void Qfunction::refresh()
 {

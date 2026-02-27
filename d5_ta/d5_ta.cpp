@@ -280,16 +280,29 @@ void neTest()
 
 void modTest()
 {
-    Qwhole r(2, "r"), n(5, "n"), d(2, "d");
+    Qwhole r(2, "r"), n(4, "n"), d(2, "d");
 
+    /* 3 PROBLEMS with Qfunction expressions and assignments:
+        1. _%0 is used in creation of function expression instead of 'r', so 'r' is not calculated
+        2. _%0 is in functions Qbinder and always will be printed
+        3. Qassignment:operator=() or assign() run bind() whihc sets result variable 'r' to the same size as expression,
+            e.g. 'r' should stay 2 qbits, but expression is 5 qbits
+     */
     Qassign<Qwhole> modAssign = r = n % d;
     cout << modAssign << endl << modAssign.toString(true) << endl;
+    
+    QuboCompiler compiler1;
+    modAssign.compile(compiler1);
+    QuboAnalyzer analyzer1(compiler1.qubo());
+    cout << analyzer1.nodesNo() << " nodes & " << analyzer1.branchesNo() << " branches" << endl;
+    cout << modAssign.solve() << endl;
+    cout << "############################" << endl;
 
     Qroutine mod("r = n % d"); // {
-    Qwhole _7("7_", 7), f(2, "f");
+    Qwhole f(2, "f");
 
-    mod = n = r + f * d, (r < d), (d > Qwhole::_1);
-    cout << mod << endl;
+    mod = n = r + f * d, (r < d), (Qwhole::_1 < d), (Qwhole::_0 < f); //
+    cout << mod << endl << mod.toString(true) << endl;
 
     QuboCompiler compiler;
     mod.compile(compiler);
@@ -302,13 +315,13 @@ void modTest()
     auto solutions = mod.compute();
 
     Qbinder modBinder;
-    modBinder << n << d << f << r;
+    modBinder << r << n << d << f;
     modBinder.add(solutions);
     cout << modBinder << endl;
 
     std::time_t result_e = std::time(nullptr);
     std::cout << std::asctime(std::localtime(&result_e))
-        << "diration: " << result_e - result_s << " seconds\n";
+        << "duration: " << result_e - result_s << " seconds\n";
     /***************************************/
 }
 
